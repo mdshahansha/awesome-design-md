@@ -131,6 +131,7 @@ You can [request a DESIGN.md](https://getdesign.md/request) for specific website
 - [**Notion**](https://getdesign.md/notion/design-md) - All-in-one workspace. Warm minimalism, serif headings, soft surfaces
 - [**Resend**](https://getdesign.md/resend/design-md) - Email API for developers. Minimal dark theme, monospace accents
 - [**SAP**](https://getdesign.md/sap/design-md) - Enterprise business software. White canvas, flat blue bands, application-frame chrome
+- [**Slack**](https://getdesign.md/slack/design-md) - Workplace messaging. Deep aubergine primary, cream-lavender hero gradients, pill CTAs
 - [**Zapier**](https://getdesign.md/zapier/design-md) - Automation platform. Warm orange, friendly illustration-driven
 
 ### Design & Creative Tools
@@ -202,27 +203,32 @@ A Saturday series — DESIGN.md files extracted from the web of the 1990s. Drop 
 
 ## What's Inside Each DESIGN.md
 
-Every file follows the [Stitch DESIGN.md format](https://stitch.withgoogle.com/docs/design-md/specification/) with extended sections:
+Every file extends the [Stitch DESIGN.md format](https://stitch.withgoogle.com/docs/design-md/specification/).
 
-| # | Section | What it captures |
-|---|---------|-----------------|
-| 1 | Visual Theme & Atmosphere | Mood, density, design philosophy |
-| 2 | Color Palette & Roles | Semantic name + hex + functional role |
-| 3 | Typography Rules | Font families, full hierarchy table |
-| 4 | Component Stylings | Buttons, cards, inputs, navigation with states |
-| 5 | Layout Principles | Spacing scale, grid, whitespace philosophy |
-| 6 | Depth & Elevation | Shadow system, surface hierarchy |
-| 7 | Do's and Don'ts | Design guardrails and anti-patterns |
-| 8 | Responsive Behavior | Breakpoints, touch targets, collapsing strategy |
-| 9 | Agent Prompt Guide | Quick color reference, ready-to-use prompts |
+Most files open with a YAML frontmatter block of machine-readable tokens — `colors`, `typography`, `spacing`, `rounded`, `components` — and the prose below references them as `{colors.primary}`, `{typography.display-xl}`, and so on. The prose sections:
 
-Each site includes:
+| Section | What it captures | Coverage |
+|---------|-----------------|----------|
+| Overview | Mood, density, design philosophy | all |
+| Colors | Semantic name + hex + functional role | all |
+| Typography | Font families, full hierarchy table | all |
+| Layout | Spacing scale, grid, whitespace philosophy | all |
+| Elevation & Depth | Shadow system, surface hierarchy | all |
+| Shapes | Border-radius scale, imagery treatment | most |
+| Components | Buttons, cards, inputs, navigation with states | all |
+| Do's and Don'ts | Design guardrails and anti-patterns | most |
+| Responsive Behavior | Breakpoints, touch targets, collapsing strategy | some |
+| Iteration Guide | How to adapt the system to your own product | some |
+| Known Gaps | What the extraction could not capture | some |
+
+A handful of earlier files use a numbered variant of the same sections (`## 1. Visual Theme & Atmosphere` … `## 9. Agent Prompt Guide`) and carry no frontmatter token block.
+
+Each site folder contains:
 
 | File | Purpose |
 |------|---------|
 | `DESIGN.md` | The design system (what agents read) |
-| `preview.html` | Visual catalog showing color swatches, type scale, buttons, cards |
-| `preview-dark.html` | Same catalog with dark surfaces |
+| `README.md` | Link to the rendered page, previews, and dark-mode examples on getdesign.md |
 
 ### How to Use
 

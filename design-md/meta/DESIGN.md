@@ -621,7 +621,7 @@ The system runs predominantly flat. Elevation is reserved for two interaction la
 
 ### Do
 - Reserve `{colors.primary}` (cobalt) for buy-now CTAs only — its visual weight is meaningful precisely because it doesn't appear on marketing pages.
-- Use `{colors.ink-button}` (black) for marketing-surface primary CTAs. Pair with `{colors.button-secondary}` ghost outline for the secondary action.
+- Use `{colors.ink-button}` (black) for marketing-surface primary CTAs. Pair with the `button-secondary` ghost outline for the secondary action.
 - Apply `{rounded.full}` to every button, every category pill, every badge, every chip — buttons are NEVER squared in Meta's system.
 - Apply `{rounded.xxxl}` to photographic product cards and `{rounded.xl}` to icon-feature tiles to maintain the visible card-hierarchy contrast.
 - Switch on `ss01, ss02` together for any Optimistic VF heading. Never one stylistic set without the other.

@@ -435,7 +435,7 @@ If Airbnb Cereal VF and Circular are unavailable, **Inter** is the closest open-
 ### Whitespace Philosophy
 The system gives editorial bands 64px of vertical breathing room but compresses card grids — property and city-link cards sit just 16px apart. The contrast is intentional: the page reads as "open hero, dense marketplace below," reinforcing the marketplace nature without overwhelming the visitor at the fold.
 
-## Elevation
+## Elevation & Depth
 
 The system has essentially **one shadow tier** plus the flat baseline.
 

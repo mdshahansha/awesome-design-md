@@ -303,7 +303,7 @@ Type voice is Haas Grotesk at modest weights (400 for display, 500 for sub-title
 ## Colors
 
 ### Brand & Accent
-- **Primary** (`{colors.primary}` — #181d26): The dominant brand color. Used for the primary CTA background, h1/h2 display type, and the `{component.surface-dark}` band. Not "blue, then black" — black IS the primary throughout the marketing system.
+- **Primary** (`{colors.primary}` — #181d26): The dominant brand color. Used for the primary CTA background, h1/h2 display type, and the `{colors.surface-dark}` band. Not "blue, then black" — black IS the primary throughout the marketing system.
 - **Primary Active** (`{colors.primary-active}` — #0d1218): The press state on primary buttons.
 
 ### Surface
