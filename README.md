@@ -17,7 +17,7 @@
 <div align="center">
 
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
-![DESIGN.md Count](https://img.shields.io/badge/DESIGN.md%20count-73-10b981?style=classic)
+![DESIGN.md Count](https://img.shields.io/badge/DESIGN.md%20count-84-10b981?style=classic)
 [![Last Update](https://img.shields.io/github/last-commit/VoltAgent/awesome-design-md?label=Last%20update&style=classic)](https://github.com/VoltAgent/awesome-design-md)
 [![Discord](https://img.shields.io/discord/1361559153780195478.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://s.voltagent.dev/discord)
 [![Official MCP Servers](https://img.shields.io/badge/Official-MCP%20Servers-c2410c?style=classic&logo=github&logoColor=white&labelColor=24292f)](https://github.com/VoltAgent/official-mcp-servers)
@@ -49,33 +49,14 @@ It's just a markdown file. No Figma exports, no JSON schemas, no special tooling
 
 You can [request a DESIGN.md](https://getdesign.md/request) for specific website, including private requests delivered exclusively to you.
 
-## AI Design + Build Ecosystem Tools
-
-
 <br/>
 
-You ship products with AI, but every launch still dies quietly because nobody posts about it. [EveryFeed](https://everyfeed.ai/) plugs your AI assistant into a social workspace that drafts, schedules, and publishes across 35+ channels — no agency, no marketing hire.
-
-<a href="https://everyfeed.ai/">
-<img src="https://cdn.voltagent.dev/awesome-repo/everyfeed-social.png" alt="everyfeed"  /><br/>
-</a>
-
-<br/>
-
-
-
-<a href="https://launchkit.getdesign.md/">
+<a href="https://getdesign.md/website-starter-kit">
 <img src="https://cdn.voltagent.dev/awesome-repo/website-starter-kit-banner-dark-0315e5f9c1.png" alt="launchkit"  /><br/>
 </a>
 
 <br/>
 
-
-<a href="https://mobile-starterkit.getdesign.md/">
-<img src="https://cdn.voltagent.dev/awesome-repo/mobile-starter-kit-banner-light-450ba0a9b0.png" alt="mobilekit"  /><br/>
-</a>
-
-<br/>
 
 <div align="center">
 
@@ -108,6 +89,7 @@ You ship products with AI, but every launch still dies quietly because nobody po
 - [**Claude**](https://getdesign.md/claude/design-md) - Anthropic's AI assistant. Warm terracotta accent, clean editorial layout
 - [**Cohere**](https://getdesign.md/cohere/design-md) - Enterprise AI platform. Vibrant gradients, data-rich dashboard aesthetic
 - [**ElevenLabs**](https://getdesign.md/elevenlabs/design-md) - AI voice platform. Dark cinematic UI, audio-waveform aesthetics
+- [**Jobright**](https://getdesign.md/jobright/design-md) - AI job-hunting platform. Spring-mint green, black pill buttons, condensed Titillium headlines
 - [**Minimax**](https://getdesign.md/minimax/design-md) - AI model provider. Bold dark interface with neon accents
 - [**Mistral AI**](https://getdesign.md/mistral.ai/design-md) - Open-weight LLM provider. French-engineered minimalism, purple-toned
 - [**Ollama**](https://getdesign.md/ollama/design-md) - Run LLMs locally. Terminal-first, monochrome simplicity
@@ -134,6 +116,7 @@ You ship products with AI, but every launch still dies quietly because nobody po
 - [**Composio**](https://getdesign.md/composio/design-md) - Tool integration platform. Modern dark with colorful integration icons
 - [**HashiCorp**](https://getdesign.md/hashicorp/design-md) - Infrastructure automation. Enterprise-clean, black and white
 - [**MongoDB**](https://getdesign.md/mongodb/design-md) - Document database. Green leaf branding, developer documentation focus
+- [**Oracle**](https://getdesign.md/oracle/design-md) - Enterprise cloud and database software. Warm neutral ladder, charcoal-only actions, red saved for the wordmark
 - [**PostHog**](https://getdesign.md/posthog/design-md) - Product analytics. Playful hedgehog branding, developer-friendly dark UI
 - [**Sanity**](https://getdesign.md/sanity/design-md) - Headless content platform with a dark-first editorial marketing surface — 112px display type, IBM Plex Mono technical eyebrows, and a single coral-red accent reserved for the highest-priority CTA.
 - [**Sentry**](https://getdesign.md/sentry/design-md) - Error monitoring. Dark dashboard, data-dense, pink-purple accent
@@ -147,6 +130,8 @@ You ship products with AI, but every launch still dies quietly because nobody po
 - [**Mintlify**](https://getdesign.md/mintlify/design-md) - Documentation platform. Clean, green-accented, reading-optimized
 - [**Notion**](https://getdesign.md/notion/design-md) - All-in-one workspace. Warm minimalism, serif headings, soft surfaces
 - [**Resend**](https://getdesign.md/resend/design-md) - Email API for developers. Minimal dark theme, monospace accents
+- [**SAP**](https://getdesign.md/sap/design-md) - Enterprise business software. White canvas, flat blue bands, application-frame chrome
+- [**Slack**](https://getdesign.md/slack/design-md) - Workplace messaging. Deep aubergine primary, cream-lavender hero gradients, pill CTAs
 - [**Zapier**](https://getdesign.md/zapier/design-md) - Automation platform. Warm orange, friendly illustration-driven
 
 ### Design & Creative Tools
@@ -164,6 +149,8 @@ You ship products with AI, but every launch still dies quietly because nobody po
 - [**Coinbase**](https://getdesign.md/coinbase/design-md) - Crypto exchange. Clean blue identity, trust-focused, institutional feel
 - [**Kraken**](https://getdesign.md/kraken/design-md) - Crypto trading platform. Purple-accented dark UI, data-dense dashboards
 - [**Mastercard**](https://getdesign.md/mastercard/design-md) - Global payments network. Warm cream canvas, orbital pill shapes, editorial warmth
+- [**Mercury**](https://getdesign.md/mercury/design-md) - Startup banking platform. Ink-violet night world, indigo action pill, light custom sans
+- [**NerdWallet**](https://getdesign.md/nerdwallet/design-md) - Personal finance comparison platform. Deep spruce green, mint washes, near-square corners
 - [**Revolut**](https://getdesign.md/revolut/design-md) - Digital banking. Sleek dark interface, gradient cards, fintech precision
 - [**Stripe**](https://getdesign.md/stripe/design-md) - Payment infrastructure. Signature purple gradients, weight-300 elegance
 - [**Wise**](https://getdesign.md/wise/design-md) - International money transfer. Bright green accent, friendly and clear
@@ -172,16 +159,21 @@ You ship products with AI, but every launch still dies quietly because nobody po
 
 - [**Airbnb**](https://getdesign.md/airbnb/design-md) - Travel marketplace. Warm coral accent, photography-driven, rounded UI
 - [**Meta**](https://getdesign.md/meta/design-md) - Tech retail store. Photography-first, binary light/dark surfaces, Meta Blue CTAs
+- [**mydealz**](https://getdesign.md/mydealz/design-md) - German deals community. Dense white-card feed, hot and cold voting pill, brand green
 - [**Nike**](https://getdesign.md/nike/design-md) - Athletic retail. Monochrome UI, massive uppercase Futura, full-bleed photography
 - [**Shopify**](https://getdesign.md/shopify/design-md) - E-commerce platform. Dark-first cinematic, neon green accent, ultra-light display type
 - [**Starbucks**](https://getdesign.md/starbucks/design-md) - Coffee retail flagship. Four-tier earth-green system, warm cream canvas, proprietary SoDoSans typography
 
 ### Media & Consumer Tech
 
+- [**1win**](https://getdesign.md/1win/design-md) - Crypto casino and sportsbook. Near-black canvas, vivid green action color, dense game-tile rails
+- [**Al Jazeera**](https://getdesign.md/aljazeera/design-md) - Global news network. Flat white paper, dense Roboto headlines, orange signature and live red
 - [**Apple**](https://getdesign.md/apple/design-md) - Consumer electronics. Premium white space, SF Pro, cinematic imagery
+- [**DJI**](https://getdesign.md/dji/design-md) - Drone and camera maker. Studio product tiles, engineering-blue pills, tight Open Sans
 - [**HP**](https://getdesign.md/hp/design-md) - PC and printer maker. Pure white canvas, HP Electric Blue signal CTA, geometric Forma DJR Micro, blue chevron decorations
 - [**IBM**](https://getdesign.md/ibm/design-md) - Enterprise technology. Carbon design system, structured blue palette
 - [**NVIDIA**](https://getdesign.md/nvidia/design-md) - GPU computing. Green-black energy, technical power aesthetic
+- [**Oura**](https://getdesign.md/oura/design-md) - Smart ring wellness brand. Warm paper cream, editorial serif, earth-tone accents
 - [**Pinterest**](https://getdesign.md/pinterest/design-md) - Visual discovery platform. Red accent, masonry grid, image-first
 - [**PlayStation**](https://getdesign.md/playstation/design-md) - Gaming console retail. Three-surface channel layout, cyan hover-scale interaction
 - [**SpaceX**](https://getdesign.md/spacex/design-md) - Space technology. Stark black and white, full-bleed imagery, futuristic
@@ -211,27 +203,32 @@ A Saturday series — DESIGN.md files extracted from the web of the 1990s. Drop 
 
 ## What's Inside Each DESIGN.md
 
-Every file follows the [Stitch DESIGN.md format](https://stitch.withgoogle.com/docs/design-md/specification/) with extended sections:
+Every file extends the [Stitch DESIGN.md format](https://stitch.withgoogle.com/docs/design-md/specification/).
 
-| # | Section | What it captures |
-|---|---------|-----------------|
-| 1 | Visual Theme & Atmosphere | Mood, density, design philosophy |
-| 2 | Color Palette & Roles | Semantic name + hex + functional role |
-| 3 | Typography Rules | Font families, full hierarchy table |
-| 4 | Component Stylings | Buttons, cards, inputs, navigation with states |
-| 5 | Layout Principles | Spacing scale, grid, whitespace philosophy |
-| 6 | Depth & Elevation | Shadow system, surface hierarchy |
-| 7 | Do's and Don'ts | Design guardrails and anti-patterns |
-| 8 | Responsive Behavior | Breakpoints, touch targets, collapsing strategy |
-| 9 | Agent Prompt Guide | Quick color reference, ready-to-use prompts |
+Most files open with a YAML frontmatter block of machine-readable tokens — `colors`, `typography`, `spacing`, `rounded`, `components` — and the prose below references them as `{colors.primary}`, `{typography.display-xl}`, and so on. The prose sections:
 
-Each site includes:
+| Section | What it captures | Coverage |
+|---------|-----------------|----------|
+| Overview | Mood, density, design philosophy | all |
+| Colors | Semantic name + hex + functional role | all |
+| Typography | Font families, full hierarchy table | all |
+| Layout | Spacing scale, grid, whitespace philosophy | all |
+| Elevation & Depth | Shadow system, surface hierarchy | all |
+| Shapes | Border-radius scale, imagery treatment | most |
+| Components | Buttons, cards, inputs, navigation with states | all |
+| Do's and Don'ts | Design guardrails and anti-patterns | most |
+| Responsive Behavior | Breakpoints, touch targets, collapsing strategy | some |
+| Iteration Guide | How to adapt the system to your own product | some |
+| Known Gaps | What the extraction could not capture | some |
+
+A handful of earlier files use a numbered variant of the same sections (`## 1. Visual Theme & Atmosphere` … `## 9. Agent Prompt Guide`) and carry no frontmatter token block.
+
+Each site folder contains:
 
 | File | Purpose |
 |------|---------|
 | `DESIGN.md` | The design system (what agents read) |
-| `preview.html` | Visual catalog showing color swatches, type scale, buttons, cards |
-| `preview-dark.html` | Same catalog with dark surfaces |
+| `README.md` | Link to the rendered page, previews, and dark-mode examples on getdesign.md |
 
 ### How to Use
 

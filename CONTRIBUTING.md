@@ -14,11 +14,10 @@ If you notice issues with an existing file:
 2. Open the site's `DESIGN.md`
 3. Compare against the live site
 4. Fix incorrect hex values, missing tokens, or weak descriptions
-5. Update the `preview.html` and `preview-dark.html` if your changes affect displayed tokens
-6. Open a PR with before/after rationale
+5. Keep the frontmatter tokens and the `{group.token}` references in the prose in sync — every reference must resolve to a key in the frontmatter
+6. Once a maintainer has agreed on the issue, open a PR with before/after rationale
 
-
-We cannot accept DESIGN.md pull requests to maintain the quality of the existing collection.
+To keep the collection consistent, we only accept DESIGN.md pull requests that follow an issue a maintainer has already approved. Unsolicited new-site PRs are closed — [request a DESIGN.md](https://getdesign.md/request) instead.
 
 ## License
 

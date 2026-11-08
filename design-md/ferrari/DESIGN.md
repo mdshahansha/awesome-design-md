@@ -373,7 +373,7 @@ Generous editorial pacing. Cinematic hero photography occupies generous viewport
 
 ## Elevation & Depth
 
-The system uses **photographic depth + brightness-step** elevation. No drop shadows except a single soft-small `{shadow.small}` documented in extracted tokens.
+The system uses **photographic depth + brightness-step** elevation. No drop shadows except the single soft-small tier documented in the table below (`0 4px 8px rgba(0,0,0,0.1)`).
 
 | Level | Treatment | Use |
 |---|---|---|
