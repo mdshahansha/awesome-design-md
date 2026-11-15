@@ -33,7 +33,12 @@ reference once pointed at nothing.
 
 Required colour roles. A role is satisfied by any key matching its pattern, so
 `surface-cream`, `surface-1` and `layer-01` all satisfy `surface`. **Never add
-an alias token purely to satisfy a pattern** — if a role looks unsatisfied but
+an alias token purely to satisfy a pattern**, and note the difference from the
+parallel accessible token of section 2: that one has a real job — it is drawn
+where contrast is needed, and the frozen tone is scoped to decoration. An alias
+has no job but to match a regex. So where the file already owns a passing tone
+that does the boundary work, use it and add nothing; add a parallel token only
+when nothing in the palette can carry the job — if a role looks unsatisfied but
 the palette plainly contains it under another name, that is a harness bug to
 report under Shared issues, not a token to invent. Brand documents should not
 carry tokens that exist only to please a regex:

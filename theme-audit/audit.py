@@ -191,6 +191,18 @@ def audit(path):
 
     # --- required token roles -------------------------------------------
     roles = {role: find_role(colors, cands) for role, cands in REQUIRED_COLOR_ROLES.items()}
+    # A role no pattern can guess by name is still resolvable from what the
+    # components bind. Mercury's boundaries are `fog` and `slate`; both are
+    # declared as borderColor, which is better evidence than any regex.
+    if not roles.get("border"):
+        for props in parse_components(text).values():
+            ref = props.get("borderColor") or props.get("border") or ""
+            m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", ref)
+            if m and m.group(1) in colors:
+                roles["border"] = m.group(1)
+                r.setdefault("roles_from_bindings", []).append("border=" + m.group(1))
+                break
+
     # Boundary and focus tokens are judged on the strongest variant the file owns.
     canvas_key = roles.get("canvas")
     if canvas_key:
