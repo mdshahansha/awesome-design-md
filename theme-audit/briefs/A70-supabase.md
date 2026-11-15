@@ -23,7 +23,7 @@ PROCESS
    cd /Users/mohammadshahansha/Desktop/awesome-design-md && python3 -I theme-audit/audit.py --site supabase --json
 3. Review every dimension below. Log each finding with severity: P0 = wrong or unusable, P1 = clearly incomplete, P2 = polish. Compute every contrast ratio with a short python3 snippet; never estimate one.
 4. Fix what you can inside your owned file. Prefer adding or correcting token values over bolting on prose caveats.
-5. Write your report to theme-audit/reports/A70-supabase.md using the structure below. Create that file; do not touch any other report.
+5. Write your report to theme-audit/reports/A70-supabase.md using the structure below. Create that file; do not touch any other report. If a write to that path is refused by the permission classifier, do not retry it more than once and do not try to work around it: save the finished report to your scratchpad instead and give its absolute path in your reply, and the orchestrator will collect it.
 6. Re-run the harness on your site and record the after-scores.
 
 REVIEW DIMENSIONS
