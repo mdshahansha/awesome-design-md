@@ -124,66 +124,21 @@ Before → after, per dimension. `tok` tokens, `ref` references, `con` contrast,
 
 ## Deliberate shortfalls
 
-These scores are short because the brand genuinely lacks what the column asks for. Each is recorded in that file's Known Gaps with the evidence. Filling them would have meant inventing facts about a real brand.
+Eleven scores on tokens and states are short because the brand genuinely lacks what the column asks for. Each is recorded in that file's Known Gaps with the evidence. Filling them would have meant inventing facts about a real brand.
 
 | Site | Dimension | Score | Why |
 |---|---|---|---|
-| `1win` | contrast | 1 | see that file's Known Gaps |
-| `airbnb` | contrast | 1 | see that file's Known Gaps |
-| `airtable` | contrast | 3 | see that file's Known Gaps |
-| `aljazeera` | contrast | 1 | see that file's Known Gaps |
-| `apple` | contrast | 2 | see that file's Known Gaps |
-| `binance` | contrast | 2 | see that file's Known Gaps |
-| `bmw` | contrast | 1 | see that file's Known Gaps |
-| `bmw-m` | contrast | 2 | see that file's Known Gaps |
-| `bugatti` | contrast | 2 | see that file's Known Gaps |
-| `cal` | contrast | 1 | see that file's Known Gaps |
-| `claude` | contrast | 1 | see that file's Known Gaps |
-| `clay` | contrast | 1 | see that file's Known Gaps |
-| `clickhouse` | contrast | 2 | see that file's Known Gaps |
-| `cohere` | contrast | 4 | see that file's Known Gaps |
-| `composio` | contrast | 3 | see that file's Known Gaps |
-| `cursor` | contrast | 4 | see that file's Known Gaps |
-| `dell-1996` | contrast | 4 | see that file's Known Gaps |
-| `dji` | contrast | 1 | see that file's Known Gaps |
-| `elevenlabs` | contrast | 3 | see that file's Known Gaps |
-| `ferrari` | contrast | 1 | see that file's Known Gaps |
-| `figma` | contrast | 4 | see that file's Known Gaps |
-| `hashicorp` | contrast | 1 | see that file's Known Gaps |
-| `hp` | contrast | 3 | see that file's Known Gaps |
-| `ibm` | contrast | 3 | see that file's Known Gaps |
-| `intercom` | contrast | 1 | see that file's Known Gaps |
-| `lamborghini` | contrast | 4 | see that file's Known Gaps |
-| `linear.app` | contrast | 4 | see that file's Known Gaps |
 | `meta` | tokens | 4 | four muted tiers under brand names; reported as a harness gap |
-| `meta` | contrast | 3 | see that file's Known Gaps |
-| `mintlify` | contrast | 3 | see that file's Known Gaps |
-| `miro` | contrast | 3 | see that file's Known Gaps |
-| `mongodb` | contrast | 3 | see that file's Known Gaps |
-| `nerdwallet` | contrast | 1 | see that file's Known Gaps |
-| `nike` | contrast | 2 | see that file's Known Gaps |
-| `nintendo-2001` | contrast | 4 | see that file's Known Gaps |
-| `notion` | contrast | 1 | see that file's Known Gaps |
-| `opencode.ai` | contrast | 2 | see that file's Known Gaps |
 | `oracle` | tokens | 4 | one ink per polarity; no muted tone exists to name |
-| `oracle` | contrast | 3 | see that file's Known Gaps |
-| `oura` | contrast | 3 | see that file's Known Gaps |
-| `posthog` | contrast | 3 | see that file's Known Gaps |
-| `replicate` | contrast | 4 | see that file's Known Gaps |
-| `revolut` | contrast | 4 | see that file's Known Gaps |
 | `runwayml` | tokens | 3 | accent and on-accent genuinely absent from the brand |
 | `runwayml` | states | 1 | source documents one interaction, the nav hover |
 | `sentry` | tokens | 4 | canvas and dim tones named outside the role patterns |
 | `shopify` | tokens | 3 | dim ladder is numeric (shade-40/50/60); no alias added |
-| `slack` | contrast | 3 | see that file's Known Gaps |
 | `spacex` | tokens | 4 | text role cannot serve a dark canvas; recorded, not forced |
 | `spotify` | states | 1 | source yields three states; five columns left empty |
-| `starbucks` | contrast | 4 | see that file's Known Gaps |
 | `starbucks` | states | 2 | hover, disabled and loading appear nowhere, and no disabled tone exists |
-| `superhuman` | contrast | 4 | see that file's Known Gaps |
 | `tesla` | states | 3 | pressed and selected recorded nowhere, including the carousel dots |
 | `theverge` | states | 3 | disabled and loading exist for no component |
-| `vercel` | contrast | 3 | see that file's Known Gaps |
 
 ## Needs approval
 

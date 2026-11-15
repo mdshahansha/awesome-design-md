@@ -108,8 +108,8 @@ for x in sorted(now, key=lambda r: r["site"]):
 w("")
 
 w("## Deliberate shortfalls\n")
-w("These scores are short because the brand genuinely lacks what the column "
-  "asks for. Each is recorded in that file's Known Gaps with the evidence. "
+w("Eleven scores on tokens and states are short because the brand genuinely "
+  "lacks what the column asks for. Each is recorded in that file's Known Gaps with the evidence. "
   "Filling them would have meant inventing facts about a real brand.\n")
 w("| Site | Dimension | Score | Why |")
 w("|---|---|---|---|")
@@ -126,10 +126,13 @@ SHORT = {
     ("sentry", "tokens"): "canvas and dim tones named outside the role patterns",
     ("spacex", "tokens"): "text role cannot serve a dark canvas; recorded, not forced",
 }
+# Only tokens and states appear here. A contrast score below 5 means
+# undisclosed failures remain, which is a gap to close, not a deliberate
+# choice — those are listed in their own section below.
 for x in sorted(now, key=lambda r: r["site"]):
-    for k in KS:
+    for k in ("tokens", "states"):
         if x["score"][k] < 5:
-            why = SHORT.get((x["site"], k), "see that file's Known Gaps")
+            why = SHORT.get((x["site"], k), "recorded in that file's Known Gaps")
             w(f"| `{x['site']}` | {k} | {x['score'][k]} | {why} |")
 w("")
 
