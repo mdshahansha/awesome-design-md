@@ -11,14 +11,18 @@ colors:
   body-strong: "#26251e"
   muted: "#807d72"
   muted-soft: "#a09c92"
+  muted-accessible: "#6e6b62"
   hairline: "#e6e5e0"
   hairline-soft: "#efeee8"
   hairline-strong: "#cfcdc4"
+  hairline-control: "#8f8c82"
   canvas: "#f7f7f4"
   canvas-soft: "#fafaf7"
   surface-card: "#ffffff"
   surface-strong: "#e6e5e0"
   on-primary: "#ffffff"
+  focus: "#26251e"
+  focus-on-dark: "#f7f7f4"
   timeline-thinking: "#dfa88f"
   timeline-grep: "#9fc9a2"
   timeline-read: "#9fbbe0"
@@ -134,6 +138,18 @@ spacing:
   xl: 32px
   xxl: 48px
   section: 80px
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
 
 components:
   top-nav:
@@ -314,6 +330,7 @@ The brand's strongest visual signature is the **AI-timeline pill palette**: five
 - **Hairline** (`{colors.hairline}` — #e6e5e0): 1px divider.
 - **Hairline Soft** (`{colors.hairline-soft}` — #efeee8): Lighter divider.
 - **Hairline Strong** (`{colors.hairline-strong}` — #cfcdc4): Stronger panel outline.
+- **Hairline Control** (`{colors.hairline-control}` — #8f8c82): **Prescribed, not extracted.** The three hairlines above are real extracted values and all three are decorative only: the strongest of them reaches 1.48:1 on `{colors.canvas}`, far below the 3:1 WCAG needs for a boundary that carries meaning. Use `{colors.hairline-control}` (3.13:1 on canvas) for any boundary that is the *only* indicator of a control — text-input outlines, secondary-button edges, checkbox and radio frames. Keep `{colors.hairline}` and `{colors.hairline-soft}` for dividers and card outlines, where the white-on-cream surface shift already carries the edge.
 
 ### Text
 - **Ink** (`{colors.ink}` — #26251e): Display, body emphasis. Warm near-black.
@@ -321,7 +338,12 @@ The brand's strongest visual signature is the **AI-timeline pill palette**: five
 - **Body Strong** (`{colors.body-strong}` — #26251e): Same as ink.
 - **Muted** (`{colors.muted}` — #807d72): Sub-titles.
 - **Muted Soft** (`{colors.muted-soft}` — #a09c92): Disabled text.
+- **Muted Accessible** (`{colors.muted-accessible}` — #6e6b62): **Prescribed, not extracted.** The real `{colors.muted}` measures 3.84:1 on `{colors.canvas}` and 4.12:1 on `{colors.surface-card}` — it fails AA for body-size secondary text. `{colors.muted-accessible}` is the parallel accessible tone (4.96:1 on canvas, 5.33:1 on card) for secondary text below 18.66px. Keep `{colors.muted}` for 24px+ labels and for `{typography.caption-uppercase}` set at 18px or larger, where 3:1 applies.
 - **On Primary** (`{colors.on-primary}` — #ffffff): White text on Cursor Orange.
+
+### Focus
+- **Focus** (`{colors.focus}` — #26251e): **Prescribed, not extracted** — no focus ring was observable on the captured surfaces. The ring is the brand's own warm ink, not a chromatic colour: Cursor's one voltage is already spent on the CTA, and an orange ring sits at 1.34:1 on an orange button. Ink measures 14.33:1 on `{colors.canvas}`, 15.38:1 on `{colors.surface-card}`, 12.19:1 on `{colors.surface-strong}` and 4.37:1 on `{colors.primary}` — it clears 3:1 on every light surface this file defines, the orange CTA included.
+- **Focus On Dark** (`{colors.focus-on-dark}` — #f7f7f4): **Prescribed.** The cream ring for the two ink-surfaced components (`pricing-tier-featured`, `button-download`), where the ink ring would vanish at 1.0:1. Measures 14.33:1 on `{colors.ink}`.
 
 ### Timeline (AI-action signature)
 - **Thinking** (`{colors.timeline-thinking}` — #dfa88f): Peach. Used inside in-product agent timeline only.
@@ -412,6 +434,10 @@ The system uses **hairline-only depth**. No drop shadows, no elevation tiers. Ca
 | `{rounded.pill}` | 9999px | Timeline pills, badges |
 | `{rounded.full}` | 9999px | Avatars (rare) |
 
+### Focus Ring
+
+**Prescribed, not extracted.** 2px solid `{colors.focus}` with a 2px offset in `{colors.canvas}` (or `{colors.surface-card}` when the control sits on a card), so the ring never touches the control's own edge. On the two ink-surfaced components the ring is `{colors.focus-on-dark}` with a 2px offset in `{colors.ink}`. The ring follows the control's own radius — `{rounded.md}` on buttons and inputs, `{rounded.pill}` on pills, `{rounded.lg}` on cards — so it stays inside the existing radius ladder rather than adding a value to it.
+
 ## Components
 
 ### Top Navigation
@@ -482,6 +508,139 @@ The system uses **hairline-only depth**. No drop shadows, no elevation tiers. Ca
 
 **`footer-link`** — Background transparent, text `{colors.body}`, type `{typography.body-sm}`.
 
+### States
+
+Only `button-primary-active` (press) was observable on the captured static site. Every other state below is **prescribed** to match the brand's logic — ink ring for focus, `{colors.primary-active}` for press, `{colors.muted-soft}` for disabled ink — and was not extracted.
+
+| Component | States | Notes |
+|---|---|---|
+| `top-nav` | default, hover, focus-visible | Nav links underline on hover; container itself has one state. |
+| `nav-link` (in `top-nav`) | default, hover, focus-visible, selected, disabled | Selected = current section, `{colors.ink}` at weight 600; disabled = `{colors.muted-soft}`. |
+| `button-primary` | default, hover, focus-visible, pressed, disabled, loading | Hover = `{colors.primary-active}` at 60% blend; pressed = `{colors.primary-active}`; disabled = `{colors.surface-strong}` bg with `{colors.muted-soft}` ink; loading = label holds, inline spinner. |
+| `button-primary-active` | pressed only | Not a component — the documented press state of `button-primary`. |
+| `button-secondary` | default, hover, focus-visible, pressed, disabled, loading | Hover = `{colors.canvas-soft}` fill; boundary uses `{colors.hairline-control}`. |
+| `button-tertiary-text` | default, hover, focus-visible, pressed, disabled | Hover = underline only; no fill. |
+| `button-download` | default, hover, focus-visible, pressed, disabled, loading | Ink surface, so focus uses `{colors.focus-on-dark}`. |
+| `hero-band` | default only | Static band — one state. |
+| `ide-mockup-card` | default only | Decorative mockup; not interactive. |
+| `ide-pane` | default, selected | Selected = active pane, `{colors.surface-card}` fill. |
+| `feature-card` | default, hover, focus-visible, selected | Hover lifts opacity on the card's own hairline; focusable only where the whole card is a link. |
+| `comparison-card` | default only | Static content. |
+| `testimonial-card` | default only | Static content. |
+| `timeline-pill-thinking` | default, loading | Loading is its meaning — the pill is live while the agent thinks. |
+| `timeline-pill-grep` | default, loading | Same. |
+| `timeline-pill-read` | default, loading | Same. |
+| `timeline-pill-edit` | default, loading | Same. |
+| `timeline-pill-done` | default only | Terminal stage — one state. |
+| `code-block` | default, hover | Hover reveals the copy control; the block itself is not focusable, the control is. |
+| `pricing-tier-card` | default, hover, focus-visible, selected | Selected = chosen plan, 1px `{colors.hairline-control}` boundary. |
+| `pricing-tier-featured` | default, hover, focus-visible, selected | Ink surface; focus uses `{colors.focus-on-dark}`. |
+| `text-input` | default, hover, focus-visible, disabled, error | Boundary `{colors.hairline-control}`; error = 1px `{colors.semantic-error}` plus a message in `{typography.body-sm}` — colour is never the only error signal. |
+| `badge-pill` | default only | Static label. |
+| `cta-band` | default only | Static band. |
+| `footer` | default only | Container. |
+| `footer-link` | default, hover, focus-visible | Hover = `{colors.ink}`. |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or easing curve below was extracted from Cursor's own CSS; every value is the **Crisp** profile's shared block, chosen because this is a developer-tool and IDE identity, and stated here so the document is useful to build from rather than silent.
+
+The Crisp reading of this brand: a state change should read as already done. Cursor's page is half code surfaces and the voice is editorial-calm, not energetic — so travel stays tiny (2–4px), there is no entrance choreography on first paint, and nothing overshoots. The one place motion carries meaning rather than polish is the AI timeline, where pill stages advance as the agent works.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, nav, cards, footer links) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`; `transform: translateY(-1px)` on cards only | Opacity only at `{motion.duration-reduced}`; the 1px lift is removed. |
+| Press (`button-primary` → `{colors.primary-active}`) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity`, `transform: scale(0.98)` | Scale removed; colour change is instant, no fade. |
+| Focus ring appear | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` | Unchanged — the ring appears instantly, never animated away. |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(4px)` | Travel removed; cross-fade at `{motion.duration-reduced}`. |
+| Modal / drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px)` (drawer: `translateX`) | Travel removed; fade at `{motion.duration-reduced}`. |
+| Modal / drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform` | Travel removed; fade at `{motion.duration-reduced}`. |
+| Dropdown / nav menu open | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(-4px)` | Travel removed; fade at `{motion.duration-reduced}`. |
+| Dropdown close | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity` | Fade at `{motion.duration-instant}` — already under the cap. |
+| Toast enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px)` | Travel removed; fade at `{motion.duration-reduced}`. |
+| Toast exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform` | Travel removed; fade at `{motion.duration-reduced}`. |
+| List enter (feature grid, pricing tiers, timeline pills) | `{motion.duration-base}`, stagger `{motion.stagger-step}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(4px)` | Stagger and travel removed; all items fade together at `{motion.duration-reduced}`. |
+| List exit | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` | Fade at `{motion.duration-reduced}`. |
+| Loading (inline spinner, IDE-pane skeleton) | `{motion.duration-emphasis}` loop | linear (spinner) / `{motion.ease-standard}` (skeleton) | `transform: rotate()`; skeleton `opacity` 0.4 ↔ 1 | Loop frozen; a static indicator plus the text label remains. |
+| AI-timeline stage advance | `{motion.duration-base}`, stagger `{motion.stagger-step}` | `{motion.ease-standard}` | `opacity` on the outgoing pill, `opacity` on the incoming pill | Cross-fade at `{motion.duration-reduced}`; stage text still changes, so the information survives. |
+
+### Rules
+- **Compositor properties only.** Never animate `width`, `height`, `top`, `left` or `margin` — `transform` and `opacity` carry every state change here.
+- **Exit is faster than entrance.** Every pair above is `{motion.duration-fast}` out against `{motion.duration-base}` in.
+- **Nothing animates on first paint** in a way that delays content. Hero copy and the IDE mockup are painted, not revealed.
+- **No infinite animation** except the two loaders listed above. This brand has no ambient motion; do not add any.
+- **Travel stays at or below 8px.** A Crisp tool reads as responsive, not as choreographed.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+All travel (`translateX`, `translateY`) and all scale are removed; the element simply arrives at its final position. Every remaining fade runs at `{motion.duration-reduced}` (100ms), never longer. Loader loops freeze to a static indicator and keep their text label. Focus rings, colour changes and the AI-timeline stage *text* are unaffected, so no state or information is lost — only the movement is.
+
+## Accessibility
+
+**Contrast is measured; focus behaviour, tap targets and reduced-motion handling are prescribed** (no rendered page was available to verify geometry).
+
+### Measured contrast — passes
+
+| Pair | Ratio | Required |
+|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 14.33:1 | 4.5:1 |
+| `{colors.ink}` on `{colors.surface-card}` | 15.38:1 | 4.5:1 |
+| `{colors.body}` on `{colors.canvas}` | 6.63:1 | 4.5:1 |
+| `{colors.body}` on `{colors.canvas-soft}` | 6.80:1 | 4.5:1 |
+| `{colors.muted-accessible}` on `{colors.canvas}` | 4.96:1 | 4.5:1 |
+| `{colors.muted-accessible}` on `{colors.surface-card}` | 5.33:1 | 4.5:1 |
+| `{colors.canvas}` on `{colors.ink}` (`pricing-tier-featured`, `button-download`) | 14.33:1 | 4.5:1 |
+| `{colors.ink}` on every timeline pastel (peach / mint / blue / lavender) | 7.24:1 – 8.31:1 | 4.5:1 |
+| `{colors.semantic-error}` on `{colors.canvas}` | 4.70:1 | 4.5:1 |
+| `{colors.hairline-control}` on `{colors.canvas}` | 3.13:1 | 3.0:1 |
+
+### Measured contrast — real failures, disclosed
+
+These are extracted brand values. They are not corrected in place, because a falsified hex would make this document wrong. **The real Cursor palette fails WCAG AA at each of these points.**
+
+| Pair | Ratio | Required | Status |
+|---|---|---|---|
+| `button-primary`: `{colors.on-primary}` white on `{colors.primary}` #f54e00 | 3.52:1 | 4.5:1 | **Fails AA for 14px button text.** The brand's signature CTA is the failure. Passes AA Large (3:1) only at 24px+, or 18.66px+ at weight 700 — and this brand forbids bold. |
+| `timeline-pill-done`: white on `{colors.timeline-done}` #c08532 | 3.16:1 | 4.5:1 | **Fails AA.** The pill's 11px uppercase label gets no large-text exemption. `{colors.ink}` on the same gold measures 4.86:1 and passes. |
+| `{colors.muted}` #807d72 on `{colors.canvas}` | 3.84:1 | 4.5:1 | Fails AA below 18.66px. Use `{colors.muted-accessible}` for body-size secondary text. |
+| `{colors.muted}` #807d72 on `{colors.surface-card}` | 4.12:1 | 4.5:1 | Fails AA below 18.66px. Same remedy. |
+| `{colors.muted-soft}` #a09c92 on `{colors.canvas}` | 2.55:1 | 4.5:1 | Disabled-text tone. WCAG exempts disabled controls; it must never carry live text. |
+| `{colors.muted-soft}` #a09c92 on `{colors.surface-card}` | 2.74:1 | 4.5:1 | Same — disabled only. |
+| `{colors.hairline-strong}` #cfcdc4 on `{colors.canvas}` | 1.48:1 | 3.0:1 | Decorative only. Not a control boundary. |
+| `{colors.hairline}` #e6e5e0 on `{colors.canvas}` | 1.18:1 | 3.0:1 | Decorative divider only. |
+| `{colors.hairline-soft}` #efeee8 on `{colors.canvas}` | 1.08:1 | 3.0:1 | Decorative divider only. |
+| `{colors.surface-card}` #ffffff on `{colors.canvas}` | 1.07:1 | — | The white-on-cream card edge is not a perceptible boundary on its own; every card therefore needs its hairline, and any card that is a control needs `{colors.hairline-control}`. |
+
+`{colors.semantic-success}` #1f8a65 measures 4.01:1 on `{colors.canvas}` — it fails AA for body text and is for 18.66px+ or for icons, not for running confirmation copy.
+
+### Focus ring visibility, per surface
+
+Prescribed. 2px `{colors.focus}` with a 2px offset (see Shapes → Focus Ring).
+
+| Surface | Ring | Ratio against surface |
+|---|---|---|
+| `{colors.canvas}` #f7f7f4 | `{colors.focus}` | 14.33:1 |
+| `{colors.canvas-soft}` #fafaf7 | `{colors.focus}` | 14.70:1 |
+| `{colors.surface-card}` #ffffff | `{colors.focus}` | 15.38:1 |
+| `{colors.surface-strong}` #e6e5e0 | `{colors.focus}` | 12.19:1 |
+| `{colors.primary}` #f54e00 (CTA fill) | `{colors.focus}` | 4.37:1 |
+| `{colors.ink}` #26251e (`pricing-tier-featured`, `button-download`) | `{colors.focus-on-dark}` | 14.33:1 |
+
+Every ring clears the 3:1 minimum on the surface it is drawn on. Focus is `:focus-visible` only, so pointer users never see it; it is never suppressed with `outline: none` without a replacement.
+
+### Tap targets
+
+Prescribed, not verified — tap-target size cannot be measured from a document. `button-primary` and `text-input` are documented at 40px and 44px height; 44 × 44px is the floor for every touch target, so `button-primary` needs 4px of additional touch padding (not visual height) on mobile. `badge-pill` and the timeline pills are not interactive and are exempt. Footer links at `{typography.body-sm}` need 44px row spacing on mobile.
+
+### Reduced motion
+
+See Motion & Animation → `@media (prefers-reduced-motion: reduce)`. Travel and scale are removed, fades are capped at `{motion.duration-reduced}` (100ms), loaders freeze to a static indicator with their label, and no information is conveyed by movement alone.
+
+### Other
+
+- Colour is never the only signal: `text-input` errors pair `{colors.semantic-error}` with a text message, and timeline stages carry their stage name as text, not only their pastel.
+- The timeline pastels are decorative stage markers with ink labels at 7.24:1–8.31:1; the pastels themselves are not required to meet a contrast threshold against the canvas.
+
 ## Do's and Don'ts
 
 ### Do
@@ -510,8 +669,8 @@ The system uses **hairline-only depth**. No drop shadows, no elevation tiers. Ca
 | Wide | > 1280px | Content caps at 1200px. |
 
 ### Touch Targets
-- Primary CTA at 40px height — at WCAG AA, padded for AAA.
-- Download CTA at 44px — at AAA.
+- Primary CTA at 40px visual height — below the 44 × 44px floor, so it needs 4px of touch padding on mobile (see Accessibility → Tap targets).
+- Download CTA and `text-input` at 44px — at the floor.
 
 ### Collapsing Strategy
 - Top nav switches to hamburger below 768px.
@@ -524,7 +683,7 @@ The system uses **hairline-only depth**. No drop shadows, no elevation tiers. Ca
 2. CTAs default to `{rounded.md}` (8px). Cards use `{rounded.lg}` (12px).
 3. Variants live as separate entries inside `components:`.
 4. Use `{token.refs}` everywhere — never inline hex.
-5. Hover state never documented.
+5. Hover and focus states were never observable on the captured site; the Components → States table prescribes them. Label any further state you add as prescribed too.
 6. CursorGothic 400 for display, 400/500/600 for body. JetBrains Mono on every code surface.
 7. Cursor Orange stays scarce.
 8. Timeline pastels stay scoped to in-product agent visualizations.
@@ -532,6 +691,9 @@ The system uses **hairline-only depth**. No drop shadows, no elevation tiers. Ca
 ## Known Gaps
 
 - CursorGothic is a licensed typeface; Inter is the substitute.
-- Animation timings (timeline pill entrance, IDE pane reveal) out of scope.
+- Real animation timings were never measured. The Motion & Animation section is the prescribed **Crisp** profile, not extracted values; the actual timeline-pill entrance and IDE-pane reveal curves remain unknown.
+- No focus ring was observable on the captured surfaces. `{colors.focus}` and `{colors.focus-on-dark}` are prescribed.
+- `{colors.hairline-control}` and `{colors.muted-accessible}` are prescribed accessible parallels, not brand values. The real hairlines and the real `{colors.muted}` are documented as failing AA in Accessibility.
+- Tap-target sizes, overlap and layout shift cannot be verified from a document; the 44px floor stated in Accessibility is a requirement, not a measurement.
 - In-app surfaces (code editor, chat panel, agent timeline) only partially captured via marketing IDE mockups.
 - Form validation states beyond focus not visible on captured surfaces.
