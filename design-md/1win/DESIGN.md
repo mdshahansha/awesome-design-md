@@ -10,10 +10,12 @@ colors:
   canvas: "#141415"
   surface: "#2e3035"
   hairline: "#2d2f33"
+  hairline-strong: "#77797d"
   ink: "#f0f2f5"
   muted: "#9aa1b1"
   faint: "#53575f"
   black: "#000000"
+  focus: "#4da3ff"
 
 typography:
   display:
@@ -71,6 +73,18 @@ spacing:
   xl: 20px
   xxl: 24px
   xxxl: 32px
+
+# Prescribed to match 1win's visual identity (Calm profile) — not measured from the live site.
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 600ms
+  ease-standard: cubic-bezier(0.4, 0, 0.6, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
 
 components:
   button-primary:
@@ -248,18 +262,22 @@ Color discipline is the key to reading this brand correctly: the loud purples, r
 ### Brand & Accent
 - **Action Green** (`{colors.primary}` — #00b24b): The primary action color — the "Registration" CTA, primary confirms, betslip place-bet, and section accent icons. The brand's "go / win" signal.
 - **Electric Blue** (`{colors.secondary}` — #0075ff): The secondary action — "Log In", text links, the "Show more" pill, active tabs, badges, and live/betting highlights.
-- **On Primary** (`{colors.on-primary}` — #ffffff): White text/icons on the green and blue fills.
+- **On Primary** (`{colors.on-primary}` — #ffffff): White text/icons on the green and blue fills. **This is how 1win really ships, and it fails AA:** white on `{colors.primary}` measures **2.81:1** and white on `{colors.secondary}` measures **4.21:1** — both below the 4.5:1 body-text minimum. Neither hex is altered here because both are brand identity. See Accessibility for the measured table and the two defensible routes (switch accent labels to `{colors.black}`, or restrict white-on-accent to 18px+/700 type where 3:1 applies).
 
 ### Surface
 - **Canvas** (`{colors.canvas}` — #141415): The page background and the fill of the nav and `sidebar-rail` — a flat near-black.
 - **Surface** (`{colors.surface}` — #2e3035): Cards, game tiles, promo cards, betslip panels, utility buttons, and input fields — the single elevated dark step.
-- **Hairline** (`{colors.hairline}` — #2d2f33): The faint 1px divider/card border, a translucent cool-grey edge that reads against both canvas and surface.
+- **Hairline** (`{colors.hairline}` — #2d2f33): The faint 1px divider/card border, a translucent cool-grey edge. Measured contrast against `{colors.canvas}` is **1.37:1**, so this is a decorative edge only — it does not meet the 3:1 non-text minimum and must not be the sole indicator of a control's boundary.
+- **Hairline Strong** (`{colors.hairline-strong}` — #77797d): *Prescribed, not extracted.* The accessible boundary value for any edge that must be perceivable on its own — input outlines, `pill-outline`, `bet-odds-button`, table rules. 4.22:1 on `{colors.canvas}`, 3.03:1 on `{colors.surface}`.
 
 ### Text
 - **Ink** (`{colors.ink}` — #f0f2f5): Primary text, the wordmark, and headings — a soft off-white.
 - **Muted** (`{colors.muted}` — #9aa1b1): Secondary labels, inactive nav glyphs, footer text.
-- **Faint** (`{colors.faint}` — #53575f): Tertiary/placeholder text and disabled labels.
-- **Black** (`{colors.black}` — #000000): Maximum-contrast text used on the brightest accent fills and light promo surfaces.
+- **Faint** (`{colors.faint}` — #53575f): Tertiary/placeholder text and disabled labels. 2.54:1 on `{colors.canvas}` — below AA for body text. Acceptable for genuinely disabled controls (exempt from WCAG 1.4.3); for live placeholder text use `{colors.muted}` instead.
+- **Black** (`{colors.black}` — #000000): Maximum-contrast text used on the brightest accent fills and light promo surfaces. 7.47:1 on `{colors.primary}` — the accessible pairing for green fills.
+
+### Focus
+- **Focus Ring** (`{colors.focus}` — #4da3ff): *Prescribed, not extracted.* A lifted step of the brand electric blue, chosen so the ring stays recognisably 1win-blue while clearing the two accent fills it may sit on. **7.01:1 against `{colors.canvas}`** and 5.03:1 against `{colors.surface}`. Drawn as a 2px ring with a 2px `{colors.canvas}` offset, so the perceived boundary is always ring-against-near-black (7.01:1) regardless of whether the focused control is filled green, blue, or grey — the ring alone against `{colors.primary}` is only 1.07:1, so the offset is mandatory, not decorative.
 
 ## Typography
 
@@ -296,9 +314,9 @@ The shell is a fixed left icon `sidebar-rail` plus a fluid content column. Disco
 ### Whitespace Philosophy
 Density is the point — tiles pack close together to maximize the number of games in view, and the dark canvas itself does the separating between rails. Vertical gaps between labeled rails are modest; the brightness step between a tile and the canvas, plus a faint `{colors.hairline}`, supplies most of the structure.
 
-### Responsive Strategy
+## Responsive Behavior
 
-#### Breakpoints
+### Breakpoints
 | Name | Width | Key Changes |
 |---|---|---|
 | Mobile | < 768px | Left rail collapses to a bottom/hamburger nav; rails shorten; betslip becomes a bottom sheet |
@@ -306,13 +324,13 @@ Density is the point — tiles pack close together to maximize the number of gam
 | Laptop | 1024–1439px | Full rail + multi-tile rails |
 | Desktop | ≥ 1440px (up to 1920px) | Widest rails + persistent betslip panel |
 
-#### Touch Targets
+### Touch Targets
 Buttons carry `{spacing.sm}`×`{spacing.md}` padding and pills clear comfortable tap sizes; the green `button-primary` is the largest, highest-priority tap surface. Aim for 44×44px minimum on the dense rails.
 
-#### Collapsing Strategy
+### Collapsing Strategy
 The left `sidebar-rail` collapses first (to a hamburger or bottom bar). Category tab strips and `bet-odds-button` rows become horizontally scrollable rather than wrapping. Game rails keep their carousel behavior at every width, simply showing fewer tiles. The `betslip-panel` docks to the right on desktop and becomes a bottom sheet on mobile.
 
-#### Image Behavior
+### Image Behavior
 Game thumbnails are full-bleed inside `{rounded.card}` corners (no internal padding) in portrait-leaning and square ratios; the artwork supplies all the color. Promo cards carry edge-to-edge photography behind an `{colors.ink}` title. Tiles lazy-load as rails scroll into view, with the `{colors.surface}` tile color as the placeholder.
 
 ## Elevation & Depth
@@ -347,7 +365,7 @@ Game artwork is framed at `{rounded.card}` (16px) and runs full-bleed inside the
 
 ## Components
 
-> **No hover states documented.** Each spec covers Default and Active/Pressed only. Variants live as separate `components:` entries.
+> **Extraction limit:** no hover or focus state was captured from the live site — each extracted spec below covers Default and Active/Pressed only. Variants live as separate `components:` entries. The state matrix in *Component States* is **prescribed** from the extracted palette, not measured.
 
 ### Buttons
 
@@ -410,6 +428,25 @@ Game artwork is framed at `{rounded.card}` (16px) and runs full-bleed inside the
 **`footer`** — the page footer (support, information, categories columns).
 - Background `{colors.canvas}`, text `{colors.muted}`, headings `{colors.ink}`, padding `{spacing.xxl}`.
 
+### Component States
+
+*Prescribed from the extracted palette — hover and focus were not observable on the live site. Hover and pressed are brightness/transform shifts only, so no new hex enters the palette.*
+
+| Component | default | hover | focus-visible | active / pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | `{colors.primary}` fill | fill lightened ~6% | 2px `{colors.focus}` ring + 2px `{colors.canvas}` offset | `scale(0.98)` | fill at 40% opacity, label `{colors.faint}` | label swaps for an indeterminate spinner in `{colors.on-primary}`, control width held | n/a | n/a |
+| `button-secondary` | `{colors.secondary}` fill | fill lightened ~6% | as above | `scale(0.98)` | fill at 40% opacity | spinner in `{colors.on-primary}` | n/a | n/a |
+| `button-tertiary` / `button-ghost` | `{colors.surface}` fill | fill lightened ~8% | as above | `scale(0.98)` | label `{colors.faint}` | spinner in `{colors.muted}` | n/a | n/a |
+| `text-input` | `{colors.hairline-strong}` 1px edge | edge → `{colors.muted}` | 2px `{colors.focus}` ring replaces the edge | n/a — no pressed state | fill `{colors.canvas}`, placeholder `{colors.faint}` | trailing spinner in `{colors.muted}` | n/a | **undefined** — no error red was extracted; see Known Gaps |
+| `bet-odds-button` | `{colors.surface}` fill, `{colors.ink}` label | fill lightened ~8% | as above | `scale(0.98)` | label `{colors.faint}`, non-interactive (suspended market) | odds digits dim to `{colors.muted}` while re-pricing | `{colors.secondary}` fill, `{colors.on-primary}` label | n/a |
+| `sidebar-rail` row (`ex-app-shell-row`) | glyph `{colors.muted}` | glyph → `{colors.ink}` | as above | glyph → `{colors.ink}` | glyph `{colors.faint}` | n/a | `{colors.primary}` indicator bar + `{colors.ink}` glyph | n/a |
+| `game-tile` | `{colors.surface}` placeholder → artwork | `scale(1.02)` | as above, ring outside the `{rounded.card}` frame | `scale(0.99)` | n/a | `{colors.surface}` placeholder held until artwork decodes | n/a | n/a |
+| `pill-outline` | `{colors.hairline-strong}` edge | edge → `{colors.muted}` | as above | n/a | label `{colors.faint}` | n/a | `{colors.secondary}` edge + label | n/a |
+| `pill-badge` | `{colors.secondary}` fill | **two states only** — static indicator, no hover, no focus (not interactive) | — | — | — | — | — | — |
+| `betslip-panel` | `{colors.surface}` | n/a (container) | focus is managed by its children | n/a | stake field disabled when the market suspends | panel-level spinner over the confirm row during bet placement | n/a | stake-validation message; colour **undefined** — see Known Gaps |
+
+`pill-badge` and `footer` are genuinely non-interactive: default is their only state.
+
 ### Examples (illustrative)
 
 > Kit-mirror demonstration surfaces. Each `ex-*` entry references 1win's brand-native primitives (`{colors.surface}`, `{colors.primary}`, `{rounded.card}`, the spacing scale) so downstream consumers re-skin the same 10 illustrative surfaces consistently. These are not extracted brand components.
@@ -445,6 +482,108 @@ Game artwork is framed at `{rounded.card}` (16px) and runs full-bleed inside the
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or choreography below was observed on 1win; every value is derived from the **Calm** profile and tuned to the dense, near-black chrome this file documents. Treat it as a proposal, not an extraction.
+
+Why Calm fits 1win: all of the saturation here lives *inside* game artwork and bonus illustrations, while the chrome is monochrome dark plus two signals. Motion follows the chrome, not the content — short opacity-led fades with minimal travel keep a wall of 40+ bright thumbnails from reading as a slot machine. The one place this profile is arguably wrong is the reward moment (win confirmations, wheel-of-fortune results), which wants Playful overshoot; that is handled as a scoped exception below rather than by changing the base profile.
+
+### Tokens
+
+| Token | Value |
+|---|---|
+| `{motion.duration-instant}` | 80ms |
+| `{motion.duration-fast}` | 150ms |
+| `{motion.duration-base}` | 250ms |
+| `{motion.duration-slow}` | 400ms |
+| `{motion.duration-emphasis}` | 600ms |
+| `{motion.ease-standard}` | cubic-bezier(0.4, 0, 0.6, 1) — symmetric, the Calm bias |
+| `{motion.ease-enter}` | cubic-bezier(0, 0, 0.2, 1) — decelerate in |
+| `{motion.ease-exit}` | cubic-bezier(0.4, 0, 1, 1) — accelerate out |
+| `{motion.stagger-step}` | 40ms |
+
+### Interactions
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, `game-tile`, nav row) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`; `transform: scale(1.02)` on `game-tile` only | Scale removed; opacity shift kept at `{motion.duration-fast}` |
+| Press (any control) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.98)` | Removed entirely — pressed state is colour only |
+| Focus-visible ring | `{motion.duration-instant}` | `{motion.ease-enter}` | `opacity` | Unchanged — already opacity-only and under 150ms |
+| Page / route transition (Casino ⇄ Sports) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` only; no cross-fade travel | Cross-fade at `{motion.duration-fast}`, no travel |
+| Modal (`ex-modal-card`) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: scale(0.97 → 1)`; scrim `opacity` | Scale dropped; scrim and dialog fade at `{motion.duration-fast}` |
+| Drawer / mobile betslip sheet | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` / `{motion.ease-exit}` | `transform: translateY(100% → 0)` | Travel dropped; sheet fades in at `{motion.duration-fast}` |
+| Dropdown (provider filter, account menu) | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: translateY(-4px → 0)` | Travel dropped; fade only |
+| Toast (`ex-toast`) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: translateY(8px → 0)` | Travel dropped; fade only, same dwell time |
+| List enter (rail tiles, match rows) | `{motion.duration-base}`, staggered `{motion.stagger-step}` | `{motion.ease-enter}` | `opacity` 0 → 1, `transform: translateY(6px → 0)` | Stagger and travel dropped; the whole batch fades once at `{motion.duration-fast}` |
+| List exit (filtered-out tiles, settled bets) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` 1 → 0 | Unchanged |
+| Loading — tile skeleton | 1200ms, infinite | `{motion.ease-standard}` | `opacity` pulse on the `{colors.surface}` placeholder | Loop frozen at its mid-opacity value; a static placeholder remains |
+| Loading — button spinner | 800ms, infinite | linear | `transform: rotate()` | Rotation frozen; replaced by a static `{colors.muted}` indicator and `aria-busy` |
+| **Exception — reward moment** (win confirm, wheel result) | `{motion.duration-emphasis}` | `{motion.ease-enter}` with overshoot to `scale(1.04)` then settle | `opacity` + `transform` | Overshoot and scale removed; the result value fades in at `{motion.duration-fast}` |
+
+### Rules
+
+- Only `transform` and `opacity` are ever put in a transition here. Layout-triggering properties are forbidden in every transition on this surface: `width`, `height`, `top`, `left`, `margin`.
+- Every exit is shorter than its matching entrance (modal 150 vs 250, drawer 150 vs 250, dropdown 80 vs 150, list 150 vs 250).
+- Nothing animates on first paint in a way that delays content. Game rails render at full opacity on load; the stagger applies only to subsequent client-side list changes (filter, "Show more", rail pagination).
+- The only infinite loops are the two loaders above. There is **no brand ambience loop** on this surface — no drifting gradients, no pulsing CTAs; the bonus-banner gradients are static artwork.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+**Removed:** all `transform` — every translate, every scale, the press compression, the reward overshoot, and the list stagger (`{motion.stagger-step}` → 0).
+
+**Kept:** opacity fades, capped at `{motion.duration-fast}` (150ms), so state changes stay legible rather than snapping. Focus rings are unchanged. Both loaders freeze: the skeleton holds a static `{colors.surface}` placeholder and the spinner is replaced by a static indicator plus `aria-busy`, so loading is still announced without a moving element.
+
+## Accessibility
+
+Contrast computed with WCAG 2.1 relative luminance from this file's own hexes. Nothing here was verified in a browser — see Known Gaps.
+
+### Measured contrast
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` / `{colors.canvas}` | 16.42:1 | 4.5 | Pass |
+| `{colors.ink}` / `{colors.surface}` | 11.77:1 | 4.5 | Pass |
+| `{colors.muted}` / `{colors.canvas}` | 7.11:1 | 4.5 | Pass |
+| `{colors.muted}` / `{colors.surface}` | 5.10:1 | 4.5 | Pass |
+| `{colors.faint}` / `{colors.canvas}` | 2.54:1 | 4.5 | **Fail** — disabled-only |
+| `{colors.on-primary}` / `{colors.primary}` | 2.81:1 | 4.5 | **Fail** |
+| `{colors.on-primary}` / `{colors.secondary}` | 4.21:1 | 4.5 | **Fail** |
+| `{colors.black}` / `{colors.primary}` | 7.47:1 | 4.5 | Pass — the accessible alternative |
+| `{colors.black}` / `{colors.secondary}` | 4.99:1 | 4.5 | Pass — the accessible alternative |
+| `{colors.hairline}` / `{colors.canvas}` | 1.37:1 | 3.0 | **Fail** — decorative edge only |
+| `{colors.hairline-strong}` / `{colors.canvas}` | 4.22:1 | 3.0 | Pass |
+| `{colors.hairline-strong}` / `{colors.surface}` | 3.03:1 | 3.0 | Pass |
+| `{colors.focus}` / `{colors.canvas}` | 7.01:1 | 3.0 | Pass |
+| `{colors.focus}` / `{colors.surface}` | 5.03:1 | 3.0 | Pass |
+| `{colors.primary}` / `{colors.canvas}` | 6.55:1 | 3.0 | Pass |
+| `{colors.secondary}` / `{colors.canvas}` | 4.37:1 | 3.0 | Pass |
+
+**The real brand fails AA on accent labels.** White on the green `{colors.primary}` is 2.81:1 and white on the blue `{colors.secondary}` is 4.21:1. Both hexes are brand identity and are left untouched. Two defensible routes: set accent-fill labels in `{colors.black}` (7.47:1 / 4.99:1), or keep white and restrict it to large text — 18px+ at weight 700, or 14px+ at the 800 weight this system already uses — where the 3:1 large-text threshold applies and 2.81:1 still misses on green but 4.21:1 clears on blue. Green with white at `{typography.body}` (14px/600) has no reading under which it passes.
+
+### Focus ring visibility, surface by surface
+
+| Surface | Ring treatment | Effective ratio |
+|---|---|---|
+| `{colors.canvas}` (nav, `sidebar-rail`, `footer`) | 2px `{colors.focus}`, no offset needed | 7.01:1 |
+| `{colors.surface}` (cards, tiles, inputs, odds chips) | 2px `{colors.focus}` + 2px `{colors.canvas}` offset | 5.03:1 against the surface; 7.01:1 against the offset |
+| `{colors.primary}` fill (`button-primary`) | 2px `{colors.focus}` + 2px `{colors.canvas}` offset — **offset mandatory**, ring-on-green is 1.07:1 | 6.55:1 (green/canvas) at the control edge, 7.01:1 at the ring |
+| `{colors.secondary}` fill (`button-secondary`, `pill-badge`) | same, offset mandatory — ring-on-blue is 1.60:1 | 4.37:1 (blue/canvas) at the edge, 7.01:1 at the ring |
+| Game artwork (`game-tile`, `hero-banner`) | ring drawn *outside* the `{rounded.card}` frame, over `{colors.canvas}` | 7.01:1 — never computed against artwork, which is unknowable |
+
+The ring is never the only focus cue: focused controls also carry the hover brightness shift, so focus survives on any artwork.
+
+### Tap targets
+
+`button-primary` at `{typography.body}` (14px / line-height 1.4 ≈ 20px) plus `{spacing.sm}` vertical padding computes to roughly 36px — **below the 44px minimum**. The dense rails need extra hit area beyond the painted box: add a transparent inset so every interactive element clears 44×44px, and keep at least `{spacing.sm}` between adjacent `bet-odds-button` chips. `pill-badge` is non-interactive and exempt. These are target *specifications*; actual rendered sizes cannot be verified from a document.
+
+### Motion
+
+Reduced-motion handling is specified in full above. In short: no `transform` survives the query, opacity fades cap at `{motion.duration-fast}`, and both loaders freeze while remaining announced via `aria-busy`.
+
+### Not verified here
+
+Keyboard tab order, screen-reader labelling of the odds chips and the betslip, text resize to 200%, and any rendered geometry (overlap, overflow, real tap size) need a live page. None of it is claimed in this file.
+
 ## Do's and Don'ts
 
 ### Do
@@ -461,3 +600,24 @@ Game artwork is framed at `{rounded.card}` (16px) and runs full-bleed inside the
 - Don't use pure-regular weights — there is no Inter 400 here; body copy is semibold.
 - Don't pad game tiles — artwork is full-bleed inside `{rounded.card}` corners.
 - Don't rely on drop shadows for elevation; the surface brightness step is the elevation language.
+- Don't set `{colors.on-primary}` on `{colors.primary}` at `{typography.body}` — 2.81:1. Use `{colors.black}` on green fills, or reserve white for the 800-weight display sizes.
+- Don't use `{colors.hairline}` as a control's only boundary (1.37:1 on canvas) — use `{colors.hairline-strong}` where the edge carries meaning.
+- Don't put travel or scale in a transition without a `prefers-reduced-motion` fallback, and don't transition anything other than `transform` and `opacity`.
+
+## Iteration Guide
+
+- **Adding a surface step.** The ladder is deliberately two-deep (`{colors.canvas}` → `{colors.surface}`, 1.39:1 apart). A third step has almost no luminance room before it collides with `{colors.surface}`; add elevation with the floating shadow from *Elevation & Depth* instead of a new hex.
+- **Adding a semantic colour.** The one real hole is error/warning (see Known Gaps). Add it as a semantic token, not a third structural accent — the "green + blue only" rule in *Don't* is about chrome, not about validation feedback.
+- **Retuning motion.** Change the tokens in the `motion:` group, not the per-interaction rows; every row references a token. If a future measurement of the live site contradicts these values, replace the token values and delete the "prescribed, not measured" caveat — it is only there because nothing was measured.
+- **Re-skinning the `ex-*` surfaces.** They intentionally hold no new values. Keep them referencing brand primitives so the illustrative kit tracks any palette change automatically.
+
+## Known Gaps
+
+- **Motion is entirely prescribed.** No duration, easing or choreography was observed on 1win. The Calm profile was assigned from this file's own signals (monochrome chrome, two accents, content-supplied saturation), not from a recording.
+- **Hover and focus were never captured.** The extracted component specs cover Default and Active/Pressed only; the whole *Component States* matrix is inference from the extracted palette.
+- **No error / warning / success colour was extracted.** `{colors.primary}` doubles as the success signal, but validation errors — a rejected stake, a failed deposit, a suspended market — have no documented colour. Marked **undefined** in the state matrix rather than guessed at; a red would have to be measured or approved.
+- **`{colors.hairline}` is described in the Colors section as "translucent", but it is recorded as an opaque hex.** If the real value is an `rgba()` over `{colors.canvas}`, its effective contrast differs from the 1.37:1 computed here.
+- **Elevation shadow is a prose value, not a token.** `rgba(0,0,0,0.4)` appears in *Elevation & Depth* and in `feature-card-elevated` but has no frontmatter key, so it cannot be referenced as `{…}`. There is no `shadow:` group in the repo's token contract.
+- **`{colors.black}` has no role pattern** in the audit's token contract, so the accessible accent-label pairing documented above is invisible to the harness.
+- **Tap targets, overlap, overflow and frame rate are unverifiable** from a document. The 44px minimum is a specification, not a measurement.
+- **Source pages were home, promotions, betting and vip-club only.** Account, deposit, cashier and live-casino surfaces were not analysed; the betslip spec in particular is partial.
