@@ -36,6 +36,10 @@ colors:
   dashed-border: "#dddddd"    # unavailable option card (dashed)
   input-border: "#d4d7d9"     # store email field
   control-border: "#cccccc"   # quantity stepper, checkbox
+  hairline-strong: "#767676"  # PRESCRIBED, not extracted — accessible boundary for controls (4.54:1 on canvas); the extracted hairline/divider/control-border tones are decoration only
+  text-secondary: "#595959"   # role alias of ink-secondary — the secondary/muted text role (same extracted value)
+  focus: "#00142b"            # PRESCRIBED, not extracted — focus ring: DJI Blue driven to its darkest step
+  focus-on-dark: "#ffffff"    # PRESCRIBED, not extracted — focus ring over media-black tiles, hero photography and the charcoal footer
 
 typography:
   display-xl:
@@ -185,6 +189,22 @@ spacing:
   xxxl: 40px
   huge: 48px
   section: 64px
+
+shadow:
+  floating: "0 8px 16px rgba(0, 0, 0, 0.10)"   # floating circle buttons, sticky purchase bar
+  none: "none"                                  # tiles, cards, bands, footer
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.22, 1, 0.36, 1)
+  ease-enter: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-exit: cubic-bezier(0.5, 0, 0.75, 0)
+  stagger-step: 80ms
+  duration-reduced: 150ms
 
 components:
   announcement-bar:
@@ -554,11 +574,17 @@ Source pages: dji.com home, the camera-drones category page, and a store product
 - **Announce** (`{colors.announce}` — #fafafa): announcement bar and the category icon strip.
 - **Media Black** (`{colors.media-black}`): store feature media tiles.
 - **Footer** (`{colors.footer}` — #272727), with **Footer Pill** (`{colors.footer-pill}` — #383838) and **Footer Divider** (`{colors.footer-divider}` — #414141).
-- **Lines**: `{colors.hairline}` (#f0f0f0) tab track, `{colors.divider}` (#e8e8e8) FAQ and purchase-bar rules, `{colors.card-border}` (#d9d9d9) option cards, `{colors.dashed-border}` (#dddddd) unavailable option, `{colors.input-border}` (#d4d7d9) store email field, `{colors.control-border}` (#cccccc) steppers and checkboxes.
+- **Lines**: `{colors.hairline}` (#f0f0f0) tab track, `{colors.divider}` (#e8e8e8) FAQ and purchase-bar rules, `{colors.card-border}` (#d9d9d9) option cards, `{colors.dashed-border}` (#dddddd) unavailable option, `{colors.input-border}` (#d4d7d9) store email field, `{colors.control-border}` (#cccccc) steppers and checkboxes. Every one of these extracted line tones sits below 2:1 on `{colors.canvas}`, so all six are **decoration only** — a grey whisper that groups content for a sighted user with good contrast, never the sole signal that something is a control or a boundary.
+- **Hairline Strong** (`{colors.hairline-strong}` — #767676, **prescribed, not extracted**): the accessible replacement where a line is the only boundary of an interactive control — the quantity stepper, the checkbox and the store email field. 4.54:1 on `{colors.canvas}`. DJI's real site does not draw this; see Accessibility.
+
+### Focus
+Both focus tokens are **prescribed, not extracted** — dji.com documents no focus ring, and this file does not claim to have measured one.
+- **Focus** (`{colors.focus}` — #00142b): a 2px ring, 2px offset, drawn on every light surface this file defines. Chosen as DJI Blue driven to its darkest step so the ring reads as brand rather than as a browser default, and so it still clears 3:1 **on top of** a blue pill (3.77:1), which a mid-blue ring would not.
+- **Focus on Dark** (`{colors.focus-on-dark}` — #ffffff): the same ring in white over `{colors.media-black}` media tiles, full-bleed hero photography and the `{colors.footer}` charcoal footer, where the navy ring measures 1.13:1 and is invisible. Over photography the ring is two-tone: 2px `{colors.focus-on-dark}` with a 1px `{colors.focus}` outer edge, so it survives both a bright sky and a dark drone.
 
 ### Text
 - **Ink** (`{colors.ink}` — #262626): headings and body on white.
-- **Ink Secondary** (`{colors.ink-secondary}` — #595959): secondary copy, inactive tabs.
+- **Ink Secondary** (`{colors.ink-secondary}` — #595959): secondary copy, inactive tabs. Also exposed as `{colors.text-secondary}` — the same extracted value under the generic secondary-text role name, so the role is addressable without renaming DJI's own ink-step vocabulary.
 - **Ink Tertiary** (`{colors.ink-tertiary}` — #8c8c8c): product-tile eyebrows.
 - **Store Ink** (`{colors.store-ink}` — #333333): store product and option titles.
 - **Graphite** (`{colors.graphite}` — #3b3e40): store body copy and section headings.
@@ -625,37 +651,20 @@ Open Sans is open source on Google Fonts. Keep the negative tracking (−0.02em 
 Photography fills the tiles; whitespace appears as consistent gutters and generous gaps above centred section headings. Inside the store, whitespace groups options into cards and panels rather than separating long sections.
 
 ### Responsive Strategy
-
-#### Breakpoints
-| Name | Width | Key Changes |
-|---|---|---|
-| Wide | ≥ 1200px | Full desktop grids, 1200px store container |
-| Desktop | 1024–1199px | Store gallery and purchase column tighten |
-| Tablet | 769–1023px | Nav condenses; two-up tiles remain |
-| Mobile | ≤ 768px | Nav collapses to a menu; tiles, comparison columns and the store split stack to one column |
-| Small | ≤ 456px | Compact type and tile heights |
-
-#### Touch Targets
-Store CTAs (`button-store-buy`, `button-store-cart`) and `button-outline-lg` are 48px tall; `button-primary` and `button-outline` are 40px; nav pills are 32px and rely on generous horizontal padding. FAQ rows are about 49px tall.
-
-#### Collapsing Strategy
-- The nav collapses to a menu; the Store pill stays visible.
-- Two-up product tiles and field cards stack to one column; the comparison table becomes horizontally scrollable columns.
-- The store gallery stacks above the purchase column; the sticky `purchase-bar` keeps price and both CTAs reachable.
-
-#### Image Behavior
-Hero images are full-bleed carousels with slide titles at the lower left; tile renders are centred studio cut-outs on soft grey; editorial cards use cropped landscape photography. Images load lazily as tiles scroll into view.
+Breakpoints, touch targets, collapsing strategy and image behaviour now live in **Responsive Behavior**, below.
 
 ## Elevation & Depth
 
 | Level | Treatment | Use |
 |---|---|---|
-| Flat | No shadow | Tiles, cards, bands, footer |
+| Flat | `{shadow.none}` | Tiles, cards, bands, footer |
 | Outlined | 1px border (`{colors.card-border}`, `{colors.divider}`, ink outline pills) | Option cards, FAQ rows, outline buttons |
 | Selected | 2px `{colors.store-blue}` ring | Selected store option |
-| Floating | Soft shadow, 0 8px 16px at 10% black | Floating circular buttons (support, back to top), the sticky purchase bar |
+| Floating | `{shadow.floating}` — 0 8px 16px at 10% black | Floating circular buttons (support, back to top), the sticky purchase bar |
 
 Elevation is rare. The site relies on photography and flat grey bands for depth, and keeps shadows for elements that genuinely float over content.
+
+Elevation is expressed one way per level and the ways are not mixed: a surface is either flat, or outlined with a 1px border, or ringed 2px for selection, or shadowed because it floats. No element carries both a border and a shadow. Layer separation is carried by hue, not by shadow, and the steps are deliberately faint: `{colors.canvas}` #ffffff → `{colors.canvas-soft}` #f7f9fa is 1.06:1, → `{colors.panel}` #f6f8f9 is 1.07:1, → `{colors.fog}` #f5f5f5 is 1.09:1, and `{colors.canvas-soft}` → `{colors.fog}` is 1.03:1. Those layers are therefore **not reliably distinguishable** and must never be the only cue that two regions differ; where the boundary matters, DJI relies on the photography edge or a gutter instead. `{colors.media-black}` against `{colors.canvas}` (21.00:1) and `{colors.footer}` against `{colors.canvas}` (14.94:1) are the only strong layer breaks on the page.
 
 ### Decorative Depth
 Depth comes from the product renders themselves: soft-lit studio shots with gentle floor shadows on grey gradients, and dramatic dark hero backdrops. Store feature tiles use pure black (`{colors.media-black}`) behind product renders and lifestyle photography.
@@ -681,7 +690,30 @@ Product tiles are square-cornered and close to 1:1 on the home page; category ca
 
 ## Components
 
-> **No hover states documented.** Each component below documents its resting state only.
+> **Only resting states were extracted.** Each component entry below documents the state that was observed on the page. Everything in **Interaction States** immediately below is **prescribed, not extracted** — dji.com's hover, focus, pressed and loading treatments were not measured.
+
+### Interaction States
+
+Prescribed. The rule across the whole system: hover and press are carried by opacity and transform only, never by a hue change, so the single action blue stays the single action blue; focus-visible is always the 2px `{colors.focus}` ring (`{colors.focus-on-dark}` over photography, media tiles and the footer) and is never traded for a colour change alone.
+
+| Component | default | hover | focus-visible | pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary`, `button-store-buy`, `button-store-pill`, `button-dark-pill`, `button-download-app` | filled pill | fill at 88% opacity | 2px `{colors.focus}` ring, 2px offset | fill at 80% opacity, `scale(0.98)` | fill at 40% opacity, pointer events off | label swaps for a spinner, width held so the pill never resizes | n/a | n/a |
+| `button-outline`, `button-outline-lg` | 1px `{colors.ink}` border | border and label at 70% opacity | 2px `{colors.focus}` ring | `scale(0.98)` | 40% opacity | spinner in place of label | n/a | n/a |
+| `button-store-cart` | `{colors.store-blue-tint}` fill | fill at 88% opacity | 2px `{colors.focus}` ring | `scale(0.98)` | 40% opacity | spinner in place of label | n/a | n/a |
+| `button-hero-ghost` | 1px white border over photography | border and label to full white | two-tone ring: 2px `{colors.focus-on-dark}` + 1px `{colors.focus}` outer edge | `scale(0.98)` | not used in hero | not used in hero | n/a | n/a |
+| `text-link`, `text-link-store`, `card-text-link` | coloured label + chevron | underline appears, chevron shifts 2px right | 2px `{colors.focus}` ring around the text box | chevron returns to 0 | 40% opacity | n/a | n/a | n/a |
+| `option-card` | 1px `{colors.card-border}` | border to `{colors.hairline-strong}`, card at `scale(1.01)` | 2px `{colors.focus}` ring outside the card border | `scale(0.99)` | `option-card-disabled`: 1px dashed `{colors.dashed-border}` | n/a | `option-card-active`: 2px `{colors.store-blue}` ring, 23px padding | "Out of Stock" line in `{colors.error}` |
+| `comparison-tabs` | label in `{colors.ink-secondary}` | label to `{colors.ink}` | 2px `{colors.focus}` ring on the tab | label to `{colors.ink}` | 40% opacity | n/a | `comparison-tab-active`: `{colors.ink}` label + ink underline | n/a |
+| `media-toggle` | plain text label | label to `{colors.ink}` at full opacity | 2px `{colors.focus}` ring | `scale(0.98)` | 40% opacity | n/a | `media-toggle-active`: `{colors.ink}` fill, white label | n/a |
+| `quantity-stepper` | cells outlined in `{colors.control-border}` (decoration) — prescribe `{colors.hairline-strong}` so the control has a visible boundary | pressed cell to `{colors.canvas-soft}` | 2px `{colors.focus}` ring on the focused cell | `scale(0.96)` on the cell | 40% opacity at the stock ceiling | n/a | n/a | value clamped, helper line in `{colors.error}` |
+| `newsletter-input`, store subscribe field | 1px border, placeholder in `{colors.slate}` | border to `{colors.hairline-strong}` | 2px `{colors.focus-on-dark}` ring on the dark footer, `{colors.focus}` in the store | n/a | 40% opacity | submit button shows a spinner | n/a | 1px `{colors.error}` border + message below |
+| `faq-row` | question + chevron | question at 70% opacity | 2px `{colors.focus}` ring on the row | chevron rotates | n/a | n/a | expanded: chevron rotated 180° | n/a |
+| `product-tile`, `product-card`, `explore-card`, `field-card`, `news-card`, `media-tile` | photo + type, flat | render at `scale(1.02)`, type held still | 2px `{colors.focus-on-dark}` ring inset from the tile edge | `scale(1.0)` | n/a | skeleton: tile holds its box at `{colors.fog}` until the render decodes | n/a | n/a |
+| `floating-circle-button` | 40px white circle, `{shadow.floating}` | `scale(1.06)` | 2px `{colors.focus}` ring | `scale(0.96)` | hidden rather than disabled | n/a | n/a | n/a |
+| `announcement-bar`, `region-banner` | strip with a link and a close icon | close icon to full `{colors.ink}` | 2px `{colors.focus}` ring on link and close icon | n/a | n/a | n/a | n/a | n/a |
+| `nav-bar`, `nav-bar-overlay`, `store-nav` | labels at rest | label to full opacity; flyout opens | 2px `{colors.focus}` ring (`{colors.focus-on-dark}` on the overlay nav) | n/a | n/a | n/a | active category keeps the 2px indicator | n/a |
+| `care-tag`, `option-badge`, `tier-eyebrow`, `tile-eyebrow`, `spec-caption`, `footnote-panel`, `in-box-tile`, `benefits-panel`, `footer`, `footer-store`, `category-strip`, `purchase-bar` | **static — these have one state.** Interactive children (links, the delivery selector, the two purchase CTAs) take the states of their own component above. | — | — | — | — | — | — | — |
 
 ### Navigation
 
@@ -861,6 +893,143 @@ Product tiles are square-cornered and close to 1:1 on the home page; category ca
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or choreography below was extracted from dji.com; nothing here should be read as an observed fact about DJI's implementation. The profile is **Cinematic** — slow, deliberate, premium — chosen because the identity is hardware-flagship: full-bleed studio renders, sparse tightly-tracked type, and a hero carousel whose job is to let a drone arrive rather than to appear.
+
+### Tokens
+`{motion.duration-instant}` 120ms · `{motion.duration-fast}` 240ms · `{motion.duration-base}` 400ms · `{motion.duration-slow}` 600ms · `{motion.duration-emphasis}` 900ms · `{motion.ease-standard}` · `{motion.ease-enter}` · `{motion.ease-exit}` · `{motion.stagger-step}` 80ms · `{motion.duration-reduced}` 150ms.
+
+### Inventory
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover — pills, links, option cards | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`; `transform: scale(1.01)` on option cards | opacity only, `{motion.duration-reduced}`; scale removed |
+| Hover — product tile render | `{motion.duration-slow}` | `{motion.ease-standard}` | `transform: scale(1.02)` on the render only; type never moves | no scale; the tile is static |
+| Press — any pill, card or toggle | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.98)` (0.96 on `floating-circle-button` and stepper cells) | no scale; the press reads from the hover opacity only |
+| Focus-visible — ring appears | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the ring | unchanged — 120ms is already below the 150ms ceiling, and the ring never animates its size |
+| Page / route transition | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`, plus `transform: translateY(12px)` on the first content block | cross-fade only at `{motion.duration-reduced}`; no travel |
+| Hero carousel slide | `{motion.duration-emphasis}` | `{motion.ease-enter}` | `opacity` cross-fade with a slow `transform: scale(1.04 → 1.0)` Ken Burns on the photograph; the slide title fades in `{motion.stagger-step}` × 2 late, so type arrives after the image settles | cross-fade at `{motion.duration-reduced}`, no scale, no stagger; autoplay stops and the slide holds until the user advances it |
+| Modal / drawer (cart drawer, region sheet) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` on the scrim; `transform: translateX(100%)` on the drawer, `scale(0.98 → 1.0)` on a centred modal | scrim and panel fade at `{motion.duration-reduced}`; no slide, no scale |
+| Dropdown — nav flyout, delivery selector, gallery menu | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`; `transform: translateY(-6px → 0)` | opacity only at `{motion.duration-reduced}` |
+| Toast — "Added to Cart" | `{motion.duration-base}` in, `{motion.duration-fast}` out, 5s dwell | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`; `transform: translateY(8px → 0)` | opacity only at `{motion.duration-reduced}`; dwell unchanged |
+| List enter — tile grid, option cards, In the Box tiles | `{motion.duration-base}` per item, `{motion.stagger-step}` 80ms apart, capped at 6 items | `{motion.ease-enter}` | `opacity`; `transform: translateY(16px → 0)` | all items fade together at `{motion.duration-reduced}`; no stagger, no travel |
+| List exit — filtered-out or removed items | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity`; `transform: scale(0.98)` | opacity only at `{motion.duration-reduced}` |
+| Loading — button spinner, gallery and tile skeletons | 900ms linear loop (spinner rotation); skeletons pulse `opacity` 1 → 0.6 → 1 over `{motion.duration-emphasis}` | linear for the spinner, `{motion.ease-standard}` for the pulse | `transform: rotate()` on the spinner; `opacity` on the skeleton | spinner becomes a static glyph with a text status; the skeleton holds one flat `{colors.fog}` box with no pulse |
+
+Exit is always shorter than its matching entrance. Nothing animates on first paint in a way that delays content: the hero photograph and the first tile row paint at rest, and only the slide title and subsequent rows are choreographed. The only looping animation is the loader; the Ken Burns drift on the hero is deliberate brand ambience and is stated as such here.
+
+### Rules
+- Animate `transform` and `opacity` only. Never animate `width`, `height`, `top`, `left` or `margin` — the sticky `purchase-bar` and the square photo tiles must not reflow.
+- Never change hue on hover or press. DJI has exactly one action blue per surface; opacity and scale carry the state change.
+- Keep the stagger cap. A category page with twenty tiles staggered at 80ms would delay the last tile by 1.6s.
+
+### Reduced Motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel and all scale — the hero Ken Burns drift, carousel
+     autoplay, tile and render scale, drawer slide, dropdown and toast travel,
+     list stagger, press scale, skeleton pulse and spinner rotation. */
+  /* Retained: opacity cross-fades, capped at 150ms; the focus ring, which is
+     the one indicator that must never be removed; all hover and selected
+     colour and border changes, which are instant. */
+  *, *::before, *::after {
+    animation-duration: 150ms !important;   /* {motion.duration-reduced} */
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;  /* {motion.duration-reduced} */
+    transition-property: opacity, color, background-color, border-color !important;
+  }
+}
+```
+
+## Accessibility
+
+Every ratio here was computed from this file's own tokens with WCAG 2.1 relative luminance. Focus, tap-target and reduced-motion behaviour is **prescribed, not extracted**.
+
+### Measured contrast — key pairs
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` #262626 on `{colors.canvas}` | 15.13:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.canvas-soft}` / `{colors.panel}` / `{colors.fog}` | 14.3:1–13.9:1 | 4.5:1 | pass |
+| `{colors.text-secondary}` / `{colors.ink-secondary}` #595959 on `{colors.canvas}` | 7.00:1 | 4.5:1 | pass |
+| `{colors.store-ink}` #333333 on `{colors.canvas}` | 12.63:1 | 4.5:1 | pass |
+| `{colors.graphite}` #3b3e40 on `{colors.panel}` | 10.11:1 | 4.5:1 | pass |
+| `{colors.slate}` #6c7073 on `{colors.canvas}` | 5.00:1 | 4.5:1 | pass |
+| `{colors.footer-link}` #b3b3b3 on `{colors.footer}` | 7.12:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.primary}` #0070d5 | 4.91:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.store-blue}` #0060ef | 5.36:1 | 4.5:1 | pass |
+| `{colors.tier-orange}` #be4e04 on `{colors.canvas}` | 4.91:1 | 4.5:1 | pass |
+| `{colors.focus}` #00142b on `{colors.canvas}` | 18.50:1 | 3.0:1 | pass |
+| `{colors.focus}` on `{colors.card-border}` #d9d9d9 | 13.11:1 | 3.0:1 | pass |
+| `{colors.focus}` on `{colors.primary}` #0070d5 | 3.77:1 | 3.0:1 | pass |
+| `{colors.hairline-strong}` #767676 on `{colors.canvas}` | 4.54:1 | 3.0:1 | pass |
+
+### Where DJI's real values fail AA
+
+These are extracted facts about the brand, not mistakes in this document. They are recorded rather than corrected, because changing a hex would make the file wrong.
+
+- `{colors.hairline}` #f0f0f0 on `{colors.canvas}` measures **1.14:1** against a 3:1 boundary minimum — fails. The comparison-tab track is invisible to a low-vision user; the active tab's ink underline is what actually carries the state.
+- `{colors.divider}` #e8e8e8 on `{colors.canvas}` measures **1.23:1** against 3:1 — fails. FAQ rows and the purchase-bar rule are decoration; the FAQ chevron and the bar's shadow carry the structure.
+- `{colors.card-border}` #d9d9d9 on `{colors.canvas}` measures **1.41:1**, `{colors.dashed-border}` #dddddd **1.36:1**, `{colors.input-border}` #d4d7d9 **1.45:1** and `{colors.control-border}` #cccccc **1.61:1**, all against 3:1 — all fail. This is the serious one: the option card, the quantity stepper, the checkbox and the store email field are interactive, and their only boundary is a line nobody with low vision can see. `{colors.hairline-strong}` is prescribed for exactly these four.
+- `button-store-cart` — `{colors.store-blue}` #0060ef on `{colors.store-blue-tint}` #deeafd measures **4.41:1** against 4.5:1 — fails, narrowly, at 16px/400. Add to Cart is a primary commerce action.
+- `option-badge` — `{colors.on-primary}` #ffffff on `{colors.badge-orange}` #fa8c16 measures **2.38:1** against 4.5:1 at 12px/600 — fails clearly.
+- `{colors.steel}` #9fa3a6 on `{colors.canvas}` measures **2.54:1** — fails 4.5:1. These are the comparison-table spec captions ("Takeoff Weight"), 14px body text, so the threshold genuinely applies.
+- `{colors.ink-tertiary}` #8c8c8c on `{colors.canvas}` measures **3.36:1** and on `{colors.fog}` **3.08:1** — fails 4.5:1 for the 14px tile eyebrows.
+- `{colors.link-blue}` #1890ff on `{colors.canvas}` measures **3.24:1** and on `{colors.fog}` **2.98:1** — fails 4.5:1 for 16px "Learn More ›" links.
+- `{colors.error}` #f5222d on `{colors.canvas}` measures **4.08:1** — fails 4.5:1 for the 12px "Out of Stock" line. Colour is also the only signal; the text itself carries the meaning, which is what saves it.
+
+### Focus ring visibility, per surface this file defines
+
+| Surface | Ring | Ratio |
+|---|---|---|
+| `{colors.canvas}` #ffffff | `{colors.focus}` | 18.50:1 |
+| `{colors.canvas-soft}` #f7f9fa | `{colors.focus}` | 17.52:1 |
+| `{colors.fog}` #f5f5f5 | `{colors.focus}` | 16.97:1 |
+| `{colors.store-blue-tint}` #deeafd | `{colors.focus}` | 15.24:1 |
+| `{colors.card-border}` #d9d9d9 edge | `{colors.focus}` | 13.11:1 |
+| `{colors.primary}` #0070d5 pill | `{colors.focus}` | 3.77:1 |
+| `{colors.store-blue}` #0060ef pill | `{colors.focus}` | 3.45:1 |
+| `{colors.footer}` #272727 | `{colors.focus-on-dark}` | 14.94:1 |
+| `{colors.media-black}` #000000 | `{colors.focus-on-dark}` | 21.00:1 |
+| Full-bleed hero photography | two-tone: `{colors.focus-on-dark}` + 1px `{colors.focus}` edge | not measurable — photography has no fixed colour, which is why the ring is two-tone |
+
+`{colors.focus}` must never be used on `{colors.media-black}` (1.13:1) or `{colors.footer}` (1.24:1); that is what `{colors.focus-on-dark}` exists for.
+
+### Tap targets
+Minimum 44×44px. From this file's own values: `button-store-buy`, `button-store-cart` and `button-outline-lg` are 48px tall and pass; `button-primary` and `button-outline` are 40px and fail; `button-store-pill`, `region-pill`, `button-hero-ghost`, `button-dark-pill` and `media-toggle` are 32px and fail; `floating-circle-button` is a 40px circle and fails; `newsletter-input` is 32px and fails. Prescribed remedy: keep the painted height for brand fidelity and extend the hit area with padding or a pseudo-element to 44px. **Rendered tap-target size was not verified** — these are box heights read from the token block, not measurements of a running page.
+
+### Reduced motion
+See **Motion & Animation → Reduced Motion**. All travel, scale, stagger, carousel autoplay and the hero Ken Burns ambience are removed; opacity fades remain, capped at `{motion.duration-reduced}` 150ms; the focus ring is never removed.
+
+### Not verified here
+This is a document, not a running page. Nothing above is a claim about rendered overlap, horizontal overflow, clipping, true tap-target size, frame rate or layout shift — none of those can be measured from a Markdown file.
+
+## Responsive Behavior
+
+The breakpoint table, touch targets, collapsing strategy and image behaviour previously sat under **Layout → Responsive Strategy**; they are promoted here unchanged so the section is addressable on its own.
+
+### Breakpoints
+| Name | Width | Key Changes |
+|---|---|---|
+| Wide | ≥ 1200px | Full desktop grids, 1200px store container |
+| Desktop | 1024–1199px | Store gallery and purchase column tighten |
+| Tablet | 769–1023px | Nav condenses; two-up tiles remain |
+| Mobile | ≤ 768px | Nav collapses to a menu; tiles, comparison columns and the store split stack to one column |
+| Small | ≤ 456px | Compact type and tile heights |
+
+### Touch Targets
+Store CTAs (`button-store-buy`, `button-store-cart`) and `button-outline-lg` are 48px tall; `button-primary` and `button-outline` are 40px; nav pills are 32px and rely on generous horizontal padding. FAQ rows are about 49px tall. See **Accessibility → Tap targets** for which of these clear 44px.
+
+### Collapsing Strategy
+- The nav collapses to a menu; the Store pill stays visible.
+- Two-up product tiles and field cards stack to one column; the comparison table becomes horizontally scrollable columns.
+- The store gallery stacks above the purchase column; the sticky `purchase-bar` keeps price and both CTAs reachable.
+
+### Image Behavior
+Hero images are full-bleed carousels with slide titles at the lower left; tile renders are centred studio cut-outs on soft grey; editorial cards use cropped landscape photography. Images load lazily as tiles scroll into view.
+
 ## Do's and Don'ts
 
 ### Do
@@ -872,6 +1041,10 @@ Product tiles are square-cornered and close to 1:1 on the home page; category ca
 - Mark product rank with a small `tier-eyebrow` in `{colors.tier-orange}`.
 - In the store, group choices into `{rounded.sm}` option cards and show selection with a 2px `{colors.store-blue}` ring.
 - Close pages with the `{colors.footer}` footer on the brand site and `{colors.canvas-soft}` in the store.
+- Let the hero photograph settle before the type arrives: `{motion.duration-emphasis}` on the image, slide title `{motion.stagger-step}` × 2 later.
+- Carry hover and press with opacity and `transform` only, so the one action blue per surface never shifts hue.
+- Draw focus as the 2px `{colors.focus}` ring, switching to `{colors.focus-on-dark}` over photography, `{colors.media-black}` tiles and the `{colors.footer}` footer.
+- Use `{colors.hairline-strong}` wherever a line is the only boundary of an interactive control.
 
 ### Don't
 - Don't round photo tiles, cards or media tiles; only pills, option cards and small tags are rounded.
@@ -880,3 +1053,20 @@ Product tiles are square-cornered and close to 1:1 on the home page; category ca
 - Don't use pure black for text; use `{colors.ink}`.
 - Don't add drop shadows to tiles or cards; keep shadows for floating buttons and the sticky purchase bar.
 - Don't set headings heavier than 600 or track type positively.
+- Don't speed the motion up to feel responsive. Cinematic timing is the point; `{motion.duration-fast}` 240ms is the floor for a visible state change.
+- Don't animate `width`, `height`, `top`, `left` or `margin` — never reflow the sticky `purchase-bar` or a square photo tile.
+- Don't rely on `{colors.hairline}`, `{colors.divider}`, `{colors.card-border}`, `{colors.dashed-border}`, `{colors.input-border}` or `{colors.control-border}` as the only signal that something is a control; all six sit below 2:1 on `{colors.canvas}`.
+- Don't let `{colors.canvas-soft}`, `{colors.panel}` and `{colors.fog}` be the only cue that two regions differ; the steps between them are 1.03:1–1.09:1.
+- Don't stagger a long tile grid past six items.
+
+## Known Gaps
+
+- **Motion is prescribed, not extracted.** Every duration, easing, stagger and reduced-motion rule in **Motion & Animation** was assigned from the Cinematic profile to match the identity. DJI's real timing functions, carousel autoplay interval and transition choreography were not measured.
+- **Interaction states are prescribed, not extracted.** Only resting states were observed. Hover, focus-visible, pressed, disabled and loading treatments in **Components → Interaction States** are prescriptions consistent with the extracted system, not records of DJI's implementation.
+- **No focus ring was observed anywhere on dji.com.** `{colors.focus}` and `{colors.focus-on-dark}` are both prescribed. Whether the live site ships a visible focus indicator at all is unknown from this document.
+- **`{colors.hairline-strong}` is invented.** DJI draws no 3:1 boundary; the token exists so a build on this document can meet AA without falsifying one of the six extracted line tones.
+- **Tap-target sizes are box heights, not measurements.** The 44px verdicts in **Accessibility → Tap targets** are read from the token block. Real hit areas, including any padding DJI adds, were not inspected.
+- **Dark mode is unknown.** This file documents a single light theme. No dark-canvas variant of the brand site or store was observed; `{colors.media-black}` and `{colors.footer}` are dark *regions* of a light page, not a dark theme.
+- **Not inspected, and not inspectable from a Markdown file:** rendered overlap, horizontal overflow, clipping, frame rate, layout shift, carousel pause-on-hover behaviour, keyboard trap behaviour in the cart drawer, and the live `aria` semantics of the comparison tabs and FAQ rows.
+- **Shadow tokens are a single observed value.** `{shadow.floating}` was read from the floating buttons and the purchase bar; whether DJI uses other elevations elsewhere is unknown. `{shadow.none}` is the stated absence, not a measured value.
+- **Logotype product names** on the photo tiles are artwork, not type, so they carry no size, weight or line-height and sit outside the type scale.
