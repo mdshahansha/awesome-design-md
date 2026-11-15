@@ -63,7 +63,11 @@ report under Shared issues, not a token to invent. The same applies, and
 matters more, when the harness satisfies a role **wrongly** — resolving
 `surface` to a hero fill hides the real card tone and then measures failures
 against a ground the site never renders. Say which token it should have picked
-and why, and disclose the manufactured pairs as manufactured. Brand documents should not
+and why, and disclose the manufactured pairs as manufactured. You may also fix
+it inside your own file — by declaring a binding the prose already asserts, so
+the right ground becomes visible — provided the binding documents something the
+file already says. Do both: the local fix helps this file, the report fixes the
+other eighty-three. Brand documents should not
 carry tokens that exist only to please a regex:
 
 | Role | Purpose |

@@ -655,7 +655,8 @@ def audit(path):
     r["motion_keys_missing"] = sorted(MOTION_KEYS_MIN - set(motion))
     r["has_motion_section"] = "## Motion & Animation" in text
     r["has_reduced_motion"] = bool(re.search(r"prefers-reduced-motion", text))
-    r["durations_found"] = sorted(set(re.findall(r"\b(\d{2,4})ms\b", text)), key=int)
+    r["durations_found"] = sorted(
+        set(re.findall(r"(?<![\d.])(\d{2,4})\s?ms\b", text)), key=int)
     r["easings_found"] = len(re.findall(r"cubic-bezier\([^)]*\)", text))
     # motion rule violations: animating layout-triggering properties
     NEGATED = re.compile(r"\b(don't|do not|never|avoid|no|rather than|instead of|not)\b", re.I)
