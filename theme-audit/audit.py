@@ -357,6 +357,11 @@ def audit(path):
                     and not re.search(r"(inner|inset|halo)", k)]
     focus_bands = [k for k in colors if re.match(r"^focus", k)
                    and re.search(r"(inner|inset|halo)", k)]
+    for props in parse_components(text).values():
+        for prop in ("ringColor", "outlineColor", "focusRing", "focusColor"):
+            m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get(prop) or "")
+            if m and m.group(1) in colors and m.group(1) not in focus_tokens:
+                focus_tokens.append(m.group(1))
     # Not anchored: an inverse-canvas or hero-surface band is a surface a ring
     # can land on, and anchoring hid every one of them.
     surface_keys = [k for k in colors

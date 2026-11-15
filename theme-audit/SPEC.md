@@ -40,6 +40,13 @@ has no job but to match a regex. So where the file already owns a passing tone
 that does the boundary work, use it and add nothing; add a parallel token only
 when nothing in the palette can carry the job.
 
+**The focus role is the one exception.** A ring has to be addressable as
+`focus*` for the file and the harness to speak about it at all, so defining
+`focus: <a hex the palette already owns>` is a real role binding and not an
+alias — the token carries a distinct job on a distinct surface. Say in the
+Accessibility section which existing tone it reuses, so nobody mistakes it for
+a new brand colour.
+
 Adding one does **not** hide the original failure, which several agents have
 worried about: the role's representative token only decides which name the
 role reports, while every tone in the role is measured separately. mydealz's
