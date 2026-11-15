@@ -21,6 +21,8 @@ colors:
   ink-meta: "#475e75"
   ink-nav: "#545454"
   hairline: "#475e75"
+  focus: "#0057d2"
+  focus-on-dark: "#ffffff"
 
 typography:
   display:
@@ -118,6 +120,18 @@ spacing:
   hero: 48px
   band: 56px
   page: 72px
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 500ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
+  duration-reduced: 150ms
 
 components:
   nav-bar:
@@ -446,28 +460,6 @@ Hero treatment is the clearest per-template difference. The home page runs a ful
 ### Whitespace Philosophy
 Because nothing is bordered and nothing is elevated, the gap between blocks is what groups them. Sections are separated by large vertical intervals and, where a stronger break is needed, by switching the band colour. The bands are the punctuation of the page: a run of white, a grey interval, more white, a pale blue strip. Within a band the spacing tightens considerably, which is what keeps a dense feature grid readable directly beneath an open hero.
 
-### Responsive Strategy
-
-#### Breakpoints
-| Name | Width | Key Changes |
-|---|---|---|
-| Small mobile | < 480px | Single column; tab rail scrolls horizontally; hero type drops to the 36px tier |
-| Mobile | 480–767px | Single column; nav collapses to a menu; two-column features stack |
-| Tablet | 768–1023px | Two-column features hold; breadcrumb truncates; hero image moves below its text |
-| Laptop | 1024–1279px | Full grid; tab rail shows all tabs; hero returns to side-by-side |
-| Desktop | 1280–1439px | Centred content column at full width |
-| Wide | ≥ 1440px | Gutters absorb the extra width; bands stay full-bleed |
-
-The system declares an unusually dense set of media queries — well over thirty across the three templates — which is what a catalogue this large needs when the same chrome has to host very different page bodies.
-
-#### Touch Targets
-`{component.button-floating}` clears 44×44 WCAG-AAA comfortably at 58px, and `{component.button-primary}` meets it exactly at 44px. `{component.product-tab-active}` reaches 44px while the inactive `{component.product-tab}` sits at 32px, and `{component.breadcrumb}` at 17px is a wayfinding label rather than a primary target. On touch widths the inactive tabs are the first thing that should grow.
-
-#### Collapsing Strategy
-The global bar collapses its links behind a menu but keeps the logo, search and account affordances at every width. The product tab rail becomes a horizontal scroller rather than wrapping, so the active tab stays anchored. Two-column feature blocks stack, the 2×2 grid becomes a single column with its hairlines retained, and the hero image moves below its text rather than shrinking beside it. Bands keep their full-bleed width at every size; only their inner padding compresses.
-
-#### Image Behavior
-Product imagery is composited rather than photographic-only: a photograph sits inside a `{rounded.lg}` frame with floating UI cards and dotted connector lines arranged around it, so the illustration explains a workflow rather than decorating the section. Video thumbnails carry a centred round play affordance. Partner and customer logos appear as small monochrome lockups inside the imagery itself. Nothing is cropped to a uniform ratio; each frame is sized to its composition.
 
 ## Elevation & Depth
 
@@ -502,7 +494,7 @@ Photographs appear inside `{rounded.lg}` frames, never full-bleed and never crop
 
 ## Components
 
-> **No hover states documented.** Every component below documents its default state only. Variants live as separate entries in the `components:` front matter and are described in their own sub-blocks.
+> **No interaction states were extracted from the live site.** Every component description below records its default state only, exactly as captured. Variants live as separate entries in the `components:` front matter and are described in their own sub-blocks. The state matrix at the end of this section is **prescribed** — derived from the tokens this file already owns, not measured.
 
 ### Chrome
 
@@ -616,6 +608,126 @@ Photographs appear inside `{rounded.lg}` frames, never full-bleed and never crop
 
 **`ex-toast`** — A toast at `{rounded.md}` padded `{spacing.xl} {spacing.wide}`, close to the primary button's own proportions.
 
+### Interaction States (prescribed)
+
+> Prescribed, not extracted: the capture recorded default states only. Every state below is built from tokens this file already defines — `{colors.primary}` for the acting colour, `{colors.focus}` for the ring, `{colors.ink-nav}` for quiet chrome — so nothing here introduces a new value. Where a component genuinely has two states, the row says so.
+
+| Component | States | Treatment |
+|---|---|---|
+| `nav-link` | default, hover, focus-visible | Hover lifts the label from `{colors.ink-nav}` toward `{colors.ink}`; focus-visible draws the `{colors.focus}` ring. No pressed state — a nav item navigates on release. |
+| `breadcrumb` | default, hover, focus-visible | Same two-step as `nav-link`, one tier quieter. |
+| `product-tab` | default, hover, focus-visible, selected | Selected is `product-tab-active`: the blue underline plus the step up to `{typography.subhead}`. |
+| `product-tab-active` | selected | One state by definition; it is the selected variant of `product-tab`. |
+| `button-primary` | default, hover, focus-visible, pressed, disabled, loading | Hover and pressed deepen the fill toward `{colors.primary-deep}`; focus-visible rings in `{colors.focus}` offset 2px; loading holds the label width and swaps the glyph for an indeterminate bar; disabled drops to `{colors.band}` with `{colors.ink-nav}` label. |
+| `button-outline` | default, hover, focus-visible, pressed, disabled, loading | Hover tints the ground toward `{colors.band-blue}` and keeps the `{colors.hairline}` rule; the rest mirrors `button-primary`. |
+| `button-floating` | default, hover, focus-visible, pressed, loading | Pinned, so it is never disabled; it is always an available affordance. |
+| `text-link` | default, hover, focus-visible | Hover underlines in `{colors.primary}`; focus-visible rings in `{colors.focus}`. |
+| `inline-anchor` | default, hover, focus-visible, selected | Selected marks the current anchor target within running content. |
+| `list-item` | default, hover, focus-visible | A linked list row: hover shifts the label from `{colors.ink-list}` to `{colors.primary}`. |
+| `media-frame` | default, loading | Two states: the composed frame, and a `{colors.band}` placeholder at the same `{rounded.lg}` corner while the asset resolves. |
+| `nav-bar`, `footer`, `band-neutral`, `band-blue`, `band-lavender`, `sky-panel`, `hero-band`, `hero-title`, `hero-display`, `navy-hero`, `section-heading`, `lead-paragraph`, `body-copy`, `feature-title`, `meta-note` | default | Static surfaces and type roles. One state each, by design — they are grounds and ink, not controls. |
+| `ex-app-shell-row` | default, hover, focus-visible, selected, disabled | Selected carries the `{colors.primary}` active indicator already declared in its block. |
+| `ex-data-table-cell` | default, hover, focus-visible, selected, loading | Header cells sort on activation; `loading` greys the row body to `{colors.band}`. |
+| `ex-auth-form-card` | default, focus-visible, disabled, loading, error | Error states the field in `{colors.ink-body}` with a `{colors.primary-deep}` rule — the system owns no red, so the failure is marked structurally and by text. |
+| `ex-toast` | default, error, loading | Error and loading variants differ by icon and copy, not by ground; the toast surface stays `{colors.canvas}`. |
+| `ex-pricing-tier`, `ex-pricing-tier-featured`, `ex-product-selector`, `ex-cart-drawer`, `ex-modal-card`, `ex-empty-state-card` | default, hover, focus-visible | Card surfaces reachable by keyboard; hover raises nothing — per this system's own rule, depth is band and gradient, never shadow. |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or choreography below was extracted; every value comes from the **Calm** profile block in `theme-audit/SPEC.md`, carried verbatim into the `motion:` group above. Calm is the right fit for a surface that is flat by default, separates content with still bands and spends its whole colour budget on one blue: a composed opacity-led fade, little travel, nothing that pops.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover — button, text link, list item, nav link | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` of a `{colors.primary}` tint overlay | Fade retained at `{motion.duration-reduced}`; no travel to remove |
+| Press — button, tab | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` step on the same overlay; no scale, because nothing in this system pops | Opacity step only, at `{motion.duration-reduced}` |
+| Focus-visible ring | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` of the `{colors.focus}` ring | Ring appears at `{motion.duration-reduced}` with no scale |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` cross-fade of the content pane only; the two-storey chrome never animates | Cross-fade at `{motion.duration-reduced}`, no travel |
+| Modal / drawer — enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` plus `transform: translateY(8px → 0)` | Travel removed; `opacity` fade at `{motion.duration-reduced}` |
+| Modal / drawer — exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` plus `transform: translateY(0 → 8px)` | Travel removed; `opacity` fade at `{motion.duration-reduced}` |
+| Dropdown — enter | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity` plus `transform: translateY(4px → 0)` | Travel removed; `opacity` fade at `{motion.duration-reduced}` |
+| Dropdown — exit | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity` | Fade at `{motion.duration-reduced}` |
+| Toast — enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` plus `transform: translateY(12px → 0)` | Travel removed; `opacity` fade at `{motion.duration-reduced}` |
+| Toast — exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` plus `transform: translateY(0 → 12px)` | Travel removed; `opacity` fade at `{motion.duration-reduced}` |
+| List enter — feature grid, linked list, tab rail | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, staggered `{motion.stagger-step}` per item | Stagger dropped; one simultaneous fade at `{motion.duration-reduced}` |
+| List exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, no stagger | Fade at `{motion.duration-reduced}` |
+| Loading — placeholder and indeterminate bar | `{motion.duration-slow}`, looped | `{motion.ease-standard}` | `opacity` pulse on a `{colors.band}` placeholder; the indeterminate bar travels with `transform: translateX` | Loop and travel both removed; placeholder holds a static `{colors.band}` fill and progress is announced with `aria-busy` |
+| Hero reveal — `hero-display`, `hero-band` type | `{motion.duration-emphasis}` | `{motion.ease-enter}` | `opacity` only, started after first paint so it never delays the headline | Removed entirely; type renders at full opacity |
+
+Exit is shorter than its matching entrance in every pair above. Only `transform` and `opacity` are animated — never `width`, `height`, `top`, `left` or `margin`, which would be doubly wrong here: the bands are full-bleed, so a geometry animation would reflow the whole page. The one looped animation is the loader; this system has no brand ambience to freeze.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel and all scale — every translateY and translateX above,
+     the list stagger, the loader loop, and the hero reveal. */
+  /* Kept: opacity fades only, capped at {motion.duration-reduced} = 150ms. */
+  *, *::before, *::after {
+    transition-duration: 150ms !important;
+    transition-property: opacity !important;
+    animation: none !important;
+  }
+}
+```
+
+## Accessibility
+
+Ratios below are computed with WCAG 2.1 relative luminance from the hexes in this file's own front matter.
+
+### Measured contrast — key pairs
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` #000000 on `{colors.canvas}` #ffffff | 21.0:1 | 4.5:1 | Pass |
+| `{colors.ink-lead}` #3c3c3c on `{colors.canvas}` | 11.03:1 | 4.5:1 | Pass |
+| `{colors.ink-body}` #223548 on `{colors.canvas}` | 12.57:1 | 4.5:1 | Pass |
+| `{colors.ink-list}` #354a5f on `{colors.canvas}` | 9.15:1 | 4.5:1 | Pass |
+| `{colors.ink-meta}` #475e75 on `{colors.canvas}` | 6.72:1 | 4.5:1 | Pass |
+| `{colors.ink-nav}` #545454 on `{colors.chrome}` #f5f6f7 | 7.0:1 | 4.5:1 | Pass |
+| `{colors.ink-nav}` on `{colors.band}` #eaecee (footer) | 6.39:1 | 4.5:1 | Pass |
+| `{colors.ink-body}` on `{colors.band-blue}` #ebf8ff | 11.61:1 | 4.5:1 | Pass |
+| `{colors.ink-body}` on `{colors.band-lavender}` #f7f4ff | 11.57:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.sky}` #6bc0ff | 10.61:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` #ffffff on `{colors.primary}` #0057d2 | 6.38:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.primary-deep}` #0040b0 | 8.9:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.navy}` #022879 | 13.27:1 | 4.5:1 | Pass |
+| `{colors.primary}` on `{colors.canvas}` (link, active tab) | 6.38:1 | 4.5:1 | Pass |
+| `{colors.primary-deep}` on `{colors.canvas}` (outline button label) | 8.9:1 | 4.5:1 | Pass |
+| `{colors.hairline}` #475e75 on `{colors.canvas}` | 6.72:1 | 3.0:1 | Pass |
+| `{colors.hairline}` on `{colors.chrome}` | 6.21:1 | 3.0:1 | Pass |
+
+Every pair the file actually binds clears AA. That is unusual in this collection and it is a real property of the palette: SAP's five-tier ink ladder bottoms out at `{colors.ink-meta}` 6.72:1, well above the threshold, and the quietest grey in the system, `{colors.ink-nav}`, still reads at 6.39:1 on the darkest neutral band.
+
+### Disclosed failures
+
+Two pairs fail, and neither is rendered by the real site — both come from reading `hero-band` as this file's card-or-panel surface. Recorded here because they are measurable from the front matter, and the document's job is to state them:
+
+| Foreground / Background | Ratio | Required | Note |
+|---|---|---|---|
+| `{colors.hairline}` #475e75 on `{colors.primary-deep}` #0040b0 | 1.32:1 | 3.0:1 | Fail. The hairline is bound only to `button-outline`, `ex-pricing-tier`, `ex-cart-drawer` and `ex-data-table-cell`, all of which sit on `{colors.canvas}`, where it reads 6.72:1. No boundary is drawn on the hero band. Do not use `{colors.hairline}` on a blue ground; use `{colors.on-primary}` at reduced opacity. |
+| `{colors.ink}` #000000 on `{colors.primary-deep}` #0040b0 | 2.36:1 | 4.5:1 | Fail. `hero-band` and `hero-title` both bind `{colors.on-primary}`, which reads 8.9:1. Black ink is never set on a blue band; this pair exists as an arithmetic combination, not as a usage. |
+
+The real site's only genuine near-threshold value is `{colors.primary}` on `{colors.sky}` at 3.22:1 and on `{colors.ink}` at 3.29:1 — both above the 3:1 non-text minimum but below 4.5:1, so **blue type must not be set on the sky panel or on the ink fill.** `sky-panel` correctly binds `{colors.ink}` and `ex-pricing-tier-featured` correctly binds `{colors.on-primary}`.
+
+### Focus ring
+
+The system had no focus indicator. Two rings are defined, both reusing tones the palette already owns — no new brand colour is introduced:
+
+- **`{colors.focus}` #0057d2** is `{colors.primary}`, the brand's one acting colour, reused as the ring. Drawn on every light ground: `{colors.canvas}` 6.38:1, `{colors.chrome}` 5.89:1, `{colors.band}` 5.38:1, `{colors.band-blue}` 5.89:1, `{colors.band-lavender}` 5.87:1, `{colors.sky}` 3.22:1, and `{colors.ink}` 3.29:1.
+- **`{colors.focus-on-dark}` #ffffff** is `{colors.on-primary}`, reused for the dark signature surfaces this file documents: `{colors.primary-deep}` 8.9:1 and `{colors.navy}` 13.27:1. It also clears the `{colors.primary}` button fill at 6.38:1, which matters because the ring is drawn **outside** its control.
+
+Both rings are 2px with a **2px offset**, so the ring sits on the surface behind the control rather than on the control's own fill — which is what WCAG 2.2 Focus Appearance measures. Every surface this file declares is covered by one of the two at 3:1 or better. The ring is square-cornered on bands and chrome and follows the control's own `{rounded.md}` or `{rounded.lg}` on controls and media.
+
+### Tap targets
+
+Declared heights in the token block, not rendered measurements — this document has no live page to measure. `{component.button-floating}` declares 58px and `{component.button-primary}` 44px, both at or above the 44×44 guideline. `{component.product-tab-active}` declares 44px, but `{component.product-tab}` declares 32px and `{component.breadcrumb}` 17px, below it; the Responsive Behavior section already names the inactive tabs as the first thing that should grow at touch widths. Actual hit areas, including padding, cannot be verified from this file.
+
+### Reduced motion
+
+Every prescribed animation collapses as stated in the Motion & Animation section: all travel and scale removed, opacity fades kept at `{motion.duration-reduced}` (150ms), the loader loop stopped and the hero reveal dropped. There is no brand ambience in this system to freeze.
+
+### Other
+
+Colour is never the only signal: the active product tab carries a blue underline **and** a step up in size and weight, so selection survives in greyscale. The error state in `ex-auth-form-card` is marked structurally and by text, since the palette owns no red.
+
 ## Do's and Don'ts
 
 ### Do
@@ -637,3 +749,37 @@ Photographs appear inside `{rounded.lg}` frames, never full-bleed and never crop
 - Don't add letter-spacing. The typeface is metrically tuned for these sizes and needs no correction.
 - Don't crop the product illustrations to a uniform ratio. Each composition is sized to what it explains.
 - Don't let a hero band and a content band sit adjacent without a white interval. The rhythm depends on white returning between coloured zones.
+
+## Responsive Behavior
+
+### Breakpoints
+| Name | Width | Key Changes |
+|---|---|---|
+| Small mobile | < 480px | Single column; tab rail scrolls horizontally; hero type drops to the 36px tier |
+| Mobile | 480–767px | Single column; nav collapses to a menu; two-column features stack |
+| Tablet | 768–1023px | Two-column features hold; breadcrumb truncates; hero image moves below its text |
+| Laptop | 1024–1279px | Full grid; tab rail shows all tabs; hero returns to side-by-side |
+| Desktop | 1280–1439px | Centred content column at full width |
+| Wide | ≥ 1440px | Gutters absorb the extra width; bands stay full-bleed |
+
+The system declares an unusually dense set of media queries — well over thirty across the three templates — which is what a catalogue this large needs when the same chrome has to host very different page bodies.
+
+### Touch Targets
+`{component.button-floating}` clears 44×44 WCAG-AAA comfortably at 58px, and `{component.button-primary}` meets it exactly at 44px. `{component.product-tab-active}` reaches 44px while the inactive `{component.product-tab}` sits at 32px, and `{component.breadcrumb}` at 17px is a wayfinding label rather than a primary target. On touch widths the inactive tabs are the first thing that should grow.
+
+### Collapsing Strategy
+The global bar collapses its links behind a menu but keeps the logo, search and account affordances at every width. The product tab rail becomes a horizontal scroller rather than wrapping, so the active tab stays anchored. Two-column feature blocks stack, the 2×2 grid becomes a single column with its hairlines retained, and the hero image moves below its text rather than shrinking beside it. Bands keep their full-bleed width at every size; only their inner padding compresses.
+
+### Image Behavior
+Product imagery is composited rather than photographic-only: a photograph sits inside a `{rounded.lg}` frame with floating UI cards and dotted connector lines arranged around it, so the illustration explains a workflow rather than decorating the section. Video thumbnails carry a centred round play affordance. Partner and customer logos appear as small monochrome lockups inside the imagery itself. Nothing is cropped to a uniform ratio; each frame is sized to its composition.
+
+## Known Gaps
+
+- **No `text-dim` role under that name.** The brand plainly has a muted tier — in fact four of them: `{colors.ink-lead}`, `{colors.ink-list}`, `{colors.ink-meta}` and `{colors.ink-nav}` descend below `{colors.ink}` and are documented as lead, list, caption and chrome ink. `{colors.ink-meta}` is described in this file as "the quietest legible tier", which is the secondary-text job exactly. No alias has been added, because a token whose only purpose is to match a name pattern would say something false about a palette whose naming is already explicit about what each tier is for.
+- **No interaction states were extracted.** The capture recorded default states only. The Interaction States table is prescribed from tokens this file already owns, and is labelled as such.
+- **No motion was extracted.** Not one duration, easing curve or choreography came off the live site. The whole Motion & Animation section is prescribed from the Calm profile.
+- **No shadow token.** Elevation level 4 names a "soft drop shadow" inside the product illustrations, but no offset, blur or `rgba(...)` value was captured, so there is nothing to tokenise. Nothing in the prose references a `{shadow.*}` key.
+- **The two gradients are not tokenised.** The home hero's navy field is anchored on `{colors.navy}` and the event promo strip runs violet into blue, but neither gradient's stops, angles or the violet itself were captured. The violet appears nowhere in the token block.
+- **No semantic status palette.** The system owns no success, warning or error hue — one blue is the entire signal vocabulary. The error state in `ex-auth-form-card` is therefore marked structurally and by text rather than by colour. This is a real absence in the brand, not a missing extraction, and no status colour has been invented to fill it.
+- **Focus rings are prescribed.** `{colors.focus}` and `{colors.focus-on-dark}` reuse `{colors.primary}` and `{colors.on-primary}`; the live site's real focus treatment, if it has one, was not captured.
+- **Nothing here is rendered.** Tap-target sizes, overflow, clipping and layout shift cannot be verified from a document. The heights quoted in Accessibility are declared token values, not measurements.
