@@ -28,6 +28,7 @@ colors:
   hairline: "#e5e5e5"
   hairline-soft: "#ededed"
   hairline-dark: "#1f1f1f"
+  hairline-strong: "#888888"
   ink: "#0a0a0a"
   charcoal: "#1c1c1e"
   slate: "#3a3a3c"
@@ -36,6 +37,8 @@ colors:
   muted: "#a8a8aa"
   on-dark: "#ffffff"
   on-dark-muted: "#b3b3b3"
+  focus: "#005440"
+  focus-on-dark: "#00d4a4"
 
 typography:
   hero-display:
@@ -167,6 +170,25 @@ spacing:
   section-lg: 96px
   hero: 120px
 
+shadow:
+  none: "none"
+  subtle: "rgba(0, 0, 0, 0.04) 0px 1px 2px 0px"
+  card: "rgba(0, 0, 0, 0.08) 0px 4px 12px 0px"
+  mockup: "rgba(0, 0, 0, 0.12) 0px 24px 48px -8px"
+  brand-glow: "rgba(0, 212, 164, 0.08) 0px 8px 24px"
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
+
 components:
   button-primary:
     backgroundColor: "{colors.primary}"
@@ -245,7 +267,7 @@ components:
     rounded: "{rounded.lg}"
     padding: "{spacing.xxl}"
     border: "2px solid {colors.brand-green}"
-    shadow: "rgba(0, 212, 164, 0.08) 0px 8px 24px"
+    shadow: "{shadow.brand-glow}"
   testimonial-card-feature:
     backgroundColor: "{colors.testimonial-orange}"
     textColor: "{colors.on-dark}"
@@ -269,6 +291,14 @@ components:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
     border: "2px solid {colors.brand-green}"
+  focus-ring:
+    border: "2px solid {colors.focus}"
+    outlineOffset: "2px"
+    rounded: "inherit"
+  focus-ring-on-dark:
+    border: "2px solid {colors.focus-on-dark}"
+    outlineOffset: "2px"
+    rounded: "inherit"
   search-pill:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.steel}"
@@ -416,7 +446,7 @@ components:
     rounded: "{rounded.lg}"
     padding: "0"
     border: "1px solid {colors.hairline-soft}"
-    shadow: "rgba(0, 0, 0, 0.12) 0px 24px 48px -8px"
+    shadow: "{shadow.mockup}"
   logo-wall-item:
     backgroundColor: "transparent"
     textColor: "{colors.steel}"
@@ -487,6 +517,12 @@ The brand's signature mint green ({colors.brand-green}) appears sparingly but de
 - **Surface Code** ({colors.surface-code}): Dark code-block wrapper background.
 - **Hairline** ({colors.hairline}): 1px borders and primary dividers.
 - **Hairline Soft** ({colors.hairline-soft}): Quieter table-row dividers and secondary section breaks.
+- **Hairline Strong** ({colors.hairline-strong}) — *prescribed, not extracted*: Parallel accessible boundary for any border that is a control's only visible edge (`text-input`, `search-pill`, `button-secondary`, `button-icon-circular`). It reuses the brand's own `{colors.stone}` grey, the lightest extracted grey that clears 3:1 on both `{colors.canvas}` and `{colors.surface}`. The extracted `{colors.hairline}` and `{colors.hairline-soft}` are retained unchanged and are scoped to decoration — section breaks, table-row rules, card edges that are not the sole affordance of a control.
+
+### Focus
+- **Focus** ({colors.focus}) — *prescribed, not extracted*: Deep mint focus ring for light grounds (`{colors.canvas}`, `{colors.surface}`, `{colors.surface-soft}`, and the sky-gradient hero band). Mintlify's live surfaces ship no accessible focus ring; the brand's own `{colors.brand-green}` sits at 1.92:1 on white, so the ring is darkened down the same mint hue rather than switched to a foreign colour.
+- **Focus On Dark** ({colors.focus-on-dark}) — *prescribed, not extracted*: The brand mint itself, used as the ring on `{colors.canvas-dark}`, `{colors.surface-code}` and the dark teal hero band. The file documents both light and dark signature surfaces, so one ring cannot serve both.
+- Both rings are drawn **outside** the control with a 2px offset (`focus-ring`, `focus-ring-on-dark`), so each is measured against the surface behind it, per WCAG 2.2 Focus Appearance.
 
 ### Hero Atmospheric
 - **Hero Sky From / To** ({colors.hero-sky-from}, {colors.hero-sky-to}): Atmospheric sky-blue to soft cream gradient on the homepage hero.
@@ -498,7 +534,7 @@ The brand's signature mint green ({colors.brand-green}) appears sparingly but de
 - **Slate** ({colors.slate}): Secondary text and metadata.
 - **Steel** ({colors.steel}): Tertiary text, table headers, sidebar inactive items, footer links.
 - **Stone** ({colors.stone}): Captions, twoslash cursor color, muted labels.
-- **Muted** ({colors.muted}): De-emphasized labels and disabled text.
+- **Muted** ({colors.muted}): Disabled text and decorative de-emphasis only. At 2.37:1 on `{colors.canvas}` it fails AA for any text that must be read; WCAG sets no requirement on disabled controls, which is the one place it is safe. Secondary and tertiary copy that must be read uses `{colors.steel}` (6.88:1 on canvas) or `{colors.slate}` (11.35:1) instead.
 - **On Dark** ({colors.on-dark}): White text on dark surfaces (hero bands, code blocks, promo banner).
 - **On Dark Muted** ({colors.on-dark-muted}): Reduced-opacity white for code-block headers and metadata on dark.
 
@@ -570,11 +606,13 @@ The system runs predominantly flat with strategic atmospheric depth.
 
 | Level | Treatment | Use |
 |---|---|---|
-| 0 (flat) | No shadow; `{colors.hairline}` border | Default cards, table rows, form inputs |
-| 1 (subtle) | `rgba(0, 0, 0, 0.04) 0px 1px 2px 0px` | Hover-elevated tiles, subtle highlights |
-| 2 (card) | `rgba(0, 0, 0, 0.08) 0px 4px 12px 0px` | Standard feature cards |
-| 3 (mockup) | `rgba(0, 0, 0, 0.12) 0px 24px 48px -8px` | Hero product mockup framing — the deep diffuse drop on the homepage hero docs preview |
-| 4 (brand-tinted) | `rgba(0, 212, 164, 0.08) 0px 8px 24px` | Featured pricing tier glow |
+| 0 (flat) | `{shadow.none}`; `{colors.hairline}` border | Default cards, table rows, form inputs |
+| 1 (subtle) | `{shadow.subtle}` — `rgba(0, 0, 0, 0.04) 0px 1px 2px 0px` | Hover-elevated tiles, subtle highlights |
+| 2 (card) | `{shadow.card}` — `rgba(0, 0, 0, 0.08) 0px 4px 12px 0px` | Standard feature cards |
+| 3 (mockup) | `{shadow.mockup}` — `rgba(0, 0, 0, 0.12) 0px 24px 48px -8px` | Hero product mockup framing — the deep diffuse drop on the homepage hero docs preview |
+| 4 (brand-tinted) | `{shadow.brand-glow}` — `rgba(0, 212, 164, 0.08) 0px 8px 24px` | Featured pricing tier glow |
+
+Elevation is expressed one way per level and the two are not mixed arbitrarily: levels 0–2 carry a `{colors.hairline}` border and no shadow or a shadow and no border, never both as competing boundaries. Level 3 is the single exception and says so — the hero mockup carries a `{colors.hairline-soft}` edge *and* `{shadow.mockup}`, because the mockup is a screenshot frame that needs a crisp edge against the gradient as well as separation from it.
 
 ### Decorative Depth
 - The homepage hero uses an atmospheric photographic backdrop (cloud illustration on sky-gradient) for depth — no shadow needed; the imagery does the work
@@ -605,7 +643,40 @@ The radius scale is tightly disciplined — the brand never uses a corner soften
 
 ## Components
 
-> Per the no-hover policy, hover states are NOT documented. Default and pressed/active states only.
+> The earlier revision of this file carried a "no-hover policy" and documented default and pressed/active states only. That policy is withdrawn: it was a documentation convention, not an observed property of the brand, and it left every interactive component without a hover or focus-visible state. States are now named per entry below.
+
+### Component States
+
+Every component entry names the states it supports. `default` is implied everywhere and omitted from the list. Non-interactive surfaces that genuinely have one state say so.
+
+| Component | States |
+|---|---|
+| `button-primary` | hover (lifts to `{colors.charcoal}`), focus-visible (`focus-ring`), active/pressed (`button-primary-pressed`), disabled (`button-primary-disabled`), loading (label swaps for a spinner, width held) |
+| `button-accent-green` | hover (`{colors.brand-green-deep}`), focus-visible, active/pressed, disabled, loading |
+| `button-on-dark` | hover (opacity shift), focus-visible (`focus-ring-on-dark`), active/pressed, disabled |
+| `button-secondary` | hover (border to `{colors.hairline-strong}`), focus-visible, active/pressed, disabled |
+| `button-ghost` | hover (`{colors.surface}` fill), focus-visible, active/pressed, disabled |
+| `button-link` | hover (underline), focus-visible, active/pressed |
+| `button-icon-circular` | hover (`{colors.surface}` fill), focus-visible, active/pressed, disabled |
+| `text-input` | hover (border to `{colors.hairline-strong}`), focus-visible (`text-input-focused` + `focus-ring`), disabled, error (`{colors.brand-error}` border), loading (async validation spinner in the trailing slot) |
+| `search-pill` | hover, focus-visible, active/pressed, loading (results pending) |
+| `segmented-tab` | hover (text to `{colors.ink}`), focus-visible, selected (`segmented-tab-active`), disabled |
+| `pill-tab` | hover, focus-visible, selected (`pill-tab-active`), disabled |
+| `toggle-monthly-yearly` | hover, focus-visible, selected (thumb position) — two selectable positions only, no error or loading state |
+| `faq-accordion-item` | hover (header only), focus-visible, selected (expanded) |
+| `sidebar-nav-item` | hover (`{colors.surface}` fill), focus-visible, selected (`sidebar-nav-item-active`) |
+| `doc-toc-item` | hover, focus-visible, selected (`doc-toc-item-active`, scroll-spy driven) |
+| `copy-code-button` | hover, focus-visible, active/pressed, loading (brief "Copied" confirmation) |
+| `footer-link` | hover (text to `{colors.ink}`), focus-visible |
+| `logo-wall-item` | single state — a static wordmark, not interactive |
+| `badge-discount`, `badge-required`, `badge-type`, `badge-tag` | single state each — static labels, not interactive |
+| `card-base`, `card-feature`, `card-help`, `card-startup-perk`, `startup-program-card` | default and hover (`{shadow.subtle}`) where the whole card is a link; single state where it is not |
+| `pricing-card`, `pricing-card-featured` | single state — the card is a container; its CTA carries the states |
+| `testimonial-card-feature`, `testimonial-card-quote`, `founder-quote-card` | single state each — quote, portrait and attribution only, no interactive control, so no focus ring is drawn on the orange ground |
+| `code-block`, `code-block-header`, `code-inline` | single state — static containers; `copy-code-button` inside the header carries the states |
+| `property-row`, `feature-comparison-table`, `feature-comparison-row` | single state each — documentation tables, not interactive |
+| `promo-banner` | default and a dismiss control that carries hover, focus-visible and active/pressed |
+| `hero-band-sky`, `hero-band-dark`, `hero-product-mockup` | single state each — layout bands |
 
 ### Buttons
 
@@ -782,6 +853,131 @@ The radius scale is tightly disciplined — the brand never uses a corner soften
 **`footer-link`** — Individual link entry in the footer.
 - Background transparent, text `{colors.steel}`, typography `{typography.body-sm}`, padding `{spacing.xxs} 0`.
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or choreography below was extracted from mintlify.com; the values are the shared **Crisp** profile, assigned because Mintlify's identity is a developer tool — terminal-adjacent code surfaces, a 3-column docs grid, Geist Mono type signatures, scroll-spy TOC — and a tool's state change should read as instant rather than performed. The atmospheric marketing heroes are the brand's only non-tool register, and they are static imagery, not animation.
+
+### Interaction Table
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, nav items, cards, links) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`, and `transform: translateY(-1px)` on link-wrapped cards only | Travel removed; opacity cross-fade at `{motion.duration-reduced}` |
+| Press (pill buttons, copy button, tabs) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.98)`, `opacity` | Scale removed; colour/opacity change applied at `{motion.duration-reduced}` |
+| Focus (`focus-ring`, `focus-ring-on-dark`) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` only — the ring never scales or travels in, so keyboard position is never ambiguous | Unchanged; already opacity-only and under 150ms |
+| Page / route transition (docs page to docs page) | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity` on the prose column only; sidebar and TOC do not re-enter | Opacity-only at `{motion.duration-reduced}`; no cross-fade overlap |
+| Modal / drawer (mobile nav drawer, contact dialog) | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `transform: translateX(-100%) → 0` for the drawer, `transform: scale(0.98) → 1` plus `opacity` for the dialog; scrim `opacity` | Travel and scale removed; scrim and panel fade at `{motion.duration-reduced}` |
+| Dropdown (nav flyout, version picker, language select) | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity`, `transform: translateY(-4px) → 0` | Travel removed; opacity fade at `{motion.duration-reduced}` |
+| Toast ("Copied", "Link copied") | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity`, `transform: translateY(8px) → 0` | Travel removed; opacity fade at `{motion.duration-reduced}` |
+| List enter (sidebar group expand, search results, pricing feature rows) | `{motion.duration-fast}` per item, `{motion.stagger-step}` between items, capped at 8 items | `{motion.ease-enter}` | `opacity`, `transform: translateY(4px) → 0` | Stagger and travel removed; the whole list fades in once at `{motion.duration-reduced}` |
+| List exit (sidebar group collapse, search results clearing) | `{motion.duration-instant}`, no stagger | `{motion.ease-exit}` | `opacity` | Unchanged; already opacity-only and under 150ms |
+| Loading (search pending, async validation, docs skeleton) | spinner 800ms linear, infinite; skeleton shimmer 1200ms linear, infinite | linear | spinner `transform: rotate()`; skeleton `opacity` pulse between 0.4 and 1 | Both infinite animations frozen; a static spinner glyph and a flat skeleton block at 0.7 opacity remain, with the loading state still announced to assistive technology |
+
+### Rules
+
+- Animate `transform` and `opacity` only — never `width`, `height`, `top`, `left` or `margin`. The 3-column docs grid and the comparison table are the two places where a layout-property transition would cost a frame budget this brand cannot spare.
+- Every exit is shorter than its matching entrance: drawer `{motion.duration-fast}` out against `{motion.duration-base}` in, dropdown and toast `{motion.duration-instant}` out against `{motion.duration-fast}` in.
+- Nothing animates on first paint. The hero headline, the product mockup and the docs prose are painted in place; there is no entrance choreography, which is the Crisp signature.
+- `{motion.duration-emphasis}` (300ms) is reserved for the mobile nav drawer at full travel and is the longest duration in the system. `{motion.duration-slow}` (220ms) covers the pricing toggle thumb when the Monthly/Annual switch also re-renders the three tier cards.
+- The only infinite animations are the two loaders above. This brand has no ambient motion — no drifting cloud illustration, no gradient shimmer on the hero band; the atmospheric heroes are static.
+- The mint accent never animates its hue. `{colors.brand-green}` appears or does not; a colour-interpolated accent reads as a marketing flourish and contradicts the tool register.
+
+### Reduced Motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translateX, translateY) and all scale, on every
+     interaction in the table above — hover lift, press scale, drawer slide,
+     dropdown and toast rise, list-enter stagger. */
+  /* Removed: the {motion.stagger-step} delay chain; lists appear at once. */
+  /* Frozen: both infinite loaders. The spinner holds a static glyph and the
+     skeleton holds a flat block; the loading state is still announced. */
+  /* Kept: opacity fades only, every one clamped to {motion.duration-reduced}
+     (100ms), which is already under the 150ms ceiling. */
+  /* Kept: the focus ring, at full strength and with no transition at all —
+     reduced motion never costs a keyboard user their position. */
+  *, *::before, *::after {
+    transition-property: opacity !important;
+    transition-duration: 100ms !important;  /* {motion.duration-reduced} */
+    animation-play-state: paused !important;
+    transform: none !important;
+  }
+}
+```
+
+## Accessibility
+
+Every ratio below was computed with WCAG 2.1 relative luminance against this file's own frontmatter hexes. Where the real brand fails, the failure is stated rather than corrected — the extracted hexes are frozen facts about Mintlify, not defects in this document.
+
+### Measured Contrast — Passing
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 19.80:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface}` | 18.48:1 | 4.5:1 | Pass |
+| `{colors.charcoal}` on `{colors.surface}` | 15.88:1 | 4.5:1 | Pass |
+| `{colors.slate}` on `{colors.canvas}` | 11.35:1 | 4.5:1 | Pass |
+| `{colors.steel}` on `{colors.canvas}` | 6.88:1 | 4.5:1 | Pass |
+| `{colors.steel}` on `{colors.surface}` | 6.42:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.primary}` | 19.80:1 | 4.5:1 | Pass |
+| `{colors.primary}` on `{colors.brand-green}` | 10.33:1 | 4.5:1 | Pass |
+| `{colors.on-dark}` on `{colors.surface-code}` | 17.01:1 | 4.5:1 | Pass |
+| `{colors.on-dark-muted}` on `{colors.surface-code}` | 8.11:1 | 4.5:1 | Pass |
+| `{colors.on-dark}` on `{colors.hero-dark-from}` | 11.60:1 | 4.5:1 | Pass |
+| `{colors.on-dark}` on `{colors.hero-dark-to}` | 7.82:1 | 4.5:1 | Pass |
+| `{colors.hairline-strong}` on `{colors.canvas}` | 3.54:1 | 3.0:1 | Pass |
+| `{colors.hairline-strong}` on `{colors.surface}` | 3.31:1 | 3.0:1 | Pass |
+
+### Measured Contrast — Real Failures, Disclosed
+
+These are extracted brand values. They are recorded here, not changed.
+
+| Foreground / Background | Ratio | Required | Note |
+|---|---|---|---|
+| `{colors.hairline-soft}` on `{colors.surface}` | 1.09:1 | 3.0:1 | Fails. Decorative divider only; a control's sole boundary uses `{colors.hairline-strong}`. |
+| `{colors.hairline-soft}` on `{colors.canvas}` | 1.17:1 | 3.0:1 | Fails. Same scoping — table-row rules and nav underline, never a control edge. |
+| `{colors.hairline}` on `{colors.surface}` | 1.18:1 | 3.0:1 | Fails. Card and section edges only. |
+| `{colors.hairline}` on `{colors.canvas}` | 1.26:1 | 3.0:1 | Fails. This is the brand's real hairline, and it is the only visible boundary of `text-input`, `search-pill`, `button-secondary` and `button-icon-circular` on the live site. **Mintlify genuinely fails WCAG 1.4.11 for non-text contrast at those controls.** `{colors.hairline-strong}` is the prescribed replacement. |
+| `{colors.muted}` on `{colors.surface}` | 2.22:1 | 4.5:1 | Fails. Scoped to disabled text, which WCAG exempts, and to decorative de-emphasis. |
+| `{colors.muted}` on `{colors.canvas}` | 2.37:1 | 4.5:1 | Fails. Same scoping; readable secondary copy uses `{colors.steel}`. |
+| `{colors.on-dark}` on `{colors.testimonial-orange}` — `testimonial-card-feature` | 3.28:1 | 4.5:1 | Fails. The quote renders at `{typography.heading-3}` (28px), so 3:1 applies to the quote itself and it passes there; the `{typography.body-sm-medium}` attribution line beneath it needs 4.5:1 and fails. |
+| `{colors.on-dark}` on `{colors.testimonial-orange}` — `founder-quote-card` | 3.28:1 | 4.5:1 | Fails, same pair, smaller card. Its body copy is `{typography.body-sm}`, so nothing on this card clears 4.5:1. |
+| `{colors.on-dark}` on `{colors.brand-error}` — `badge-required` | 3.99:1 | 4.5:1 | Fails. The label is `{typography.micro-uppercase}` (11px/600), nowhere near large text, so 4.5:1 applies. |
+| `{colors.on-dark}` on `{colors.hero-sky-from}` — `hero-band-sky` | 2.48:1 | 4.5:1 | Fails, and fails the 3:1 large-text threshold too even at `{typography.hero-display}` (72px). On the live page the headline shifts to `{colors.ink}` as the gradient lightens, and `{colors.ink}` on `{colors.hero-sky-from}` measures 7.98:1 — but white-on-sky is what the top of the band renders, and it is not readable. |
+| `{colors.stone}` on `{colors.canvas}` | 3.54:1 | 4.5:1 | Fails as body or caption text. The harness does not flag it, because `stone` matches no text-dim pattern, but the prose assigns it to captions and muted labels. It clears the 3:1 large-text threshold only at 24px+, and no caption role in this file is that large — `{typography.caption}` is 13px. Use `{colors.steel}` for any caption that must be read. |
+| `{colors.on-dark-muted}` on `{colors.canvas}` — `copy-code-button` | 2.10:1 | 4.5:1 | Fails **as measured against the canvas**, which is not where this control lives. `copy-code-button` has a transparent fill inside `code-block-header`, so its real ground is `{colors.surface-code}`, where the same ink measures 8.11:1 and passes. The 2.10:1 figure is a harness fallback, logged under Shared issues in the audit report. |
+
+### Focus Ring Visibility
+
+Both rings are prescribed; Mintlify ships no accessible focus ring. They are drawn outside the control with a 2px offset, so each is measured against the surface behind it.
+
+| Ring | Surface it is drawn on | Ratio | Required | Result |
+|---|---|---|---|---|
+| `{colors.focus}` | `{colors.canvas}` | 8.97:1 | 3.0:1 | Pass |
+| `{colors.focus}` | `{colors.surface}` | 8.37:1 | 3.0:1 | Pass |
+| `{colors.focus}` | `{colors.surface-soft}` | 8.59:1 | 3.0:1 | Pass |
+| `{colors.focus}` | `{colors.hero-sky-from}` | 3.61:1 | 3.0:1 | Pass |
+| `{colors.focus}` | `{colors.hero-sky-to}` | 7.48:1 | 3.0:1 | Pass |
+| `{colors.focus-on-dark}` | `{colors.canvas-dark}` | 10.33:1 | 3.0:1 | Pass |
+| `{colors.focus-on-dark}` | `{colors.surface-code}` | 8.87:1 | 3.0:1 | Pass |
+| `{colors.focus-on-dark}` | `{colors.hero-dark-from}` | 6.05:1 | 3.0:1 | Pass |
+| `{colors.focus-on-dark}` | `{colors.hero-dark-to}` | 4.08:1 | 3.0:1 | Pass |
+
+`{colors.testimonial-orange}` is a third polarity and no single ring reaches 3:1 on it — `{colors.focus}` measures 1.52:1 there and `{colors.focus-on-dark}` 1.71:1. No third ring is invented, because the orange cards carry a quote, a portrait and an attribution line and no interactive control; nothing on them can take focus. If an interactive element is ever added to that surface, it needs its own ring stated here.
+
+The brand's own activation signal, `text-input-focused`'s `2px solid {colors.brand-green}` border, measures **1.92:1** against `{colors.canvas}` and fails 1.4.11 outright. It is kept as the extracted fact and the prescribed `focus-ring` is layered outside it, so the green reads as the brand's input-active colour while the ring does the accessibility work.
+
+### Tap Targets
+
+The minimum interactive target in this system is 44×44px. The file's `## Responsive Behavior` section records the extracted desktop sizes that sit below it — 32px circular icon buttons, ~32px sidebar nav rows, 36px search pill, 36–40px pill buttons — and the mobile padding overrides that bring each to 44px. Whether the rendered page actually honours those overrides is not verifiable from this document; no page was rendered for this audit.
+
+### Reduced Motion
+
+Every prescribed interaction has a `prefers-reduced-motion: reduce` behaviour, tabulated above and expressed as a CSS rule in `## Motion & Animation`. All travel and scale are removed, both infinite loaders freeze while still announcing the loading state, and opacity fades are clamped to `{motion.duration-reduced}` (100ms). The focus ring is exempt: it stays at full strength with no transition.
+
+### Not Verifiable Here
+
+This is a document, not a running page. Overlap, horizontal overflow, clipping, real tap-target geometry, frame rate and layout shift were not and cannot be measured from it. Keyboard tab order, screen-reader labelling and the live dark-mode palette are likewise unverified — see `## Known Gaps`.
+
 ## Do's and Don'ts
 
 ### Do
@@ -792,6 +988,9 @@ The radius scale is tightly disciplined — the brand never uses a corner soften
 - Use atmospheric gradient hero bands sparingly (only the homepage and startups page); keep deeper surfaces flat and dense
 - Apply `{rounded.lg}` (12px) consistently on cards; use `{rounded.md}` (8px) only on compact UI like search pills and code blocks
 - Keep documentation prose at `{typography.body-md}` (16px) with 1.50 line-height — never compress
+- Keep state changes at `{motion.duration-fast}` or faster; this is a tool, and a tool's response should read as instant
+- Draw `focus-ring` on light grounds and `focus-ring-on-dark` on `{colors.canvas-dark}`, `{colors.surface-code}` and the dark hero band, always outside the control with a 2px offset
+- Use `{colors.hairline-strong}` wherever a border is a control's only visible edge; keep `{colors.hairline}` and `{colors.hairline-soft}` for decoration
 
 ### Don't
 - Don't use `{colors.brand-green}` on body text or large surfaces — it loses signal
@@ -800,6 +999,10 @@ The radius scale is tightly disciplined — the brand never uses a corner soften
 - Don't reduce documentation line-height below 1.50 — long-form readability suffers
 - Don't combine atmospheric gradients with multiple competing color accents in the same hero — the sky/dark gradient is the brand mood; let it breathe
 - Don't use Inter for code or Geist Mono for prose — the typeface assignment IS the brand voice
+- Don't add entrance choreography to the hero, the product mockup or the docs prose — nothing in this system animates on first paint
+- Don't animate `width`, `height`, `top`, `left` or `margin`; `transform` and `opacity` carry every transition
+- Don't rely on `{colors.brand-green}` alone to signal focus — at 1.92:1 on `{colors.canvas}` it is a brand cue, not an accessible indicator
+- Don't set readable secondary copy in `{colors.muted}` — it fails AA on every light surface this file defines
 
 ## Responsive Behavior
 
@@ -847,6 +1050,8 @@ The radius scale is tightly disciplined — the brand never uses a corner soften
 ## Known Gaps
 
 - Specific dark-mode token values for canvas, surface, ink, and hairline are not surfaced on these pages; the brand has not yet shipped a published dark-mode palette
-- Animation/transition timings are not extracted; recommend 150–200ms ease for hover/focus state transitions
+- Animation and transition timings are not extracted from the live site. The `motion:` group and the whole `## Motion & Animation` section are the prescribed **Crisp** profile, assigned from the brand's developer-tool identity, and are labelled as prescribed wherever they appear
+- Focus ring values (`{colors.focus}`, `{colors.focus-on-dark}`) and `{colors.hairline-strong}` are prescribed, not extracted. Mintlify's live surfaces ship no accessible focus ring and no accessible control boundary; the brand's own signals for both (`{colors.brand-green}` at 1.92:1, `{colors.hairline}` at 1.26:1) fail WCAG 1.4.11
+- Keyboard tab order, visible-label association and screen-reader naming are not observable from these four pages
 - Form validation success state is not explicitly captured beyond defaults — implement following standard green-border + success badge patterns
 - Code syntax highlighting palette inside docs is not formalized; documentation samples carry their own twoslash-style annotation system tokens (e.g. `{colors.brand-tag}`, `{colors.brand-annotate}`, `{colors.brand-warn}`) but the full highlight scheme is not enumerated
