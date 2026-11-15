@@ -147,6 +147,14 @@ def find_role(colors, patterns):
     return None
 
 
+def theme_hint(key):
+    if re.search(r"(^|[-_])on-dark($|[-_])|dark($|[-_])|[-_]dark", key):
+        return "dark"
+    if re.search(r"(^|[-_])on-light($|[-_])|light($|[-_])|[-_]light", key):
+        return "light"
+    return None
+
+
 def find_role_strongest(colors, patterns, against):
     """Pick the matching key with the highest contrast against `against`.
 
@@ -157,6 +165,12 @@ def find_role_strongest(colors, patterns, against):
     matches = [k for pat in patterns for k in colors if re.match(pat, k)]
     if not matches or against not in colors:
         return find_role(colors, patterns)
+    # Only tones belonging to the same theme as the ground: a dark-canvas file
+    # must not have its boundary role resolve to a light-theme hairline, which
+    # the theme filter would then skip entirely.
+    same = [k for k in matches if theme_hint(k) == theme_hint(against)]
+    if same:
+        matches = same
     return max(dict.fromkeys(matches), key=lambda k: contrast(colors[k], colors[against]))
 
 
@@ -209,7 +223,8 @@ def audit(path):
          "composited_tokens": composited}
 
     # --- sections -------------------------------------------------------
-    present = {s for s in SECTIONS if f"## {s}" in text}
+    present = {s for s in SECTIONS
+               if re.search(rf"^## {re.escape(s)}\s*$", text, re.M)}
     r["sections_present"] = sorted(present)
     r["sections_missing"] = [s for s in REQUIRED_SECTIONS if s not in present]
     r["optional_sections_missing"] = [s for s in OPTIONAL_SECTIONS if s not in present]
@@ -656,8 +671,11 @@ def audit(path):
                            # documentation of that state.
                            and not NOT_DOCUMENTED.search(line))
     hay = structured.lower()
-    r["states_documented"] = [w for w in STATE_WORDS if w in hay]
-    r["states_missing"] = [w for w in STATE_WORDS if w not in hay]
+    def documents(word):
+        return re.search(rf"(?<![a-z]){re.escape(word)}(?![a-z])", hay) is not None
+
+    r["states_documented"] = [w for w in STATE_WORDS if documents(w)]
+    r["states_missing"] = [w for w in STATE_WORDS if not documents(w)]
 
     # --- score ----------------------------------------------------------
     r["score"] = {
