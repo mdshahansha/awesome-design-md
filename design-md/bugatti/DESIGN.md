@@ -12,6 +12,8 @@ colors:
   muted-soft: "#666666"
   hairline: "#262626"
   hairline-strong: "#3a3a3a"
+  border-control: "#6b6b6b"
+  focus: "#5b7fa6"
   canvas: "#000000"
   surface-soft: "#0d0d0d"
   surface-card: "#141414"
@@ -111,6 +113,17 @@ spacing:
   xl: 40px
   xxl: 64px
   section: 120px
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-enter: cubic-bezier(0.05, 0.7, 0.1, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 80ms
 
 components:
   button-primary:
@@ -232,6 +245,8 @@ Display sizes use weight 400 (regular) — never bold. Visual emphasis comes fro
 - **Surface Elevated** (`{colors.surface-elevated}` — #1f1f1f): One step further from black, used for nested cards on rare dense pages.
 - **Hairline** (`{colors.hairline}` — #262626): The 1px divider tone. Visible but quiet. Used on table rows, between body sections, around card outlines.
 - **Hairline Strong** (`{colors.hairline-strong}` — #3a3a3a): A heavier divider used on the underside of input fields (input fields have no border — only an underline hairline).
+- **Border Control** (`{colors.border-control}` — #6b6b6b): **Prescribed, not extracted.** The real Bugatti hairlines fail WCAG 2.1 non-text contrast: `{colors.hairline}` measures 1.39:1 on `{colors.canvas}` and `{colors.hairline-strong}` measures 1.85:1, both below the 3:1 a component boundary requires. Those two tones are therefore scoped to **decoration only** — section rules, table rows, card outlines where the content itself carries the structure. Any hairline that is the *sole* boundary of an interactive control (the underline of `{component.text-input}`, the edge of a focusable card) uses `{colors.border-control}`, which measures 3.94:1 on `{colors.canvas}`, 3.65:1 on `{colors.surface-soft}`, 3.46:1 on `{colors.surface-card}` and 3.09:1 on `{colors.surface-elevated}`. This is an accessibility addition to the documented brand, not a Bugatti value.
+- **Focus** (`{colors.focus}` — #5b7fa6): **Prescribed, not extracted.** No Bugatti surface in the analyzed set showed a visible focus indicator, so none was measured. The prescribed ring is `{colors.link}` (#c3d9f3) deepened to a mid ice-blue so one ring serves every surface this file defines: 5.03:1 on `{colors.canvas}`, 4.66:1 on `{colors.surface-soft}`, 4.41:1 on `{colors.surface-card}`, 3.95:1 on `{colors.surface-elevated}` and 4.17:1 against `{colors.primary}` (white) where the ring sits on a white-filled or photo-blown-out element. A pure-white ring would be invisible on `{colors.primary}` and over bright photography, which is why the ring is not simply white; the ice-blue keeps it inside the one chromatic note the brand already permits.
 
 ### Text
 - **Ink / On Dark** (`{colors.on-dark}` — #ffffff): All headline and primary text on dark canvas.
@@ -345,45 +360,211 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 
 **`top-nav`** — A 56px-tall transparent nav bar overlaid on the hero photo at the top of every page. No fill, no border. Carries "MENU" at left, the centered **wordmark-display** ("BUGATTI" in 14px Bugatti Display with 6px tracking), and "STORE" at right with a small bag icon. All labels in `{typography.nav-link}` (Bugatti Monospace, 12px, 2px tracking, uppercase).
 
+- States: default · hover (label to `{colors.ink}` from `{colors.body}`, opacity only, no travel) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (opacity 0.7) · selected (current section label at `{colors.ink}`, no underline) · disabled (not applicable — nav items are never disabled) · loading and error: not applicable.
+
 **`wordmark-display`** — The "BUGATTI" wordmark itself. Bugatti Display at 14px, weight 400, 6px letter-spacing. The widest tracking in the system. Centered in the nav bar at every breakpoint.
+
+- States: default and focus-visible only (2px `{colors.focus}` ring when it links to the homepage). Genuinely a two-state element — no hover, pressed, disabled, loading, selected or error treatment; the wordmark never changes appearance.
 
 ### Buttons
 
 **`button-primary`** — The signature primary CTA. Background **transparent**, text `{colors.on-dark}` (white), 1px white outline, rounded `{rounded.pill}` (9999px), padding 14px × 32px, height 44px. Type `{typography.button}` — Bugatti Monospace, uppercase, 14px, 2.5px tracking. The transparent fill is unique to Bugatti — every other luxury-auto brand uses a filled or outlined-with-text-shift button. Bugatti's transparent pill IS the button.
 
+- States: default (transparent, 1px `{colors.ink}` outline) · hover (outline and label stay white; opacity 1 → 0.72 on the outline only, no fill, no scale) · focus-visible (2px `{colors.focus}` ring at 2px offset, outside the pill, drawn in addition to the white outline) · active/pressed (whole button opacity 0.6) · disabled (outline and label at `{colors.muted-soft}`, `pointer-events: none`; no contrast requirement per WCAG) · loading (label replaced by a 3-dot Bugatti Monospace sequence fading in sequence at `{motion.duration-slow}`, button width locked to its resting width so nothing reflows) · selected and error: not applicable.
+
 **`button-icon`** — Circular icon buttons (carousel arrows, share, language switcher). 40 × 40px, transparent background, white outline 1px, rounded `{rounded.full}`. Same outline-only treatment as the primary button.
 
+- States: default · hover (outline opacity 1 → 0.72) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (opacity 0.6) · disabled (outline and glyph at `{colors.muted-soft}`) · loading (carousel arrows disable while the next frame decodes) · selected and error: not applicable.
+
 **`text-link`** — Inline body links in `{colors.link}` (#c3d9f3, the only non-monochrome color in the system). Underlined by default. Type inherits `{typography.body-md}` (Bugatti Text Regular, serif).
+
+- States: default (underlined, `{colors.link}`) · hover (underline thickens 1px → 2px; colour unchanged) · focus-visible (2px `{colors.focus}` ring, 2px offset, radius 0) · active/pressed (opacity 0.7) · disabled, loading, selected, error: not applicable — inline links have no other states in this system.
 
 ### Cards & Containers
 
 **`hero-photo-band`** — Full-width black band with full-bleed automotive photography. The h1 in `{typography.display-xl}` sits center-aligned over the photo near the top, often paired with a small Bugatti Monospace caption (`{typography.caption-uppercase}`) below the headline and a single `{component.button-primary}` further down. Vertical padding 96px-200px depending on photo height.
 
+- States: default only, plus loading (photograph fades in from opacity 0 over `{motion.duration-emphasis}` behind a `{colors.canvas}` placeholder; the headline is painted immediately and never waits on the image). No hover, focus-visible, pressed, disabled, selected or error state — the band is not interactive; its inner `{component.button-primary}` carries those.
+
 **`career-callout-card`** — A small right-aligned card that floats over the hero photo on the homepage with a recruiting prompt ("Are you ready for a new adventure?"). Background `{colors.surface-card}`, rounded `{rounded.none}` (0px), padding `{spacing.md}` (16px), width 320px. Carries a small thumbnail at top, body line, and a `{typography.caption-uppercase}` link ("EXPLORE OUR OPPORTUNITIES").
+
+- States: default · hover (card opacity 1 → 0.88; the caption link's underline appears) · focus-visible (2px `{colors.focus}` ring on the whole card at 2px offset, since the card is one link target) · active/pressed (opacity 0.8) · disabled, loading, selected, error: not applicable.
 
 **`model-photo-card`** — Used in model showcases (Tourbillon page, model lineup grid). Background `{colors.canvas}` (no card surface — just photo on black), rounded `{rounded.none}`. Top: 16:9 or 21:9 hero shot of the model. Below: model name in `{typography.display-md}` (32px Bugatti Display, 2px tracking), short specs line in `{typography.caption-uppercase}` (11px Bugatti Monospace), a `{component.text-link}` ("DISCOVER").
 
+- States: default · hover (photo scales 1 → 1.03 over `{motion.duration-slow}`, clipped by the 0px-radius frame; nothing else moves) · focus-visible (2px `{colors.focus}` ring around the card, 2px offset) · active/pressed (card opacity 0.85, scale returns to 1) · loading (photo fades in; model name and spec line are already painted) · selected (in the lineup filter grid, the current model keeps a 1px `{colors.border-control}` frame) · disabled and error: not applicable.
+
 **`newsroom-article-card`** — Used on the newsroom page (newsroom.bugatti.com). Background `{colors.canvas}` with hairline border, rounded `{rounded.none}`, padding `{spacing.lg}` (24px). Carries a 16:9 thumbnail, a `{component.date-pill}` ("12. NOVEMBER 2025"), a `{typography.title-md}` headline, and a body excerpt in `{typography.body-md}` (Bugatti Text Regular serif).
+
+- States: default · hover (headline to `{colors.ink}`, thumbnail opacity 1 → 0.9) · focus-visible (2px `{colors.focus}` ring around the card, 2px offset) · active/pressed (card opacity 0.85) · loading (skeleton is a flat `{colors.surface-soft}` block with no shimmer — Bugatti has no shimmer vocabulary; the block fades out as content arrives) · error (if the feed fails, the grid is replaced by one `{typography.body-md}` line in `{colors.body}` — no red, the system has no error colour) · disabled and selected: not applicable.
 
 **`career-listing-row`** — Each row of the careers page job listing. Transparent background, padding 24px vertical, hairline divider between rows. Job title in `{typography.title-md}` (Bugatti Display 20px) at left; location + department in `{typography.caption-uppercase}` at right; chevron arrow (→) at far right.
 
+- States: default · hover (row opacity 1 → 0.85; the chevron translates 4px on the x-axis, `transform` only) · focus-visible (2px `{colors.focus}` ring inset to the row box, 2px offset) · active/pressed (opacity 0.75, chevron returns to rest) · loading (rows fade in staggered by `{motion.stagger-step}`) · error (a single `{typography.body-md}` line in `{colors.body}` replaces the list when the ATS feed fails) · disabled and selected: not applicable.
+
 **`spec-cell`** — Vehicle technical-spec display on model-detail pages (Tourbillon engine specs). Transparent background with hairline dividers between cells (not between cells inside a card). Each spec shows a value in `{typography.title-md}` at top and a label in `{typography.caption-uppercase}` below. Padding 24px vertical.
+
+- States: default only. The spec cell is static display type and genuinely has one state — no hover, focus-visible, pressed, disabled, loading, selected or error treatment. Where a spec table becomes a tab set, the tab control is a `{component.button-primary}` variant and carries that component's states.
 
 ### Inputs & Forms
 
-**`text-input`** — Standard text input on dark canvas. Background **transparent**, text `{colors.on-dark}`, 1px hairline-strong bottom border only (no top, left, right border), padding 12px × 0px, height 44px. Type `{typography.body-md}` (Bugatti Text Regular). Placeholder in `{colors.muted}`. Focus thickens the bottom border to white.
+**`text-input`** — Standard text input on dark canvas. Background **transparent**, text `{colors.on-dark}`, 1px bottom border only (no top, left, right border), padding 12px × 0px, height 44px. Type `{typography.body-md}` (Bugatti Text Regular). Placeholder in `{colors.muted}`.
+
+The underline is the input's only boundary, so it uses `{colors.border-control}` (#6b6b6b, 3.94:1 on `{colors.canvas}`) rather than the extracted `{colors.hairline-strong}` (#3a3a3a, 1.85:1), which fails the 3:1 non-text contrast minimum. The real Bugatti input underline is the failing tone; this is a documented, prescribed substitution, not an extracted value.
+
+- States: default (1px `{colors.border-control}` underline) · hover (underline to `{colors.body}`) · focus-visible (underline thickens to 2px `{colors.ink}` *and* a 2px `{colors.focus}` ring is drawn on the field box — the thickened underline alone is a white-on-black change that a 2px ring makes unambiguous for low-vision users) · active/pressed (same as focus-visible; a text field has no distinct pressed state) · disabled (underline and placeholder at `{colors.muted-soft}`, no caret) · loading (field locks and the submit `{component.button-primary}` carries the loading state) · error (underline to `{colors.warning}` #d4a017, 8.84:1 on `{colors.canvas}`, plus a `{typography.caption-uppercase}` message below in the same tone — the system has no red, so the amber warning tone carries validation) · selected: not applicable.
 
 ### Tags & Captions
 
 **`caption-overlay`** — Photo-overlay caption (e.g., "HONORING THE OEYRON AND ITS VISIONARY CREATOR"). Centered or left-aligned over photography in `{typography.caption-uppercase}` (Bugatti Monospace, 11px, 2px tracking, white).
 
+- States: default only — a non-interactive overlay label with genuinely one state.
+
 **`category-tag`** + **`date-pill`** — Both render as transparent inline labels in `{typography.caption-uppercase}`, color `{colors.muted}`. No background fill, no border. The "tag" is the type itself.
+
+- States: as static metadata, default only. Where `{component.category-tag}` is used as a newsroom filter it becomes interactive and carries: default · hover (label to `{colors.ink}`) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (opacity 0.7) · selected (label at `{colors.ink}` with a 1px `{colors.border-control}` underline) · disabled (label at `{colors.muted-soft}` when a category has no articles) · loading and error: not applicable.
 
 ### CTA / Footer
 
 **`cta-band-photo`** — A pre-footer "Discover Bugatti" band with full-bleed photography of a Bugatti car at speed and a centered headline in `{typography.display-md}` + a `{component.button-primary}` below. Vertical padding 80px. Inherits the editorial gravity of the hero through full-bleed photography.
 
+- States: default and loading (photograph fades in over `{motion.duration-emphasis}`) only; the band is not interactive. Its `{component.button-primary}` carries hover, focus-visible, pressed, disabled and loading.
+
 **`footer`** — Black footer that closes every page. Background `{colors.canvas}`, text `{colors.muted}`. 4-column link list at desktop covering Bugatti / Models / Heritage / Connect. Vertical padding 64px. Bottom row carries the copyright line in `{typography.body-sm}` (Bugatti Text Regular). The wordmark sits center-aligned at the very bottom. The footer never inverts.
+
+- States: the footer container itself is default-only. Each footer link carries: default (`{colors.muted}`, 7.37:1 on `{colors.canvas}`) · hover (to `{colors.ink}`) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (opacity 0.7) · selected (current page's link at `{colors.ink}`) · disabled, loading, error: not applicable.
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or choreography below was extracted from Bugatti.com; nothing in the analyzed screenshots records motion. Every value is an inference from the brand's static identity — near-pure black canvas, full-bleed automotive photography, weight-400 wide-tracked display type — mapped onto the **Cinematic** profile. Treat it as a defensible default, not as documentation of what Bugatti ships.
+
+### Why Cinematic
+
+The assignment is right for this file and needs no argument against another profile. The canvas is #000000, the identity is luxury automotive, and the pages are mostly photography with a single sentence of text — the exact signals the Cinematic profile exists for. The brand's own rules reinforce it: there is no accent colour to flash, no fill to invert, no shadow to lift, and no bold weight to snap to. With the entire static vocabulary removed, **opacity and slow scale on photography are the only expressive channels left**, which is what Cinematic prescribes. A Crisp 150ms state change would read as cheap against 120px section rhythm; a Playful overshoot would be an outright brand violation.
+
+### Tokens
+
+| Token | Value | Use |
+|---|---|---|
+| `{motion.duration-instant}` | 120ms | Opacity-only label changes; the shortest move in the system |
+| `{motion.duration-fast}` | 240ms | Hover and press feedback, exits |
+| `{motion.duration-base}` | 400ms | The default — dropdowns, toasts, list items |
+| `{motion.duration-slow}` | 600ms | Photo scale, modal and drawer entrance |
+| `{motion.duration-emphasis}` | 900ms | Full-bleed hero and route transitions; the slow reveal of a photograph |
+| `{motion.ease-standard}` | cubic-bezier(0.16, 1, 0.3, 1) | Long decelerate — the Cinematic signature; settles rather than stops |
+| `{motion.ease-enter}` | cubic-bezier(0.05, 0.7, 0.1, 1) | Entrances; even longer tail, no overshoot anywhere |
+| `{motion.ease-exit}` | cubic-bezier(0.4, 0, 1, 1) | Exits; accelerates away, always shorter than its entrance |
+| `{motion.stagger-step}` | 80ms | Between successive list items and between a photograph and its caption |
+
+### Inventory
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, links, rows, cards) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` (and `transform: translateX(4px)` on the career-row chevron only) | Opacity kept at `{motion.duration-instant}`; chevron travel removed |
+| Press / active | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity` | Unchanged — already opacity-only and under 150ms |
+| Focus-visible ring | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` | Ring appears instantly, no fade; it is never animated away |
+| Page / route transition | `{motion.duration-emphasis}` out-in; outgoing exit at `{motion.duration-slow}` | `{motion.ease-exit}` out, `{motion.ease-enter}` in | `opacity`; incoming hero photo `transform: scale(1.04 → 1)` | Cross-fade only at 150ms; no scale, no stagger |
+| Modal / drawer open | `{motion.duration-slow}` | `{motion.ease-enter}` | `opacity`; `transform: translateY(16px → 0)` for the modal, `translateX(100% → 0)` for the drawer | Opacity fade at 150ms; panel appears at its final position |
+| Modal / drawer close | `{motion.duration-fast}` | `{motion.ease-exit}` | Same properties, reversed | Opacity fade at 150ms |
+| Dropdown / menu open | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`; `transform: translateY(-8px → 0)`; items staggered by `{motion.stagger-step}` | Opacity at 150ms, no travel, no stagger |
+| Dropdown / menu close | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform` | Opacity at 150ms |
+| Toast in | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`; `transform: translateY(12px → 0)` | Opacity at 150ms, no travel; dwell time unchanged |
+| Toast out | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform` | Opacity at 150ms |
+| List enter (newsroom grid, career rows, spec cells) | `{motion.duration-base}` per item, `{motion.stagger-step}` between | `{motion.ease-enter}` | `opacity`; `transform: translateY(12px → 0)` | All items fade together at 150ms; no travel, no stagger |
+| List exit (filter change) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` | Opacity at 150ms |
+| Loading | 1400ms loop | `{motion.ease-standard}` | `opacity` on three Bugatti Monospace dots, 1 → 0.3, offset by `{motion.stagger-step}` | Loop frozen; a static `{typography.caption-uppercase}` "LOADING" label in `{colors.muted}` is shown instead |
+| Hero / model photo reveal | `{motion.duration-emphasis}` | `{motion.ease-enter}` | `opacity` 0 → 1; `transform: scale(1.04 → 1)` | Opacity at 150ms; no scale. The headline never waits on the image in either mode |
+
+### Rules
+
+- Animate `transform` and `opacity` only. Never animate `width`, `height`, `top`, `left` or `margin` — no exception in this system.
+- Every exit is shorter than its matching entrance (`{motion.duration-fast}` against `{motion.duration-slow}` or `{motion.duration-base}`).
+- Nothing animates on first paint in a way that delays content. Display type is painted at full opacity immediately; only the photograph behind it fades in.
+- There is **no ambient or infinite animation** anywhere except the loading indicator. Bugatti has no shimmer, no pulse, no parallax drift, no looping hero video treated as motion design. A perpetually moving element on this canvas would read as a consumer-tech site.
+- Scale is reserved for photography and never exceeds 1.04. Type never scales, never travels more than 16px, and never overshoots — an overshoot or a scale pop on a 400-weight wide-tracked Bugatti headline is a brand violation.
+- Nothing in the nav moves. The wordmark is fixed at every breakpoint and in every transition.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translateX / translateY), all scale, all stagger. */
+  /* Frozen:  the loading loop — replaced by a static LOADING label. */
+  /* Kept:    opacity cross-fades, capped at 150ms, with linear easing. */
+  *, *::before, *::after {
+    transition-duration: 150ms !important;
+    transition-property: opacity !important;
+    transition-timing-function: linear !important;
+    animation: none !important;
+  }
+}
+```
+
+Removed: all travel, all scale (including the hero photo's 1.04 → 1 reveal), all `{motion.stagger-step}` sequencing, and the loading loop. Kept: opacity cross-fades at 150ms or less, so route changes, modals, dropdowns, toasts and lists still read as transitions rather than as jumps. The focus ring is never animated in either mode, so focus behaviour is identical.
+
+## Accessibility
+
+### Measured contrast
+
+Computed with WCAG 2.1 relative luminance. Extracted brand values are frozen; prescribed additions are marked.
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` #ffffff on `{colors.canvas}` #000000 | 21.0:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-soft}` #0d0d0d | 19.44:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-card}` #141414 | 18.42:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-elevated}` #1f1f1f | 16.48:1 | 4.5:1 | Pass |
+| `{colors.body}` #cccccc on `{colors.canvas}` | 13.08:1 | 4.5:1 | Pass |
+| `{colors.muted}` #999999 on `{colors.canvas}` | 7.37:1 | 4.5:1 | Pass |
+| `{colors.muted}` on `{colors.surface-card}` | 6.47:1 | 4.5:1 | Pass |
+| `{colors.muted-soft}` #666666 on `{colors.canvas}` | 3.66:1 | 4.5:1 | **Fail** — legal / copyright tier only, see below |
+| `{colors.link}` #c3d9f3 on `{colors.canvas}` | 14.54:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` #000000 on `{colors.primary}` #ffffff | 21.0:1 | 4.5:1 | Pass |
+| `{colors.hairline}` #262626 on `{colors.canvas}` | 1.39:1 | 3.0:1 | **Fail** — extracted, scoped to decoration |
+| `{colors.hairline-strong}` #3a3a3a on `{colors.canvas}` | 1.85:1 | 3.0:1 | **Fail** — extracted, scoped to decoration |
+| `{colors.border-control}` #6b6b6b on `{colors.canvas}` | 3.94:1 | 3.0:1 | Pass — prescribed |
+| `{colors.focus}` #5b7fa6 on `{colors.canvas}` | 5.03:1 | 3.0:1 | Pass — prescribed |
+| `{colors.warning}` #d4a017 on `{colors.canvas}` | 8.84:1 | 4.5:1 | Pass |
+| `{colors.success}` #5fa657 on `{colors.canvas}` | 7.08:1 | 4.5:1 | Pass |
+
+**Where the real brand fails AA, plainly:**
+
+1. **Both extracted hairlines fail non-text contrast.** #262626 at 1.39:1 and #3a3a3a at 1.85:1 are far below 3:1. On the live site this matters most at `{component.text-input}`, where the underline is the field's *only* boundary — a sighted low-vision user cannot reliably see where the input is. This file keeps both tones as extracted facts, restricts them to decoration, and routes any load-bearing boundary to the prescribed `{colors.border-control}`.
+2. **`{colors.muted-soft}` #666666 fails body-text AA at 3.66:1.** It is defensible only as 18px+ / 14px-bold large text, and Bugatti uses it at 14px for legal and copyright lines, where it fails. The nearest passing value for 16px body is #757575 (4.56:1). Recorded for approval rather than changed, because it is an extracted brand tone.
+3. **No focus indicator was observed anywhere in the analyzed set.** If Bugatti ships only the browser default outline, that outline is a thin dark ring on a #000000 canvas and is effectively invisible — a WCAG 2.4.7 failure. `{colors.focus}` exists to close that gap and is prescribed, not extracted.
+
+### Focus ring visibility on every surface this file defines
+
+One ring serves the whole system, because the system has no light mode. `{colors.focus}` #5b7fa6, 2px wide at 2px offset, radius matching the host element (0px on cards and inputs, `{rounded.pill}` on buttons):
+
+| Surface the ring is drawn on | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.canvas}` #000000 | 5.03:1 | 3.0:1 | Pass |
+| `{colors.surface-soft}` #0d0d0d | 4.66:1 | 3.0:1 | Pass |
+| `{colors.surface-card}` #141414 | 4.41:1 | 3.0:1 | Pass |
+| `{colors.surface-elevated}` #1f1f1f | 3.95:1 | 3.0:1 | Pass |
+| `{colors.primary}` #ffffff (white-filled or blown-out photo highlight) | 4.17:1 | 3.0:1 | Pass |
+
+No `focus-on-dark` companion token is needed: every surface in this file is dark, and the single ring already clears 3:1 against white, which is the worst case it can land on when a focusable element sits over bright photography. Over mid-tone photography the ring is not guaranteed by a token — see Known Gaps.
+
+### Minimum tap target
+
+Documented sizes, not measured — there is no rendered page here, so no claim about real hit areas is valid.
+
+- `{component.button-primary}`: height 44px as specified, meeting the 44 × 44px AAA target.
+- `{component.text-input}`: height 44px.
+- `{component.button-icon}`: specified at exactly 40 × 40px, **below** the 44px AAA target and below the 24 × 24px AA minimum only by the AAA measure. It needs either a size increase to 44px or a transparent 44px hit area around the 40px visual.
+- `{component.career-listing-row}` and `{component.text-link}`: row padding and inline line height suggest an adequate target, but inline link hit areas cannot be verified from a document.
+
+### Reduced motion
+
+Honoured in full — see the `@media (prefers-reduced-motion: reduce)` rule above. Travel, scale and stagger are removed; opacity fades are capped at 150ms; the loading loop is frozen and replaced by a static label.
+
+### Other accessibility notes within scope
+
+- **Letter-spacing and reading:** display type runs at 2–6px tracking. That is a brand non-negotiable, but it is applied only to uppercase display and short monospace labels, never to running body copy, which sits at 0 tracking in `{typography.body-md}`. Uppercase wide-tracked text at 11px (`{typography.caption-uppercase}`) is the hardest type in the system to read and should never carry essential information alone.
+- **Colour is never the only channel.** The system has almost no colour to begin with, so state is carried by opacity, underline weight and ring presence. Validation uses `{colors.warning}` *plus* a text message, never the tone alone.
+- **No light mode exists.** Users who prefer light colour schemes get the black canvas regardless; `prefers-color-scheme` is not honoured, and that is a brand decision with a real accessibility cost for some users with astigmatism.
 
 ## Do's and Don'ts
 
@@ -439,7 +620,7 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 2. New components default to `{rounded.none}` (0px). Only `{component.button-primary}` and `{component.button-icon}` use pill / full radius.
 3. Variants live as separate entries in `components:`.
 4. Use `{token.refs}` everywhere — never inline hex.
-5. Never document hover. Default and Active/Pressed states only.
+5. Document every state a component really has, and say so when it has only one. Keep hover restricted to opacity and underline weight — a hover that changes fill, colour or scale on type is off-brand. Every focusable component gets a `{colors.focus}` ring.
 6. Display headlines stay UPPERCASE Bugatti Display 400 with 2-4px tracking. Body stays sentence-case Bugatti Text Regular (serif). Button labels stay Bugatti Monospace 2.5px tracking. The trinity does not blur.
 7. When in doubt about emphasis: bigger photography before bigger type.
 
@@ -447,7 +628,11 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 
 - The dembrandt frequency analyzer captured only 3 colors at root level (`#000000`, `#999999`, `#c3d9f3`). The white text (#ffffff) and dark surface tones (`#0d0d0d`, `#141414`, `#1f1f1f`) were inferred from screenshot — Bugatti's pages are so monochrome that the frequency-based analyzer didn't surface body text or surface tones as distinct palette entries.
 - The three Bugatti typefaces (Display, Text Regular, Monospace) are licensed to Bugatti and not available as web fonts publicly. Substitutes are documented in the typography section.
-- Animation and transition timings (photo carousel transitions, hover-reveal of menu, configurator animations) are not in scope.
+- Animation and transition timings (photo carousel transitions, hover-reveal of menu, configurator animations) were **not measured**. The entire Motion & Animation section is prescribed from the Cinematic profile and says so in its own first line. No duration, easing curve or choreography in this file is a Bugatti value.
+- `{colors.focus}` and `{colors.border-control}` are prescribed accessibility additions, not extracted brand tones. No focus indicator was observed in the analyzed set at all, and the real underline tone (`{colors.hairline-strong}`) fails non-text contrast.
+- Focus ring contrast is verified against the four flat surfaces this file defines and against white. It is **not** guaranteed over photography: a 2px ice-blue ring on a mid-tone grey car body may fall under 3:1. A per-image solution (a 1px `{colors.canvas}` outer stroke on the ring, or a scrim behind focusable overlay elements) needs a rendered page to verify and is out of scope here.
+- Tap-target, overflow, clipping and frame-rate claims cannot be made from a document. The 40px `{component.button-icon}` is flagged in Accessibility from its documented size only.
+- States for `{component.text-input}` error, `{component.newsroom-article-card}` loading and error, and the `{component.category-tag}` filter variant are prescribed from the brand's own vocabulary (opacity, underline, `{colors.warning}`), not extracted — the analyzed surfaces showed none of them.
 - Form validation states beyond the underline-only `{component.text-input}` are not extracted — error / success states are inferred from general standards, not from the analyzed surfaces.
 - The configurator surface (vehicle build pages with custom paint / interior pickers) was not in the analyzed URL set; its swatch grid, customization controls, and price-summary card are not documented here.
 - The German-language newsroom (newsroom.bugatti.com/de) shares the system with the English Bugatti.com surfaces — no design-system-level differences observed, only language localization.
