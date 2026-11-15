@@ -25,7 +25,7 @@ REQUIRED_COLOR_ROLES = {
     "text":     [r"^ink$", r"^text$", r"^text-primary$", r"^body$", r"^body-strong$",
                  r"^foreground$", r"^on-canvas$", r"^on-(light|cream|paper|white)$",
                  r"^ink-(strong|deep|black|primary)$"],
-    "text-dim": [r"^text-dim$", r"^muted$", r"^muted-",
+    "text-dim": [r"^text-dim$", r"^muted$", r"^muted-", r"^mute$", r"^mute-",
                  r"^ink-(muted|subtle|soft|tertiary|secondary|light)", r"^text-(secondary|muted|soft|tertiary)$",
                  r"^body-(soft|muted|secondary)$", r"^subtle$", r"^secondary$",
                  r"^on-dark-soft$", r"^caption$"],
@@ -319,6 +319,32 @@ def audit(path):
     check_all("text", "surface", 4.5, "body text on surface, all tones")
     check_all("text-dim", "surface", 4.5, "secondary text on surface, all tones")
     check_all("border", "surface", 3.0, "boundary on surface, all tones")
+
+    # Each theme's own ground, so a dark-mode boundary is measured against the
+    # dark canvas rather than silently skipped for belonging to another theme.
+    alt_grounds = {}
+    for k in colors:
+        if not re.search(r"(canvas|background|base|surface)", k):
+            continue
+        th = theme_of(k)
+        if th and th not in alt_grounds:
+            alt_grounds[th] = k
+    for th, ground in alt_grounds.items():
+        for role, minimum, label in (("border", 3.0, "boundary"),
+                                     ("text-dim", 4.5, "secondary text"),
+                                     ("text", 4.5, "body text")):
+            for pat in REQUIRED_COLOR_ROLES[role]:
+                for key in colors:
+                    if not re.match(pat, key) or "disabled" in key:
+                        continue
+                    if theme_of(key) != th:
+                        continue
+                    ratio = round(contrast(colors[key], colors[ground]), 2)
+                    if ratio < minimum:
+                        fails.append({"pair": f"{key} on {ground}",
+                                      "fg": colors[key], "bg": colors[ground],
+                                      "ratio": ratio, "required": minimum,
+                                      "role": f"{label}, {th} theme"})
     check_all("border", "canvas", 3.0, "boundary, all tones")
 
     # Semantic tones, measured as text on the canvas. Many are used as fills,
@@ -373,7 +399,7 @@ def audit(path):
     # above would drop, hiding every dark ground a ring lands on.
     ACCENTISH = re.compile(r"^(primary|accent|brand|cta|secondary|success|warning|"
                            r"error|danger|info|semantic|positive|negative|trading|"
-                           r"badge|price)")
+                           r"badge|price|commerce|buy|sale)")
     for props in parse_components(text).values():
         m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("backgroundColor") or "")
         if not m or m.group(1) not in colors or m.group(1) in surface_keys:
@@ -420,6 +446,10 @@ def audit(path):
         m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", v or "")
         if m:
             return colors.get(m.group(1))
+        # An inline rgba() fill states no ground; compositing it over the canvas
+        # manufactured failures for elements drawn on something else entirely.
+        if re.match(r"\s*rgba?\(", v or ""):
+            return None
         return v if re.fullmatch(r"#[0-9a-fA-F]{3,8}", v or "") else None
 
     typo = parse_nested(text, "typography")
