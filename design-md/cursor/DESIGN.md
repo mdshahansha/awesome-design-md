@@ -593,6 +593,7 @@ All travel (`translateX`, `translateY`) and all scale are removed; the element s
 | `{colors.ink}` on every timeline pastel (peach / mint / blue / lavender) | 7.24:1 – 8.31:1 | 4.5:1 |
 | `{colors.semantic-error}` on `{colors.canvas}` | 4.70:1 | 4.5:1 |
 | `{colors.hairline-control}` on `{colors.canvas}` | 3.13:1 | 3.0:1 |
+| `{colors.hairline-control}` on `{colors.surface-card}` | 3.36:1 | 3.0:1 |
 
 ### Measured contrast — real failures, disclosed
 
@@ -609,6 +610,9 @@ These are extracted brand values. They are not corrected in place, because a fal
 | `{colors.hairline-strong}` #cfcdc4 on `{colors.canvas}` | 1.48:1 | 3.0:1 | Decorative only. Not a control boundary. |
 | `{colors.hairline}` #e6e5e0 on `{colors.canvas}` | 1.18:1 | 3.0:1 | Decorative divider only. |
 | `{colors.hairline-soft}` #efeee8 on `{colors.canvas}` | 1.08:1 | 3.0:1 | Decorative divider only. |
+| `{colors.hairline-strong}` #cfcdc4 on `{colors.surface-card}` | 1.59:1 | 3.0:1 | Same tone measured on the white card — still decoration only. |
+| `{colors.hairline}` #e6e5e0 on `{colors.surface-card}` | 1.26:1 | 3.0:1 | Decorative divider inside cards. |
+| `{colors.hairline-soft}` #efeee8 on `{colors.surface-card}` | 1.16:1 | 3.0:1 | Decorative divider inside cards. |
 | `{colors.surface-card}` #ffffff on `{colors.canvas}` | 1.07:1 | — | The white-on-cream card edge is not a perceptible boundary on its own; every card therefore needs its hairline, and any card that is a control needs `{colors.hairline-control}`. |
 
 `{colors.semantic-success}` #1f8a65 measures 4.01:1 on `{colors.canvas}` — it fails AA for body text and is for 18.66px+ or for icons, not for running confirmation copy.

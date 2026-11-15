@@ -11,6 +11,8 @@ Scores before -> after (1-5), from the harness: tokens · refs · contrast · se
 | motion | 1 | 5 |
 | states | 1 | 5 |
 
+**Caveat on the scores:** `theme-audit/audit.py` was edited by another process *during* this review. The before-scores above are from the harness as it stood at the start; the after-scores are from the harness as it stands now. Mid-review it gained `check_all("border", "surface", ...)` and tightened `disclosed()` to require the stated ratio to match the measured one within 0.06, which surfaced three further real failures (the three hairlines measured on `surface-card`, at 1.16:1 / 1.26:1 / 1.59:1). Those are now disclosed in the file too. Anyone re-running this should expect the exact pair list to depend on which revision of the harness they have.
+
 All eight harness-reported defects were reproduced independently before any edit: `focus` was absent from `colors:`, the three hairline/canvas pairs and the four muted/canvas-and-card pairs measured exactly the ratios stated in the brief, both new sections were missing, and only `active` appeared in a structured Components line. The harness additionally flagged two component-level failures the brief did not list: `button-primary` (white on Cursor Orange, 3.52:1) and `timeline-pill-done` (white on gold, 3.16:1).
 
 ### Findings
@@ -79,6 +81,10 @@ All computed with WCAG 2.1 relative luminance in a stdlib-only python3 snippet; 
 | `focus` #26251e / `primary` #f54e00 | 4.37:1 | 3.0 | Pass |
 | `focus-on-dark` #f7f7f4 / `ink` #26251e | 14.33:1 | 3.0 | Pass |
 | `hairline-control` #8f8c82 / `canvas` | 3.13:1 | 3.0 | Pass |
+| `hairline-control` #8f8c82 / `surface-card` | 3.36:1 | 3.0 | Pass |
+| `hairline-strong` #cfcdc4 / `surface-card` | 1.59:1 | 3.0 | **Fail** — frozen, decoration only, disclosed |
+| `hairline` #e6e5e0 / `surface-card` | 1.26:1 | 3.0 | **Fail** — frozen, decoration only, disclosed |
+| `hairline-soft` #efeee8 / `surface-card` | 1.16:1 | 3.0 | **Fail** — frozen, decoration only, disclosed |
 | `on-primary` #ffffff / `primary` #f54e00 (`button-primary`) | 3.52:1 | 4.5 | **Fail** — frozen brand value, disclosed |
 | `on-primary` #ffffff / `timeline-done` #c08532 | 3.16:1 | 4.5 | **Fail** — disclosed |
 | `semantic-success` #1f8a65 / `canvas` | 4.01:1 | 4.5 | **Fail** — disclosed, 18.66px+ only |
@@ -120,9 +126,10 @@ Every exit is shorter than its entrance. Only `transform` and `opacity` are anim
 
 | File | Issue | Proposed fix |
 |---|---|---|
-| `theme-audit/audit.py` (~line 291, `acc_lines` / `disclosed`) | Disclosure matches any Accessibility line containing a ratio and the token's name as a substring. A line about `hairline-strong` also contains the substring `hairline`, so disclosing the strong tone silently discloses the plain one. Here every tone has its own row, so the result is correct, but the check is weaker than it looks. | Match on word boundaries: `rf"(?<![a-z0-9-]){re.escape(fg_name)}(?![a-z0-9-])"`. |
-| `theme-audit/audit.py` (~line 241, focus checks over `canvas`/`surface`/`accent`) | The focus ring is required to clear 3:1 against one representative `surface` only. A ring can pass while sitting at 2.79:1 on another real surface in the same file — `surface-strong` #e6e5e0 here, which is `badge-pill`'s fill. Cursor Orange would have passed the harness as a focus ring on that basis. | Route the focus check through `check_all` over every `surface`- and `canvas`-matching token, as the `border` and `text-dim` roles already are. |
-| `theme-audit/audit.py` (~line 361, `tokens` score) | `tokens` scores only on missing colour roles, so a file with no `shadow:` group whose prose states real shadow values still scores 5, contrary to SPEC section 1. | Add a shadow-group check gated on an `rgba(` / `box-shadow` match in the prose. Does not affect this file, which documents no shadows. |
+| `theme-audit/audit.py` (`disclosed`, in the block after `m_acc = re.search(r"^## Accessibility...`) | Disclosure matches any Accessibility line containing the token's name as a bare substring. A line about `hairline-strong` also contains the substring `hairline`, so a stated ratio for the strong tone can satisfy the plain one whenever the two ratios happen to fall within the 0.06 tolerance. | Match on word boundaries: `rf"(?<![a-z0-9-]){re.escape(fg_name)}(?![a-z0-9-])"`. |
+| `theme-audit/audit.py` (the `for bg in (...)` focus loop) | At the revision in place when this review started, the focus ring was checked against one representative `surface` only, so a ring could pass while sitting at 2.79:1 on another real surface in the same file — `surface-strong` #e6e5e0 here, which is `badge-pill`'s fill. Cursor Orange would have passed as a focus ring on that basis. The surrounding code has since been rewritten; worth confirming the current revision enumerates every surface token. | Route the focus check through `check_all` over every `surface`- and `canvas`-matching token, as `border` and `text-dim` already are. |
+| `theme-audit/audit.py` (`r["score"]`, `tokens` key) | `tokens` scores only on missing colour roles, so a file with no `shadow:` group whose prose states real shadow values still scores 5, contrary to SPEC section 1. | Add a shadow-group check gated on an `rgba(` / `box-shadow` match in the prose. Does not affect this file, which documents no shadows. |
+| `theme-audit/audit.py` (whole file) | The harness was modified by another process while this review was running, changing which pairs are checked and how disclosure is matched. Two reviewers of the same file can therefore produce different, both-correct scores. | Pin the harness for the duration of a review round, or stamp each report with the harness revision it was scored against. |
 | `theme-audit/SPEC.md` section 2 (contrast table, lines 72–80) | The table states flat minima, but the component check applies a size-aware threshold (`threshold_for`, 3:1 at 24px+ or 18.66px+/700). Table and implementation describe different rules, which matters here because the 3:1 carve-out is the only defence the orange CTA could have had. | State the large-text carve-out in the SPEC table, as the implementation already has it. |
 
 ### Needs approval
