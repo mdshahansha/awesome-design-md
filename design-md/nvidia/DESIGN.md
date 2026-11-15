@@ -15,6 +15,7 @@ colors:
   surface-elevated: "#1a1a1a"
   hairline: "#cccccc"
   hairline-strong: "#5e5e5e"
+  focus: "#5a8d00"
   body: "#1a1a1a"
   mute: "#757575"
   stone: "#898989"
@@ -161,6 +162,21 @@ spacing:
   xl: 24px
   xxl: 32px
   section: 64px
+
+shadow:
+  sticky: "0 0 5px 0 rgba(0,0,0,0.3)"
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.22, 1, 0.36, 1)
+  ease-enter: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-exit: cubic-bezier(0.5, 0, 0.75, 0)
+  stagger-step: 80ms
+  duration-reduced: 150ms
 
 components:
   button-primary:
@@ -338,6 +354,9 @@ The black-canvas hero and footer chapters are the system's "headline moments" �
 - **Hairline** (`{colors.hairline}` — `#cccccc`): 1px card border, table rule, divider between footer link sections.
 - **Hairline Strong** (`{colors.hairline-strong}` — `#5e5e5e`): 1px divider on dark surfaces (footer column rules, dark-mode card edges).
 
+### Focus
+- **Focus** (`{colors.focus}` — `#5a8d00`): **prescribed, not extracted.** The live site has no documented focus ring; its only focus signal is the 2px `{colors.primary}` input border, which measures 2.41:1 on `{colors.canvas}` and cannot be seen reliably. One mid-luminance ring is used rather than a light/dark pair, because the system runs white, `{colors.surface-soft}`, black and `{colors.surface-elevated}` grounds in the same page and `#5a8d00` clears 3:1 against all four (4.0:1 / 3.74:1 / 5.24:1 / 4.35:1). It is the brand's own pressed green, so the ring stays inside the one-accent rule. Drawn as a 2px ring **outside** the control with a 2px offset, so it is measured against the surface behind it. Over full-bleed hero photography, which has no measurable colour, the ring is two-tone: `{colors.focus}` with a 1px `{colors.on-dark}` outer edge.
+
 ### Text
 - **Ink** (`{colors.ink}` — `#000000`): headlines and body text on `{colors.canvas}`.
 - **Body** (`{colors.body}` — `#1a1a1a`): long-form paragraph text where pure black is too heavy.
@@ -424,7 +443,7 @@ Whitespace is structural, not atmospheric. Sections butt against each other with
 | 0 — Flat | No border, no shadow | Canvas-on-canvas blocks, hero chapter content, footer column body |
 | 1 — Hairline border | 1px solid `{colors.hairline}` | All cards on `{colors.canvas}`, table cells, comparison panels |
 | 2 — Hairline strong | 1px solid `{colors.hairline-strong}` | Dividers on `{colors.surface-dark}` (footer column rules, dark-card edges) |
-| 3 — Soft shadow | `0 0 5px 0 rgba(0,0,0,0.3)` | Sticky nav bottom edge when scrolled, sticky CTA bar — used very sparingly |
+| 3 — Soft shadow | `{shadow.sticky}` (`0 0 5px 0 rgba(0,0,0,0.3)`) | Sticky nav bottom edge when scrolled, sticky CTA bar — used very sparingly |
 
 NVIDIA's system has effectively no drop-shadow elevation in card or content surfaces. The only "shadow" in the extracted tokens is a subtle 5px ambient on sticky chrome bars. Cards do not lift; cards are flat rectangles with hairline borders.
 
@@ -455,7 +474,7 @@ The system is aggressively angular. Outside of avatar/icon circles, no element e
 
 ## Components
 
-> **No hover states documented** per system policy. Each spec covers Default and Active/Pressed only; variants live as separate `components:` entries in the front matter.
+> **No hover states documented** per system policy. Each spec covers Default and Active/Pressed only; variants live as separate `components:` entries in the front matter. The **Component States** table at the end of this section lists the full state set per component and marks every row as extracted or prescribed — nothing in it overrides an extracted value above.
 
 ### Buttons
 
@@ -570,6 +589,126 @@ The system is aggressively angular. Outside of avatar/icon circles, no element e
 **`link-inline`**
 - Body-prose anchor link: `{colors.link-blue}` text with underline. The ONLY blue in the system — appears nowhere except inline links inside `{typography.body-md}` paragraphs.
 
+### Component States
+
+Extracted columns come from the captured surfaces. Prescribed columns do not: NVIDIA's system policy documents no hover state and no focus ring, so those behaviours are specified here to make the document buildable and are labelled as such. "n/a" means the component genuinely has no such state.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `{component.button-primary}` | extracted | prescribed — `{colors.primary}` at 88% opacity | prescribed — 2px `{colors.focus}` ring, 2px offset | extracted — `{component.button-primary-active}` (`{colors.primary-dark}`) | extracted — `{component.button-disabled}` | prescribed — label holds, 2px `{colors.focus}` indeterminate bar at the button's lower edge | n/a | n/a |
+| `{component.button-outline}` | extracted | prescribed — border thickens to 2px, no fill | prescribed — 2px `{colors.focus}` ring, 2px offset | prescribed — border drops to `{colors.primary-dark}` | extracted — `{component.button-disabled}` | prescribed — as `{component.button-primary}` | n/a | n/a |
+| `{component.button-outline-on-dark}` | extracted | prescribed — border to `{colors.primary}` | prescribed — two-tone ring (`{colors.focus}` + 1px `{colors.on-dark}`) over hero imagery | prescribed — border to `{colors.primary-dark}` | prescribed — border and label to `{colors.stone}` | n/a | n/a | n/a |
+| `{component.button-ghost-link}` | extracted | prescribed — arrow glyph translates 4px right | prescribed — 2px `{colors.focus}` ring around label + arrow | prescribed — label to `{colors.primary-dark}` | prescribed — label to `{colors.stone}` | n/a | n/a | n/a |
+| `{component.pill-tab}` | extracted | prescribed — label to `{colors.primary-dark}` | prescribed — 2px `{colors.focus}` ring, 2px offset | prescribed — same treatment as selected | prescribed — label to `{colors.ash}` | n/a | extracted — `{component.pill-tab-active}` (inverts to `{colors.ink}`) | n/a |
+| `{component.text-input}` | extracted | prescribed — boundary to `{colors.mute}` | extracted — `{component.text-input-focused}`, 2px `{colors.primary}` border; prescribed addition: 2px `{colors.focus}` ring at 2px offset, because the extracted green border alone measures 2.41:1 on `{colors.canvas}` | n/a | prescribed — `{colors.surface-soft}` fill, `{colors.ash}` text | n/a | n/a | prescribed — 2px `{colors.error}` border plus `{typography.caption-sm}` message in `{colors.error}` |
+| `{component.search-input}` | extracted | prescribed — as `{component.text-input}` | prescribed — as `{component.text-input}` | n/a | n/a | prescribed — results area shows a `{colors.focus}` indeterminate bar | n/a | prescribed — as `{component.text-input}` |
+| `{component.product-card}` · `{component.feature-card}` · `{component.resource-card}` | extracted | prescribed — boundary to `{colors.mute}`, no lift and no shadow | prescribed — 2px `{colors.focus}` ring around the whole card when the card is one link | n/a | n/a | prescribed — skeleton block in `{colors.surface-soft}` at the image aspect, opacity pulse only | n/a | n/a |
+| `{component.badge-tag}` | extracted — static label, two states only (default and the disabled wash it inherits from a disabled card) | n/a | n/a | n/a | prescribed — `{colors.ash}` text | n/a | n/a | n/a |
+| `{component.corner-square}` | extracted — decorative, one state only | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+| `{component.primary-nav}` · `{component.sub-nav-strip}` links | extracted | prescribed — 2px `{colors.primary}` underline appears under the label | prescribed — 2px `{colors.focus}` ring; on `{colors.surface-dark}` the same ring is used (5.24:1) | prescribed — label to `{colors.primary-dark}` | n/a | n/a | prescribed — persistent 2px `{colors.primary}` underline | n/a |
+| `{component.link-inline}` | extracted | prescribed — underline thickens, colour holds at `{colors.link-blue}` | prescribed — 2px `{colors.focus}` ring, 2px offset | prescribed — no separate pressed colour | n/a | n/a | n/a | n/a |
+| `{component.hero-card-dark}` · `{component.cta-strip-dark}` · `{component.utility-bar}` · `{component.breadcrumb-bar}` · `{component.footer-section}` · `{component.callout-stat}` | extracted — containers, one state each; their children carry the states | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or choreography below was extracted from NVIDIA's pages; the values are the audit's **Cinematic** profile, assigned because NVIDIA is a hardware-flagship identity whose hero chapters are full-bleed photographic and 3D-rendered scenes with sparse type. Every value resolves to a `{motion.*}` token so this file stays comparable with its profile siblings.
+
+The profile fits the brand on one condition that is worth stating: NVIDIA's *chrome* is engineering-grade and should not feel slow. Cinematic timing is spent on the hero and content reveals; chrome state changes sit at `{motion.duration-instant}` and `{motion.duration-fast}`, the shortest rungs the profile provides. No value deviates from the profile block.
+
+Only `transform` and `opacity` are animated. Width, height, top, left and margin are never animated — the 2px geometry and the hairline grid must not reflow.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, cards, nav links) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` | Opacity change kept, at `{motion.duration-reduced}` |
+| Press (any button, pill tab) | `{motion.duration-instant}` | `{motion.ease-exit}` | `transform: scale(0.98)` | Scale removed; the `{colors.primary-dark}` fill swap happens with no transition |
+| Focus (ring appears) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` | Ring appears at full opacity with no transition — focus is never delayed |
+| Page / route transition | `{motion.duration-slow}` in | `{motion.ease-enter}` | `opacity` + `transform: translateY(16px → 0)` | Travel removed; opacity fade only, at `{motion.duration-reduced}` |
+| Modal / drawer (mobile nav drawer from the right, locale overlay) | `{motion.duration-base}` in · `{motion.duration-fast}` out | `{motion.ease-enter}` in · `{motion.ease-exit}` out | `opacity` + `transform: translateX(100% → 0)` | Travel removed; drawer cross-fades at `{motion.duration-reduced}` |
+| Dropdown (sub-nav select, search overlay) | `{motion.duration-fast}` in · `{motion.duration-instant}` out | `{motion.ease-enter}` in · `{motion.ease-exit}` out | `opacity` + `transform: translateY(-8px → 0)` | Travel removed; opacity only, at `{motion.duration-reduced}` |
+| Toast / inline validation message | `{motion.duration-base}` in · `{motion.duration-fast}` out | `{motion.ease-enter}` in · `{motion.ease-exit}` out | `opacity` + `transform: translateY(8px → 0)` | Travel removed; opacity only, at `{motion.duration-reduced}` |
+| List enter (card grid on scroll into view) | `{motion.duration-slow}`, `{motion.stagger-step}` between items | `{motion.ease-enter}` | `opacity` + `transform: translateY(24px → 0)` | Stagger and travel removed; all items fade together at `{motion.duration-reduced}` |
+| List exit (resource grid on filter change) | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform: translateY(-8px)` | Travel removed; opacity only, at `{motion.duration-reduced}` |
+| Loading (indeterminate bar, card skeleton) | `{motion.duration-emphasis}` per cycle, repeating | linear | `transform: scaleX()` on the 2px `{colors.focus}` bar; `opacity` pulse on skeleton blocks | Bar stops travelling and holds as a static 2px rule; skeleton keeps an opacity pulse at `{motion.duration-reduced}` |
+| Hero reveal (brand ambience, stated as such) | `{motion.duration-emphasis}` image · `{motion.duration-slow}` type, starting one `{motion.stagger-step}` later | `{motion.ease-enter}` | `transform: scale(1.04 → 1)` on the hero image, `opacity` on headline then CTA | Frozen — image renders at final scale, copy renders at full opacity, no reveal |
+
+Nothing in the table animates on first paint in a way that delays content: the hero image and headline are painted in place and the reveal runs on top of already-visible text, and the only repeating animation in the system is the loader plus the single hero reveal declared above as brand ambience.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translateX/translateY) and all scale, including the
+     hero reveal and the press scale. Frozen: the hero ambience, which renders
+     at its final state. Kept: opacity fades, capped at
+     {motion.duration-reduced} (150ms) whatever the profile's own base, and the
+     loader, which holds as a static bar with an opacity pulse. Focus rings
+     appear with no transition at all. */
+  *, *::before, *::after {
+    transition-duration: 150ms !important;   /* {motion.duration-reduced} */
+    animation-duration: 150ms !important;    /* {motion.duration-reduced} */
+    transition-property: opacity !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+```
+
+## Accessibility
+
+Ratios below are computed with WCAG 2.1 relative luminance from this file's own frontmatter hexes. Anything needing a rendered page — overlap, clipping, real tap-target size, focus-order — is out of scope for a document audit and is not claimed here.
+
+### Measured contrast, key pairs
+
+| Foreground / Background | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 21.0:1 | 4.5:1 | pass |
+| `{colors.body}` on `{colors.canvas}` | 17.4:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 19.6:1 | 4.5:1 | pass |
+| `{colors.on-dark}` on `{colors.surface-dark}` | 21.0:1 | 4.5:1 | pass |
+| `{colors.on-dark-mute}` (composited `#b3b3b3`) on `{colors.surface-dark}` | 10.02:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.primary}` | 8.71:1 | 4.5:1 | pass |
+| `{colors.mute}` on `{colors.canvas}` | 4.61:1 | 4.5:1 | pass |
+| `{colors.link-blue}` on `{colors.canvas}` | 8.71:1 | 4.5:1 | pass |
+| `{colors.hairline-strong}` on `{colors.canvas}` | 6.48:1 | 3.0:1 | pass |
+| `{colors.hairline-strong}` on `{colors.surface-dark}` | 3.24:1 | 3.0:1 | pass |
+| `{colors.focus}` on `{colors.canvas}` | 4.0:1 | 3.0:1 | pass |
+| `{colors.focus}` on `{colors.surface-soft}` | 3.74:1 | 3.0:1 | pass |
+| `{colors.focus}` on `{colors.surface-dark}` | 5.24:1 | 3.0:1 | pass |
+| `{colors.focus}` on `{colors.surface-elevated}` | 4.35:1 | 3.0:1 | pass |
+
+### Where the real brand fails AA — stated plainly
+
+These are extracted values and are left exactly as the brand uses them. The document's job is to say so, not to repaint them.
+
+| Foreground / Background | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.hairline}` `#cccccc` on `{colors.canvas}` | 1.61:1 | 3.0:1 | **fail** — the card, table and input boundary across the whole light canvas. NVIDIA's hairline grid is decorative-weight contrast. Scope `{colors.hairline}` to separation between non-interactive blocks; where a hairline is the *only* boundary of a control — `{component.text-input}`, `{component.search-input}` — use `{colors.mute}` (4.61:1) instead. That substitution is prescribed, not extracted. |
+| `{colors.primary}` `#76b900` as text on `{colors.canvas}` | 2.41:1 | 4.5:1 | **fail**, and it fails 3.0:1 for large text too. NVIDIA Green is a fill colour, not an ink colour, on white. |
+| `{component.button-ghost-link}` (`{colors.primary}` label on `{colors.canvas}`) | 2.41:1 | 4.5:1 | **fail** — the "Learn More →" affordance at the bottom of every card. The brand genuinely ships this. See Needs approval in the audit report for the nearest passing green. |
+| `{colors.warning}` `#df6500` on `{colors.canvas}` | 3.5:1 | 4.5:1 | **fail** for body text; clears 3.0:1, so it is defensible only at 18px+ or 14px+ bold. |
+| `{colors.warning-bright}` `#ef9100` on `{colors.canvas}` | 2.41:1 | 4.5:1 | **fail** at any size on light canvas. It is documented as the inverse warning tone: on `{colors.surface-dark}` it measures 8.72:1 and passes. Do not use it on `{colors.canvas}`. |
+| `{colors.stone}` `#898989` on `{colors.canvas}` | 3.5:1 | 4.5:1 | **fail** for body text. Documented as least-emphasis text and disabled state; WCAG sets no requirement on disabled, and as live text it is defensible only at 18px+ or 14px+ bold. |
+| `{colors.ash}` `#a7a7a7` on `{colors.canvas}` | 2.41:1 | 4.5:1 | **fail**. Only ever used for disabled icons and disabled button labels (`{component.button-disabled}`), which WCAG exempts. Never use it for live text. |
+
+Two further layering facts, both extracted: `{colors.surface-soft}` separates from `{colors.canvas}` at only 1.07:1 and `{colors.surface-elevated}` from `{colors.surface-dark}` at only 1.21:1, so neither layer is visible as a layer on its own. Both are read by the boundary drawn around them — `{colors.hairline}` on light, `{colors.hairline-strong}` on dark — which is why the 1.61:1 hairline above matters more in this system than its ratio suggests. Elevation here is expressed one way, as a 1px boundary; `{shadow.sticky}` is the single exception and is scoped to sticky chrome.
+
+### Focus ring visibility, per surface this file defines
+
+`{colors.focus}` (`#5a8d00`) is prescribed, and it is not a new brand colour: it reuses the tone the palette already owns as `{colors.primary-dark}`, the pressed green. It is drawn as a 2px ring **outside** the control with a 2px offset, so it is judged against the surface behind the control rather than against the control's own fill. One ring serves every surface instead of a light/dark pair, because this file runs both polarities inside a single page:
+
+- On `{colors.canvas}` (`#ffffff`) — 4.0:1. Pass.
+- On `{colors.surface-soft}` (`#f7f7f7`) — 3.74:1, covering `{component.breadcrumb-bar}`, `{component.sub-nav-strip}` and `{component.badge-tag}`. Pass.
+- On `{colors.surface-dark}` (`#000000`) — 5.24:1, covering `{component.primary-nav}`, `{component.utility-bar}`, `{component.cta-strip-dark}` and `{component.footer-section}`. Pass.
+- On `{colors.surface-elevated}` (`#1a1a1a`) — 4.35:1, covering nested footer panels. Pass.
+- Over full-bleed hero photography inside `{component.hero-card-dark}`, which has no measurable colour: two-tone ring — `{colors.focus}` with a 1px `{colors.on-dark}` outer edge, so one of the two edges always separates from the image.
+
+The extracted focus signal — a 2px `{colors.primary}` border on `{component.text-input-focused}` — measures 2.41:1 against `{colors.canvas}` and is not sufficient on its own. It is kept as the brand's documented appearance, with the `{colors.focus}` ring added around it.
+
+### Tap targets
+
+Documented from this file's own component heights, not measured on a rendered page: `{component.button-primary}` and `{component.text-input}` are specified at 44px, `{component.search-input}` at 40px, `{component.pill-tab}` at ~40px with padding extended to a 44px hit area. `{component.search-input}` and any 40px control sit below the 44×44px minimum and need their hit area extended in implementation. Footer link rows in `{component.footer-section}` are specified at ~36–44px depending on link length, so the short ones also fall short. Real sizes can only be confirmed in a browser.
+
+### Reduced motion
+
+Every motion value in this file is a `{motion.*}` token, and the `@media (prefers-reduced-motion: reduce)` rule in Motion & Animation removes all travel and scale, freezes the hero ambience, and caps the surviving opacity fades at `{motion.duration-reduced}` (150ms). Focus rings never animate, so a focus ring is never delayed or suppressed by that rule.
+
 ## Do's and Don'ts
 
 ### Do
@@ -634,7 +773,9 @@ All interactive elements meet WCAG AA (≥ 44×44px). `{component.button-primary
 ## Known Gaps
 
 - **Mobile screenshots not captured** — responsive behavior synthesizes NVIDIA's known mobile pattern (hamburger drawer, accordion footer, 1-up card grid, hero downscale) from desktop evidence and the documented breakpoint stack.
-- **Hover states not documented** by system policy.
+- **Hover states not documented** by system policy. The hover, focus-visible, loading, selected and error behaviours in the Component States table are prescribed by this audit, not extracted.
+- **Motion is prescribed, not measured.** No duration or easing in this file was taken from the live site; the `motion:` group is the audit's Cinematic profile block.
+- **`{colors.focus}` is prescribed.** NVIDIA documents no focus ring; the value, the 2px offset and the two-tone variant over hero photography are all specified by this audit.
 - **Dialog / modal styling** beyond the locale-selector overlay not visible in the captured surfaces.
 - **Form field styling** for full sign-up / contact forms is not present in the captured surfaces — only inline search and basic text inputs are documented.
 - **Login / authenticated chrome** not in the captured pages.
