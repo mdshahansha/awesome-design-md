@@ -183,7 +183,7 @@ enforce order, so without this the files drift apart section by section.
 | **Motion & Animation** | yes — new, missing from all 84 |
 | **Accessibility** | yes — new, missing from all 84 |
 | Do's and Don'ts | yes |
-| Responsive Behavior | yes — as a top-level `##`; where a file already carries it as a Layout subsection, **move** it verbatim, never duplicate it, promoting its child headings one level so the section reads at the same depth as its peers |
+| Responsive Behavior | yes — as a top-level `##`; where a file already carries it as a Layout subsection, **move** it verbatim, never duplicate it, promoting its child headings one level so the section reads at the same depth as its peers; rename the heading itself to the contract name where the file calls it something else (Responsive Strategy), and keep the body byte-identical — "verbatim" governs the content, not the heading |
 | Iteration Guide | optional |
 | Known Gaps | yes |
 
