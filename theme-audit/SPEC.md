@@ -38,7 +38,13 @@ parallel accessible token of section 2: that one has a real job — it is drawn
 where contrast is needed, and the frozen tone is scoped to decoration. An alias
 has no job but to match a regex. So where the file already owns a passing tone
 that does the boundary work, use it and add nothing; add a parallel token only
-when nothing in the palette can carry the job — if a role looks unsatisfied but
+when nothing in the palette can carry the job.
+
+Adding one does **not** hide the original failure, which several agents have
+worried about: the role's representative token only decides which name the
+role reports, while every tone in the role is measured separately. mydealz's
+extracted hairline is still reported at 1.2:1 and 1.31:1 after a passing
+`hairline-strong` took the role name — if a role looks unsatisfied but
 the palette plainly contains it under another name, that is a harness bug to
 report under Shared issues, not a token to invent. Brand documents should not
 carry tokens that exist only to please a regex:
