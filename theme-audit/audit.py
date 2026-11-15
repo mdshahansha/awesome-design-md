@@ -23,7 +23,7 @@ REQUIRED_COLOR_ROLES = {
                  r"^card$", r"^card-", r"^panel$", r"^elevated$"],
     "text":     [r"^ink$", r"^text$", r"^text-primary$", r"^body$", r"^body-strong$",
                  r"^foreground$", r"^on-canvas$", r"^on-(light|cream|paper|white)$", r"^ink-"],
-    "text-dim": [r"^muted$", r"^muted-", r"^text-(secondary|muted|soft|tertiary)$",
+    "text-dim": [r"^text-dim$", r"^muted$", r"^muted-", r"^text-(secondary|muted|soft|tertiary)$",
                  r"^body-(soft|muted|secondary)$", r"^subtle$", r"^secondary$",
                  r"^on-dark-soft$", r"^caption$"],
     "border":   [r"^hairline$", r"^hairline-", r"^border$", r"^border-", r"^divider$",

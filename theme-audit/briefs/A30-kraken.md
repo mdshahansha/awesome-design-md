@@ -2,7 +2,7 @@ You are Agent A30, the dedicated reviewer for the site file `kraken` in the repo
 
 Theme intent: Kraken's website is a clean, trustworthy crypto exchange that
 Motion profile: Calm
-File you may edit: `design-md/kraken/DESIGN.md` — ONLY this file. Everything else in the repo is read-only, including theme-audit/*, README.md and every other site's DESIGN.md.
+Files you may write: `design-md/kraken/DESIGN.md`, which you edit, and `theme-audit/reports/A30-kraken.md`, which you create. Nothing else: every other site's DESIGN.md, README.md, CONTRIBUTING.md and the rest of theme-audit/ (SPEC.md, audit.py, roster, briefs, other agents' reports) are read-only. Those two paths are yours and you are expected to write both.
 
 Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the token contract, the contrast thresholds, the section contract, the motion token block, the four motion profiles and their values, the motion rules, and the honest limits of this audit. Follow it exactly.
 
