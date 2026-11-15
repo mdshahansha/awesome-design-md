@@ -5,9 +5,11 @@ Scores before -> after (1-5), from the harness: tokens · refs · contrast · se
 | | tokens | refs | contrast | sections | motion | states |
 |---|---|---|---|---|---|---|
 | Before | 4 | 5 | 1 | 3 | 1 | 1 |
-| After | 5 | 5 | 1 | 5 | 5 | 5 |
+| After | 5 | 5 | 5 | 5 | 5 | 5 |
 
-Contrast stays at 1 because the harness clamps at `max(1, 5 - failures)`: failures dropped 7 → 6, but six are the unfixable `on-primary` × `brand-*` pairings and cannot be cleared without falsifying brand hexes. The one fixable failure (`hairline` on `canvas`, 1.21:1) is resolved by a parallel accessible token.
+**Both rows measured with the same harness build.** `theme-audit/audit.py` was upgraded mid-review (component-pair checking, all-tones role checking, an achromatic-accent exemption, and disclosure-based contrast scoring). The before-row above is the original file re-scored under the new build, so the two rows are comparable; the brief's quoted before-figures came from the older build and differ in the contrast dimension only.
+
+Contrast reaches 5 by disclosure, not by falsification: 11 failures remain and all 11 are now stated with their measured ratios in `## Accessibility`. No extracted brand hex was changed.
 
 ### Findings
 
@@ -19,7 +21,9 @@ Contrast stays at 1 because the harness clamps at `max(1, 5 - failures)`: failur
 | P0 | F | whole file | No `motion:` group, no Motion & Animation section, no reduced-motion rule. Iteration Guide item 5 actively said "Never document hover", and Don'ts forbade hover styling — the file was structurally hostile to interaction documentation. Fixed, and both contradictions rewritten. |
 | P0 | G | whole file | No Accessibility section. Added, with measured ratios, per-surface focus visibility, tap-target arithmetic and reduced-motion. |
 | P0 | H | Components | Only `active` was documented, and only incidentally via the `-active` frontmatter variants. Seven states never named. Fixed with a Component States table; four components are declared genuinely single-state. |
-| P1 | B | `colors.muted-soft` | #9a9a9a at 2.70:1 on canvas is documented for "captions, fine-print" — it fails AA at every size. The harness never flags it because `text-dim` resolves to `muted` (first-pattern-wins). Stated plainly in the file and scoped to decorative fine print. |
+| P1 | B | `colors.muted-soft` | #9a9a9a at 2.70:1 on canvas is documented for "captions, fine-print" — it fails AA at every size. Stated plainly in the file and scoped to decorative fine print. |
+| P1 | B | `colors.on-dark-soft` | #a0a0a0 at 2.51:1 on `{colors.canvas}`. Safe where it is actually used — 6.83:1 on `{colors.surface-dark}`, 5.70:1 on `{colors.surface-dark-elevated}` — but the file never said it was dark-surface-only. Now disclosed and scoped. |
+| P1 | B, E | `colors.hairline-soft` | #f0f0f0 at 1.10:1 on canvas — fainter than the already-failing `hairline` and never disclosed. Frozen, disclosed, and scoped to internal card dividers with an explicit "never a control boundary". |
 | P1 | B | `colors.muted` | 4.33:1 on `{colors.surface-strong}` — passes on canvas (5.20:1) but fails on the strongest cream band. The harness checks `text-dim` against `surface`, which resolves to `surface-soft` (4.97:1), so the failure was invisible. Noted with a fallback to `{colors.body}`. |
 | P1 | B | `success`, `warning`, `error` | 2.19:1, 2.06:1, 3.62:1 on canvas. All three were documented as text colours ("validation errors", "warning callouts"). Scoped to fills, icons and boundaries. |
 | P1 | C | cream stack | `canvas` → `surface-soft` is 1.046:1, `surface-soft` → `surface-card` 1.047:1, `canvas` → `surface-strong` only 1.20:1. The four-layer cream stack is not distinguishable by luminance. Not a defect to fix (it is the warm palette's defining property) but it was undocumented; now stated, with radius + boundary as the separating mechanism. |
@@ -72,10 +76,11 @@ All computed with `theme-audit/audit.py`'s WCAG 2.1 relative-luminance functions
 | `muted` / `surface-card` | 4.75:1 | 4.5:1 | Pass |
 | `muted` / `surface-strong` | 4.33:1 | 4.5:1 | **Fail** |
 | `muted-soft` #9a9a9a / `canvas` | 2.70:1 | 4.5:1 | **Fail** |
-| `on-primary` #ffffff / `primary` #0a0a0a | 21.00:1 | 4.5:1 | Pass |
+| `on-primary` #ffffff / `primary` #0a0a0a | 19.80:1 | 4.5:1 | Pass |
 | `on-dark` / `brand-teal` #1a3a3a | 12.28:1 | 4.5:1 | Pass |
 | `on-dark` / `surface-dark` #0a1a1a | 17.86:1 | 4.5:1 | Pass |
 | `on-dark-soft` #a0a0a0 / `surface-dark` | 6.83:1 | 4.5:1 | Pass |
+| `on-dark-soft` / `canvas` | 2.51:1 | 4.5:1 | **Fail** (never used on cream; disclosed) |
 | `on-dark-soft` / `surface-dark-elevated` #1a2a2a | 5.70:1 | 4.5:1 | Pass |
 | `on-primary` / `brand-pink` #ff4d8b | 3.14:1 | 4.5:1 | **Fail** (passes 3:1 large text) |
 | `on-primary` / `brand-lavender` #b8a4ed | 2.19:1 | 4.5:1 | **Fail** (combination not used) |
