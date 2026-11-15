@@ -124,6 +124,10 @@ useful information for anyone building on it.
 
 ## 3. Section contract
 
+**This table's order is the required document order.** Motion & Animation and
+Accessibility sit between Components and Do's and Don'ts. The harness does not
+enforce order, so without this the files drift apart section by section.
+
 | Section | Required |
 |---|---|
 | Overview | yes |
