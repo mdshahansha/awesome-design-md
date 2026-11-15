@@ -81,8 +81,39 @@ def parse_frontmatter(text):
             continue
         m = re.match(r"^  ([A-Za-z0-9][A-Za-z0-9_.-]*):\s*(.*)$", line)
         if m and cur:
-            groups[cur][m.group(1)] = m.group(2).strip().strip('"')
+            groups[cur][m.group(1)] = clean_value(m.group(2))
     return groups, body
+
+
+def clean_value(raw):
+    """Strip a trailing comment and surrounding quotes from a YAML scalar."""
+    v = raw.strip()
+    if v.startswith(('"', "'")):
+        q = v[0]
+        end = v.find(q, 1)
+        if end != -1:
+            return v[1:end]
+    return re.sub(r"\s+#.*$", "", v).strip().strip("\"'")
+
+
+def parse_components(text):
+    """components: entries and their properties, two indent levels down."""
+    if not text.startswith("---\n"):
+        return {}
+    fm = text[4:text.find("\n---\n", 4)]
+    m = re.search(r"^components:\s*$(.*?)(?=^[a-z][a-zA-Z0-9_-]*:|\Z)", fm, re.S | re.M)
+    if not m:
+        return {}
+    entries, cur = {}, None
+    for line in m.group(1).split("\n"):
+        e = re.match(r"^  ([A-Za-z0-9][A-Za-z0-9_.-]*):\s*$", line)
+        if e:
+            cur = e.group(1); entries[cur] = {}
+            continue
+        pr = re.match(r"^    ([A-Za-z0-9][A-Za-z0-9_.-]*):\s*(.*)$", line)
+        if pr and cur:
+            entries[cur][pr.group(1)] = clean_value(pr.group(2))
+    return entries
 
 
 def find_role(colors, patterns):
@@ -126,7 +157,7 @@ def audit(path):
     # Boundary and focus tokens are judged on the strongest variant the file owns.
     canvas_key = roles.get("canvas")
     if canvas_key:
-        for role in ("border", "focus"):
+        for role in ("border", "focus", "text-dim"):
             if roles.get(role):
                 roles[role] = find_role_strongest(
                     colors, REQUIRED_COLOR_ROLES[role], canvas_key)
@@ -155,12 +186,40 @@ def audit(path):
                "ratio": ratio, "required": minimum, "role": label}
         if ratio < minimum:
             fails.append(rec)
+    def check_all(role, bg_role, minimum, label):
+        """Every token in a role, not just its representative."""
+        bg = roles.get(bg_role)
+        if not bg:
+            return
+        for pat in REQUIRED_COLOR_ROLES[role]:
+            for key in colors:
+                if not re.match(pat, key) or "disabled" in key:
+                    continue
+                ratio = round(contrast(colors[key], colors[bg]), 2)
+                if ratio < minimum:
+                    fails.append({"pair": f"{key} on {bg}", "fg": colors[key],
+                                  "bg": colors[bg], "ratio": ratio,
+                                  "required": minimum, "role": label})
+
     check("text", "canvas", 4.5, "body text")
     check("text", "surface", 4.5, "body text on surface")
     check("text-dim", "canvas", 4.5, "secondary text")
     check("text-dim", "surface", 4.5, "secondary text on surface")
+    check_all("text-dim", "canvas", 4.5, "secondary text, all tones")
+    check_all("border", "canvas", 3.0, "boundary, all tones")
     check("border", "canvas", 3.0, "component boundary")
+    def achromatic(hexstr):
+        h = hexstr.lstrip("#")
+        h = "".join(c * 2 for c in h) if len(h) == 3 else h[:6]
+        rgb = [int(h[i:i + 2], 16) for i in (0, 2, 4)]
+        return max(rgb) - min(rgb) <= 8
+
     for bg in ("canvas", "surface", "accent"):
+        key = roles.get(bg)
+        # A monochrome brand's accent is its ink or its paper, not a surface a
+        # ring sits on; forcing a ratio there invents a colour the brand lacks.
+        if bg == "accent" and key and achromatic(colors[key]):
+            continue
         check("focus", bg, 3.0, f"focus indicator on {bg}")
 
     # Signal colours, each against the file's own on-accent ink. Disabled
@@ -176,6 +235,52 @@ def audit(path):
                 fails.append({"pair": f"{on_accent} on {key}", "fg": colors[on_accent],
                               "bg": colors[key], "ratio": ratio, "required": 4.5,
                               "role": "text on signal colour"})
+    # Every background/text pair the components block actually asserts — 1808
+    # of them across the repo, and the name-matching check saw none.
+    def deref(v):
+        m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", v or "")
+        if m:
+            return colors.get(m.group(1))
+        return v if re.fullmatch(r"#[0-9a-fA-F]{3,8}", v or "") else None
+
+    comp_fails = []
+    for name, props in parse_components(text).items():
+        if "disabled" in name:          # WCAG sets no requirement on disabled
+            continue
+        bg, fg = deref(props.get("backgroundColor")), deref(props.get("textColor"))
+        if not bg or not fg:
+            continue
+        ratio = round(contrast(fg, bg), 2)
+        if ratio < 4.5:
+            comp_fails.append({"component": name, "fg": fg, "bg": bg,
+                               "ratio": ratio, "required": 4.5})
+    # Disclosure: a failure named in the Accessibility section, by token or by
+    # hex, is documented rather than hidden. SPEC section 2 asks for exactly
+    # that where the value is extracted and frozen.
+    m_acc = re.search(r"^## Accessibility\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
+    acc = (m_acc.group(1) if m_acc else "").lower()
+
+    def disclosed(f):
+        if not acc:
+            return False
+        fg_name = f["pair"].split(" on ")[0] if "pair" in f else f.get("component", "")
+        return fg_name.lower() in acc or f["fg"].lower() in acc
+
+    seen, deduped = set(), []
+    for f in fails:
+        k = (f["pair"], f["required"])
+        if k not in seen:
+            seen.add(k); deduped.append(f)
+    fails[:] = sorted(deduped, key=lambda f: f["ratio"])
+    for f in fails:
+        f["disclosed"] = disclosed(f)
+    for f in comp_fails:
+        f["disclosed"] = disclosed(f)
+    r["component_contrast_failures"] = comp_fails
+    r["contrast_unresolved"] = [f for f in fails if not f["disclosed"]] + \
+                               [f for f in comp_fails if not f["disclosed"]]
+    r["contrast_disclosed"] = [f for f in fails if f["disclosed"]] + \
+                              [f for f in comp_fails if f["disclosed"]]
     r["contrast_failures"] = fails
 
     # --- motion ---------------------------------------------------------
@@ -222,7 +327,10 @@ def audit(path):
     r["score"] = {
         "tokens":   5 if not r["roles_missing"] else max(1, 5 - len(r["roles_missing"])),
         "refs":     5 if not r["dangling_refs"] else 2,
-        "contrast": 5 if not fails else max(1, 5 - len(fails)),
+        # Scored on undisclosed failures only: documenting a frozen brand
+        # failure is the required outcome, not a deduction.
+        "contrast": 5 if not r["contrast_unresolved"]
+                    else max(1, 5 - len(r["contrast_unresolved"])),
         "sections": max(1, 5 - len(r["sections_missing"])),
         "motion":   5 if (r["has_motion_section"] and not r["motion_keys_missing"]
                           and r["has_reduced_motion"]) else
@@ -262,7 +370,10 @@ def main():
         issues = []
         if r["roles_missing"]:      issues.append(f"roles:{','.join(r['roles_missing'])}")
         if r["dangling_refs"]:      issues.append(f"dangling:{len(r['dangling_refs'])}")
-        if r["contrast_failures"]:  issues.append(f"contrast:{len(r['contrast_failures'])}")
+        if r["contrast_unresolved"]:
+            issues.append(f"contrast-undisclosed:{len(r['contrast_unresolved'])}")
+        if r["contrast_disclosed"]:
+            issues.append(f"(disclosed:{len(r['contrast_disclosed'])})")
         if not r["has_motion_section"]: issues.append("no-motion-section")
         if r["layout_animation_mentions"]: issues.append("animates-layout-props")
         print(f"{r['site']:16} {s['tokens']:>4} {s['refs']:>4} {s['contrast']:>4} "

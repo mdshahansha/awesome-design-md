@@ -14,7 +14,7 @@
 | A07 | `bmw-m` | A motorsport-engineering interface anchored on a near-black canvas with | `design-md/bmw-m/DESIGN.md` | Cinematic |  |
 | A08 | `bmw` | BMW's corporate site — distinct from BMW M's motorsport-bombastic | `design-md/bmw/DESIGN.md` | Cinematic |  |
 | A09 | `bugatti` | An austere luxury-automotive interface that uses near-pure black canvas | `design-md/bugatti/DESIGN.md` | Cinematic |  |
-| A10 | `cal` | A clean, calendar-software-first interface anchored on white canvas with | `design-md/cal/DESIGN.md` | Playful |  |
+| A10 | `cal` | A clean, calendar-software-first interface anchored on white canvas with | `design-md/cal/DESIGN.md` | Calm |  |
 | A11 | `claude` | A warm-canvas editorial interface for Anthropic's Claude product. The | `design-md/claude/DESIGN.md` | Crisp |  |
 | A12 | `clay` | A vibrant claymation-meets-data interface for Clay.com (GTM data-orchestration platform) | `design-md/clay/DESIGN.md` | Playful |  |
 | A13 | `clickhouse` | A high-performance database interface anchored on near-pure black canvas | `design-md/clickhouse/DESIGN.md` | Crisp |  |
@@ -93,6 +93,6 @@
 ## Profile distribution
 
 - **Crisp**: 30
+- **Calm**: 20
 - **Cinematic**: 20
-- **Calm**: 19
-- **Playful**: 15
+- **Playful**: 14

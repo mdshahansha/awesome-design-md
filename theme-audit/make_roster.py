@@ -16,6 +16,10 @@ PLAYFUL_SIGNAL = re.compile(
     r"illustration|playful|friendly|colorful|colourful|whimsical|mascot|"
     r"hedgehog|multi-colour|multi-color|pastel|candy|rainbow", re.I)
 
+# Agents A03 and A10 each argued their file out of Playful on evidence from the
+# file itself; rule 3 had been firing on palette size rather than saturation and
+# interactive role. Overrides win over every signal below.
+CALM_OVERRIDE = {"airtable", "cal"}
 AUTOMOTIVE = {"bmw", "bmw-m", "bugatti", "ferrari", "lamborghini", "renault", "tesla"}
 DEVTOOL = {"cursor", "expo", "raycast", "superhuman", "vercel", "warp", "ollama",
            "opencode.ai", "clickhouse", "composio", "hashicorp", "mongodb",
@@ -74,6 +78,8 @@ def intent(site, groups, text):
 
 
 def profile(site, groups, text):
+    if site in CALM_OVERRIDE:
+        return "Calm"
     if site in CINEMATIC:
         return "Cinematic"
     if site in DEVTOOL:

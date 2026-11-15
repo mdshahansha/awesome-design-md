@@ -48,7 +48,18 @@ Required colour roles. A role is satisfied by any key matching its pattern, so
 Where a file documents both light and dark signature surfaces, one ring cannot
 serve both: a blue that passes on white can sit at 1.2:1 on a coral card. Such a
 file defines `focus` **and** `focus-on-dark`, and its Accessibility section
-states which surface each one is drawn on. The ring must reach 3:1 against every
+states which surface each one is drawn on.
+
+Polarity naming breaks down in two real cases, so prefer the simpler answer
+where it works. A monochrome brand whose accent **is** its ink or its paper has
+no coloured surface for a ring to sit on: use the brand's own ink or paper with
+a mandatory offset of the opposite polarity, and do not invent a chromatic ring
+for a brand whose first rule is that it has no accent colour. A brand with
+three surface polarities, or a dark canvas plus a near-white accent band, is
+better served by one mid-luminance ring that clears 3:1 against all of them
+than by a pair named for light and dark. Over full-bleed photography, which has
+no measurable colour, specify a two-tone ring: the brand colour with a 1px
+outer edge in the opposite polarity. The ring must reach 3:1 against every
 surface it can appear over, not just the canvas.
 
 Every `{group.token}` in the prose must resolve to a key in that file's
@@ -79,6 +90,12 @@ alongside it (`hairline-strong`, `divider` versus a control boundary), scope the
 original to decoration in the prose, and label the new token as prescribed. Then
 say plainly in the file that the real brand fails AA at that point. That is the
 useful fact for anyone building on the document.
+
+**A disclosed failure is a handled failure.** The harness scores contrast on
+*undisclosed* failures only: name the failing pair in the Accessibility section,
+with its measured ratio, and it stops counting against the file. That is the
+intended outcome for every frozen value — the document's job is to tell the
+truth about the brand, not to score well.
 
 **Do not change a brand's identity colour to pass.** These files document real
 brands; falsifying a hex makes the document wrong. A failing pair is recorded
@@ -127,7 +144,67 @@ motion:
   stagger-step: 40ms
 ```
 
-Values are per profile (§5), not identical across files.
+Values are per profile. Use the profile's block verbatim, so the same
+interaction is comparable across every file that shares a profile:
+
+**Crisp**
+```yaml
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+```
+
+**Calm**
+```yaml
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 500ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
+```
+
+**Playful**
+```yaml
+motion:
+  duration-instant: 70ms
+  duration-fast: 130ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 450ms
+  ease-standard: cubic-bezier(0.3, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 60ms
+```
+
+**Cinematic**
+```yaml
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.22, 1, 0.36, 1)
+  ease-enter: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-exit: cubic-bezier(0.5, 0, 0.75, 0)
+  stagger-step: 80ms
+```
+
+Deviate from a value only with a reason stated in the file, and never to the
+point where two files sharing a profile stop feeling like siblings.
 
 ## 5. Motion profiles
 
@@ -143,7 +220,10 @@ its own file.
 
 Assignment rule, applied in order:
 
-1. Dark canvas + luxury/automotive/hardware identity → **Cinematic**
+1. Luxury, automotive, hardware-flagship, gaming-console or aerospace identity
+   → **Cinematic**, whatever the canvas polarity. A white-canvas luxury brand is
+   still cinematic; the tell is full-bleed photography, sparse type and a slow
+   reveal, not a dark background.
 2. Terminal, IDE, infra or developer-tool identity → **Crisp**
 3. Saturated multi-colour or illustration-led consumer identity → **Playful**.
    Judge this on saturation *and role*, not on how many colours the palette
