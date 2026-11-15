@@ -26,8 +26,8 @@ no screenshot. So:
 ## 1. Frontmatter token contract
 
 Every file carries a YAML block. Required groups: `colors`, `typography`,
-`spacing`, `rounded`, `components`, and now `motion`. Add a `shadow:` group
-where the file documents real shadow values in its prose — several state an
+`spacing`, `rounded`, `components`, and now `motion`. A `shadow:` group is
+required only where the file documents real shadow values in its prose — several state an
 `rgba(...)` elevation with no token to reference, which is why a `{shadow.small}`
 reference once pointed at nothing.
 

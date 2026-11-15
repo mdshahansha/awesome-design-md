@@ -182,11 +182,26 @@ def audit(path):
     # --- contrast -------------------------------------------------------
     fails = []
 
+    # Only treat a light/dark marker as a THEME when the file actually has an
+    # alternate-theme surface. In 36 of 84 files it is just a tone suffix
+    # (border-light, m-blue-dark), and reading those as a separate theme
+    # silenced real failures — reported by agent A14.
+    dual_theme = any(re.match(r"^(canvas|background|bg|base|surface)", k)
+                     and re.search(r"(light|dark)", k) for k in colors)
+
     def theme_of(key):
-        """Which theme a token belongs to, by name. None means the default one."""
-        if re.search(r"(^|[-_])on-dark|dark([-_]|$)|[-_]dark", key):
+        """Which theme a token belongs to. None means the file's default."""
+        # An on-dark / on-light ink declares its own target surface, so it is
+        # theme-scoped whether or not the file has a second theme.
+        if re.search(r"(^|[-_])on-dark($|[-_])", key):
             return "dark"
-        if re.search(r"(^|[-_])on-light|light([-_]|$)|[-_]light", key):
+        if re.search(r"(^|[-_])on-light($|[-_])", key):
+            return "light"
+        if not dual_theme:
+            return None
+        if re.search(r"dark($|[-_])|[-_]dark", key):
+            return "dark"
+        if re.search(r"light($|[-_])|[-_]light", key):
             return "light"
         return None
 
@@ -331,8 +346,12 @@ def audit(path):
         for m in re.finditer(r"animat\w*[^.\n]{0,60}?\b(width|height|top|left|margin)\b",
                              line, re.I):
             # Look at the clause leading up to the match; a prohibition is fine.
-            lead = line[max(0, m.start() - 80):m.start() + 10]
-            if not NEGATED.search(lead):
+            # Scan the whole clause, both sides: a prohibition can put its
+            # negation after the verb just as easily as before it.
+            start = line.rfind(".", 0, m.start()) + 1
+            end = line.find(".", m.end())
+            clause = line[start:end if end != -1 else len(line)]
+            if not NEGATED.search(clause):
                 bad.add(m.group(1).lower())
     for m in re.finditer(r"transition:[^;`\n]*?\b(width|height|top|left|margin)\b",
                          text, re.I):
