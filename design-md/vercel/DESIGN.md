@@ -40,6 +40,27 @@ colors:
   gradient-ship-end: "#f9cb28"
   selection-bg: "#171717"
   selection-fg: "#f2f2f2"
+  focus: "#0070f3"
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
+
+shadow:
+  level-0: "none"
+  level-1: "0 0 0 1px #00000014 inset"
+  level-2: "0px 1px 1px #00000005, 0px 2px 2px #0000000a, 0 0 0 1px #00000014 inset"
+  level-3: "0px 2px 2px #0000000a, 0px 8px 8px -8px #0000000a, 0 0 0 1px #00000014 inset"
+  level-4: "0px 2px 2px #0000000a, 0px 8px 16px -4px #0000000a, 0 0 0 1px #00000014 inset"
+  level-5: "0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px #00000014 inset"
 
 typography:
   display-xl:
@@ -419,14 +440,15 @@ Surfaces use a four-step ladder: `{colors.canvas}` (pure white for cards), `{col
 - **Canvas** (`{colors.canvas}` — `#ffffff`): The pure-white card / dialog / modal surface.
 - **Canvas Soft** (`{colors.canvas-soft}` — `#fafafa`): The default page background — 98 % white. Almost every section sits on this tone.
 - **Canvas Soft 2** (`{colors.canvas-soft-2}` — `#f5f5f5`): A slightly deeper inset surface for "code editor inner background", template-card hover states, and dropdown menus.
-- **Hairline** (`{colors.hairline}` — `#ebebeb`): 1 px dividers — table rows, card borders, input borders.
-- **Hairline Strong** (`{colors.hairline-strong}` — `#a1a1a1`): The 500-level gray, used as the slightly-stronger divider on light bands and as the deemphasised text color.
+- **Hairline** (`{colors.hairline}` — `#ebebeb`): 1 px dividers — table rows, card borders, input borders. **Extracted and frozen, and it fails WCAG 1.4.11 as a boundary**: 1.19:1 on `{colors.canvas}` and 1.14:1 on `{colors.canvas-soft}`, against the 3.0:1 a non-text boundary needs. Scope it to decoration — row rules and card edges that only group content visually. Where a hairline is the *only* boundary of an interactive control (`form-input`, `nav-cta-ask-ai`, `icon-button-circular`), draw the boundary in `{colors.mute}` (3.54:1 / 3.40:1 — the palette already owns a passing tone, so nothing new is invented) and keep `{colors.hairline}` for the decorative rules.
+- **Hairline Strong** (`{colors.hairline-strong}` — `#a1a1a1`): The 500-level gray, used as the slightly-stronger divider on light bands and as the deemphasised text color. Also extracted and frozen, and also short of 3.0:1 on light grounds (2.58:1 / 2.48:1) — it is not a substitute for `{colors.mute}` where a boundary must be seen. It does clear 3:1 on the dark band (6.94:1 on `{colors.primary}`).
 
 ### Text
 - **Ink** (`{colors.ink}` — `#171717`): Every heading and body paragraph on light surfaces.
 - **Body** (`{colors.body}` — `#4d4d4d`): Secondary text — sub-headings, body captions, nav-link inactive text, footer column body.
-- **Mute** (`{colors.mute}` — `#888888`): Lowest-priority text — placeholder text, fine print, low-key labels.
-- **On Primary** (`{colors.on-primary}` — `#ffffff`): All text on `{colors.primary}` surfaces.
+- **Mute** (`{colors.mute}` — `#888888`): Lowest-priority text — placeholder text, fine print, low-key labels. **Extracted and frozen, and it fails AA as body text**: 3.54:1 on `{colors.canvas}`, 3.40:1 on `{colors.canvas-soft}`, against 4.5:1. It clears the 3:1 bar for non-text, so it is the correct tone for a *boundary* that must be seen; as text, demote to `{colors.body}` (8.45:1) for anything a reader has to read, and keep `{colors.mute}` for placeholder glyphs inside a focused field.
+- **On Primary** (`{colors.on-primary}` — `#ffffff`): All text on `{colors.primary}` surfaces (17.93:1).
+- **Focus** (`{colors.focus}` — `#0070f3`): The focus ring. **Prescribed as a role binding, not a new brand colour** — it reuses the existing `{colors.link}` / `{colors.success}` hex unchanged, because a developer platform's ring should read as the same blue its links do. One mid-luminance ring serves all four grounds this file defines; see Accessibility for the measured ratios and the mandatory offset.
 
 ### Semantic
 - **Success / Link** (`{colors.success}` — `#0070f3`): The brand's legacy success indicator doubles as the primary link color. Visible underline-on-hover for inline body links.
@@ -435,8 +457,8 @@ Surfaces use a four-step ladder: `{colors.canvas}` (pure white for cards), `{col
 - **Error** (`{colors.error}` — `#ee0000`): Validation red for destructive actions and form errors.
 - **Error Soft** (`{colors.error-soft}` — `#f7d4d6`): Soft pastel red for destructive-state backgrounds.
 - **Error Deep** (`{colors.error-deep}` — `#c50000`): Pressed / deep destructive state.
-- **Warning** (`{colors.warning}` — `#f5a623`): Caution / pending status indicator.
-- **Warning Soft** (`{colors.warning-soft}` — `#ffefcf`) / **Warning Deep** (`{colors.warning-deep}` — `#ab570a`): Background + pressed variants.
+- **Warning** (`{colors.warning}` — `#f5a623`): Caution / pending status indicator. **Fill and icon only.** Extracted and frozen, and at 2.03:1 on `{colors.canvas}` it fails AA by a wide margin as text — it is an amber at near-paper luminance. Set warning *text* in `{colors.warning-deep}` (5.12:1), which the palette already owns; `{colors.warning}` stays the status dot, the pending bar and the band fill. On the dark band it is fine (8.85:1 on `{colors.primary}`).
+- **Warning Soft** (`{colors.warning-soft}` — `#ffefcf`) / **Warning Deep** (`{colors.warning-deep}` — `#ab570a`): Background + pressed variants. `{colors.warning-deep}` is also the warning text tone on light grounds, per the note above.
 
 ### Brand Gradient
 The brand's signature decoration is a three-pair gradient stack:
@@ -507,34 +529,6 @@ The two primary faces are proprietary (custom-cut for the brand). Open-source su
 ### Whitespace Philosophy
 The mesh gradient does most of the heavy decorative lifting; whitespace separates the bands. Section spacing is generous — `{spacing.4xl}` to `{spacing.5xl}` between bands lets the gradient breathe. Inside a card, the headline/paragraph stack is tight (`{spacing.xs}` 8 px gap), then a wider gap before the CTA cluster. The page reads as engineered — large gaps + tight interior, never the other way around.
 
-### Responsive Strategy
-
-#### Breakpoints
-
-| Name | Width | Key Changes |
-|---|---|---|
-| Mobile | < 600px | Hero stacks; nav collapses to hamburger; 3-up feature grids drop to 1-up; tab pill row enables horizontal scroll. |
-| Tablet | 600–959px | 3-up grids drop to 2-up; nav still horizontal. |
-| Desktop | 960–1199px | Full 3-up grids; pricing 3-up. |
-| Wide | 1200–1399px | Container caps at 1400 px content width. |
-| Ultra-wide | ≥ 1400px | Content stays centred at 1400 px; bands stretch edge-to-edge in colour but content holds the max-width. |
-
-#### Touch Targets
-The `button-primary` pill renders at ~32 px tall in nav and ~48 px tall in marketing contexts. Marketing CTAs comfortably meet WCAG AAA at all breakpoints; nav buttons inflate touch area through `{spacing.xs}` padding on mobile to meet the 44 × 44 px floor.
-
-#### Collapsing Strategy
-- **Nav**: full link row + Ask AI / Log In / Sign Up pills at desktop. Collapses to logo + hamburger at mobile with the menu opening as a full-overlay.
-- **Hero**: mesh gradient stays centred; headline + body stack vertically at all breakpoints (the brand doesn't use a split-hero pattern).
-- **Three-feature row**: 3-up → 2-up → 1-up at the breakpoints above; cards keep their `{rounded.md}` 8 px shape across all viewports.
-- **Pricing card grid**: 3-up at desktop, vertical stack at mobile with `pricing-card-featured` always sitting in the middle.
-- **Template grid**: 5-up → 3-up → 2-up → 1-up. Each `template-card` keeps its 16:9 aspect on the image.
-
-#### Image Behavior
-- **Mesh gradient**: rendered as inline SVG or canvas-painted gradient; scales fluidly with the hero container; never crops, never tiles.
-- **Customer logos**: rendered as monochrome SVGs in the logo strip; consistent 24 px height.
-- **Code editor mockup**: dark `{colors.primary}` rectangle with mono text rendered inside; treated as an image at the layout level.
-- **Template thumbnails**: 16:9 landscape inside `{rounded.md}` card chrome; lazy-loaded; consistent grayscale palette in the placeholder state.
-
 ## Elevation & Depth
 
 | Level | Treatment | Use |
@@ -560,7 +554,7 @@ The brand uses STACKED shadows — multiple small offsets layered to fake natura
 | Token | Value | Use |
 |---|---|---|
 | `{rounded.none}` | 0px | Full-bleed hero / footer bands. |
-| `{rounded.xs}` | 4px | Tightest inline pill — the `nav-cta-signup` 6-px-radius button (mapped to `xs/sm`). |
+| `{rounded.xs}` | 4px | The tightest step — inline code chips and the focus-ring corner on 6-px controls. No component in this file binds it; `nav-cta-signup` binds `{rounded.sm}` 6 px, not this. |
 | `{rounded.sm}` | 6px | The brand's `--geist-radius` token — base UI radius for in-app buttons, form inputs, dropdown menus. |
 | `{rounded.md}` | 8px | The brand's `--geist-marketing-radius` token — feature cards, template cards. |
 | `{rounded.lg}` | 12px | Slightly larger card chrome (pricing-card variants). |
@@ -715,6 +709,214 @@ The brand uses STACKED shadows — multiple small offsets layered to fake natura
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+### Interaction States
+
+Every component above is listed here with the states it supports. A surface that
+is genuinely static says so rather than claiming states it does not have.
+Hover and pressed are **paint-only** on this brand — a background-color, a
+border-color or a text-colour step, never a scale pop or a lift. That is the
+house style, not an omission: a tool-like identity signals state by changing
+colour at speed, and a bounce would read as someone else's brand.
+
+| Component | States | State treatment |
+|---|---|---|
+| `button-primary`, `button-primary-sm` | default, hover, focus-visible, active/pressed, disabled, loading | Hover lifts the ink fill one step toward `{colors.body}`; pressed settles to opacity 0.85 on the fill; focus-visible draws the `{colors.focus}` ring at 2 px with a 2 px offset; disabled drops the fill to `{colors.hairline}` with `{colors.mute}` label; loading swaps the label for a mono ellipsis while the control holds its footprint. |
+| `button-secondary`, `button-secondary-sm` | default, hover, focus-visible, active/pressed, disabled, loading | Hover tints the fill to `{colors.canvas-soft}`; boundary steps from `{colors.hairline}` to `{colors.mute}`; otherwise as `button-primary`. |
+| `nav-cta-signup`, `nav-cta-login` | default, hover, focus-visible, active/pressed, disabled | Same ladder at nav scale; the 6 px radius keeps the ring corner at `{rounded.xs}` + offset. |
+| `nav-cta-ask-ai` | default, hover, focus-visible, active/pressed, disabled | Interactive boundary draws in `{colors.mute}`, not `{colors.hairline}` — see Accessibility. |
+| `tab-ghost` | default, hover, focus-visible, active/pressed, selected | Selected is the live filter: fill `{colors.canvas-soft-2}`, label `{colors.ink}`, and the only persistent state in the row. |
+| `icon-button-circular` | default, hover, focus-visible, active/pressed, disabled | Boundary in `{colors.mute}`; icon `{colors.ink}`, dropping to `{colors.mute}` when disabled. |
+| `nav-link` | default, hover, focus-visible, selected | Hover reveals the `{rounded.full}` ghost pill in `{colors.canvas-soft}`; selected is the current route, label `{colors.ink}` instead of `{colors.body}`. |
+| `link-inline` | default, hover, focus-visible, active/pressed | Underline is always on; hover deepens to `{colors.link-deep}`; pressed holds `{colors.link-deep}`. |
+| `form-input`, `form-input-sm`, `form-input-lg` | default, hover, focus-visible, disabled, error | Boundary `{colors.mute}` at rest, `{colors.focus}` at 2 px when focused, `{colors.error}` with a `{colors.error-soft}` tint on error; disabled fills `{colors.canvas-soft}` and keeps the placeholder in `{colors.mute}`. |
+| `card-marketing`, `card-marketing-large`, `card-soft` | default, hover, focus-visible, active/pressed | Interactive only where the whole card is a link: hover steps elevation from `{shadow.level-2}` to `{shadow.level-3}`, focus-visible rings the card, pressed returns to `{shadow.level-2}`. As a plain container the card has a default state and nothing else. |
+| `template-card` | default, hover, focus-visible, active/pressed, loading | Loading is the thumbnail skeleton — a flat `{colors.canvas-soft-2}` block at the 16:9 frame. |
+| `pricing-card`, `pricing-card-featured` | default, hover, focus-visible, selected | Selected is the chosen tier, marked by the polarity flip to `{colors.primary}` rather than by a border. |
+| `badge-secondary` | default, error | Two states only: the neutral `{colors.canvas-soft}` pill, and an error variant on `{colors.error-soft}` with `{colors.error-deep}` text. It is a label, not a control. |
+| `banner-marketing` | default, hover, focus-visible, active/pressed | A link dressed as a pill; hover deepens the fill one step to `{colors.canvas-soft-2}`. |
+| `ex-app-shell-row` | default, hover, focus-visible, active/pressed, selected | Selected paints the left-edge indicator in `{colors.primary}` and the label in `{colors.ink}`. |
+| `ex-data-table-cell` | default, hover, selected, loading | Row hover tints to `{colors.canvas-soft}`; selected adds a `{colors.link-bg-soft}` row fill; loading shows skeleton bars in `{colors.canvas-soft-2}`. |
+| `ex-toast` | default, error, focus-visible | The dismiss control takes focus-visible; the error variant swaps the leading icon to `{colors.error}` and the text to `{colors.error-deep}`. |
+| `ex-auth-form-card`, `ex-modal-card`, `ex-cart-drawer`, `ex-product-selector`, `ex-pricing-tier`, `ex-pricing-tier-featured` | default, loading, error | Container surfaces: the states belong to the controls inside them. Loading is a skeleton stack; error is an inline `{colors.error-deep}` message above the primary action. |
+| `ex-empty-state-card` | default | One state. It is an illustration frame with a caption. |
+| `hero-band`, `feature-mesh-band`, `showcase-band-light`, `showcase-band-dark`, `logo-strip`, `footer`, `code-editor-mockup`, `nav-bar` | default | Static layout surfaces. They carry no interactive states of their own; every state in them belongs to a control listed above. |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was
+not measured from the live site.** No duration, easing curve or transition
+property was extracted; nothing in the captured surfaces records a timing
+function. Every value below comes from the **Crisp** profile in
+`theme-audit/SPEC.md` section 5, assigned because this is an infrastructure and
+developer-tool identity: the state change should read as already finished, and
+there is no entrance choreography anywhere in the brand. Treat the whole section
+as a reasoned default, not a fact about the product, and replace it wholesale if
+the real timings are ever captured.
+
+Crisp fits this file on its own evidence: the decorative system is a single
+static mesh gradient rather than a reveal, the display ceiling is weight 600,
+elevation is three 1–2 px offsets instead of a lift, and the page's own voice is
+a deployment dashboard. A slower profile would make a tool feel like a brochure.
+
+### Timing tokens
+
+`{motion.duration-instant}` 60 ms · `{motion.duration-fast}` 100 ms ·
+`{motion.duration-base}` 150 ms · `{motion.duration-slow}` 220 ms ·
+`{motion.duration-emphasis}` 300 ms · `{motion.stagger-step}` 20 ms ·
+`{motion.duration-reduced}` 100 ms.
+Easings: `{motion.ease-standard}` for state changes, `{motion.ease-enter}` for
+things arriving, `{motion.ease-exit}` for things leaving.
+
+### Interaction inventory
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, nav links, cards, rows) | `{motion.duration-fast}` 100 ms | `{motion.ease-standard}` | `background-color`, `border-color`, `color` — paint only, no travel and no scale | Unchanged. There is no travel or scale to remove, so the colour step runs at the same 100 ms. |
+| Press / active | `{motion.duration-instant}` 60 ms | `{motion.ease-exit}` | `opacity` on the fill (1 → 0.85) | Unchanged — opacity only, already inside `{motion.duration-reduced}`. |
+| Focus-visible ring | `{motion.duration-instant}` 60 ms | `{motion.ease-standard}` | `opacity` on the ring layer; the ring itself is a `box-shadow` painted outside `{shadow.level-1}`'s inset hairline | Ring appears with no fade. It must never be delayed or suppressed. |
+| Page / route transition | in `{motion.duration-base}` 150 ms, out `{motion.duration-fast}` 100 ms | in `{motion.ease-enter}`, out `{motion.ease-exit}` | `opacity` + `transform: translateY(4px)` on the content column only; the nav never moves | `opacity` only, `{motion.duration-reduced}` 100 ms, no translate. |
+| Modal / drawer | in `{motion.duration-base}` 150 ms, out `{motion.duration-fast}` 100 ms | in `{motion.ease-enter}`, out `{motion.ease-exit}` | Modal: `opacity` + `transform: translateY(8px)`. Drawer: `opacity` + `transform: translateX(100%)`. Backdrop: `opacity` 0 → 1 | `opacity` only at `{motion.duration-reduced}` 100 ms; the panel appears in its final position. |
+| Dropdown / menu | in `{motion.duration-fast}` 100 ms, out `{motion.duration-instant}` 60 ms | in `{motion.ease-enter}`, out `{motion.ease-exit}` | `opacity` + `transform: translateY(-2px)` | `opacity` only, no translate. |
+| Toast | in `{motion.duration-base}` 150 ms, out `{motion.duration-fast}` 100 ms | in `{motion.ease-enter}`, out `{motion.ease-exit}` | `opacity` + `transform: translateY(8px)` | `opacity` only at `{motion.duration-reduced}` 100 ms; no travel. |
+| List / grid enter | `{motion.duration-fast}` 100 ms per item, `{motion.stagger-step}` 20 ms apart, capped at 8 items | `{motion.ease-enter}` | `opacity` + `transform: translateY(4px)` | `opacity` only, stagger 0, all items at once. |
+| List / grid exit | `{motion.duration-instant}` 60 ms | `{motion.ease-exit}` | `opacity` only, no stagger | Unchanged — already opacity-only and under 100 ms. |
+| Loading (skeleton) | `{motion.duration-emphasis}` 300 ms per half-cycle, infinite | `{motion.ease-standard}` | `opacity` 0.4 ↔ 1 on `{colors.canvas-soft-2}` blocks | Frozen. The skeleton holds a static 0.6 opacity; no pulse. |
+| Loading (spinner) | 600 ms per revolution, linear, infinite | linear | `transform: rotate()` | Replaced by a static mono status label; no rotation. |
+
+Exit is shorter than its matching entrance on every row. The two infinite
+animations are loaders, which SPEC section 6 permits; this brand has no ambient
+motion, and none should be added — the mesh gradient is a **static** backdrop
+and animating it would contradict the identity.
+
+Never animate `width`, `height`, `top`, `left` or `margin`. Travel is always a
+`transform`, and a card that grows on hover is wrong for this brand in any case.
+Nothing animates on first paint: the hero headline, the mesh gradient and the
+CTA row render in place.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate and scale travel; the skeleton pulse; the spinner
+     rotation; every stagger (stagger-step becomes 0). */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 100ms !important;   /* {motion.duration-reduced} */
+    transform: none !important;
+  }
+  /* Kept: opacity fades at {motion.duration-reduced} 100 ms, every paint-only
+     hover and press step, and the focus-visible ring, which is never
+     suppressed or delayed. */
+  .skeleton { animation: none; opacity: 0.6; }
+  .spinner  { animation: none; }
+}
+```
+
+What is removed: every `translateY` / `translateX`, every scale, the list
+stagger, the skeleton pulse and the spinner rotation. What remains: opacity
+fades capped at `{motion.duration-reduced}` 100 ms, all paint-only state
+changes, and the focus ring.
+
+## Accessibility
+
+Ratios below are computed with WCAG 2.1 relative luminance from this file's own
+frontmatter hexes. Tap-target and layout claims are read off documented token
+values; nothing here was measured from a rendered page, and this document has no
+running UI to measure.
+
+### The honest summary
+
+This is a near-monochrome brand whose entire boundary system sits below the
+WCAG non-text threshold. `{colors.hairline}` `#ebebeb` is the card border, the
+input border and the table rule, and it measures **1.19:1** on `{colors.canvas}`
+— it is a grouping cue, not a visible boundary. The four-step surface ladder
+does not rescue it: `{colors.canvas}` to `{colors.canvas-soft}` is **1.04:1**
+and `{colors.canvas}` to `{colors.canvas-soft-2}` is **1.09:1**, so a card is
+not distinguishable from the page by fill either. **The real brand fails WCAG
+1.4.11 at every card edge and every input edge.** Say that out loud when
+building on this document; do not assume the hairline is doing work it cannot do.
+
+### Measured contrast
+
+| Foreground / Background | Measured | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` `#171717` on `{colors.canvas}` `#ffffff` | 17.93:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.canvas-soft}` `#fafafa` | 17.18:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.canvas-soft-2}` `#f5f5f5` | 16.44:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` `#ffffff` on `{colors.primary}` `#171717` | 17.93:1 | 4.5:1 | Pass |
+| `{colors.body}` `#4d4d4d` on `{colors.canvas}` | 8.45:1 | 4.5:1 | Pass |
+| `{colors.body}` on `{colors.canvas-soft}` | 8.10:1 | 4.5:1 | Pass |
+| `{colors.mute}` `#888888` on `{colors.canvas}` | 3.54:1 | 4.5:1 | **Fail** — extracted and frozen. Passes the 3:1 non-text bar, so it is the correct *boundary* tone; as text it is placeholder-only. |
+| `{colors.mute}` on `{colors.canvas-soft}` | 3.40:1 | 4.5:1 | **Fail** — same tone, same frozen value, measured on the page ground. |
+| `{colors.hairline}` `#ebebeb` on `{colors.canvas}` | 1.19:1 | 3.0:1 | **Fail** — extracted and frozen. Decorative rules only; it is still bound as `borderColor` on `form-input`, `form-input-sm`, `form-input-lg`, `nav-cta-ask-ai`, `icon-button-circular` and `ex-pricing-tier`, exactly as extracted. Re-binding those is under Needs approval in the audit report. |
+| `{colors.hairline}` on `{colors.canvas-soft}` | 1.14:1 | 3.0:1 | **Fail** — same, on the page ground. |
+| `{colors.hairline-strong}` `#a1a1a1` on `{colors.canvas}` | 2.58:1 | 3.0:1 | **Fail** — extracted and frozen, and short of the bar by 0.42. Not a fix for the hairline. |
+| `{colors.hairline-strong}` on `{colors.canvas-soft}` | 2.48:1 | 3.0:1 | **Fail** — same, on the page ground. |
+| `{colors.hairline}` on `{colors.primary}` | 15.04:1 | 3.0:1 | Pass — the hairline only works as a boundary on the dark band. |
+| `{colors.hairline-strong}` on `{colors.primary}` | 6.94:1 | 3.0:1 | Pass. |
+| `{colors.warning}` `#f5a623` on `{colors.canvas}` | 2.03:1 | 4.5:1 | **Fail** — extracted and frozen, and it does not reach 3:1 even as large text. Fill and icon only; warning text uses `{colors.warning-deep}`. |
+| `{colors.warning-deep}` `#ab570a` on `{colors.canvas}` | 5.12:1 | 4.5:1 | Pass — the warning text tone. |
+| `{colors.link}` `#0070f3` on `{colors.canvas}` | 4.55:1 | 4.5:1 | Pass, with 0.05 to spare. Do not darken the canvas behind a link: on `{colors.canvas-soft}` it is 4.36:1 and on `{colors.canvas-soft-2}` 4.18:1, both below AA. Inline links on a tinted band use `{colors.link-deep}` (5.53:1 / 5.29:1). |
+| `{colors.error}` `#ee0000` on `{colors.canvas}` | 4.53:1 | 4.5:1 | Pass by 0.03. On tinted grounds use `{colors.error-deep}` (5.96:1 / 5.71:1). |
+| `{colors.highlight-pink}` `#ff0080` on `{colors.canvas}` | 3.77:1 | 4.5:1 | Gradient stop only — never set as text. Measured here so nobody promotes it to a label. |
+| `{colors.cyan}` `#50e3c2` on `{colors.canvas}` | 1.60:1 | 4.5:1 | Gradient stop only. On `{colors.primary}` it is 11.19:1 and legible. |
+
+### Focus ring
+
+`{colors.focus}` `#0070f3` — the existing `{colors.link}` hex, bound to a new
+role rather than added as a new brand colour. **One mid-luminance ring serves
+every surface this file defines**, which is why there is no `focus-on-dark`
+counterpart:
+
+| Ring drawn on | Measured | Required | Verdict |
+|---|---|---|---|
+| `{colors.canvas}` `#ffffff` | 4.55:1 | 3.0:1 | Pass |
+| `{colors.canvas-soft}` `#fafafa` | 4.36:1 | 3.0:1 | Pass |
+| `{colors.canvas-soft-2}` `#f5f5f5` | 4.18:1 | 3.0:1 | Pass |
+| `{colors.primary}` `#171717` (the polarity-flipped band, `code-editor-mockup`, `pricing-card-featured`) | 3.94:1 | 3.0:1 | Pass |
+
+Geometry, which the ratios above depend on: **2 px solid `{colors.focus}`, 2 px
+offset, drawn outside the control**, with the ring's corner radius set to the
+control's radius plus 2 px. The offset matters twice over — it is what makes the
+ring measurable against the *surface behind the control* rather than against the
+control's own fill, which is what WCAG 2.2 Focus Appearance asks for, and it is
+the only reason a single ring can serve both the white canvas and the ink band.
+Requiring the ring to clear 3:1 against the black `button-primary` fill as well
+would be arithmetically impossible. The ring is never suppressed, never replaced
+by a colour change alone, and never animated away.
+
+### Tap targets
+
+Read from documented token heights; rendered size is not verifiable from this
+document.
+
+- `button-primary` / `button-secondary` render ~48 px tall in marketing bands —
+  clears both 2.5.8 (AA, 24 × 24) and 2.5.5 (AAA, 44 × 44).
+- `form-input` is 40 px and `form-input-lg` is 48 px; `form-input-sm` is 32 px.
+- `nav-cta-signup`, `nav-cta-login` and `nav-cta-ask-ai` are **28 px tall with
+  `0px {spacing.xs}` padding — horizontal padding only**. They clear 2.5.8 (AA)
+  at 28 px but fall 16 px short of the 44 × 44 AAA floor, and nothing in the
+  documented token set closes that gap. The honest fix is a 44 px hit area
+  around the 28 px visual control on touch viewports; that is a prescription,
+  not an extracted value.
+- `badge-secondary` and `banner-marketing` are labels and links inside text
+  flow, not standalone targets.
+
+### Other
+
+- **Reduced motion** is handled in Motion & Animation: all travel, scale,
+  stagger and loader motion removed; opacity fades kept at
+  `{motion.duration-reduced}` 100 ms; the focus ring always kept.
+- **Selection colours** `{colors.selection-bg}` / `{colors.selection-fg}` give
+  16.01:1 — the strongest pair in the file.
+- **Colour is never the only signal.** Error states pair `{colors.error}` with
+  text; `tab-ghost` selection pairs the fill change with a weight change; link
+  underlines are always on, never hover-only.
+- **The dark band** `showcase-band-dark` and `code-editor-mockup` invert cleanly:
+  every ink on `{colors.primary}` clears AA except `{colors.body}` (2.12:1) and
+  `{colors.violet}` (2.53:1), neither of which the file binds there.
+
 ## Do's and Don'ts
 
 ### Do
@@ -727,10 +929,101 @@ The brand uses STACKED shadows — multiple small offsets layered to fake natura
 - Set every code block and technical eyebrow in `{typography.code}` / `{typography.caption-mono}`. Mono is the voice of the platform.
 
 ### Don't
-- Don't introduce a sixth accent colour. The brand operates with ink + gray + the four-pair gradient palette; new accents flatten the voice.
+- Don't introduce a sixth accent colour. The brand operates with ink + gray + the three-pair gradient palette (develop / preview / ship); new accents flatten the voice.
 - Don't render headlines in all-caps. Sentence-case + negative tracking is non-negotiable.
 - Don't drop a single heavy drop-shadow on cards. The brand's elevation is built from stacked small offsets + inset hairline rings.
 - Don't render the brand gradient at icon scale or in a single-colour reduced form. The gradient lives at hero scale only.
 - Don't promote the geometric sans to weight 700. The brand's display ceiling is 600.
-- Don't pair the marketing 100-px pill CTA shape with the 6-px nav radius on the same screen — pick a scale and stay there.
+- Don't mix the marketing 100-px pill and the 6-px nav radius *inside one button cluster*. The two scales coexist on the same page by design — pill in the hero and the marketing bands, 6 px in the nav row — but a single row of sibling buttons picks one scale and stays there.
 - Don't set body paragraphs in the mono face. The mono is for code + technical labels only.
+
+## Responsive Behavior
+
+### Breakpoints
+
+| Name | Width | Key Changes |
+|---|---|---|
+| Mobile | < 600px | Hero stacks; nav collapses to hamburger; 3-up feature grids drop to 1-up; tab pill row enables horizontal scroll. |
+| Tablet | 600–959px | 3-up grids drop to 2-up; nav still horizontal. |
+| Desktop | 960–1199px | Full 3-up grids; pricing 3-up. |
+| Wide | 1200–1399px | Container caps at 1400 px content width. |
+| Ultra-wide | ≥ 1400px | Content stays centred at 1400 px; bands stretch edge-to-edge in colour but content holds the max-width. |
+
+### Touch Targets
+The `button-primary` pill renders at ~32 px tall in nav and ~48 px tall in marketing contexts. Marketing CTAs meet 2.5.5 (AAA, 44 × 44) at all breakpoints. The nav controls do **not**: `nav-cta-signup`, `nav-cta-login` and `nav-cta-ask-ai` are documented at 28 px tall with `0px {spacing.xs}` padding, which is horizontal only — it adds nothing to the vertical hit area. They clear 2.5.8 (AA, 24 × 24) and fall 16 px short of the AAA floor. Closing that gap needs a 44 px hit area around the 28 px visual control on touch viewports; that is a prescription, not an extracted value. See Accessibility.
+
+### Collapsing Strategy
+- **Nav**: full link row + Ask AI / Log In / Sign Up pills at desktop. Collapses to logo + hamburger at mobile with the menu opening as a full-overlay.
+- **Hero**: mesh gradient stays centred; headline + body stack vertically at all breakpoints (the brand doesn't use a split-hero pattern).
+- **Three-feature row**: 3-up → 2-up → 1-up at the breakpoints above; cards keep their `{rounded.md}` 8 px shape across all viewports.
+- **Pricing card grid**: 3-up at desktop, vertical stack at mobile with `pricing-card-featured` always sitting in the middle.
+- **Template grid**: 5-up → 3-up → 2-up → 1-up. Each `template-card` keeps its 16:9 aspect on the image.
+
+### Image Behavior
+- **Mesh gradient**: rendered as inline SVG or canvas-painted gradient; scales fluidly with the hero container; never crops, never tiles.
+- **Customer logos**: rendered as monochrome SVGs in the logo strip; consistent 24 px height.
+- **Code editor mockup**: dark `{colors.primary}` rectangle with mono text rendered inside; treated as an image at the layout level.
+- **Template thumbnails**: 16:9 landscape inside `{rounded.md}` card chrome; lazy-loaded; consistent grayscale palette in the placeholder state.
+
+## Known Gaps
+
+Everything in this list is either absent from the captured surfaces or
+prescribed by the audit rather than extracted. Nothing here is a guess dressed
+as a fact.
+
+**Prescribed, not extracted**
+- **The whole motion system.** No duration, easing curve or transition property
+  was captured. The `motion:` group is the SPEC Crisp profile verbatim and the
+  Motion & Animation section says so in its first line. If real timings are ever
+  measured, they displace these values and the seam should be marked.
+- **`{colors.focus}`.** The captured surfaces record no focus ring at all. The
+  token reuses the existing `{colors.link}` hex `#0070f3`, so no new brand
+  colour was invented, but the 2 px width, the 2 px offset and the radius rule
+  are prescriptions. Vercel's real ring geometry is unknown.
+- **The 44 px nav hit area.** The extracted nav control height is 28 px with
+  horizontal padding only. The recommended 44 px touch hit area is a fix, not an
+  observation.
+- **Boundary re-scoping.** The decision to draw interactive boundaries in
+  `{colors.mute}` rather than `{colors.hairline}` is this audit's prescription.
+  The `components:` bindings still say `{colors.hairline}`, because that is what
+  the real site renders; re-pointing them is a brand-owner decision and sits
+  under Needs approval in `theme-audit/reports/A76-vercel.md`.
+- **Hover and press treatments** in the Interaction States table. The brand's
+  paint-only direction is inferred from its near-monochrome identity and its
+  flat elevation, not recorded.
+
+**Absent from the capture**
+- **Dark mode.** `{colors.primary}` is a polarity-flipped *band* inside a light
+  page, not a theme. There is no dark-mode canvas, no dark-mode hairline and no
+  dark-mode gray ladder in this file, so no dark-theme contrast ladder can be
+  stated. A real dark theme would need its own `canvas-dark` / `hairline-dark`
+  tones and its own ring check.
+- **The full 100–1000 scale.** The Overview says a complete gray / blue / red /
+  amber / green / teal / purple / pink ladder exists in the design-system
+  tokens. Only the tones listed in `colors:` were captured; the intermediate
+  steps are not in this file and must not be interpolated.
+- **No `green`/`teal` semantic token** despite the Overview naming those
+  ladders; `{colors.success}` is the brand's blue, which is a real quirk of the
+  system rather than an omission.
+- **Gradient geometry.** Stop positions, angle and mesh node placement for the
+  signature gradient are not recorded — only the six stop colours.
+- **Shadow opacity source.** The `shadow:` group transcribes the Elevation &
+  Depth table's 8-digit hexes as captured. Whether the real system expresses
+  them as `rgba()` with named opacity tokens is unknown.
+- **`{rounded.xs}` 4 px and `{rounded.xl}` 16 px** are in the ladder but no
+  component in this file binds either one.
+- **Legacy boilerplate.** The Examples note still refers to `TO_FILL` markers
+  and `scripts/derive-examples-block.mjs`; no `TO_FILL` marker remains in the
+  file. The sentence is kept rather than rewritten because the Examples block
+  is auto-generated upstream.
+
+**Not computable from a document**
+Overlap, horizontal overflow, clipping, rendered tap-target size, frame rate and
+layout shift need a running page. No claim about any of them appears above; the
+tap-target figures are documented token heights, not measurements.
+
+**Known contrast failures** are not gaps — they are disclosed with measured
+ratios in Accessibility. The headline fact bears repeating: this brand's
+boundary system (`{colors.hairline}` at 1.19:1) and its four-step surface
+ladder (1.04:1 between steps) both sit below the WCAG non-text threshold, and
+that is true of the real product, not of this document.
