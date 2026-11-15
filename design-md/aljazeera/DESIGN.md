@@ -721,6 +721,29 @@ Intent, not measurement — no rendered page exists to verify. The `button-pill-
 ### Reduced motion
 See `@media (prefers-reduced-motion: reduce)` above. Every live and loading state has a text label, so freezing the pulse removes no information.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline}` (`#d8d8d8`) on `{colors.soft}` (`#f0f0f0`) | 1.25:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.silver}` (`#bebebe`) on `{colors.soft}` (`#f0f0f0`) | 1.63:1 | 3.0:1 | Fail — bound boundary |
+| `components.logo-block` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#fa9000`) | 2.32:1 | 4.5:1 | Fail — both tones are bound in this file |
+| `components.network-nav-active` — its `textColor` (`#ffa000`) on the page floor (`#ffffff`) | 2.04:1 | 4.5:1 | Fail — no `backgroundColor` declared; page floor substituted as the ground |
+| `components.leader-band` — its `textColor` (`#ffffff`) on the page floor (`#ffffff`) | 1.00:1 | 3.0:1 | Fail — no `backgroundColor` declared; page floor substituted as the ground |
+| `components.section-rail-teal` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#00cbca`) | 2.02:1 | 4.5:1 | Fail — both tones are bound in this file |
+
 ## Do's and Don'ts
 
 ### Do

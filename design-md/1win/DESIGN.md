@@ -584,6 +584,29 @@ Reduced-motion handling is specified in full above. In short: no `transform` sur
 
 Keyboard tab order, screen-reader labelling of the odds chips and the betslip, text resize to 200%, and any rendered geometry (overlap, overflow, real tap size) need a live page. None of it is claimed in this file.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline}` (`#2d2f33`) on `{colors.surface}` (`#2e3035`) | 1.02:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.secondary}` (`#0075ff`) on `{colors.surface}` (`#2e3035`) | 3.14:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+| `components.button-primary` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#00b24b`) | 2.81:1 | 4.5:1 | Fail — both tones are bound in this file |
+| `components.button-secondary` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#0075ff`) | 4.21:1 | 4.5:1 | Fail — both tones are bound in this file |
+| `components.pill-badge` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#0075ff`) | 4.21:1 | 4.5:1 | Fail — both tones are bound in this file |
+| `components.ex-pricing-tier-featured` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#f0f2f5`) | 1.12:1 | 4.5:1 | Fail — both tones are bound in this file |
+
 ## Do's and Don'ts
 
 ### Do

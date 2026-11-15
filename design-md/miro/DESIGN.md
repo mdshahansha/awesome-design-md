@@ -931,6 +931,25 @@ Rendered tap-target size cannot be verified from a document; these are the docum
 
 The full rule is in **Motion & Animation** above. In short: all travel and all scale are removed, opacity cross-fades are capped at `{motion.duration-reduced}` (130ms), focus rings appear instantly, and the hero whiteboard's sticky-note ambience freezes at its rest frame.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.muted}` (`#a5a8b5`) on `{colors.surface-pricing-featured}` (`#f5f3ff`) | 2.16:1 | 4.5:1 | Fail — secondary text on surface |
+| `{colors.success-accent}` (`#00b473`) on `{colors.surface-pricing-featured}` (`#f5f3ff`) | 2.46:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do

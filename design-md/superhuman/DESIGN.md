@@ -528,6 +528,24 @@ Every entrance and exit respects `@media (prefers-reduced-motion: reduce)` as de
 - Type at weight 460 on a 0.96 line-height display size is a tight stack; the brand accepts it as editorial density. No line-height below 0.96 anywhere.
 - The brand defines no error, success or warning colour. Validation state is carried by copy and by a `{colors.primary}` 2px border, which means error state is signalled by shape and text rather than hue — acceptable for 1.4.1 but it gives the user no colour signal at all.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.ink-faint}` (`#9a9794`) on `{colors.canvas-soft}` (`#fafaf8`) | 2.78:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do

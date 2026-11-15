@@ -882,6 +882,25 @@ Every animation in Motion & Animation is `transform` or `opacity` only; no `widt
 - `{components.link-inline}` carries its affordance by colour alone, with no underline. At 6.0:1 against the canvas it passes contrast, but colour-only link signalling fails WCAG 1.4.1 Use of Colour for links set inside running copy. The prescribed hover underline in Interaction States helps pointer users and nobody else; an underline on the default state would be the correct fix and would contradict the brand's stated rule. This is a genuine conflict, recorded in Known Gaps rather than resolved.
 - The neutral ladder's own steps are 1.04:1 to 1.05:1 between adjacent rungs. Band boundaries are therefore invisible to many users, and the system compensates with the uniform 48px rhythm rather than with contrast. Band adjacency must never be the only carrier of meaning.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| best ring `{colors.focus}` (`#227e9e`) against `{colors.accent-gold}` (`#f0cc71`) | 2.99:1 | 3.0:1 | Fail — no focus ring this file declares reaches 3:1 on that surface |
+| `{colors.error}` (`#d63b25`) on `{colors.canvas-soft}` (`#fbf9f8`) | 4.43:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do

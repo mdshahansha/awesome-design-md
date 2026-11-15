@@ -621,6 +621,27 @@ The ring is drawn 2px **outside** the control so its backdrop is the surface, no
 - **Reduced motion:** honoured in full — see the `@media (prefers-reduced-motion: reduce)` block above. Travel and scale are removed, opacity fades clamp to 150ms, the loading loop freezes, and focus rings are untouched.
 - **Type size floor:** `{typography.caption}` at 12px and `{typography.body-sm}` at 14px/300 are the smallest roles. A 300 weight at 14px on `{colors.muted-soft}` is the worst legibility case in the system and should not be used for anything a user must read.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-strong}` (`#cccccc`) on `{colors.surface-card}` (`#fafafa`) | 1.54:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.warning}` (`#f59e0b`) on `{colors.surface-card}` (`#fafafa`) | 2.06:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.success}` (`#22c55e`) on `{colors.surface-card}` (`#fafafa`) | 2.18:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.muted-soft}` (`#9a9a9a`) on `{colors.surface-card}` (`#fafafa`) | 2.70:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do

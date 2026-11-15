@@ -16,7 +16,7 @@ These files are documents, not a running UI. Token coverage, contrast ratios, re
 |---|---|---|
 | tokens | 3.65 | **4.90** |
 | refs | 4.52 | **5.00** |
-| contrast | 1.21 | **3.67** |
+| contrast | 1.21 | **5.00** |
 | sections | 2.10 | **5.00** |
 | motion | 1.21 | **5.00** |
 | states | 1.02 | **4.82** |
@@ -29,7 +29,9 @@ These files are documents, not a running UI. Token coverage, contrast ratios, re
 | focus ring token | 0 / 84 | **84 / 84** |
 | Accessibility section | 0 / 84 | **84 / 84** |
 
-32 of 84 files score 5 on every dimension. 490 contrast failures are documented with measured ratios; 143 remain undisclosed.
+74 of 84 files score 5 on every dimension. 633 contrast failures are documented with measured ratios; 0 remain undisclosed.
+
+**A contrast score of 5 means every measured failure in that file is stated with its ratio, not that every pair passes.** The failures are real and still there: 633 of them. Disclosure is the only remedy available without changing an extracted brand hex, which this audit does not do.
 
 ## Matrix
 
@@ -37,82 +39,82 @@ Before → after, per dimension. `tok` tokens, `ref` references, `con` contrast,
 
 | Site | Profile | tok | ref | con | sec | mot | sta |
 |---|---|---|---|---|---|---|---|
-| `1win` | Calm | 4→5 | 5→5 | 1→1 | 1→5 | 1→5 | 1→5 |
-| `airbnb` | Playful | 4→5 | 5→5 | 1→1 | 1→5 | 1→5 | 1→5 |
-| `airtable` | Calm | 4→5 | 5→5 | 1→3 | 3→5 | 1→5 | 1→5 |
-| `aljazeera` | Calm | 3→5 | 5→5 | 1→1 | 1→5 | 1→5 | 1→5 |
-| `apple` | Cinematic | 5→5 | 5→5 | 1→2 | 3→5 | 1→5 | 1→5 |
-| `binance` | Calm | 5→5 | 5→5 | 1→2 | 3→5 | 1→5 | 1→5 |
-| `bmw` | Cinematic | 4→5 | 5→5 | 1→1 | 3→5 | 1→5 | 1→5 |
-| `bmw-m` | Cinematic | 4→5 | 5→5 | 1→2 | 3→5 | 1→5 | 1→5 |
-| `bugatti` | Cinematic | 4→5 | 5→5 | 1→2 | 3→5 | 1→5 | 1→5 |
-| `cal` | Calm | 4→5 | 5→5 | 1→1 | 3→5 | 1→5 | 1→5 |
-| `claude` | Crisp | 4→5 | 5→5 | 1→1 | 3→5 | 1→5 | 1→5 |
-| `clay` | Playful | 4→5 | 5→5 | 1→1 | 3→5 | 1→5 | 1→5 |
-| `clickhouse` | Crisp | 4→5 | 5→5 | 1→2 | 3→5 | 1→5 | 1→5 |
-| `cohere` | Crisp | 5→5 | 5→5 | 1→4 | 3→5 | 1→5 | 1→5 |
+| `1win` | Calm | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
+| `airbnb` | Playful | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
+| `airtable` | Calm | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `aljazeera` | Calm | 3→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
+| `apple` | Cinematic | 5→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `binance` | Calm | 5→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `bmw` | Cinematic | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `bmw-m` | Cinematic | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `bugatti` | Cinematic | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `cal` | Calm | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `claude` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `clay` | Playful | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `clickhouse` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `cohere` | Crisp | 5→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `coinbase` | Calm | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
-| `composio` | Crisp | 4→5 | 5→5 | 1→3 | 3→5 | 1→5 | 1→5 |
-| `cursor` | Crisp | 4→5 | 5→5 | 1→4 | 3→5 | 1→5 | 1→5 |
-| `dell-1996` | Calm | 3→5 | 5→5 | 3→4 | 1→5 | 1→5 | 1→5 |
-| `dji` | Cinematic | 4→5 | 5→5 | 1→1 | 1→5 | 1→5 | 1→5 |
-| `elevenlabs` | Cinematic | 4→5 | 5→5 | 1→3 | 3→5 | 1→5 | 1→5 |
+| `composio` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `cursor` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `dell-1996` | Calm | 3→5 | 5→5 | 3→5 | 1→5 | 1→5 | 1→5 |
+| `dji` | Cinematic | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
+| `elevenlabs` | Cinematic | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `expo` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
-| `ferrari` | Cinematic | 4→5 | 5→5 | 1→1 | 3→5 | 1→5 | 1→5 |
-| `figma` | Playful | 3→5 | 5→5 | 1→4 | 3→5 | 1→5 | 1→5 |
+| `ferrari` | Cinematic | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `figma` | Playful | 3→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `framer` | Calm | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
-| `hashicorp` | Crisp | 4→5 | 5→5 | 1→1 | 3→5 | 1→5 | 1→5 |
-| `hp` | Calm | 4→5 | 5→5 | 1→3 | 2→5 | 1→5 | 1→5 |
-| `ibm` | Calm | 4→5 | 5→5 | 1→3 | 3→5 | 1→5 | 1→5 |
-| `intercom` | Playful | 4→5 | 5→5 | 1→1 | 3→5 | 1→5 | 1→5 |
+| `hashicorp` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `hp` | Calm | 4→5 | 5→5 | 1→5 | 2→5 | 1→5 | 1→5 |
+| `ibm` | Calm | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `intercom` | Playful | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `jobright` | Playful | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
 | `kraken` | Calm | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 |
-| `lamborghini` | Cinematic | 1→5 | 1→5 | 1→4 | 1→5 | 1→5 | 1→5 |
-| `linear.app` | Crisp | 5→5 | 5→5 | 1→4 | 3→5 | 1→5 | 1→5 |
+| `lamborghini` | Cinematic | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 |
+| `linear.app` | Crisp | 5→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `lovable` | Playful | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 |
 | `mastercard` | Calm | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 |
 | `mercury` | Calm | 4→5 | 5→5 | 2→5 | 1→5 | 1→5 | 1→5 |
-| `meta` | Cinematic | 3→4 | 5→5 | 1→3 | 3→5 | 3→5 | 2→5 |
+| `meta` | Cinematic | 3→4 | 5→5 | 1→5 | 3→5 | 3→5 | 2→5 |
 | `minimax` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 3→5 | 1→5 |
-| `mintlify` | Crisp | 4→5 | 5→5 | 1→3 | 3→5 | 3→5 | 2→5 |
-| `miro` | Playful | 4→5 | 5→5 | 1→3 | 3→5 | 3→5 | 1→5 |
+| `mintlify` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 3→5 | 2→5 |
+| `miro` | Playful | 4→5 | 5→5 | 1→5 | 3→5 | 3→5 | 1→5 |
 | `mistral.ai` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 3→5 | 1→5 |
-| `mongodb` | Crisp | 4→5 | 5→5 | 1→3 | 3→5 | 3→5 | 1→5 |
+| `mongodb` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 3→5 | 1→5 |
 | `mydealz` | Playful | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
-| `nerdwallet` | Calm | 4→5 | 5→5 | 1→1 | 1→5 | 1→5 | 1→5 |
-| `nike` | Cinematic | 4→5 | 5→5 | 1→2 | 3→5 | 1→5 | 1→5 |
-| `nintendo-2001` | Playful | 4→5 | 5→5 | 1→4 | 1→5 | 1→5 | 1→5 |
-| `notion` | Crisp | 4→5 | 5→5 | 1→1 | 3→5 | 3→5 | 1→5 |
+| `nerdwallet` | Calm | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
+| `nike` | Cinematic | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `nintendo-2001` | Playful | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
+| `notion` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 3→5 | 1→5 |
 | `nvidia` | Cinematic | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `ollama` | Crisp | 5→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
-| `opencode.ai` | Crisp | 4→5 | 5→5 | 1→2 | 3→5 | 1→5 | 1→5 |
-| `oracle` | Calm | 4→4 | 5→5 | 1→3 | 1→5 | 1→5 | 1→5 |
-| `oura` | Cinematic | 4→5 | 5→5 | 1→3 | 1→5 | 1→5 | 1→5 |
+| `opencode.ai` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
+| `oracle` | Calm | 4→4 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
+| `oura` | Cinematic | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
 | `pinterest` | Playful | 5→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `playstation` | Cinematic | 4→5 | 5→5 | 3→5 | 3→5 | 1→5 | 1→5 |
-| `posthog` | Crisp | 5→5 | 5→5 | 1→3 | 3→5 | 1→5 | 1→5 |
+| `posthog` | Crisp | 5→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `raycast` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `renault` | Cinematic | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
-| `replicate` | Crisp | 5→5 | 5→5 | 1→4 | 3→5 | 1→5 | 1→5 |
+| `replicate` | Crisp | 5→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
 | `resend` | Crisp | 4→5 | 5→5 | 1→5 | 3→5 | 1→5 | 1→5 |
-| `revolut` | Cinematic | 4→5 | 5→5 | 2→4 | 3→5 | 1→5 | 1→5 |
+| `revolut` | Cinematic | 4→5 | 5→5 | 2→5 | 3→5 | 1→5 | 1→5 |
 | `runwayml` | Cinematic | 1→3 | 1→5 | 1→5 | 1→5 | 1→5 | 1→1 |
 | `sanity` | Crisp | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 |
 | `sap` | Calm | 4→5 | 5→5 | 5→5 | 1→5 | 1→5 | 1→5 |
 | `sentry` | Crisp | 4→4 | 5→5 | 1→5 | 2→5 | 1→5 | 1→5 |
 | `shopify` | Cinematic | 2→3 | 5→5 | 2→5 | 2→5 | 1→5 | 1→5 |
-| `slack` | Playful | 4→5 | 5→5 | 1→3 | 2→5 | 1→5 | 1→5 |
+| `slack` | Playful | 4→5 | 5→5 | 1→5 | 2→5 | 1→5 | 1→5 |
 | `spacex` | Cinematic | 3→4 | 5→5 | 2→5 | 2→5 | 1→5 | 1→5 |
 | `spotify` | Crisp | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 | 1→1 |
-| `starbucks` | Playful | 1→5 | 1→5 | 1→4 | 1→5 | 3→5 | 1→2 |
+| `starbucks` | Playful | 1→5 | 1→5 | 1→5 | 1→5 | 3→5 | 1→2 |
 | `stripe` | Crisp | 4→5 | 5→5 | 1→5 | 2→5 | 1→5 | 1→5 |
 | `supabase` | Crisp | 4→5 | 5→5 | 1→5 | 2→5 | 1→5 | 1→5 |
-| `superhuman` | Crisp | 4→5 | 5→5 | 1→4 | 2→5 | 1→5 | 1→5 |
+| `superhuman` | Crisp | 4→5 | 5→5 | 1→5 | 2→5 | 1→5 | 1→5 |
 | `tesla` | Cinematic | 1→5 | 1→5 | 1→5 | 1→5 | 1→5 | 1→3 |
 | `theverge` | Cinematic | 1→5 | 1→5 | 1→5 | 1→5 | 3→5 | 1→3 |
 | `together.ai` | Crisp | 4→5 | 5→5 | 3→5 | 1→5 | 1→5 | 1→5 |
 | `uber` | Playful | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
-| `vercel` | Crisp | 4→5 | 5→5 | 1→3 | 1→5 | 1→5 | 1→5 |
+| `vercel` | Crisp | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
 | `vodafone` | Calm | 4→5 | 5→5 | 1→5 | 1→5 | 1→5 | 1→5 |
 | `voltagent` | Crisp | 4→5 | 5→5 | 3→5 | 1→5 | 1→5 | 1→5 |
 | `warp` | Crisp | 4→5 | 5→5 | 3→5 | 1→5 | 1→5 | 1→5 |
@@ -158,57 +160,11 @@ The recurring shape is a frozen tone doing a job that needs contrast — most of
 
 Per-file detail is in `theme-audit/reports/<agent>-<site>.md`.
 
-## Remaining undisclosed contrast failures
+## Undisclosed contrast failures
 
-143 pairs across 45 files. These need one line each in the file's Accessibility section stating the measured ratio — not a hex change. Most surfaced after their reviewer had finished, as the harness got stricter.
+None. Every measured failure in all 84 files is stated with its ratio in that file's `## Accessibility` section.
 
-| Site | Undisclosed |
-|---|---|
-| `dji` | 15 |
-| `airbnb` | 11 |
-| `cal` | 9 |
-| `clay` | 7 |
-| `aljazeera` | 6 |
-| `1win` | 6 |
-| `hashicorp` | 5 |
-| `notion` | 4 |
-| `nerdwallet` | 4 |
-| `intercom` | 4 |
-| `ferrari` | 4 |
-| `claude` | 4 |
-| `bmw` | 4 |
-| `opencode.ai` | 3 |
-| `nike` | 3 |
-| `clickhouse` | 3 |
-| `bugatti` | 3 |
-| `bmw-m` | 3 |
-| `binance` | 3 |
-| `apple` | 3 |
-| `vercel` | 2 |
-| `slack` | 2 |
-| `posthog` | 2 |
-| `oura` | 2 |
-| `oracle` | 2 |
-| `mongodb` | 2 |
-| `miro` | 2 |
-| `mintlify` | 2 |
-| `meta` | 2 |
-| `ibm` | 2 |
-| `hp` | 2 |
-| `elevenlabs` | 2 |
-| `composio` | 2 |
-| `airtable` | 2 |
-| `superhuman` | 1 |
-| `starbucks` | 1 |
-| `revolut` | 1 |
-| `replicate` | 1 |
-| `nintendo-2001` | 1 |
-| `linear.app` | 1 |
-| `lamborghini` | 1 |
-| `figma` | 1 |
-| `dell-1996` | 1 |
-| `cursor` | 1 |
-| `cohere` | 1 |
+143 of them, across 45 files, were disclosed by `theme-audit/disclose.py` after their reviewers had finished, as the harness got stricter. That script writes rows into the one section the harness reads; it changes no colour, no binding and no threshold. The rows carry the role the harness assigned, and, where a component states no `backgroundColor` of its own, say so and name the page floor as the substituted ground rather than implying the rendered result was measured.
 
 ## Shared fixes
 

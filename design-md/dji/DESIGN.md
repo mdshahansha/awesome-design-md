@@ -1006,6 +1006,38 @@ See **Motion & Animation → Reduced Motion**. All travel, scale, stagger, carou
 ### Not verified here
 This is a document, not a running page. Nothing above is a claim about rendered overlap, horizontal overflow, clipping, true tap-target size, frame rate or layout shift — none of those can be measured from a Markdown file.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.on-primary}` (`#ffffff`) on `{colors.canvas}` (`#ffffff`) | 1.00:1 | 3.0:1 | Fail — bound boundary |
+| `{colors.on-primary}` (`#ffffff`) on `{colors.canvas-soft}` (`#f7f9fa`) | 1.06:1 | 3.0:1 | Fail — bound boundary |
+| `{colors.divider}` (`#e8e8e8`) on `{colors.canvas-soft}` (`#f7f9fa`) | 1.16:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.dashed-border}` (`#dddddd`) on `{colors.canvas-soft}` (`#f7f9fa`) | 1.29:1 | 3.0:1 | Fail — bound boundary |
+| `{colors.footer-divider}` (`#414141`) on `{colors.footer}` (`#272727`) | 1.46:1 | 3.0:1 | Fail — bound boundary |
+| `{colors.control-border}` (`#cccccc`) on `{colors.canvas-soft}` (`#f7f9fa`) | 1.52:1 | 3.0:1 | Fail — bound boundary |
+| `{colors.footer-link}` (`#b3b3b3`) on `{colors.canvas-soft}` (`#f7f9fa`) | 1.99:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.footer-link}` (`#b3b3b3`) on `{colors.canvas}` (`#ffffff`) | 2.10:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.link-blue}` (`#1890ff`) on `{colors.canvas-soft}` (`#f7f9fa`) | 3.07:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.ink-tertiary}` (`#8c8c8c`) on `{colors.canvas-soft}` (`#f7f9fa`) | 3.18:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+| `{colors.error}` (`#f5222d`) on `{colors.canvas-soft}` (`#f7f9fa`) | 3.86:1 | 4.5:1 | Fail — semantic tone as text |
+| `components.nav-bar-overlay` — its `textColor` (`#ffffff`) on the page floor (`#ffffff`) | 1.00:1 | 4.5:1 | Fail — no `backgroundColor` declared; page floor substituted as the ground |
+| `components.button-hero-ghost` — its `textColor` (`#ffffff`) on the page floor (`#ffffff`) | 1.00:1 | 4.5:1 | Fail — no `backgroundColor` declared; page floor substituted as the ground |
+| `components.field-card` — its `textColor` (`#ffffff`) on the page floor (`#ffffff`) | 1.00:1 | 3.0:1 | Fail — no `backgroundColor` declared; page floor substituted as the ground |
+| `components.newsletter-input` — its `textColor` (`#ffffff`) on the page floor (`#ffffff`) | 1.00:1 | 4.5:1 | Fail — no `backgroundColor` declared; page floor substituted as the ground |
+
 ## Responsive Behavior
 
 The breakpoint table, touch targets, collapsing strategy and image behaviour previously sat under **Layout → Responsive Strategy**; they are promoted here unchanged so the section is addressable on its own.

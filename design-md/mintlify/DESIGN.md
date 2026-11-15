@@ -978,6 +978,25 @@ Every prescribed interaction has a `prefers-reduced-motion: reduce` behaviour, t
 
 This is a document, not a running page. Overlap, horizontal overflow, clipping, real tap-target geometry, frame rate and layout shift were not and cannot be measured from it. Keyboard tab order, screen-reader labelling and the live dark-mode palette are likewise unverified — see `## Known Gaps`.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-dark}` (`#1f1f1f`) on `{colors.canvas-dark}` (`#0a0a0a`) | 1.20:1 | 3.0:1 | Fail — boundary, dark theme |
+| best ring `{colors.focus}` (`#005440`) against `{colors.testimonial-orange}` (`#f55a3c`) | 2.74:1 | 3.0:1 | Fail — no focus ring this file declares reaches 3:1 on that surface |
+
 ## Do's and Don'ts
 
 ### Do

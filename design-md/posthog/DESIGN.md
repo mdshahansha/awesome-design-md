@@ -751,6 +751,25 @@ Geometry: 2px solid `{colors.focus}` at a **2px offset outside** the control, fo
 - **Colour is never the only signal.** Callout banners carry an emoji glyph and a text label alongside their pastel fill; the selected `product-tab` changes surface as well as ink; inline links underline on hover and focus.
 - **Not measurable from a document.** Keyboard tab order, screen-reader labels for the hedgehog SVGs (they are decorative and should carry `aria-hidden="true"`), the emoji callout glyphs' announced text, and real tap-target geometry all need a rendered page. They are recorded in Known Gaps.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-soft}` (`#dcdfd2`) on `{colors.surface-doc}` (`#fcfcfa`) | 1.32:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline}` (`#bfc1b7`) on `{colors.surface-doc}` (`#fcfcfa`) | 1.77:1 | 3.0:1 | Fail — boundary on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do

@@ -852,6 +852,25 @@ Documented heights: pill buttons 40–44px, form inputs 44px, large search 56px,
 ### Reduced motion
 `prefers-reduced-motion: reduce` removes all translate, scale and stagger, freezes the loader loop, and caps remaining opacity fades at `{motion.duration-reduced}` (100ms). Focus rings are never animated and never suppressed.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-dark}` (`#1c2d38`) on `{colors.canvas-dark}` (`#001e2b`) | 1.21:1 | 3.0:1 | Fail — boundary, dark theme |
+| `{colors.semantic-warning-text}` (`#946f3f`) on `{colors.surface}` (`#f9fbfa`) | 4.39:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do

@@ -622,6 +622,27 @@ Honoured as specified in Motion & Animation: all travel, scale and stagger remov
 - Error text styling is undocumented (see Known Gaps), so no error-text contrast could be measured.
 - Keyboard order, landmark structure and screen-reader naming need a rendered page and are outside this audit's reach.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-soft}` (`#ebe7e1`) on `{colors.surface-2}` (`#ebe7e1`) | 1.00:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.semantic-success}` (`#0bdf50`) on `{colors.surface-2}` (`#ebe7e1`) | 1.46:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.ink-tertiary}` (`#9c9fa5`) on `{colors.surface-2}` (`#ebe7e1`) | 2.15:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+| `{colors.ink-subtle}` (`#7b7b78`) on `{colors.surface-2}` (`#ebe7e1`) | 3.45:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do

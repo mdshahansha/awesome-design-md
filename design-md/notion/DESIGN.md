@@ -925,6 +925,27 @@ Taken from this file's own stated values, not from a rendered page. `text-input`
 
 All motion in this file is prescribed. Under `@media (prefers-reduced-motion: reduce)` every transform, stagger and loop is removed and only `opacity` fades remain, capped at `{motion.duration-reduced}` (100ms). See Motion & Animation.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.semantic-success}` (`#1aae39`) on `{colors.surface}` (`#f6f5f4`) | 2.69:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.semantic-warning}` (`#dd5b00`) on `{colors.surface}` (`#f6f5f4`) | 3.46:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.semantic-error}` (`#e03131`) on `{colors.surface}` (`#f6f5f4`) | 4.14:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.link-blue}` (`#0075de`) on `{colors.surface}` (`#f6f5f4`) | 4.19:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do

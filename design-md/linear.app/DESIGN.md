@@ -662,6 +662,24 @@ Honoured in full — see the `@media (prefers-reduced-motion: reduce)` block in 
 - The four-step surface ladder separates by 1.01:1 to 1.04:1 between adjacent levels (see **Elevation & Depth**). Never use a level change as the only signal of selection or state; pair it with text tone, a `{colors.hairline-control}` border, or a `{colors.primary}` marker.
 - Linear ships no light marketing theme, so there is no light-mode contrast set to audit beyond the inverse band documented above.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.semantic-overlay}` (`#000000`) on `{colors.surface-1}` (`#0f1011`) | 1.10:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do

@@ -677,6 +677,30 @@ Every motion row above declares its reduced-motion behaviour, and the `@media (p
 
 `{component.pricing-tier-card-featured}` pairs its `{colors.brand-teal}` fill with a `{typography.caption-uppercase}` "FEATURED" badge. `{component.category-tab-active}` pairs its fill change with the `{colors.ink}` label step. `{component.text-input-error}` pairs its `{colors.error}` boundary with an icon and an accessible description. The six brand-colour feature cards are editorial variety, not meaning — the card colour never encodes a value a reader has to decode.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| best ring `{colors.focus}` (`#c2185b`) against `{colors.brand-pink}` (`#ff4d8b`) | 1.87:1 | 3.0:1 | Fail — no focus ring this file declares reaches 3:1 on that surface |
+| `{colors.warning}` (`#f59e0b`) on `{colors.surface-soft}` (`#faf5e8`) | 1.97:1 | 4.5:1 | Fail — semantic tone as text |
+| best ring `{colors.focus}` (`#c2185b`) against `{colors.brand-teal}` (`#1a3a3a`) | 2.09:1 | 3.0:1 | Fail — no focus ring this file declares reaches 3:1 on that surface |
+| best ring `{colors.focus}` (`#c2185b`) against `{colors.surface-dark-elevated}` (`#1a2a2a`) | 2.54:1 | 3.0:1 | Fail — no focus ring this file declares reaches 3:1 on that surface |
+| `{colors.muted-soft}` (`#9a9a9a`) on `{colors.surface-soft}` (`#faf5e8`) | 2.58:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+| best ring `{colors.focus}` (`#c2185b`) against `{colors.brand-lavender}` (`#b8a4ed`) | 2.68:1 | 3.0:1 | Fail — no focus ring this file declares reaches 3:1 on that surface |
+| `{colors.error}` (`#ef4444`) on `{colors.surface-soft}` (`#faf5e8`) | 3.46:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do

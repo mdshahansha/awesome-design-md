@@ -679,6 +679,34 @@ See Motion & Animation → `@media (prefers-reduced-motion: reduce)`. All travel
 ### Known Accessibility Limits of This Audit
 Keyboard order, screen-reader labelling, visible overflow, the real hit areas and the behaviour of the image carousel cannot be evaluated from a document. They are untested here.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-soft}` (`#ebebeb`) on `{colors.surface-soft}` (`#f7f7f7`) | 1.11:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline-soft}` (`#ebebeb`) on `{colors.canvas}` (`#ffffff`) | 1.19:1 | 3.0:1 | Fail — boundary, all tones |
+| `{colors.hairline}` (`#dddddd`) on `{colors.surface-soft}` (`#f7f7f7`) | 1.27:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.border-strong}` (`#c1c1c1`) on `{colors.surface-soft}` (`#f7f7f7`) | 1.68:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.border-strong}` (`#c1c1c1`) on `{colors.canvas}` (`#ffffff`) | 1.80:1 | 3.0:1 | Fail — boundary, all tones |
+| `{colors.muted-soft}` (`#929292`) on `{colors.surface-soft}` (`#f7f7f7`) | 2.90:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+| `{colors.legal-link}` (`#428bff`) on `{colors.surface-soft}` (`#f7f7f7`) | 3.08:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.muted-soft}` (`#929292`) on `{colors.canvas}` (`#ffffff`) | 3.11:1 | 4.5:1 | Fail — secondary text, all tones |
+| `components.button-primary` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#ff385c`) | 3.52:1 | 4.5:1 | Fail — both tones are bound in this file |
+| `components.button-pill-rausch` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#ff385c`) | 3.52:1 | 4.5:1 | Fail — both tones are bound in this file |
+| `components.search-orb` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#ff385c`) | 3.52:1 | 4.5:1 | Fail — both tones are bound in this file |
+
 ## Do's and Don'ts
 
 ### Do

@@ -91,10 +91,18 @@ w(f"| focus ring token | 0 / 84 | **{sum(1 for x in now if 'focus' in x['roles_r
 w(f"| Accessibility section | 0 / 84 | **{sum(1 for x in now if 'Accessibility' in x['sections_present'])} / 84** |")
 w("")
 allfives = [x["site"] for x in now if all(x["score"][k] == 5 for k in KS)]
+n_disc = sum(len(x["contrast_disclosed"]) for x in now)
+n_und = sum(len(x["contrast_unresolved"]) for x in now)
 w(f"{len(allfives)} of 84 files score 5 on every dimension. "
-  f"{sum(len(x['contrast_disclosed']) for x in now)} contrast failures are "
-  f"documented with measured ratios; "
-  f"{sum(len(x['contrast_unresolved']) for x in now)} remain undisclosed.\n")
+  f"{n_disc} contrast failures are documented with measured ratios; "
+  f"{n_und} remain undisclosed.\n")
+# The contrast score counts undisclosed failures only, so a 5 means every
+# failure is stated with its measured ratio — not that every pair passes.
+w("**A contrast score of 5 means every measured failure in that file is "
+  "stated with its ratio, not that every pair passes.** The failures are "
+  f"real and still there: {n_disc} of them. Disclosure is the only remedy "
+  "available without changing an extracted brand hex, which this audit does "
+  "not do.\n")
 
 w("## Matrix\n")
 w("Before → after, per dimension. `tok` tokens, `ref` references, `con` "
@@ -156,18 +164,30 @@ w("The recurring shape is a frozen tone doing a job that needs contrast — "
   "orange at 3.52:1.\n")
 w("Per-file detail is in `theme-audit/reports/<agent>-<site>.md`.\n")
 
-w("## Remaining undisclosed contrast failures\n")
+w("## Undisclosed contrast failures\n")
 und = sorted(((len(x["contrast_unresolved"]), x["site"]) for x in now), reverse=True)
-w(f"{sum(c for c, _ in und)} pairs across {sum(1 for c, _ in und if c)} files. "
-  "These need one line each in the file's Accessibility section stating the "
-  "measured ratio — not a hex change. Most surfaced after their reviewer had "
-  "finished, as the harness got stricter.\n")
-w("| Site | Undisclosed |")
-w("|---|---|")
-for c, s in und:
-    if c:
-        w(f"| `{s}` | {c} |")
-w("")
+n_files = sum(1 for c, _ in und if c)
+if n_files:
+    w(f"{sum(c for c, _ in und)} pairs across {n_files} files. "
+      "These need one line each in the file's Accessibility section stating "
+      "the measured ratio — not a hex change.\n")
+    w("| Site | Undisclosed |")
+    w("|---|---|")
+    for c, site in und:
+        if c:
+            w(f"| `{site}` | {c} |")
+    w("")
+else:
+    w("None. Every measured failure in all 84 files is stated with its ratio "
+      "in that file's `## Accessibility` section.\n")
+    w("143 of them, across 45 files, were disclosed by "
+      "`theme-audit/disclose.py` after their reviewers had finished, as the "
+      "harness got stricter. That script writes rows into the one section the "
+      "harness reads; it changes no colour, no binding and no threshold. The "
+      "rows carry the role the harness assigned, and, where a component "
+      "states no `backgroundColor` of its own, say so and name the page floor "
+      "as the substituted ground rather than implying the rendered result was "
+      "measured.\n")
 
 w("## Shared fixes\n")
 w("The reviewers found roughly forty defects in the audit harness itself. "

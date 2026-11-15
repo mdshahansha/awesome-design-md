@@ -731,6 +731,27 @@ See the `@media (prefers-reduced-motion: reduce)` block above. Summary: all trav
 - Text must survive 200% zoom and a 1.5 line-height / 0.12em letter-spacing user override without clipping. Not verifiable here.
 - `{component.code-window-card}` scrolls horizontally rather than wrapping. That is a documented choice; it means code blocks fail reflow (WCAG 1.4.10) on narrow viewports, which is permitted for content requiring two-dimensional layout, and the card must remain keyboard-scrollable.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-soft}` (`#ebe6df`) on `{colors.surface-card}` (`#efe9de`) | 1.03:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline}` (`#e6dfd8`) on `{colors.surface-card}` (`#efe9de`) | 1.09:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.muted-soft}` (`#8e8b82`) on `{colors.surface-card}` (`#efe9de`) | 2.82:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+| `{colors.error}` (`#c64545`) on `{colors.surface-card}` (`#efe9de`) | 4.01:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do

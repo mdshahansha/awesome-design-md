@@ -674,6 +674,26 @@ Declared sizes, read from this file's own frontmatter — not measured on a rend
 - **Reduced motion** is honoured as specified in Motion & Animation above: all travel and scale removed, `opacity` fades kept at 150ms or less, spinner frozen.
 - **Code blocks** in `{typography.code}` at 14px sit on `{colors.surface-card}`; syntax colours beyond `{colors.accent-blue}` were not extracted, so their contrast is unverified. See Known Gaps.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline}` (`#2a2a2a`) on `{colors.surface-card}` (`#1a1a1a`) | 1.21:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline-strong}` (`#3a3a3a`) on `{colors.surface-card}` (`#1a1a1a`) | 1.53:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.muted-soft}` (`#5a5a5a`) on `{colors.surface-card}` (`#1a1a1a`) | 2.52:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do

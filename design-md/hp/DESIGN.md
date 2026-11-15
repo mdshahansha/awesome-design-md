@@ -763,6 +763,25 @@ Every interactive element is specified at 44×44px minimum: `button-primary`, `b
 - Colour is never the only signal: the active `category-tab` inverts its fill *and* its label, the error state adds a `{typography.caption-md}` message beside the `{colors.error}` border, and links keep an underline.
 - The file's own rule against dropping ink opacity for hierarchy is an accessibility win — hierarchy comes from `{colors.text-dim}` and `{colors.graphite}`, both of which pass AA.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline}` (`#e8e8e8`) on `{colors.cloud}` (`#f7f7f7`) | 1.14:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline-strong}` (`#c2c2c2`) on `{colors.cloud}` (`#f7f7f7`) | 1.66:1 | 3.0:1 | Fail — boundary on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do

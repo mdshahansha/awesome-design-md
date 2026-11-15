@@ -803,6 +803,24 @@ Honoured in full; see the `@media (prefers-reduced-motion: reduce)` block above.
 - **Serif body at 14px.** `{typography.body}` Times New Roman 14px/1.4 is period-correct and passes contrast at 21:1, but a 14px serif is the least legible combination in this file. Modern reproductions should allow user text scaling to 200% without a fixed-width table clipping it — the original 760px fixed table does not survive that, which is a real conflict between fidelity and WCAG 1.4.4.
 - **`{colors.text-muted}` is prescribed.** Using it for anything larger than `{typography.caption}` would introduce a tonal hierarchy the brand does not have.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.text-muted}` (`#666666`) on `{colors.tint-steel}` (`#a5b8c0`) | 2.79:1 | 4.5:1 | Fail — secondary text on surface |
+
 ## Do's and Don'ts
 
 ### Do

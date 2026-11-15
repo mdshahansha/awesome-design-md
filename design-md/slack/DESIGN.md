@@ -560,6 +560,25 @@ From the documented geometry alone: `button-primary-pill` at `14px 28px` padding
 
 Every prescribed animation collapses under `@media (prefers-reduced-motion: reduce)` as stated in Motion & Animation: travel, scale, the press pop, the list stagger and the spinner's rotation are removed; opacity fades remain, capped at `{motion.duration-reduced}` (130ms). No ambient animation exists, so none needs freezing. The focus ring is never animated in either mode.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.on-aubergine-mute}` (`#d9bdde`) on `{colors.canvas-cream}` (`#f4ede4`) | 1.47:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+| `{colors.semantic-error}` (`#cc4117`) on `{colors.canvas-cream}` (`#f4ede4`) | 4.17:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do

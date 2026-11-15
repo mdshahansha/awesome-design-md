@@ -588,6 +588,26 @@ Overlap, clipping, horizontal overflow, real tap-target geometry, screen-reader
 announcement order and keyboard tab order cannot be checked without a running page. No claim
 about them is made here.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-strong}` (`#262626`) on `{colors.surface-card}` (`#1a1a1a`) | 1.15:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline-strong}` (`#262626`) on `{colors.canvas}` (`#000000`) | 1.39:1 | 3.0:1 | Fail — boundary, all tones |
+| `{colors.hairline}` (`#3c3c3c`) on `{colors.surface-card}` (`#1a1a1a`) | 1.58:1 | 3.0:1 | Fail — boundary on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do

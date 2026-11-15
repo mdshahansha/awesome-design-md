@@ -645,6 +645,26 @@ Colour is never the sole carrier of meaning in the extracted chrome with one exc
 
 One type size is a legibility problem independent of contrast: `{typography.utility-xs}` is 9px, bound to the footer fine-print row in `{colors.mute}`. The pair passes contrast at 4.94:1, but 9px is below any reasonable floor for sustained reading. It is an extracted value and is kept; it should not be reused for anything the reader is expected to act on.
 
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-soft}` (`#e5e5e5`) on `{colors.soft-cloud}` (`#f5f5f5`) | 1.16:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline}` (`#cacacb`) on `{colors.soft-cloud}` (`#f5f5f5`) | 1.50:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.success-bright}` (`#1eaa52`) on `{colors.soft-cloud}` (`#f5f5f5`) | 2.78:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do
