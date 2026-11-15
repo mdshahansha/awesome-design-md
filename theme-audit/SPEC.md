@@ -62,6 +62,13 @@ no measurable colour, specify a two-tone ring: the brand colour with a 1px
 outer edge in the opposite polarity. The ring must reach 3:1 against every
 surface it can appear over, not just the canvas.
 
+Where the prose says a particular ink is drawn on a particular ground — a
+label on a product colour, a caption on a tinted band — declare that pair in
+`components:` with its `backgroundColor` and `textColor`. Only a declared pair
+is measurable; a ground that exists as a colour token and is never bound to a
+label is invisible to the harness, and guessing those pairings by token name
+produced failures that the files never actually used.
+
 Every `{group.token}` in the prose must resolve to a key in that file's
 frontmatter. The repo is at zero dangling references; keep it there.
 
