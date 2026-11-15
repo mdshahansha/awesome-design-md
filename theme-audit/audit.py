@@ -202,6 +202,22 @@ def audit(path):
 
     # --- required token roles -------------------------------------------
     roles = {role: find_role(colors, cands) for role, cands in REQUIRED_COLOR_ROLES.items()}
+    if not roles.get("surface"):
+        CONTAINERISH = re.compile(r"(card|panel|band|tile|well|strip|rail|bar|"
+                                  r"pill|surface|sheet|modal|drawer)")
+        canvas_hex = colors.get(roles.get("canvas") or "", None)
+        for cname, props in parse_components(text).items():
+            if not CONTAINERISH.search(cname):
+                continue
+            m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("backgroundColor") or "")
+            if not m or m.group(1) not in colors:
+                continue
+            if canvas_hex and colors[m.group(1)] == canvas_hex:
+                continue            # the page floor, not a raised surface
+            roles["surface"] = m.group(1)
+            r.setdefault("roles_from_bindings", []).append("surface=" + m.group(1))
+            break
+
     # A role no pattern can guess by name is still resolvable from what the
     # components bind. Mercury's boundaries are `fog` and `slate`; both are
     # declared as borderColor, which is better evidence than any regex.
