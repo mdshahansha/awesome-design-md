@@ -1,0 +1,79 @@
+{
+  "site": "minimax",
+  "has_frontmatter": true,
+  "color_count": 28,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Known Gaps",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface",
+    "text": "ink",
+    "text-dim": "muted",
+    "border": "hairline",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [
+    {
+      "pair": "muted on canvas",
+      "fg": "#a8aab2",
+      "bg": "#ffffff",
+      "ratio": 2.32,
+      "required": 4.5,
+      "role": "secondary text"
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e5e7eb",
+      "bg": "#ffffff",
+      "ratio": 1.24,
+      "required": 3.0,
+      "role": "component boundary"
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [
+    "200"
+  ],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "focus-visible",
+    "loading",
+    "selected"
+  ],
+  "score": {
+    "tokens": 4,
+    "refs": 5,
+    "contrast": 3,
+    "sections": 3,
+    "motion": 3,
+    "states": 2
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "site": "mastercard",
+  "has_frontmatter": false,
+  "color_count": 0,
+  "sections_present": [
+    "Iteration Guide",
+    "Known Gaps"
+  ],
+  "sections_missing": [
+    "Overview",
+    "Colors",
+    "Typography",
+    "Layout",
+    "Elevation & Depth",
+    "Shapes",
+    "Components",
+    "Motion & Animation",
+    "Accessibility",
+    "Do's and Don'ts",
+    "Responsive Behavior"
+  ],
+  "roles_resolved": {},
+  "roles_missing": [
+    "accent",
+    "border",
+    "canvas",
+    "focus",
+    "on-accent",
+    "surface",
+    "text",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "focus-visible",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 1,
+    "refs": 5,
+    "contrast": 5,
+    "sections": 1,
+    "motion": 1,
+    "states": 2
+  }
+}

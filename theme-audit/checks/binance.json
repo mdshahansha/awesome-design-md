@@ -1,0 +1,85 @@
+{
+  "site": "binance",
+  "has_frontmatter": true,
+  "color_count": 24,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Known Gaps",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas-light",
+    "surface": "surface-card-dark",
+    "text": "ink",
+    "text-dim": "muted",
+    "border": "hairline-on-light",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [
+    {
+      "pair": "ink on surface-card-dark",
+      "fg": "#181a20",
+      "bg": "#1e2329",
+      "ratio": 1.1,
+      "required": 4.5,
+      "role": "body text on surface"
+    },
+    {
+      "pair": "muted on canvas-light",
+      "fg": "#707a8a",
+      "bg": "#ffffff",
+      "ratio": 4.34,
+      "required": 4.5,
+      "role": "secondary text"
+    },
+    {
+      "pair": "hairline-on-light on canvas-light",
+      "fg": "#eaecef",
+      "bg": "#ffffff",
+      "ratio": 1.18,
+      "required": 3.0,
+      "role": "component boundary"
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "focus-visible",
+    "loading",
+    "selected"
+  ],
+  "score": {
+    "tokens": 4,
+    "refs": 5,
+    "contrast": 2,
+    "sections": 3,
+    "motion": 1,
+    "states": 2
+  }
+}

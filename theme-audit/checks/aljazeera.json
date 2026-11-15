@@ -1,0 +1,81 @@
+{
+  "site": "aljazeera",
+  "has_frontmatter": true,
+  "color_count": 20,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Layout",
+    "Overview",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Responsive Behavior",
+    "Iteration Guide",
+    "Known Gaps"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "text": "ink",
+    "border": "hairline",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus",
+    "surface",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [
+    {
+      "pair": "on-primary on primary",
+      "fg": "#ffffff",
+      "bg": "#fa9000",
+      "ratio": 2.32,
+      "required": 4.5,
+      "role": "text on accent"
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#d8d8d8",
+      "bg": "#ffffff",
+      "ratio": 1.43,
+      "required": 3.0,
+      "role": "component boundary"
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "pressed",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 2,
+    "refs": 5,
+    "contrast": 3,
+    "sections": 1,
+    "motion": 1,
+    "states": 1
+  }
+}

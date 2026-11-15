@@ -1,0 +1,64 @@
+{
+  "site": "vodafone",
+  "has_frontmatter": true,
+  "color_count": 8,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Layout",
+    "Overview",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Responsive Behavior",
+    "Iteration Guide",
+    "Known Gaps"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "text": "ink",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "border",
+    "focus",
+    "surface",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "pressed",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 1,
+    "refs": 5,
+    "contrast": 5,
+    "sections": 1,
+    "motion": 1,
+    "states": 1
+  }
+}

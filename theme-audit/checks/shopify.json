@@ -1,0 +1,81 @@
+{
+  "site": "shopify",
+  "has_frontmatter": true,
+  "color_count": 22,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Known Gaps"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas-night",
+    "surface": "surface-elevated-dark",
+    "text": "ink",
+    "border": "hairline-light",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#000000",
+      "bg": "#000000",
+      "ratio": 1.0,
+      "required": 4.5,
+      "role": "body text"
+    },
+    {
+      "pair": "ink on surface-elevated-dark",
+      "fg": "#000000",
+      "bg": "#1e2c31",
+      "ratio": 1.46,
+      "required": 4.5,
+      "role": "body text on surface"
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "active",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 3,
+    "refs": 5,
+    "contrast": 3,
+    "sections": 2,
+    "motion": 1,
+    "states": 1
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "site": "mistral.ai",
+  "has_frontmatter": true,
+  "color_count": 36,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Known Gaps",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface",
+    "text": "ink",
+    "text-dim": "muted",
+    "border": "hairline",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [
+    {
+      "pair": "muted on canvas",
+      "fg": "#a8a8a8",
+      "bg": "#ffffff",
+      "ratio": 2.38,
+      "required": 4.5,
+      "role": "secondary text"
+    },
+    {
+      "pair": "on-primary on primary",
+      "fg": "#ffffff",
+      "bg": "#fa520f",
+      "ratio": 3.34,
+      "required": 4.5,
+      "role": "text on accent"
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e5e5e5",
+      "bg": "#ffffff",
+      "ratio": 1.26,
+      "required": 3.0,
+      "role": "component boundary"
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [
+    "200"
+  ],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "focus-visible",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 4,
+    "refs": 5,
+    "contrast": 2,
+    "sections": 3,
+    "motion": 3,
+    "states": 1
+  }
+}

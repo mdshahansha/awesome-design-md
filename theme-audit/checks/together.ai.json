@@ -1,0 +1,71 @@
+{
+  "site": "together.ai",
+  "has_frontmatter": true,
+  "color_count": 13,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Layout",
+    "Overview",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Responsive Behavior",
+    "Iteration Guide",
+    "Known Gaps"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface-dark-soft",
+    "text": "ink",
+    "border": "hairline",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [
+    {
+      "pair": "ink on surface-dark-soft",
+      "fg": "#000000",
+      "bg": "#313641",
+      "ratio": 1.73,
+      "required": 4.5,
+      "role": "body text on surface"
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "disabled",
+    "loading",
+    "selected"
+  ],
+  "score": {
+    "tokens": 3,
+    "refs": 5,
+    "contrast": 4,
+    "sections": 1,
+    "motion": 1,
+    "states": 1
+  }
+}

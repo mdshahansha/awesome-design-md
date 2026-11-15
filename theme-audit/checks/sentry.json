@@ -1,0 +1,60 @@
+{
+  "site": "sentry",
+  "has_frontmatter": true,
+  "color_count": 21,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Known Gaps"
+  ],
+  "roles_resolved": {
+    "text": "ink",
+    "border": "hairline-violet",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "canvas",
+    "focus",
+    "surface",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_missing": [
+    "focus-visible",
+    "loading",
+    "selected"
+  ],
+  "score": {
+    "tokens": 1,
+    "refs": 5,
+    "contrast": 5,
+    "sections": 2,
+    "motion": 1,
+    "states": 2
+  }
+}
