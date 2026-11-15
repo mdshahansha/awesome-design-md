@@ -175,10 +175,21 @@ def audit(path):
             continue
         r_, g_, b_ = (int(m.group(i)) for i in (1, 2, 3))
         a = float(m.group(4)) if m.group(4) else 1.0
+        # A token that names its ground (border-on-ink, overlay-on-dark) is
+        # drawn there, not on the canvas.
+        gr, gg, gb = br, bg_, bb
+        named = re.search(r"-on-([a-z0-9]+)", k)
+        if named:
+            for cand in colors:
+                if re.match(rf"^{named.group(1)}($|[-_])", cand):
+                    gh = colors[cand].lstrip("#")
+                    gh = "".join(c * 2 for c in gh) if len(gh) == 3 else gh[:6]
+                    gr, gg, gb = (int(gh[i:i + 2], 16) for i in (0, 2, 4))
+                    break
         colors[k] = "#%02x%02x%02x" % (
-            round(r_ * a + br * (1 - a)),
-            round(g_ * a + bg_ * (1 - a)),
-            round(b_ * a + bb * (1 - a)))
+            round(r_ * a + gr * (1 - a)),
+            round(g_ * a + gg * (1 - a)),
+            round(b_ * a + gb * (1 - a)))
         composited.append(k)
     r = {"site": site, "has_frontmatter": bool(groups), "color_count": len(colors),
          "composited_tokens": composited}
@@ -354,10 +365,19 @@ def audit(path):
     # A token a component declares as a backgroundColor is a surface whatever it
     # is called: meta paints white type on `ink-deep`, which the name filter
     # above would drop, hiding every dark ground a ring lands on.
+    ACCENTISH = re.compile(r"^(primary|accent|brand|cta|secondary|success|warning|"
+                           r"error|danger|info|semantic|positive|negative|trading|"
+                           r"badge|price)")
     for props in parse_components(text).values():
         m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("backgroundColor") or "")
-        if m and m.group(1) in colors and m.group(1) not in surface_keys:
-            surface_keys.append(m.group(1))
+        if not m or m.group(1) not in colors or m.group(1) in surface_keys:
+            continue
+        # A signal fill is not a ground a ring must clear: requiring both the
+        # page behind a control and the control's own fill is arithmetically
+        # impossible, which is why accent targets were dropped in 34a4499.
+        if ACCENTISH.match(m.group(1)):
+            continue
+        surface_keys.append(m.group(1))
     accent_key = roles.get("accent")
 
     # A file's rings are a system, not independent claims. A surface is covered
@@ -416,6 +436,9 @@ def audit(path):
         if "disabled" in name:          # WCAG sets no requirement on disabled
             continue
         bg, fg = deref(props.get("backgroundColor")), deref(props.get("textColor"))
+        declared_bg = (props.get("backgroundColor") or "").strip().lower()
+        if declared_bg in ("transparent", "none", "inherit"):
+            continue                            # ground not stated; nothing to measure
         if fg and not bg and roles.get("canvas"):
             bg = colors[roles["canvas"]]        # drawn on the page floor
         if not bg or not fg:
