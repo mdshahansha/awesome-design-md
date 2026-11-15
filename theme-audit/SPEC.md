@@ -320,7 +320,11 @@ the file. Do not leave a borderline case undecided, and do not switch silently
 ## 6. Motion rules (every profile)
 
 - Animate `transform` and `opacity` only. Never `width`, `height`, `top`,
-  `left` or `margin`.
+  `left` or `margin`. The rule exists to bar layout-triggering properties, so a
+  paint-only change — `background-color`, `color`, `border-color`, `box-shadow`
+  — is permitted and needs no apology: on a near-monochrome brand that *is* the
+  hover state, and inventing a scale pop to satisfy a literal reading would
+  contradict the brand. Use the same duration token as any other state change.
 - Exit duration is shorter than its matching entrance.
 - Nothing animates on first paint in a way that delays content.
 - No infinite animation except loaders and deliberate brand ambience, and that
