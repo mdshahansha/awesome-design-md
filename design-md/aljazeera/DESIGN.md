@@ -24,6 +24,18 @@ colors:
   rail-red: "#bc0000"
   mist: "#dddddd"
   graphite: "#323232"
+  # ─── Prescribed accessibility tokens — NOT extracted from the live site ───
+  # Parallel accessible tokens added alongside the frozen extracted tones.
+  # surface-soft: alias of soft — the one real raised fill (newsletter card)
+  surface-soft: "#f0f0f0"
+  # text-secondary: alias of slate — the documented secondary-text tone
+  text-secondary: "#595959"
+  # border-control: control boundary; hairline #d8d8d8 is decoration only
+  border-control: "#595959"
+  # focus: ring on light surfaces and on teal/amber chrome
+  focus: "#000000"
+  # focus-on-dark: ring on ink pills and the network's dark grounds
+  focus-on-dark: "#ffc500"
 
 typography:
   headline-xl:
@@ -100,6 +112,22 @@ rounded:
   lg: 18px
   xl: 22px
   full: 9999px
+
+shadow:
+  dropdown: "0 6px 12px rgba(0, 0, 0, 0.175)"
+
+motion:
+  # Prescribed to match this brand's visual identity (Calm profile).
+  # Not measured from the live site.
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 600ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
 
 spacing:
   xxs: 2px
@@ -350,7 +378,14 @@ Source pages — the news front page, a live blog, and the network's leadership 
 - **Night Canvas** (`{colors.network-canvas}` — #181818): the network pages' dark ground for portrait cards.
 - **Royal Indigo** (`{colors.indigo}` — #272967): the network hero panel behind page titles.
 - **Night Navy** (`{colors.night-navy}` — #100e2f): the network's slim utility strip.
-- **Hairline** (`{colors.hairline}` — #d8d8d8) and **Silver** (`{colors.silver}` — #bebebe): rule tones — list dividers, card edges, and the live-timeline rail.
+- **Hairline** (`{colors.hairline}` — #d8d8d8) and **Silver** (`{colors.silver}` — #bebebe): rule tones — list dividers, card edges, and the live-timeline rail. Both are decoration only: at 1.43:1 and 1.86:1 on `{colors.canvas}` neither reaches the 3:1 a component boundary needs.
+
+### Prescribed Accessibility Tokens (not extracted)
+The live site ships no focus ring and no boundary tone that clears 3:1. These four tokens are **prescribed**, not measured; the extracted hexes above are untouched.
+- **Surface Soft** (`{colors.surface-soft}` — #f0f0f0): alias of `{colors.soft}`, named as the system's one raised fill. Ink on it measures 18.43:1.
+- **Text Secondary** (`{colors.text-secondary}` — #595959): alias of `{colors.slate}`, the documented secondary-text tone. 7.00:1 on `{colors.canvas}`, 6.15:1 on `{colors.surface-soft}`.
+- **Border Control** (`{colors.border-control}` — #595959): the boundary tone for anything whose edge must be seen — text inputs, selects, focusable rows. Same value the file already documents for the email capsule border, so no new hue enters the palette. 7.00:1 on `{colors.canvas}`.
+- **Focus** (`{colors.focus}` — #000000) and **Focus On Dark** (`{colors.focus-on-dark}` — #ffc500, the extracted select-gold): the two-ring focus system. Black suits a page whose controls are already black objects; orange is kept off interaction per the marker-pen rule.
 
 ### Text
 - **Ink** (`{colors.ink}`): headlines, standing labels, and the black pill fills.
@@ -435,7 +470,7 @@ News photography is aggressively cropped 16:9 and 4:3, square-cornered in articl
 |---|---|---|
 | Flat | None — rules only | The entire news surface |
 | Rule | 1px `{colors.hairline}` / `{colors.soft}` dividers; 1px `{colors.ink}` bottom rules | Lists, cards, section boundaries |
-| Dropdown | 0 6px 12px rgba(0, 0, 0, 0.175) | Network menus — the system's only shadow |
+| Dropdown | `{shadow.dropdown}` — 0 6px 12px rgba(0, 0, 0, 0.175) | Network menus — the system's only shadow |
 
 Shadow philosophy: news reads flat. Photography supplies all depth on the editorial side; the network's dark canvas supplies it on the corporate side. The single dropdown shadow exists for usability, not style.
 
@@ -572,6 +607,119 @@ The scale is bimodal: editorial imagery and badges stay near-square (2-10px) whi
 **`ex-toast`** — Toast notification surface — feature-card shape + medium shadow.
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
+### State Coverage
+
+The live pages expose no hover, pressed or disabled styling that could be read off a static capture, so every state below except `default` and the network nav's `active` is **prescribed**. The rule throughout: state is carried by opacity, the `{colors.focus}` ring and the `{colors.border-control}` edge — never by recoloring a surface orange.
+
+| Component | States |
+|---|---|
+| `button-pill-dark` | default · hover (fill holds, label to 85% opacity) · focus-visible (2px `{colors.focus-on-dark}` ring inset 2px, since the fill is ink) · pressed · disabled (40% opacity, `{colors.silver}` fill) · loading (label swaps for a 3-dot pulse, width frozen) |
+| `button-pill-mini` | default · hover · focus-visible (`{colors.focus-on-dark}`) · pressed · disabled. No loading or selected state — it is a counter, not a control, in most placements |
+| `nav-bar` link | default · hover (1px `{colors.ink}` underline) · focus-visible (`{colors.focus}`) · pressed · selected (current section, 700 weight) |
+| `network-nav` / `network-nav-active` | default · hover (`{colors.amber}`) · focus-visible (`{colors.focus}`) · active/selected (`{colors.amber}`, the one state the live pages actually show) |
+| `text-input` | default (1px `{colors.border-control}`) · hover · focus-visible (2px `{colors.focus}` ring, border to `{colors.ink}`) · disabled (`{colors.surface-soft}` fill, `{colors.silver}` border) · error (1px `{colors.live-red}` border plus a `{typography.caption}` message in `{colors.live-red}`) · loading (submit pill carries the spinner, field stays live) |
+| `network-select` | default (3px `{colors.select-gold}`) · hover · focus-visible (`{colors.focus}` ring outside the gold edge) · selected (chosen option, 700 weight) · disabled · error |
+| `news-card` / `media-thumb` | default · hover (headline underline, image to 92% opacity — no scale, no shadow) · focus-visible (`{colors.focus}` ring around the whole card) · pressed |
+| `most-popular-row` / `live-strip-item` | default · hover (headline underline) · focus-visible (`{colors.focus}`) · pressed · selected (the update currently anchored in a live blog) |
+| `live-badge` / `breaking-band` | default and loading only — they are status surfaces, not controls. Loading is the dot pulse on the timeline rail |
+| `newsletter-card` | default · error (field-level, see `text-input`) · loading (pill spinner). Not hoverable, not focusable, not selectable as a whole |
+| `ex-toast` | enter · default · hover (pauses auto-dismiss) · focus-visible (`{colors.focus}`) · error variant (`{colors.live-red}` 3px left rule) · exit |
+| `ex-data-table-cell` | default · hover (row to `{colors.surface-soft}`) · focus-visible · selected (row, 1px `{colors.ink}` left rule) · loading (skeleton rows) |
+| `avatar-circle` / `logo-block` / `section-rail-teal` / `section-rail-red` / `network-hero-panel` | default only — static identity and label surfaces with genuinely one state |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** Nobody timed Al Jazeera's real transitions; every value below is an inference from the static design language, carried by the `{motion}` tokens in the frontmatter.
+
+Profile: **Calm** — composed and editorial. It is the right read for this file: the identity is flat white paper with no shadows and no gradients, headline weight does the work, and the section-eyebrow bar is a printed mark rather than an interactive flourish. A news front page that popped and sprang on every hover would undercut the wire-service voice. Motion here is almost entirely opacity, with travel measured in single-digit pixels; the one exception is the live apparatus, where a slow pulse is the brand's only sanctioned ambience.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (pills, cards, list rows) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` | Opacity change kept at `{motion.duration-fast}`; underline appears instantly |
+| Press (pills, rows) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` (to 0.9) | Opacity only, `{motion.duration-instant}` — no scale at any time, in either mode |
+| Focus (`{colors.focus}` / `{colors.focus-on-dark}` ring) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` | Ring is drawn with no transition; it must never lag the keyboard |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` | Cross-fade dropped to `{motion.duration-fast}`, no travel |
+| Modal / drawer (nav drawer, network menu) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(8px)` | Travel removed; `{motion.duration-fast}` opacity fade only |
+| Dropdown (nav carets, network select) | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: translateY(4px)` | Travel removed; opacity fade at `{motion.duration-fast}` |
+| Toast | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: translateY(8px)` | Travel removed; appears and leaves on a `{motion.duration-fast}` fade |
+| List enter (news grid, live updates) | `{motion.duration-base}`, `{motion.stagger-step}` between items, 6 items maximum | `{motion.ease-enter}` | `opacity` + `transform: translateY(6px)` | Stagger and travel removed; items appear at full opacity with no transition |
+| List exit (filtered grids, dismissed updates) | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` | Removed without transition |
+| Loading (pill spinner, live timeline dot, skeleton rows) | `{motion.duration-emphasis}` per cycle, infinite | `{motion.ease-standard}` | `opacity` (1 → 0.4 → 1) | Pulse frozen at full opacity; a static "Loading…" / "LIVE" label carries the state instead |
+
+### Rules
+- Only `opacity` and `transform` are ever transitioned. Never `width`, `height`, `top`, `left` or `margin` — a dense news grid cannot afford layout thrash, and nothing in this identity moves far enough to need them.
+- Every exit is shorter than its matching entrance.
+- Nothing animates on first paint. The masthead, the live strip and the lead story render at full opacity; the staggered list enter applies to content fetched after load, never to the initial page.
+- The only infinite animation is the live-apparatus pulse — the `{colors.live-red}` timeline dot and the LIVE badge breathing at `{motion.duration-emphasis}` — and the loading indicators. That pulse is deliberate brand ambience: it is the one place the system says "happening now" without words.
+- No scale on press, and no entrance choreography on the eyebrow bars. The `{colors.primary}` bar is printed, not performed.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translateY travel, all stagger, the live-dot and
+     skeleton pulse (frozen at full opacity). */
+  /* Kept: opacity fades, capped at 150ms. */
+  *, *::before, *::after {
+    transition-duration: 150ms !important;
+    transition-property: opacity !important;
+    animation: none !important;
+  }
+}
+```
+
+Removed: every `transform` travel, the `{motion.stagger-step}` cascade, and the infinite live/loading pulse. Kept: opacity fades at `{motion.duration-fast}` or less, the focus ring (untransitioned), and every text label that carries live or loading state — so no information is lost when motion is off.
+
+## Accessibility
+
+Measured with WCAG 2.1 relative luminance against the hexes in this file's own frontmatter. Nothing here is from a rendered page: tap-target size, overlap and clipping cannot be verified from a document, so they are stated as intent, not measurement.
+
+### Contrast — measured
+| Foreground / Background | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 21.00:1 | 4.5 | Pass |
+| `{colors.charcoal}` on `{colors.canvas}` | 12.63:1 | 4.5 | Pass |
+| `{colors.text-secondary}` on `{colors.canvas}` | 7.00:1 | 4.5 | Pass |
+| `{colors.text-secondary}` on `{colors.surface-soft}` | 6.15:1 | 4.5 | Pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 18.43:1 | 4.5 | Pass |
+| `{colors.border-control}` on `{colors.canvas}` | 7.00:1 | 3.0 | Pass |
+| `{colors.hairline}` on `{colors.canvas}` | 1.43:1 | 3.0 | **Fail — decorative only** |
+| `{colors.silver}` on `{colors.canvas}` | 1.86:1 | 3.0 | **Fail — decorative only** |
+| `{colors.on-primary}` on `{colors.primary}` | 2.32:1 | 4.5 | **Fail — real brand failure** |
+| `{colors.on-primary}` on `{colors.live-red}` | 6.00:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.rail-red}` | 6.69:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.rail-teal}` | 2.02:1 | 4.5 | **Fail — real brand failure** |
+| `{colors.on-primary}` on `{colors.indigo}` | 13.13:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.network-canvas}` | 17.76:1 | 4.5 | Pass |
+| `{colors.mist}` on `{colors.network-canvas}` | 13.07:1 | 4.5 | Pass |
+| `{colors.mist}` on `{colors.ink}` | 15.46:1 | 4.5 | Pass |
+| `{colors.amber}` on `{colors.canvas}` | 2.04:1 | 4.5 | **Fail — real brand failure (active nav link)** |
+| `{colors.gold}` on `{colors.canvas}` | 2.29:1 | 4.5 | **Fail — decorative rules only** |
+| `{colors.select-gold}` on `{colors.canvas}` | 1.59:1 | 3.0 | **Fail — real brand failure (control border)** |
+
+Said plainly: **this brand fails AA in four places, and the document does not hide it.**
+1. White on Jazeera orange is 2.32:1. The `{colors.primary}` surface is safe as the logo block, where the eagle is a trademark mark rather than text; it must not carry label text. Anything that reads as text on orange needs `{colors.ink}` instead (9.05:1).
+2. White on `{colors.rail-teal}` is 2.02:1. The rotated rail labels are large display type, so 3:1 is the applicable threshold — and at 2.02:1 they miss even that. `{colors.ink}` on teal measures 10.40:1 and is the only accessible fix. `{colors.rail-red}` has no such problem.
+3. `{colors.amber}` active nav links on white are 2.04:1. On the dark network grounds amber is fine; on the white nav band it is not.
+4. The 3px `{colors.select-gold}` select border is 1.59:1 — the system's loudest edge is also its least visible. Pair it with the `{colors.border-control}` inner edge.
+
+The two hairline tones stay frozen at 1.43:1 and 1.86:1 because they are extracted facts. They are scoped to decoration — list dividers, the live-timeline rail, card edges that sit beside other cues. `{colors.border-control}` is the token for any boundary that is the *only* cue, such as a text input.
+
+### Focus ring
+Two rings, because one cannot cross this system's polarity shift:
+- `{colors.focus}` (#000000), 2px with a 2px offset, on every light surface and on the teal and amber chrome: 21.00:1 on `{colors.canvas}`, 18.43:1 on `{colors.surface-soft}`, 14.73:1 on a `{colors.hairline}` rule, 9.05:1 on `{colors.primary}`, 10.40:1 on `{colors.rail-teal}`.
+- `{colors.focus-on-dark}` (#ffc500), 2px inset, on the ink pills and the network's dark grounds: 13.24:1 on `{colors.ink}`, 11.19:1 on `{colors.network-canvas}`, 11.76:1 on `{colors.night-navy}`, 8.28:1 on `{colors.indigo}`, 4.22:1 on `{colors.rail-red}`.
+- Neither ring is ever drawn on `{colors.rail-teal}` in gold (1.27:1) — teal takes the black ring.
+- The ring is never suppressed. `:focus-visible` only, so pointer users never see it, and it is drawn with no transition.
+
+### Layers
+`{colors.canvas}` to `{colors.surface-soft}` is 1.14:1 — the newsletter card is barely a layer at all. That is true to the brand, but it means the card must keep its `{spacing.xl}` padding and its own type hierarchy to read as a panel; it cannot rely on the fill alone, and it must not be given a `{colors.hairline}` edge, which at 1.43:1 would add nothing.
+
+### Tap targets
+Intent, not measurement — no rendered page exists to verify. The `button-pill-dark` pads 6px 17px around a 16px label, which computes to roughly 36px tall: short of 44×44, so its surrounding row spacing must carry the remainder. `button-pill-mini` at 1px 6px padding around 12px type cannot be a primary tap target and is documented as a counter. Timeline items and Most Popular rows are full-width tap zones.
+
+### Reduced motion
+See `@media (prefers-reduced-motion: reduce)` above. Every live and loading state has a text label, so freezing the pulse removes no information.
 
 ## Do's and Don'ts
 
@@ -592,3 +740,38 @@ The scale is bimodal: editorial imagery and badges stay near-square (2-10px) whi
 - Don't mix the network's gold/amber/indigo family into the news surface, or the orange eyebrow system into corporate pages.
 - Don't soften the eyebrows — they stay uppercase, light-weight, and barred.
 - Don't introduce new accent hues; the palette's color budget is spent on orange, live-red, and the network's gold and rails.
+- Don't animate `width`, `height`, `top`, `left` or `margin`; opacity and `transform` carry every transition.
+- Don't put label text on the `{colors.primary}` block or white text on `{colors.rail-teal}` — both fail contrast (2.32:1 and 2.02:1).
+- Don't suppress the focus ring to protect the flat look; use `{colors.focus}` on light surfaces and `{colors.focus-on-dark}` on the ink pills and dark network grounds.
+
+## Responsive Behavior
+
+The breakpoint table, collapsing strategy, touch-target note and image behaviour live under **Layout → Responsive Strategy** above; this section adds only what belongs to state and motion at each width.
+
+| Width | Behaviour |
+|---|---|
+| Desktop 1280px | Full news grid with right rail. List enter staggers at `{motion.stagger-step}`, capped at 6 items |
+| Laptop 1024px | Rail folds under the main column; grids step to 2-up. Stagger unchanged |
+| Tablet 768–992px | Nav condenses; carousels show fewer cards. Dropdowns still use `{motion.duration-fast}` |
+| Mobile-lg 600px | Single-column stacking; thumbnails move beside headlines. Stagger drops to the first 3 items |
+| Mobile ≤480px | Full-width media; pills persist at compact size. The nav drawer replaces the dropdown and uses the modal timing (`{motion.duration-base}` in, `{motion.duration-fast}` out) |
+
+- Hover states have no touch equivalent: on pointer-coarse widths the hover opacity shift is dropped and the pressed state at `{motion.duration-instant}` is the only feedback.
+- The `{colors.focus}` ring is unchanged at every width; it never shrinks to fit a compact pill.
+- The live-timeline dot rail and its pulse persist at every width, as does the `{colors.primary}` logo block.
+- Prescribed, not measured: these are the natural consequences of the breakpoints and motion tokens this file already states, not observed mobile behaviour.
+
+## Known Gaps
+
+Everything in this list is either unverifiable from a static document or absent from the live site. Nothing here is invented as fact.
+
+- **Motion is entirely prescribed.** No duration, easing or stagger in this file was measured. The Calm profile was chosen from the visual identity (flat paper, no shadows, no gradients, weight-led hierarchy), not from a recording.
+- **Nearly all states are prescribed.** Only `default` and the network nav's `active` are observable from static pages. Hover, focus-visible, pressed, disabled, loading, selected and error styling is inferred and marked as such in State Coverage.
+- **No focus ring exists on the live site.** `{colors.focus}` and `{colors.focus-on-dark}` are additions, not extractions.
+- **`{colors.border-control}`, `{colors.text-secondary}` and `{colors.surface-soft}` are aliases**, named so the token contract has a boundary, secondary-text and surface role. Their values are the already-extracted `{colors.slate}` and `{colors.soft}`; no new hue was introduced.
+- **Not computable from a document:** tap-target size, overlap, horizontal overflow, clipping, frame rate and layout shift. The 44×44 note under Accessibility is intent.
+- **Unknown type details:** no letter-spacing is stated anywhere (all tokens carry 0, which is a default rather than a measurement), and the network wordmark's own metrics are unrecorded because it is logo art.
+- **Unknown colour duties:** `{colors.graphite}` and `{colors.mist}` are documented only as network body and link tones; whether they also serve as rules on light bands is not confirmed.
+- **No dark mode.** The `{colors.network-canvas}` pages are a separate corporate surface, not a theme of the news pages, and no dark variant of the news front page was observed.
+- **Elevation is single-shadow.** `{shadow.dropdown}` is the only real shadow in the system; no hover or modal elevation value exists, so none was invented.
+- **Error and success semantics are thin.** The file documents `{colors.live-red}` as the only semantic signal; the error states in State Coverage borrow it, and no success or warning tone exists to borrow.
