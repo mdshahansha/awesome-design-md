@@ -34,11 +34,11 @@
 | A27 | `ibm` | "An enterprise-marketing canvas faithful to Carbon Design System: white | `design-md/ibm/DESIGN.md` | Calm |  |
 | A28 | `intercom` | "An editorial customer-service marketing canvas built around a soft | `design-md/intercom/DESIGN.md` | Playful |  |
 | A29 | `jobright` | An analysis of Jobright's design language — an AI | `design-md/jobright/DESIGN.md` | Playful |  |
-| A30 | `kraken` | Kraken's website is a clean, trustworthy crypto exchange that | `design-md/kraken/DESIGN.md` | Calm | yes |
-| A31 | `lamborghini` | Lamborghini's website is a cathedral of darkness — a | `design-md/lamborghini/DESIGN.md` | Cinematic | yes |
+| A30 | `kraken` | A clean, trustworthy crypto-exchange interface on a white canvas | `design-md/kraken/DESIGN.md` | Calm |  |
+| A31 | `lamborghini` | A cathedral of darkness — true black (#000000) surfaces | `design-md/lamborghini/DESIGN.md` | Cinematic |  |
 | A32 | `linear.app` | "A near-black product-focused marketing canvas built around #010102 (the | `design-md/linear.app/DESIGN.md` | Crisp |  |
-| A33 | `lovable` | Lovable's website radiates warmth through restraint | `design-md/lovable/DESIGN.md` | Playful | yes |
-| A34 | `mastercard` | Mastercard's experience reads like a warm, editorial magazine built | `design-md/mastercard/DESIGN.md` | Calm | yes |
+| A33 | `lovable` | Warmth through restraint. A parchment-cream canvas (#f7f4ed) replaces the | `design-md/lovable/DESIGN.md` | Playful |  |
+| A34 | `mastercard` | A warm editorial-magazine payments identity built on putty-cream paper | `design-md/mastercard/DESIGN.md` | Calm |  |
 | A35 | `mercury` | An analysis of Mercury's design language — a fintech | `design-md/mercury/DESIGN.md` | Calm |  |
 | A36 | `meta` | Meta's design system spans hardware commerce (Quest VR, Ray-Ban | `design-md/meta/DESIGN.md` | Cinematic |  |
 | A37 | `minimax` | MiniMax presents itself as a premium AI infrastructure brand | `design-md/minimax/DESIGN.md` | Crisp |  |
@@ -64,7 +64,7 @@
 | A57 | `replicate` | | | `design-md/replicate/DESIGN.md` | Crisp |  |
 | A58 | `resend` | | | `design-md/resend/DESIGN.md` | Crisp |  |
 | A59 | `revolut` | | | `design-md/revolut/DESIGN.md` | Cinematic |  |
-| A60 | `runwayml` | Runway's interface is a cinematic reel brought to life | `design-md/runwayml/DESIGN.md` | Cinematic | yes |
+| A60 | `runwayml` | A cinematic reel rendered as a website. The canvas | `design-md/runwayml/DESIGN.md` | Cinematic |  |
 | A61 | `sanity` | Sanity's website is a developer-content platform rendered as a | `design-md/sanity/DESIGN.md` | Crisp | yes |
 | A62 | `sap` | An analysis of SAP's design language — an enterprise | `design-md/sap/DESIGN.md` | Calm |  |
 | A63 | `sentry` | An inspired interpretation of Sentri's design language — a | `design-md/sentry/DESIGN.md` | Crisp |  |

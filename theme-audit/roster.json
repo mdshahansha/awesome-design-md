@@ -234,18 +234,18 @@
   {
     "agent": "A30",
     "site": "kraken",
-    "intent": "Kraken's website is a clean, trustworthy crypto exchange that",
+    "intent": "A clean, trustworthy crypto-exchange interface on a white canvas",
     "owned": "design-md/kraken/DESIGN.md",
     "profile": "Calm",
-    "legacy": true
+    "legacy": false
   },
   {
     "agent": "A31",
     "site": "lamborghini",
-    "intent": "Lamborghini's website is a cathedral of darkness \u2014 a",
+    "intent": "A cathedral of darkness \u2014 true black (#000000) surfaces",
     "owned": "design-md/lamborghini/DESIGN.md",
     "profile": "Cinematic",
-    "legacy": true
+    "legacy": false
   },
   {
     "agent": "A32",
@@ -258,18 +258,18 @@
   {
     "agent": "A33",
     "site": "lovable",
-    "intent": "Lovable's website radiates warmth through restraint",
+    "intent": "Warmth through restraint. A parchment-cream canvas (#f7f4ed) replaces the",
     "owned": "design-md/lovable/DESIGN.md",
     "profile": "Playful",
-    "legacy": true
+    "legacy": false
   },
   {
     "agent": "A34",
     "site": "mastercard",
-    "intent": "Mastercard's experience reads like a warm, editorial magazine built",
+    "intent": "A warm editorial-magazine payments identity built on putty-cream paper",
     "owned": "design-md/mastercard/DESIGN.md",
     "profile": "Calm",
-    "legacy": true
+    "legacy": false
   },
   {
     "agent": "A35",
@@ -474,10 +474,10 @@
   {
     "agent": "A60",
     "site": "runwayml",
-    "intent": "Runway's interface is a cinematic reel brought to life",
+    "intent": "A cinematic reel rendered as a website. The canvas",
     "owned": "design-md/runwayml/DESIGN.md",
     "profile": "Cinematic",
-    "legacy": true
+    "legacy": false
   },
   {
     "agent": "A61",
