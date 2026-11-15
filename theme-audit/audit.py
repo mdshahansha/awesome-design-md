@@ -397,7 +397,7 @@ def audit(path):
 
     # Polarity evidence from bindings: a token drawn as textColor on grounds of
     # one polarity belongs to that polarity, whatever its name says.
-    bound_polarity = {}
+    bound_polarity, bound_count = {}, {}
     for props in parse_components(text).values():
         bgm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
                            props.get("backgroundColor") or "")
@@ -409,13 +409,15 @@ def audit(path):
             continue
         pol = "dark" if luminance(colors[bgm.group(1)]) < 0.2 else "light"
         bound_polarity.setdefault(fgm.group(1), set()).add(pol)
+        bound_count[fgm.group(1)] = bound_count.get(fgm.group(1), 0) + 1
 
     def theme_of(key):
         """Which theme a token belongs to. None means the file's default."""
         pols = bound_polarity.get(key)
-        if pols and len(pols) == 1:
+        # Two or more components must agree: one binding let a file suppress a
+        # required canvas pair just by declaring a ground (agent A75).
+        if pols and len(pols) == 1 and bound_count.get(key, 0) >= 2:
             only = next(iter(pols))
-            # Evidence beats naming, but only where it disagrees with nothing.
             if only != canvas_polarity:
                 return only
             return None
@@ -559,9 +561,10 @@ def audit(path):
     # where 1.4.3 does not apply, so a failure here is a prompt for a usage
     # note rather than proof of a defect — but it must be visible either way.
     SEMANTIC = (r"^success", r"^warning", r"^error", r"^danger", r"^info",
-                r"^semantic-", r"^positive", r"^negative")
-    canvas_key = roles.get("canvas")
-    if canvas_key:
+                r"^semantic-", r"^positive", r"^negative",
+                r"^link($|[-_])", r"^text-link", r"^[a-z]+-link$")
+    for canvas_key in dict.fromkeys(
+            k for k in (roles.get("canvas"), roles.get("surface")) if k):
         FILL_MARKER = re.compile(r"(subtle|soft|pale|faint|bg|background|fill|tint|"
                                  r"wash|surface|band|chip|badge|pill)")
         for pat in SEMANTIC:
@@ -683,6 +686,10 @@ def audit(path):
             # rather than substituting the page and inventing a failure.
             continue
         if fg and not bg and roles.get("canvas"):
+            fg_key = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                                  props.get("textColor") or "")
+            if fg_key and theme_of(fg_key.group(1)) not in (None, canvas_polarity):
+                continue    # an ink for the other polarity; its ground is unstated
             bg = colors[roles["canvas"]]        # no ground stated: the page floor
         if not bg or not fg:
             continue

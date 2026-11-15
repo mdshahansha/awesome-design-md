@@ -307,7 +307,10 @@ Assignment rule, applied in order:
    still cinematic; the tell is full-bleed photography, sparse type and a slow
    reveal, not a dark background.
 2. Terminal, IDE, infra or developer-tool identity → **Crisp**
-3. Saturated multi-colour or illustration-led consumer identity → **Playful**.
+3. Saturated multi-colour **or** illustration-led consumer identity →
+   **Playful**. The two branches stand alone: an illustration-led consumer
+   brand qualifies on its illustration and voice even with a near-monochrome
+   palette, and the saturation test below applies only to the first branch.
    Judge this on saturation *and role*, not on how many colours the palette
    lists. Bright tones used as static card backgrounds behind screenshots are
    not a playful identity; the test is whether saturated colour appears on
