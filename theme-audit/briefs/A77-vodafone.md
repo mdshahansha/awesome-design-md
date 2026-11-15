@@ -8,7 +8,14 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: border, focus, surface, text-dim.
+- Missing colour roles: border, focus.
+- Contrast: primary on primary (#e60000 on #e60000) measures 1.0:1, below the 3.0:1 required for bound boundary.
+- Contrast: canvas on canvas (#ffffff on #ffffff) measures 1.0:1, below the 3.0:1 required for bound boundary.
+- Contrast: mute on canvas-soft (#bebebe on #f2f2f2) measures 1.66:1, below the 4.5:1 required for secondary text on surface.
+- Contrast: mute on canvas-soft (#bebebe on #f2f2f2) measures 1.66:1, below the 3.0:1 required for bound boundary.
+- Contrast: mute on canvas (#bebebe on #ffffff) measures 1.86:1, below the 4.5:1 required for secondary text.
+- Contrast: body on canvas-soft (#7e7e7e on #f2f2f2) measures 3.63:1, below the 4.5:1 required for body text on surface, all tones.
+- Contrast: body on canvas (#7e7e7e on #ffffff) measures 4.06:1, below the 4.5:1 required for body text, all tones.
 - Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Known Gaps.
 - States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected, error.
 

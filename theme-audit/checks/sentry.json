@@ -1,35 +1,35 @@
 {
   "site": "sentry",
   "has_frontmatter": true,
-  "color_count": 21,
+  "color_count": 22,
+  "composited_tokens": [],
   "sections_present": [
+    "Accessibility",
     "Colors",
     "Components",
     "Do's and Don'ts",
     "Elevation & Depth",
     "Iteration Guide",
+    "Known Gaps",
     "Layout",
+    "Motion & Animation",
     "Overview",
     "Responsive Behavior",
     "Shapes",
     "Typography"
   ],
-  "sections_missing": [
-    "Motion & Animation",
-    "Accessibility",
-    "Known Gaps"
-  ],
+  "sections_missing": [],
   "optional_sections_missing": [],
   "roles_resolved": {
+    "surface": "surface-canvas-dark",
     "text": "ink",
     "border": "hairline-violet",
     "accent": "primary",
-    "on-accent": "on-primary"
+    "on-accent": "on-primary",
+    "focus": "focus"
   },
   "roles_missing": [
     "canvas",
-    "focus",
-    "surface",
     "text-dim"
   ],
   "dangling_refs": [],
@@ -37,35 +37,48 @@
   "contrast_unresolved": [],
   "contrast_disclosed": [],
   "contrast_failures": [],
-  "motion_group": [],
-  "motion_keys_missing": [
+  "motion_group": [
     "duration-base",
+    "duration-emphasis",
     "duration-fast",
-    "ease-standard"
+    "duration-instant",
+    "duration-reduced",
+    "duration-slow",
+    "ease-enter",
+    "ease-exit",
+    "ease-standard",
+    "stagger-step"
   ],
-  "has_motion_section": false,
-  "has_reduced_motion": false,
-  "durations_found": [],
-  "easings_found": 0,
+  "motion_keys_missing": [],
+  "has_motion_section": true,
+  "has_reduced_motion": true,
+  "durations_found": [
+    "20",
+    "60",
+    "100",
+    "150",
+    "220",
+    "300"
+  ],
+  "easings_found": 3,
   "layout_animation_mentions": [],
   "states_documented": [
-    "pressed",
-    "disabled"
-  ],
-  "states_missing": [
     "hover",
     "focus-visible",
     "active",
+    "pressed",
+    "disabled",
     "loading",
     "selected",
     "error"
   ],
+  "states_missing": [],
   "score": {
-    "tokens": 1,
+    "tokens": 3,
     "refs": 5,
     "contrast": 5,
-    "sections": 2,
-    "motion": 1,
-    "states": 1
+    "sections": 5,
+    "motion": 5,
+    "states": 5
   }
 }

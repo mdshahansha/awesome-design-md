@@ -2,6 +2,7 @@
   "site": "superhuman",
   "has_frontmatter": true,
   "color_count": 15,
+  "composited_tokens": [],
   "sections_present": [
     "Colors",
     "Components",
@@ -22,6 +23,7 @@
   "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
+    "surface": "surface-violet-soft",
     "text": "ink",
     "border": "hairline-dark",
     "accent": "primary",
@@ -29,7 +31,6 @@
   },
   "roles_missing": [
     "focus",
-    "surface",
     "text-dim"
   ],
   "dangling_refs": [],
@@ -43,6 +44,15 @@
       "required": 3.0,
       "role": "boundary, all tones",
       "disclosed": false
+    },
+    {
+      "pair": "hairline on surface-violet-soft",
+      "fg": "#e8e4dd",
+      "bg": "#c9b4fa",
+      "ratio": 1.45,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
     }
   ],
   "contrast_disclosed": [],
@@ -54,6 +64,15 @@
       "ratio": 1.27,
       "required": 3.0,
       "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on surface-violet-soft",
+      "fg": "#e8e4dd",
+      "bg": "#c9b4fa",
+      "ratio": 1.45,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
       "disclosed": false
     }
   ],
@@ -81,9 +100,9 @@
     "error"
   ],
   "score": {
-    "tokens": 2,
+    "tokens": 3,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 3,
     "sections": 2,
     "motion": 1,
     "states": 1

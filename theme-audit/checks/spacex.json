@@ -2,6 +2,7 @@
   "site": "spacex",
   "has_frontmatter": true,
   "color_count": 13,
+  "composited_tokens": [],
   "sections_present": [
     "Colors",
     "Components",
@@ -20,8 +21,12 @@
     "Known Gaps"
   ],
   "optional_sections_missing": [],
+  "roles_from_bindings": [
+    "surface=canvas-light"
+  ],
   "roles_resolved": {
     "canvas": "canvas-night",
+    "surface": "canvas-light",
     "text": "ink",
     "border": "hairline-on-light",
     "accent": "primary",
@@ -29,7 +34,6 @@
   },
   "roles_missing": [
     "focus",
-    "surface",
     "text-dim"
   ],
   "dangling_refs": [],
@@ -43,6 +47,15 @@
       "required": 4.5,
       "role": "body text",
       "disclosed": false
+    },
+    {
+      "pair": "hairline-on-light on canvas-light",
+      "fg": "#e0e0e8",
+      "bg": "#ffffff",
+      "ratio": 1.31,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
     }
   ],
   "contrast_disclosed": [],
@@ -54,6 +67,15 @@
       "ratio": 1.0,
       "required": 4.5,
       "role": "body text",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-on-light on canvas-light",
+      "fg": "#e0e0e8",
+      "bg": "#ffffff",
+      "ratio": 1.31,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
       "disclosed": false
     }
   ],
@@ -80,9 +102,9 @@
     "error"
   ],
   "score": {
-    "tokens": 2,
+    "tokens": 3,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 3,
     "sections": 2,
     "motion": 1,
     "states": 1

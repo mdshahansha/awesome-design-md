@@ -2,6 +2,7 @@
   "site": "together.ai",
   "has_frontmatter": true,
   "color_count": 13,
+  "composited_tokens": [],
   "sections_present": [
     "Colors",
     "Components",
@@ -36,6 +37,14 @@
   "dangling_refs": [],
   "component_contrast_failures": [
     {
+      "component": "nav-link",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1.0,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
       "component": "data-table-header",
       "fg": "#959494",
       "bg": "#ffffff",
@@ -46,6 +55,23 @@
   ],
   "contrast_unresolved": [
     {
+      "pair": "body on canvas",
+      "fg": "#959494",
+      "bg": "#ffffff",
+      "ratio": 3.03,
+      "required": 4.5,
+      "role": "body text, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "nav-link",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1.0,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
       "component": "data-table-header",
       "fg": "#959494",
       "bg": "#ffffff",
@@ -55,7 +81,17 @@
     }
   ],
   "contrast_disclosed": [],
-  "contrast_failures": [],
+  "contrast_failures": [
+    {
+      "pair": "body on canvas",
+      "fg": "#959494",
+      "bg": "#ffffff",
+      "ratio": 3.03,
+      "required": 4.5,
+      "role": "body text, all tones",
+      "disclosed": false
+    }
+  ],
   "motion_group": [],
   "motion_keys_missing": [
     "duration-base",
@@ -82,7 +118,7 @@
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 2,
     "sections": 1,
     "motion": 1,
     "states": 1

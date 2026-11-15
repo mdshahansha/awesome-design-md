@@ -8,8 +8,9 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: focus, surface, text-dim.
+- Missing colour roles: focus, text-dim.
 - Contrast: ink on canvas-night (#000000 on #000000) measures 1.0:1, below the 4.5:1 required for body text.
+- Contrast: hairline-on-light on canvas-light (#e0e0e8 on #ffffff) measures 1.31:1, below the 3.0:1 required for boundary on surface, all tones.
 - Missing sections: Motion & Animation, Accessibility, Known Gaps.
 - States never named anywhere in the file: hover, focus-visible, active, pressed, disabled, loading, selected, error.
 

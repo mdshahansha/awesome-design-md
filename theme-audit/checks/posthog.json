@@ -1,8 +1,12 @@
 {
   "site": "posthog",
   "has_frontmatter": true,
-  "color_count": 28,
+  "color_count": 30,
+  "composited_tokens": [
+    "focus-ring"
+  ],
   "sections_present": [
+    "Accessibility",
     "Colors",
     "Components",
     "Do's and Don'ts",
@@ -10,31 +14,47 @@
     "Iteration Guide",
     "Known Gaps",
     "Layout",
+    "Motion & Animation",
     "Overview",
     "Responsive Behavior",
     "Shapes",
     "Typography"
   ],
-  "sections_missing": [
-    "Motion & Animation",
-    "Accessibility"
-  ],
+  "sections_missing": [],
   "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface-soft",
     "text": "ink",
+    "text-dim": "mute",
     "border": "hairline",
     "accent": "primary",
-    "on-accent": "on-primary"
+    "on-accent": "on-primary",
+    "focus": "focus"
   },
-  "roles_missing": [
-    "focus",
-    "text-dim"
-  ],
+  "roles_missing": [],
   "dangling_refs": [],
-  "component_contrast_failures": [],
-  "contrast_unresolved": [
+  "component_contrast_failures": [
+    {
+      "component": "link-inline",
+      "fg": "#1078a3",
+      "bg": "#eeefe9",
+      "ratio": 4.29,
+      "required": 4.5,
+      "disclosed": true
+    }
+  ],
+  "contrast_unresolved": [],
+  "contrast_disclosed": [
+    {
+      "pair": "hairline-soft on surface-soft",
+      "fg": "#dcdfd2",
+      "bg": "#e5e7e0",
+      "ratio": 1.08,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": true
+    },
     {
       "pair": "hairline-soft on canvas",
       "fg": "#dcdfd2",
@@ -42,7 +62,16 @@
       "ratio": 1.17,
       "required": 3.0,
       "role": "boundary, all tones",
-      "disclosed": false
+      "disclosed": true
+    },
+    {
+      "pair": "hairline on surface-soft",
+      "fg": "#bfc1b7",
+      "bg": "#e5e7e0",
+      "ratio": 1.46,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": true
     },
     {
       "pair": "hairline on canvas",
@@ -51,19 +80,62 @@
       "ratio": 1.58,
       "required": 3.0,
       "role": "boundary, all tones",
-      "disclosed": false
+      "disclosed": true
+    },
+    {
+      "pair": "mute on surface-soft",
+      "fg": "#6c6e63",
+      "bg": "#e5e7e0",
+      "ratio": 4.16,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": true
+    },
+    {
+      "pair": "mute on canvas",
+      "fg": "#6c6e63",
+      "bg": "#eeefe9",
+      "ratio": 4.49,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": true
+    },
+    {
+      "component": "link-inline",
+      "fg": "#1078a3",
+      "bg": "#eeefe9",
+      "ratio": 4.29,
+      "required": 4.5,
+      "disclosed": true
     }
   ],
-  "contrast_disclosed": [],
   "contrast_failures": [
     {
+      "pair": "hairline-soft on surface-soft",
+      "fg": "#dcdfd2",
+      "bg": "#e5e7e0",
+      "ratio": 1.08,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": true
+    },
+    {
       "pair": "hairline-soft on canvas",
       "fg": "#dcdfd2",
       "bg": "#eeefe9",
       "ratio": 1.17,
       "required": 3.0,
       "role": "boundary, all tones",
-      "disclosed": false
+      "disclosed": true
+    },
+    {
+      "pair": "hairline on surface-soft",
+      "fg": "#bfc1b7",
+      "bg": "#e5e7e0",
+      "ratio": 1.46,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": true
     },
     {
       "pair": "hairline on canvas",
@@ -72,38 +144,70 @@
       "ratio": 1.58,
       "required": 3.0,
       "role": "boundary, all tones",
-      "disclosed": false
+      "disclosed": true
+    },
+    {
+      "pair": "mute on surface-soft",
+      "fg": "#6c6e63",
+      "bg": "#e5e7e0",
+      "ratio": 4.16,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": true
+    },
+    {
+      "pair": "mute on canvas",
+      "fg": "#6c6e63",
+      "bg": "#eeefe9",
+      "ratio": 4.49,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": true
     }
   ],
-  "motion_group": [],
-  "motion_keys_missing": [
+  "motion_group": [
     "duration-base",
+    "duration-emphasis",
     "duration-fast",
-    "ease-standard"
+    "duration-instant",
+    "duration-reduced",
+    "duration-slow",
+    "ease-enter",
+    "ease-exit",
+    "ease-standard",
+    "stagger-step"
   ],
-  "has_motion_section": false,
-  "has_reduced_motion": false,
-  "durations_found": [],
-  "easings_found": 0,
+  "motion_keys_missing": [],
+  "has_motion_section": true,
+  "has_reduced_motion": true,
+  "durations_found": [
+    "20",
+    "60",
+    "100",
+    "150",
+    "220",
+    "300",
+    "600"
+  ],
+  "easings_found": 3,
   "layout_animation_mentions": [],
   "states_documented": [
-    "active",
-    "pressed",
-    "disabled"
-  ],
-  "states_missing": [
     "hover",
     "focus-visible",
+    "active",
+    "pressed",
+    "disabled",
     "loading",
     "selected",
     "error"
   ],
+  "states_missing": [],
   "score": {
-    "tokens": 3,
+    "tokens": 5,
     "refs": 5,
-    "contrast": 3,
-    "sections": 3,
-    "motion": 1,
-    "states": 1
+    "contrast": 5,
+    "sections": 5,
+    "motion": 5,
+    "states": 5
   }
 }

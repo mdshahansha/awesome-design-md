@@ -8,8 +8,10 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: focus, surface, text-dim.
+- Missing colour roles: focus.
+- Contrast: hairline on canvas-cream (#e3e8ee on #f5e9d4) measures 1.03:1, below the 3.0:1 required for boundary on surface, all tones.
 - Contrast: hairline on canvas (#e3e8ee on #ffffff) measures 1.23:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline-input on canvas-cream (#a8c3de on #f5e9d4) measures 1.52:1, below the 3.0:1 required for boundary on surface, all tones.
 - Contrast: hairline-input on canvas (#a8c3de on #ffffff) measures 1.82:1, below the 3.0:1 required for boundary, all tones.
 - Missing sections: Motion & Animation, Accessibility, Known Gaps.
 - States never named anywhere in the file: focus-visible, active, disabled, loading, selected, error.

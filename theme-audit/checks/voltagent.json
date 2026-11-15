@@ -2,6 +2,7 @@
   "site": "voltagent",
   "has_frontmatter": true,
   "color_count": 13,
+  "composited_tokens": [],
   "sections_present": [
     "Colors",
     "Components",
@@ -21,40 +22,61 @@
   "optional_sections_missing": [
     "Iteration Guide"
   ],
+  "roles_from_bindings": [
+    "surface=canvas-soft"
+  ],
   "roles_resolved": {
     "canvas": "canvas",
+    "surface": "canvas-soft",
     "text": "ink",
+    "text-dim": "mute",
     "border": "hairline-soft",
     "accent": "primary",
     "on-accent": "on-primary"
   },
   "roles_missing": [
-    "focus",
-    "surface",
-    "text-dim"
+    "focus"
   ],
   "dangling_refs": [],
   "component_contrast_failures": [],
   "contrast_unresolved": [
+    {
+      "pair": "hairline on canvas-soft",
+      "fg": "#3d3a39",
+      "bg": "#1a1a1a",
+      "ratio": 1.54,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    },
     {
       "pair": "hairline on canvas",
       "fg": "#3d3a39",
       "bg": "#101010",
       "ratio": 1.69,
       "required": 3.0,
-      "role": "boundary, all tones",
+      "role": "bound boundary",
       "disclosed": false
     }
   ],
   "contrast_disclosed": [],
   "contrast_failures": [
     {
+      "pair": "hairline on canvas-soft",
+      "fg": "#3d3a39",
+      "bg": "#1a1a1a",
+      "ratio": 1.54,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    },
+    {
       "pair": "hairline on canvas",
       "fg": "#3d3a39",
       "bg": "#101010",
       "ratio": 1.69,
       "required": 3.0,
-      "role": "boundary, all tones",
+      "role": "bound boundary",
       "disclosed": false
     }
   ],
@@ -82,9 +104,9 @@
     "error"
   ],
   "score": {
-    "tokens": 2,
+    "tokens": 4,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 3,
     "sections": 1,
     "motion": 1,
     "states": 1

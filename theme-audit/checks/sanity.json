@@ -2,6 +2,7 @@
   "site": "sanity",
   "has_frontmatter": false,
   "color_count": 0,
+  "composited_tokens": [],
   "sections_present": [
     "Iteration Guide"
   ],
@@ -60,8 +61,8 @@
   ],
   "score": {
     "tokens": 1,
-    "refs": 5,
-    "contrast": 5,
+    "refs": 1,
+    "contrast": 1,
     "sections": 1,
     "motion": 1,
     "states": 1

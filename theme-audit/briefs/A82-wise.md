@@ -8,7 +8,12 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: border, focus, surface, text-dim.
+- Missing colour roles: border, focus.
+- Contrast: warning on canvas (#ffd11a on #ffffff) measures 1.46:1, below the 4.5:1 required for semantic tone as text.
+- Contrast: positive on canvas (#2ead4b on #ffffff) measures 2.92:1, below the 4.5:1 required for semantic tone as text.
+- Contrast: mute on primary-pale (#868685 on #e2f6d5) measures 3.19:1, below the 4.5:1 required for secondary text on surface.
+- Contrast: mute on canvas (#868685 on #ffffff) measures 3.64:1, below the 4.5:1 required for secondary text.
+- Contrast: warning-deep on canvas (#b86700 on #ffffff) measures 4.22:1, below the 4.5:1 required for semantic tone as text.
 - Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Known Gaps.
 - States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected, error.
 

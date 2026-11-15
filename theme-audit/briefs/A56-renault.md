@@ -8,10 +8,11 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: focus, text-dim.
+- Contrast: hairline on surface-soft (#f2f2f2 on #f7f7f7) measures 1.04:1, below the 3.0:1 required for boundary on surface, all tones.
 - Contrast: hairline on canvas (#f2f2f2 on #ffffff) measures 1.12:1, below the 3.0:1 required for boundary, all tones.
-- Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: hover, focus-visible, disabled, loading, selected, error.
+- Contrast: warning on canvas (#f0ad4e on #ffffff) measures 1.95:1, below the 4.5:1 required for semantic tone as text.
+- Contrast: success on canvas (#8dc572 on #ffffff) measures 2.03:1, below the 4.5:1 required for semantic tone as text.
+- Contrast: error on canvas (#be6464 on #ffffff) measures 4.04:1, below the 4.5:1 required for semantic tone as text.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

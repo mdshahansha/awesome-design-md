@@ -8,10 +8,18 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: accent, border, canvas, focus, on-accent, surface, text, text-dim.
-- Missing sections: Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Motion & Animation, Accessibility, Do's and Don'ts, Responsive Behavior, Known Gaps.
-- States never named anywhere in the file: hover, focus-visible, active, pressed, disabled, loading, selected, error.
-- No frontmatter token block at all (legacy format file).
+- Missing colour roles: accent, on-accent.
+- Contrast: border-dark on surface-dark (#27272a on #1a1a1a) measures 1.17:1, below the 3.0:1 required for boundary on surface, all tones.
+- Contrast: border-light-cool on surface-light-cool (#c9ccd1 on #e9ecf2) measures 1.36:1, below the 3.0:1 required for bound boundary.
+- Contrast: border-dark on canvas (#27272a on #000000) measures 1.41:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: border-light-silver on surface-light (#d0d4d4 on #fefefe) measures 1.48:1, below the 3.0:1 required for boundary, light theme.
+- Contrast: border-light-cool on surface-light (#c9ccd1 on #fefefe) measures 1.6:1, below the 3.0:1 required for boundary, light theme.
+- Contrast: ink-secondary-alt on surface-dark (#3f3f3f on #1a1a1a) measures 1.65:1, below the 4.5:1 required for secondary text on surface, all tones.
+- Contrast: ink-secondary-alt on canvas (#3f3f3f on #000000) measures 1.99:1, below the 4.5:1 required for secondary text, all tones.
+- Contrast: text-soft on surface-dark (#6b7280 on #1a1a1a) measures 3.6:1, below the 4.5:1 required for secondary text on surface, all tones.
+- Contrast: text-secondary on surface-dark (#767d88 on #1a1a1a) measures 4.19:1, below the 4.5:1 required for secondary text on surface, all tones.
+- Contrast: text-soft on canvas (#6b7280 on #000000) measures 4.34:1, below the 4.5:1 required for secondary text, all tones.
+- States never named anywhere in the file: pressed, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

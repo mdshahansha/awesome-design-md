@@ -1,8 +1,15 @@
 {
   "site": "replicate",
   "has_frontmatter": true,
-  "color_count": 22,
+  "color_count": 28,
+  "composited_tokens": [
+    "on-dark-mute",
+    "hairline",
+    "divider-dark",
+    "ring-focus"
+  ],
   "sections_present": [
+    "Accessibility",
     "Colors",
     "Components",
     "Do's and Don'ts",
@@ -10,28 +17,25 @@
     "Iteration Guide",
     "Known Gaps",
     "Layout",
+    "Motion & Animation",
     "Overview",
     "Responsive Behavior",
     "Shapes",
     "Typography"
   ],
-  "sections_missing": [
-    "Motion & Animation",
-    "Accessibility"
-  ],
+  "sections_missing": [],
   "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
-    "surface": "surface-card",
+    "surface": "surface-bone",
     "text": "ink",
+    "text-dim": "mute",
     "border": "hairline-strong",
     "accent": "primary",
-    "on-accent": "on-primary"
+    "on-accent": "on-primary",
+    "focus": "focus"
   },
-  "roles_missing": [
-    "focus",
-    "text-dim"
-  ],
+  "roles_missing": [],
   "dangling_refs": [],
   "component_contrast_failures": [
     {
@@ -40,7 +44,7 @@
       "bg": "#ea2804",
       "ratio": 4.37,
       "required": 4.5,
-      "disclosed": false
+      "disclosed": true
     },
     {
       "component": "badge-status",
@@ -48,17 +52,36 @@
       "bg": "#2b9a66",
       "ratio": 3.46,
       "required": 4.5,
-      "disclosed": false
+      "disclosed": true
     }
   ],
-  "contrast_unresolved": [
+  "contrast_unresolved": [],
+  "contrast_disclosed": [
+    {
+      "pair": "hairline on surface-bone",
+      "fg": "#dad7d0",
+      "bg": "#f3f0e8",
+      "ratio": 1.26,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#dfddda",
+      "bg": "#f9f7f3",
+      "ratio": 1.27,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": true
+    },
     {
       "component": "button-primary",
       "fg": "#ffffff",
       "bg": "#ea2804",
       "ratio": 4.37,
       "required": 4.5,
-      "disclosed": false
+      "disclosed": true
     },
     {
       "component": "badge-status",
@@ -66,40 +89,73 @@
       "bg": "#2b9a66",
       "ratio": 3.46,
       "required": 4.5,
-      "disclosed": false
+      "disclosed": true
     }
   ],
-  "contrast_disclosed": [],
-  "contrast_failures": [],
-  "motion_group": [],
-  "motion_keys_missing": [
-    "duration-base",
-    "duration-fast",
-    "ease-standard"
+  "contrast_failures": [
+    {
+      "pair": "hairline on surface-bone",
+      "fg": "#dad7d0",
+      "bg": "#f3f0e8",
+      "ratio": 1.26,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#dfddda",
+      "bg": "#f9f7f3",
+      "ratio": 1.27,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": true
+    }
   ],
-  "has_motion_section": false,
-  "has_reduced_motion": false,
-  "durations_found": [],
-  "easings_found": 0,
+  "motion_group": [
+    "duration-base",
+    "duration-emphasis",
+    "duration-fast",
+    "duration-instant",
+    "duration-reduced",
+    "duration-slow",
+    "ease-enter",
+    "ease-exit",
+    "ease-standard",
+    "stagger-step"
+  ],
+  "motion_keys_missing": [],
+  "has_motion_section": true,
+  "has_reduced_motion": true,
+  "durations_found": [
+    "01",
+    "20",
+    "60",
+    "100",
+    "150",
+    "220",
+    "300",
+    "800"
+  ],
+  "easings_found": 3,
   "layout_animation_mentions": [],
   "states_documented": [
-    "active",
-    "pressed"
-  ],
-  "states_missing": [
     "hover",
     "focus-visible",
+    "active",
+    "pressed",
     "disabled",
     "loading",
     "selected",
     "error"
   ],
+  "states_missing": [],
   "score": {
-    "tokens": 3,
+    "tokens": 5,
     "refs": 5,
-    "contrast": 3,
-    "sections": 3,
-    "motion": 1,
-    "states": 1
+    "contrast": 5,
+    "sections": 5,
+    "motion": 5,
+    "states": 5
   }
 }

@@ -2,6 +2,7 @@
   "site": "theverge",
   "has_frontmatter": false,
   "color_count": 0,
+  "composited_tokens": [],
   "sections_present": [
     "Iteration Guide"
   ],
@@ -63,8 +64,8 @@
   ],
   "score": {
     "tokens": 1,
-    "refs": 5,
-    "contrast": 5,
+    "refs": 1,
+    "contrast": 1,
     "sections": 1,
     "motion": 3,
     "states": 1

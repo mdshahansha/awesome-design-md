@@ -2,6 +2,7 @@
   "site": "shopify",
   "has_frontmatter": true,
   "color_count": 22,
+  "composited_tokens": [],
   "sections_present": [
     "Colors",
     "Components",
@@ -43,6 +44,42 @@
       "required": 4.5,
       "role": "body text",
       "disclosed": false
+    },
+    {
+      "pair": "hairline-dark on surface-elevated-dark",
+      "fg": "#1e2c31",
+      "bg": "#1e2c31",
+      "ratio": 1.0,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-light on canvas-light",
+      "fg": "#e4e4e7",
+      "bg": "#ffffff",
+      "ratio": 1.27,
+      "required": 3.0,
+      "role": "boundary, light theme",
+      "disclosed": false
+    },
+    {
+      "pair": "ink on surface-elevated-dark",
+      "fg": "#000000",
+      "bg": "#1e2c31",
+      "ratio": 1.46,
+      "required": 4.5,
+      "role": "body text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-dark on canvas-night",
+      "fg": "#1e2c31",
+      "bg": "#000000",
+      "ratio": 1.46,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "contrast_disclosed": [],
@@ -54,6 +91,42 @@
       "ratio": 1.0,
       "required": 4.5,
       "role": "body text",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-dark on surface-elevated-dark",
+      "fg": "#1e2c31",
+      "bg": "#1e2c31",
+      "ratio": 1.0,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-light on canvas-light",
+      "fg": "#e4e4e7",
+      "bg": "#ffffff",
+      "ratio": 1.27,
+      "required": 3.0,
+      "role": "boundary, light theme",
+      "disclosed": false
+    },
+    {
+      "pair": "ink on surface-elevated-dark",
+      "fg": "#000000",
+      "bg": "#1e2c31",
+      "ratio": 1.46,
+      "required": 4.5,
+      "role": "body text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-dark on canvas-night",
+      "fg": "#1e2c31",
+      "bg": "#000000",
+      "ratio": 1.46,
+      "required": 3.0,
+      "role": "boundary, all tones",
       "disclosed": false
     }
   ],
@@ -83,7 +156,7 @@
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 1,
     "sections": 2,
     "motion": 1,
     "states": 1

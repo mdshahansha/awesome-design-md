@@ -8,9 +8,8 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: focus, text-dim.
-- Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: hover, focus-visible, disabled, loading, selected, error.
+- Contrast: hairline on surface-bone (#dad7d0 on #f3f0e8) measures 1.26:1, below the 3.0:1 required for boundary on surface, all tones.
+- Contrast: hairline on canvas (#dfddda on #f9f7f3) measures 1.27:1, below the 3.0:1 required for boundary, all tones.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

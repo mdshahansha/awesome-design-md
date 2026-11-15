@@ -8,7 +8,9 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: focus, surface, text-dim.
+- Missing colour roles: focus.
+- Contrast: ink on canvas-night (#171717 on #1c1c1c) measures 1.05:1, below the 4.5:1 required for body text on surface.
+- Contrast: ink-secondary on canvas-night (#212121 on #1c1c1c) measures 1.06:1, below the 4.5:1 required for secondary text on surface.
 - Contrast: hairline-cool-2 on canvas (#efefef on #ffffff) measures 1.15:1, below the 3.0:1 required for boundary, all tones.
 - Contrast: hairline-cool on canvas (#ededed on #ffffff) measures 1.17:1, below the 3.0:1 required for boundary, all tones.
 - Contrast: hairline on canvas (#dfdfdf on #ffffff) measures 1.33:1, below the 3.0:1 required for boundary, all tones.

@@ -130,17 +130,23 @@ two CTA colours was hiding one failure entirely. Tokens whose name contains
 
 **Extracted values are frozen, including the utility tones.** A hairline at
 1.36:1 is as much an extracted fact as the brand's red, so do not "fix" it in
-place. Where a frozen tone is doing a job that needs contrast — a hairline that
-is the only boundary of a text input, say — add a **parallel accessible token**, leaving the frozen tone's existing
-`components:` bindings exactly as extracted — they are facts about the real
-site, and silently re-pointing them would make the document describe a product
-that does not exist. Scope the original in prose, add the accessible token for
-implementers, and put the question of re-binding under Needs approval, where a
-brand owner can answer it. Then
-alongside it (`hairline-strong`, `divider` versus a control boundary), scope the
-original to decoration in the prose, and label the new token as prescribed. Then
-say plainly in the file that the real brand fails AA at that point. That is the
-useful fact for anyone building on the document.
+place.
+
+Where a frozen tone is doing a job that needs contrast — a hairline that is the
+only boundary of a text input, say — work in this order:
+
+1. If the palette already owns a passing tone that can do the job, re-scope the
+   prose to use it and add nothing.
+2. Only if nothing in the palette can carry it, add a **parallel accessible
+   token** beside the frozen one (`hairline-strong` next to `hairline`), and
+   label it prescribed.
+3. Either way, leave the frozen tone's existing `components:` bindings exactly
+   as extracted. They are facts about the real site, and silently re-pointing
+   them would make the document describe a product that does not exist. Scope
+   the original to decoration in prose and put the question of re-binding under
+   Needs approval, where a brand owner can answer it.
+4. Say plainly in the file that the real brand fails AA at that point. That is
+   the useful fact for anyone building on the document.
 
 **A disclosed failure is a handled failure.** The harness scores contrast on
 *undisclosed* failures only: name the failing pair in the Accessibility section,

@@ -2,6 +2,7 @@
   "site": "supabase",
   "has_frontmatter": true,
   "color_count": 27,
+  "composited_tokens": [],
   "sections_present": [
     "Colors",
     "Components",
@@ -20,21 +21,42 @@
     "Known Gaps"
   ],
   "optional_sections_missing": [],
+  "roles_from_bindings": [
+    "surface=canvas-night"
+  ],
   "roles_resolved": {
     "canvas": "canvas",
+    "surface": "canvas-night",
     "text": "ink",
+    "text-dim": "ink-secondary",
     "border": "hairline-strong",
     "accent": "primary",
     "on-accent": "on-primary"
   },
   "roles_missing": [
-    "focus",
-    "surface",
-    "text-dim"
+    "focus"
   ],
   "dangling_refs": [],
   "component_contrast_failures": [],
   "contrast_unresolved": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#171717",
+      "bg": "#1c1c1c",
+      "ratio": 1.05,
+      "required": 4.5,
+      "role": "body text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "ink-secondary on canvas-night",
+      "fg": "#212121",
+      "bg": "#1c1c1c",
+      "ratio": 1.06,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
     {
       "pair": "hairline-cool-2 on canvas",
       "fg": "#efefef",
@@ -83,6 +105,24 @@
   ],
   "contrast_disclosed": [],
   "contrast_failures": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#171717",
+      "bg": "#1c1c1c",
+      "ratio": 1.05,
+      "required": 4.5,
+      "role": "body text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "ink-secondary on canvas-night",
+      "fg": "#212121",
+      "bg": "#1c1c1c",
+      "ratio": 1.06,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
     {
       "pair": "hairline-cool-2 on canvas",
       "fg": "#efefef",
@@ -153,7 +193,7 @@
     "error"
   ],
   "score": {
-    "tokens": 2,
+    "tokens": 4,
     "refs": 5,
     "contrast": 1,
     "sections": 2,
