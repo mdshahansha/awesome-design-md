@@ -11,9 +11,14 @@ colors:
   inverse-canvas: "#000000"
   inverse-ink: "#ffffff"
   on-inverse-soft: "#ffffff"
+  caption: "#000000"
+  focus: "#000000"
+  focus-on-dark: "#ffffff"
   hairline: "#e6e6e6"
   hairline-soft: "#f1f1f1"
+  border-control: "#000000"
   surface-soft: "#f7f7f5"
+  surface-inverse-soft: "#292929"
   block-lime: "#dceeb1"
   block-lilac: "#c5b0f4"
   block-cream: "#f4ecd6"
@@ -131,6 +136,23 @@ spacing:
   xxl: 48px
   section: 96px
 
+shadow:
+  none: none
+  soft: 0 4px 16px rgba(0,0,0,0.06)
+  modal: 0 24px 64px rgba(0,0,0,0.18)
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 500ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
+  duration-reduced: 150ms
+
 components:
   button-primary:
     backgroundColor: "{colors.primary}"
@@ -162,7 +184,7 @@ components:
     rounded: "{rounded.full}"
     size: 40px
   button-icon-circular-inverse:
-    backgroundColor: "{colors.on-inverse-soft}"
+    backgroundColor: "{colors.surface-inverse-soft}"
     textColor: "{colors.inverse-ink}"
     typography: "{typography.button}"
     rounded: "{rounded.full}"
@@ -301,7 +323,9 @@ This is a system built on contrast: the monochrome chrome makes the color blocks
 - **Inverse Canvas** ({colors.inverse-canvas}): Footer, marquee strip, and a subset of "ship products"-style story sections.
 - **Surface Soft** ({colors.surface-soft}): Off-white tile background used for icon buttons, template cards, and feature illustration tiles when they sit on the white canvas.
 - **Hairline** ({colors.hairline}): 1px borders on form inputs, pricing cards, and table dividers.
-- **Hairline Soft** ({colors.hairline-soft}): Even subtler dividers — comparison-table row separators and footer column rules.
+- **Surface Inverse Soft** ({colors.surface-inverse-soft}): The *rendered* result of `{colors.on-inverse-soft}` at 16% composited over `{colors.inverse-canvas}` — the actual paint of a circular icon button on a dark section. **Derived, not extracted**: it is computed from the two tokens above, and the live site ships the translucent layer rather than this flat hex. It exists so `button-icon-circular-inverse` has a measurable ground instead of declaring white-on-white.
+- **Hairline Soft** ({colors.hairline-soft}): Even subtler dividers — comparison-table row separators and footer column rules. Decoration only — see **Border Control** below.
+- **Border Control** ({colors.border-control}): **Prescribed parallel accessible token.** Both extracted hairlines are far below the 3:1 non-text minimum (1.25:1 and 1.13:1 — see **Accessibility**), so they are scoped to pure decoration: section rules, footer column rules, comparison-table row separators. Anything that is the *only* boundary of an interactive control — the `/contact/` text inputs, the pricing-card stroke when it carries the selected tier, the seat-count stepper — takes a 1px `{colors.border-control}` instead. It is brand ink, not a mid-grey: Figma's own editor draws real control boundaries at full ink strength, and a grey would have to sit around #646464 to clear 3:1 on the lilac block, which is a colour this brand does not own.
 - **Block Lime** ({colors.block-lime}): The signature **systems / FAQ / contact-form** color block. Recurs across home, pricing, contact.
 - **Block Lilac** ({colors.block-lilac}): Hero block on `/design/`; also the inline Release Notes promo banner.
 - **Block Cream** ({colors.block-cream}): Soft warm background — FigJam hero strip, template-grid section.
@@ -313,7 +337,13 @@ This is a system built on contrast: the monochrome chrome makes the color blocks
 ### Text
 - **Ink** ({colors.ink}): All headline, body, and caption type on light surfaces. There is no softer mid-gray text role on marketing — body copy is always black at weight 320–340, and weight (not opacity) carries the hierarchy.
 - **Inverse Ink** ({colors.inverse-ink}): Type on inverse-canvas surfaces (footer, marquee strip, navy color block).
-- **On-Inverse Soft** ({colors.on-inverse-soft}): White used at ~16% opacity for circular icon-button surfaces against dark sections (token captures the base color; the translucency is applied at render time).
+- **On-Inverse Soft** ({colors.on-inverse-soft}): White used at ~16% opacity for circular icon-button surfaces against dark sections (token captures the base color; the translucency is applied at render time). This is a **foreground/overlay** base, not a paintable surface — do not bind it to a `backgroundColor`. Use `{colors.surface-inverse-soft}` for that.
+- **Caption Ink** ({colors.caption}): The secondary / caption text role. It resolves to the same pure black as `{colors.ink}` — deliberately, because Figma's marketing has no mid-gray text role at all. Hierarchy is carried by figmaSans weight (320 vs 480 vs 540) and by figmaMono's smaller size and positive tracking, never by lightening the ink. Measured 21.00:1 on `{colors.canvas}`.
+
+### Focus
+
+- **Focus Ring** ({colors.focus}): Brand ink. A 2px `{colors.ink}` ring with a mandatory 2px `{colors.canvas}` offset, drawn on white canvas, `{colors.surface-soft}` tiles and every `{colors.block-*}` pastel panel. **Prescribed, not extracted** — no focus ring is visible in the static captures. Ink rather than a chromatic ring is the correct answer here: the brand's first rule is that its system palette has no accent colour, so inventing a blue would read as another product.
+- **Focus Ring on Dark** ({colors.focus-on-dark}): Brand paper. A 2px `{colors.inverse-ink}` ring with a 2px `{colors.inverse-canvas}` offset, drawn on `{colors.inverse-canvas}` (footer, marquee strip) and on `{colors.block-navy}`. Also prescribed. Two tokens are needed because the file documents both polarities as signature surfaces; measured ratios for both are in **Accessibility**.
 
 ### Semantic
 - **Success Green** ({colors.semantic-success}): Comparison-table checkmarks on pricing. Used as a glyph fill, not a surface.
@@ -382,10 +412,12 @@ White space is used to make the color blocks feel deliberate. Between every colo
 
 | Level | Treatment | Use |
 |---|---|---|
-| 0 (flat) | No shadow, no border | Default for color-block sections, inverse-canvas footer, hero |
-| 1 (hairline) | 1px `{colors.hairline}` border on `{colors.canvas}` | Pricing cards, form inputs, comparison table cells |
-| 2 (soft elevation) | Subtle drop shadow approx 0 4px 16px rgba(0,0,0,0.06) | Floating template tiles, dropdown menus |
-| 3 (modal) | Stronger shadow + `{colors.overlay-scrim}` behind | Video / image lightbox overlays |
+| 0 (flat) | `{shadow.none}` — no shadow, no border | Default for color-block sections, inverse-canvas footer, hero |
+| 1 (hairline) | 1px `{colors.hairline}` border on `{colors.canvas}`, or 1px `{colors.border-control}` where the border is a control's only boundary | Pricing cards, form inputs, comparison table cells |
+| 2 (soft elevation) | `{shadow.soft}` — 0 4px 16px rgba(0,0,0,0.06) | Floating template tiles, dropdown menus |
+| 3 (modal) | `{shadow.modal}` + `{colors.overlay-scrim}` at ~60% behind | Video / image lightbox overlays |
+
+Elevation is expressed as **one ladder**, not as shadow and border used interchangeably: level 1 is always a border and never a shadow, levels 2–3 are always a shadow and never a border. `{shadow.soft}` is extracted from the live site; `{shadow.modal}` is **prescribed** — the captures show a stronger lightbox shadow but no measurable value, so the token exists to stop `{shadow.*}` references pointing at nothing and should be treated as a plausible value, not a brand fact.
 
 Figma's marketing system is shadow-light by design — the color blocks substitute for traditional elevation. Where most SaaS sites use a shadowed white card to draw attention, Figma uses a saturated background panel. This makes the rare actual shadow (e.g., a floating template card hovering over a cream section) feel like an exception worth noticing.
 
@@ -408,6 +440,13 @@ Figma's marketing system is shadow-light by design — the color blocks substitu
 | `{rounded.xl}` | 32px | Hero feature panels, oversized callouts |
 | `{rounded.pill}` | 50px | All text CTAs (primary, secondary, tab toggles) |
 | `{rounded.full}` | 9999px | Circular icon buttons, comparison-table checkmark glyphs |
+
+### Focus Ring Geometry
+
+- 2px ring, 2px offset, drawn **outside** the element so it never shrinks the hit area.
+- The ring inherits its host's radius from the same ladder: `{rounded.pill}` on pill CTAs, `{rounded.full}` on circular icon buttons, `{rounded.md}` on inputs, `{rounded.lg}` on cards. There is no separate focus radius value.
+- Colour is `{colors.focus}` on light grounds and `{colors.focus-on-dark}` on `{colors.inverse-canvas}` / `{colors.block-navy}`; the offset is always the opposite polarity, which is what keeps a black ring legible where it crosses from a dark panel onto white canvas.
+- Note on the ladder itself: `{rounded.pill}` (50px) and `{rounded.full}` (9999px) are both fully-round at every size this system uses, so they are a semantic distinction (text CTA vs icon button) rather than two different geometries. Keep both names; do not read 50px as a measured half-height.
 
 ### Photography & Illustration Geometry
 
@@ -434,7 +473,8 @@ Figma's marketing system is shadow-light by design — the color blocks substitu
 - Background `{colors.surface-soft}`, text `{colors.ink}`, rounded `{rounded.full}`, size 40px.
 
 **`button-icon-circular-inverse`** — Same shape, used on inverse-canvas / dark color blocks.
-- Background `{colors.on-inverse-soft}` (translucent white), text `{colors.inverse-ink}`, rounded `{rounded.full}`, size 40px.
+- Background `{colors.surface-inverse-soft}`, glyph `{colors.inverse-ink}`, rounded `{rounded.full}`, size 40px.
+- Implementation: paint `{colors.on-inverse-soft}` at 16% over the dark ground; `{colors.surface-inverse-soft}` is that composite over `{colors.inverse-canvas}` and is what the contrast figures are measured against. Earlier revisions of this file bound `backgroundColor` to `{colors.on-inverse-soft}` — the white *overlay* base — which declared a white glyph on a white fill at 1.00:1. That was an authoring error in the token binding, not a brand failure.
 
 **`button-magenta-promo`** — Saturated pink pill used only inside promotional surfaces such as the lilac "Save your spot" Release Notes banner. Reserved for moments where Figma's product team wants the CTA to pop against an already-colored panel.
 - Background `{colors.accent-magenta}`, text `{colors.on-primary}`, type `{typography.button}`, rounded `{rounded.pill}`, padding 10px 18px.
@@ -503,6 +543,155 @@ The defining surface of Figma's marketing. Each is a full-content-width panel wi
 
 **`footer`** — Dense link grid on white canvas with the wordmark "Figma" set in display weight at the top-left.
 - Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.caption}` for column headings and small links, padding `{spacing.section}` top/bottom · `{spacing.xl}` sides.
+
+### Component States
+
+Only `default`, `active/pressed` (via `button-primary-pressed`) and `selected` (via `pricing-tab-selected`) are extracted; the static captures show no hovered, focused, disabled, loading or errored instance. Everything below marked **prescribed** follows the brand's own rules — weight and surface swap, never a mid-grey, never a new hue — and is the contract an implementer should build to, not a measured fact.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | extracted | prescribed: opacity 0.88 | prescribed: `{colors.focus}` ring | extracted (`button-primary-pressed`, scale 0.97) | prescribed: opacity 0.35, `aria-disabled` | prescribed: glyph spinner, label retained | n/a | n/a |
+| `button-secondary` | extracted | prescribed: fill → `{colors.surface-soft}` | prescribed: `{colors.focus}` ring | prescribed: scale 0.97 | prescribed: opacity 0.35 | prescribed: glyph spinner | n/a | n/a |
+| `button-tertiary-text` | extracted | prescribed: underline appears | prescribed: `{colors.focus}` ring | prescribed: scale 0.97 | prescribed: opacity 0.35 | n/a | n/a | n/a |
+| `button-icon-circular` | extracted | prescribed: fill → `{colors.hairline}` | prescribed: `{colors.focus}` ring | prescribed: scale 0.94 | prescribed: opacity 0.35 | prescribed: glyph spinner | n/a | n/a |
+| `button-icon-circular-inverse` | extracted | prescribed: overlay 16% → 28% | prescribed: `{colors.focus-on-dark}` ring | prescribed: scale 0.94 | prescribed: opacity 0.35 | prescribed: glyph spinner | n/a | n/a |
+| `button-magenta-promo` | extracted | prescribed: opacity 0.88 | prescribed: `{colors.focus}` ring | prescribed: scale 0.97 | prescribed: opacity 0.35 | prescribed: glyph spinner | n/a | n/a |
+| `pricing-tab-default` / `pricing-tab-selected` | extracted | prescribed: fill → `{colors.surface-soft}` | prescribed: `{colors.focus}` ring | prescribed: scale 0.98 | prescribed: opacity 0.35 | n/a | extracted (black fill, `{colors.on-primary}` label) | n/a |
+| `text-input` / `text-input-focused` | extracted | prescribed: border → `{colors.border-control}` | extracted-as-ring (`text-input-focused`: same fill, `{colors.focus}` ring) | n/a | prescribed: opacity 0.45, fill `{colors.surface-soft}` | prescribed: inline glyph spinner, field stays enabled | n/a | **prescribed**: 2px `{colors.ink}` border + figmaMono `{typography.caption}` message below. Error is **not** carried by a red hue — the system owns no semantic red, so weight and the mono label do the work. Pair with `aria-invalid` and `aria-describedby`. |
+| `pricing-card` | extracted | prescribed: `{shadow.soft}` lifts | prescribed: `{colors.focus}` ring (when the whole card is a link) | n/a | n/a | prescribed: skeleton at `{colors.surface-soft}` | prescribed: stroke → `{colors.border-control}` | n/a |
+| `pricing-card-feature-row` | extracted | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+| `template-card` | extracted | prescribed: `{shadow.soft}` lifts | prescribed: `{colors.focus}` ring | prescribed: scale 0.99 | n/a | prescribed: skeleton at `{colors.surface-soft}` | n/a | n/a |
+| `feature-illustration-tile` | extracted | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+| `color-block-section` (+ `-lilac`, `-navy`) | extracted | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+| `promo-banner-lilac` | extracted | n/a (its `button-magenta-promo` carries hover/focus) | n/a | n/a | n/a | n/a | n/a | n/a |
+| `top-nav` | extracted | prescribed: link underline on hover | prescribed: `{colors.focus}` ring per link; skip-link first in tab order | n/a | n/a | n/a | prescribed: current route link at weight 480 | n/a |
+| `marquee-strip` | extracted | prescribed: pauses on hover | prescribed: pauses on focus-visible within | n/a | n/a | n/a | n/a | n/a |
+| `comparison-checkmark` | **genuinely two states only** — present or absent. No hover, focus-visible, pressed, disabled, loading, selected or error state exists; it is a non-interactive glyph. | | | | | | | |
+| `footer` | extracted | prescribed: link underline on hover | prescribed: `{colors.focus}` ring per link | n/a | n/a | n/a | n/a | n/a |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or curve below is an extracted fact. Two behaviours *are* observed in the captures and are marked as such in the table: the marquee strip scrolls continuously, and template thumbnails animate in on scroll. Everything else is inferred from the brand's own rules and should be read as a contract, not a recording.
+
+**Profile: Calm** — not the Playful profile this file was assigned. The argument is in the audit report; the short version is that Figma's saturated colour is used as *static section ground behind product screenshots*, never on an interactive element (the one exception, `{colors.accent-magenta}`, is explicitly rationed to one promo CTA per page), while every interactive surface in the system is monochrome. The type voice is not light and informal: display weight is 340 with -1.72px tracking, the file describes itself as "editorial" three times, and it forbids both gradients and shadows on its signature surfaces. That is the Calm tell, so the Calm token block is used verbatim.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (pill CTA, link, card) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` | Unchanged — opacity only, already within `{motion.duration-reduced}` |
+| Press (pill CTA, icon button) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.97)` (0.94 on 40px icon buttons) | Scale removed; state change is instant with no transition |
+| Focus (focus-visible ring) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the ring | Unchanged; the ring must never be delayed or faded out of existence |
+| Page / route transition | `{motion.duration-base}` out, `{motion.duration-fast}` in — exit is shorter than its entrance | `{motion.ease-exit}` out, `{motion.ease-enter}` in | `opacity` only; no cross-fade travel | Travel removed (there is none); fade clamped to `{motion.duration-reduced}` |
+| Modal / lightbox | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: scale(0.98 → 1)`; scrim `opacity` only | Scale removed; scrim and panel fade at `{motion.duration-reduced}` |
+| Drawer (mobile nav overlay) | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `transform: translateY(-8px → 0)` + `opacity` | Travel removed; fade only at `{motion.duration-reduced}` |
+| Dropdown (nav menu, select) | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `transform: translateY(-4px → 0)` + `opacity`; `{shadow.soft}` is static, not animated | Travel removed; fade only, ≤ `{motion.duration-reduced}` |
+| Toast | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `transform: translateY(8px → 0)` + `opacity` | Travel removed; fade only at `{motion.duration-reduced}`; auto-dismiss timer extended, never shortened |
+| List enter (template grid, FigJam gallery) | `{motion.duration-base}` per item, `{motion.stagger-step}` between items, cap the stagger at 6 items | `{motion.ease-enter}` | `opacity` + `transform: translateY(12px → 0)` | Travel and stagger removed; all items fade together at `{motion.duration-reduced}`. *Observed:* the grid does animate in on scroll; the values are prescribed. |
+| List exit (filter change) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` | Unchanged; already opacity-only and ≤ `{motion.duration-reduced}` |
+| Loading (skeleton, spinner) | `{motion.duration-emphasis}` loop on the skeleton sweep; spinner 800ms linear | `{motion.ease-standard}` (skeleton), linear (spinner) | `opacity` on skeletons; `transform: rotate()` on the spinner | Skeleton pulse frozen to a static `{colors.surface-soft}` block; spinner replaced by a static glyph plus a live-region text status |
+| Marquee strip (brand ambience) | continuous, ~40s per cycle | linear | `transform: translateX()` | **Frozen.** Logos remain visible and legible in their resting position. *Observed as a continuous scroll;* the cycle length is prescribed. |
+| Color-block section reveal | `{motion.duration-slow}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(16px → 0)` on the inner editorial column only — the panel ground itself does not move | Travel removed; the column fades at `{motion.duration-reduced}`, panel is painted immediately |
+| Sticky-note thumbnail rotation | static | n/a | none — the off-axis rotation is a fixed `transform`, not an animation | Unchanged; nothing is animating |
+
+### Motion rules this file holds to
+
+- Only `transform` and `opacity` are animated. Never animate `width`, `height`, `top`, `left` or `margin` — a color-block section that re-flows its own padding is worse than one that simply appears.
+- Every exit is shorter than its matching entrance (`{motion.duration-fast}` out against `{motion.duration-base}` in).
+- Nothing animates on first paint in a way that delays content. The hero headline, the nav and the two pill CTAs are painted at full opacity; only below-the-fold reveals are choreographed.
+- The marquee strip is the only infinite animation, and it is deliberate brand ambience — a ribbon of customer logos that reads as a ticker. Loaders are the only other looping motion. No other element may loop.
+- Travel is small and vertical: 4–16px. Figma's pages are long and editorial; horizontal slide would fight the column.
+- Easing is symmetric (`{motion.ease-standard}` is the Calm profile's `cubic-bezier(0.4, 0, 0.2, 1)`), with no overshoot. A springy bounce on a pill CTA would be a different brand.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate and all scale. Press no longer pops, toasts,
+     drawers, dropdowns, list items and color-block reveals no longer travel,
+     and the per-item stagger is dropped so a list appears at once.
+     Frozen: the marquee strip holds its resting position; skeleton pulses
+     stop; the spinner becomes a static glyph with a text status in a live
+     region. Kept: opacity fades only, clamped to {motion.duration-reduced}
+     (150ms), and the focus-visible ring, which is never delayed, faded out
+     or suppressed. */
+}
+```
+
+Reduced motion removes travel and scale; it never removes *state*. A hovered, focused, pressed, selected or errored element must still be visually distinguishable with every transition at zero duration.
+
+## Accessibility
+
+Every ratio below is computed with the WCAG 2.1 relative-luminance formula from the hexes in this file's own frontmatter. Nothing here is a rendered-page claim: tap-target sizes are the file's own documented values, not measurements.
+
+### Measured contrast — passes
+
+| Pair | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 21.00:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 19.58:1 | 4.5:1 | pass |
+| `{colors.caption}` on `{colors.canvas}` | 21.00:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.primary}` | 21.00:1 | 4.5:1 | pass |
+| `{colors.inverse-ink}` on `{colors.inverse-canvas}` | 21.00:1 | 4.5:1 | pass |
+| `{colors.inverse-ink}` on `{colors.block-navy}` | 16.14:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.block-lime}` | 16.91:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.block-cream}` | 17.82:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.block-mint}` | 15.66:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.block-pink}` | 15.04:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.block-coral}` | 13.84:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.block-lilac}` | 10.89:1 | 4.5:1 | pass |
+| `{colors.inverse-ink}` on `{colors.surface-inverse-soft}` | 14.55:1 | 4.5:1 | pass |
+| `{colors.border-control}` on `{colors.canvas}` | 21.00:1 | 3.0:1 | pass |
+| `{colors.border-control}` on `{colors.block-lilac}` | 10.89:1 | 3.0:1 | pass |
+
+Lilac is the darkest pastel and therefore the binding case for every ink-on-pastel pair; it still clears 4.5:1 with ten points to spare. The monochrome core of this brand is unusually safe.
+
+### Focus ring visibility on every surface this file defines
+
+`{colors.focus}` is `#000000`; `{colors.focus-on-dark}` is `#ffffff`. Required: 3.0:1.
+
+| Ring | Surface | Ratio | Result |
+|---|---|---|---|
+| `{colors.focus}` | `{colors.canvas}` | 21.00:1 | pass |
+| `{colors.focus}` | `{colors.surface-soft}` | 19.58:1 | pass |
+| `{colors.focus}` | `{colors.block-cream}` | 17.82:1 | pass |
+| `{colors.focus}` | `{colors.block-lime}` | 16.91:1 | pass |
+| `{colors.focus}` | `{colors.block-mint}` | 15.66:1 | pass |
+| `{colors.focus}` | `{colors.block-pink}` | 15.04:1 | pass |
+| `{colors.focus}` | `{colors.block-coral}` | 13.84:1 | pass |
+| `{colors.focus}` | `{colors.block-lilac}` | 10.89:1 | pass |
+| `{colors.focus}` | `{colors.accent-magenta}` | 6.29:1 | pass |
+| `{colors.focus-on-dark}` | `{colors.inverse-canvas}` | 21.00:1 | pass |
+| `{colors.focus-on-dark}` | `{colors.block-navy}` | 16.14:1 | pass |
+| `{colors.focus-on-dark}` | `{colors.surface-inverse-soft}` | 14.55:1 | pass |
+
+Use `{colors.focus}` on every light ground, `{colors.focus-on-dark}` on `{colors.inverse-canvas}`, `{colors.block-navy}` and `{colors.surface-inverse-soft}`. The 2px offset in the opposite polarity is mandatory, not decorative: a black ring on a black marquee strip is invisible without it, and the offset is what lets a single ring survive an element that straddles a panel edge.
+
+### Measured contrast — real failures, disclosed
+
+These are extracted brand values. They are **not** corrected in place, because a falsified hex would make this document wrong about Figma. Each failure and its nearest passing value is carried in the audit report under "Needs approval".
+
+| Pair | Ratio | Required | Status |
+|---|---|---|---|
+| `hairline-soft` (`#f1f1f1`) on `{colors.canvas}` | 1.13:1 | 3.0:1 | **fails.** Scoped to decoration only (comparison-table row separators, footer column rules). Never the sole boundary of a control. |
+| `hairline` (`#e6e6e6`) on `{colors.canvas}` | 1.25:1 | 3.0:1 | **fails.** Scoped to decoration (pricing-card stroke, section rules). Controls take `{colors.border-control}` at 21.00:1 instead. |
+| `button-magenta-promo`: `{colors.on-primary}` on `{colors.accent-magenta}` (`#ffffff` on `#ff3d8b`) | 3.34:1 | 4.5:1 | **fails.** White-on-magenta at `{typography.button}` (20px / weight 480) is below AA for normal text. It clears the 3:1 large-text threshold, so it is defensible only at 24px+ or 18.66px+ bold. Nearest passing fill at 4.5:1 is `#d83376`; alternatively `{colors.ink}` on the existing magenta measures 6.29:1 and matches the rest of the system, where every pill is black-on-light or white-on-black. Both are changes to a real brand surface and need approval. |
+| `comparison-checkmark`: `{colors.semantic-success}` on `{colors.canvas}` (`#1ea64a` on `#ffffff`) | 3.18:1 | 4.5:1 | **fails** as text; **passes** the 3:1 non-text minimum that actually applies to a glyph. The real risk is that the matrix encodes "included" in green alone. Mitigation that needs no colour change: the check glyph carries an accessible name (`aria-label="Included"`) and the row/column headers are programmatically associated, so the information is never colour-only. Nearest passing green at 4.5:1 is `#18883d`. |
+
+**Plainly stated: this brand fails WCAG AA at three points.** Both extracted hairlines are far below the 3:1 non-text minimum, and the magenta promo pill is below 4.5:1 for its own documented type size. The monochrome core — which is the overwhelming majority of the site — passes at 10:1 or better everywhere.
+
+### Tap targets
+
+Documented in **Responsive Behavior**, repeated here as the accessibility contract: pill CTAs hold a 44px minimum height at every breakpoint; circular icon buttons are 40px on desktop and grow to 44px on touch viewports; `/contact/` inputs are 48px high. The 40px desktop icon button is below the 44×44px AAA target and below the 24×24px minimum only if spacing is tight — it meets WCAG 2.2 Target Size (Minimum) at AA. **None of this is verified here**; there is no rendered page in this audit, so these are the file's own asserted values.
+
+### Reduced motion
+
+See `@media (prefers-reduced-motion: reduce)` above. All travel and scale removed, ambience frozen, opacity fades clamped to `{motion.duration-reduced}` (150ms), focus ring never suppressed.
+
+### Other accessibility notes
+
+- There is no mid-grey text anywhere in this system, so the usual secondary-text contrast failure cannot occur. `{colors.caption}` is pure ink by design.
+- `{typography.caption}` is 12px figmaMono at line-height 1.00. 12px is small for a body-adjacent role and a 1.00 line-height leaves no leading; keep it to single-line labels and column heads, never a wrapped sentence.
+- Display type at weight 320–340 with -1.72px tracking is a legibility risk at small sizes. The file already restricts those weights to 64–86px, which is where they are safe.
+- Dark mode is not documented (see **Known Gaps**); the dark-surface guidance above covers only the navy block, the marquee strip and the footer.
 
 ## Do's and Don'ts
 
@@ -575,4 +764,8 @@ The defining surface of Figma's marketing. Each is a full-content-width panel wi
 - The exact pastel hex values of `{colors.block-*}` are derived from screenshot pixels; the production source likely uses named tokens that aren't exposed via CSS variables. Treat the documented hex values as faithful approximations rather than exact brand specs.
 - Dark mode is not documented because the marketing site does not ship a dark theme — the closest analog is the navy color-block (`color-block-section-navy`) and the inverse-canvas footer.
 - Form-field error and validation styling is not visible on `/contact/` because no error states render in the static screenshot. Inputs have hairline borders and rounded `{rounded.md}` corners; error treatment is not documented.
-- The animated marquee-strip and color-block reveal animations are not documented (per the no-interaction policy).
+- The animated marquee-strip and color-block reveal animations are **observed but not measured**: the captures show that the marquee scrolls continuously and that template thumbnails and color-block columns animate in on scroll, but no duration or easing curve was recorded. The whole of **Motion & Animation** is therefore prescribed from the Calm profile, not extracted, and its first line says so.
+- Form-field error styling (above) is prescribed, not extracted. The chosen treatment — a 2px ink border plus a figmaMono caption, with no red — follows from the fact that this system defines no semantic red at all; if Figma ships one, that token supersedes the prescription.
+- `{shadow.modal}` is a prescribed value. The captures show a stronger lightbox shadow than `{shadow.soft}` but give no measurable blur, offset or alpha.
+- `{colors.surface-inverse-soft}` is derived, not extracted: it is `{colors.on-inverse-soft}` at 16% composited over `{colors.inverse-canvas}`. On `{colors.block-navy}` the same overlay composites to roughly `#43415c`, which is close enough that one token is used for both rather than inventing a second.
+- Focus-ring geometry (2px ring, 2px offset) is prescribed. No focused element appears in the static captures, so neither the ring width nor its colour is a brand fact.
