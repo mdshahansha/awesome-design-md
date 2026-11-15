@@ -351,6 +351,13 @@ def audit(path):
     surface_keys = [k for k in colors
                     if re.search(r"(canvas|background|base|surface|card|panel|tile|band)", k)
                     and not re.search(r"^(ink|text|body|muted|hairline|border|focus)", k)]
+    # A token a component declares as a backgroundColor is a surface whatever it
+    # is called: meta paints white type on `ink-deep`, which the name filter
+    # above would drop, hiding every dark ground a ring lands on.
+    for props in parse_components(text).values():
+        m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("backgroundColor") or "")
+        if m and m.group(1) in colors and m.group(1) not in surface_keys:
+            surface_keys.append(m.group(1))
     accent_key = roles.get("accent")
 
     # A file's rings are a system, not independent claims. A surface is covered
