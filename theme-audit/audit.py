@@ -18,7 +18,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # first match becomes the representative token used for contrast checks.
 REQUIRED_COLOR_ROLES = {
     "canvas":   [r"^canvas$", r"^background$", r"^bg$", r"^base$", r"^surface-base$",
-                 r"^paper$", r"^page$", r"^canvas-"],
+                 r"^paper$", r"^page$", r"^canvas-", r"^surface-canvas",
+                 r"^page-", r"^body-bg"],
     "surface":  [r"^surface$", r"^surface[-_]?\d", r"^surface[-_]", r"^card$",
                  r"^card[-_]", r"^panel$", r"^panel[-_]", r"^elevated$",
                  r"^tile$", r"^tile[-_]"],
@@ -27,14 +28,15 @@ REQUIRED_COLOR_ROLES = {
                  r"^ink-(strong|deep|black|primary)$"],
     "text-dim": [r"^text-dim$", r"^muted$", r"^muted-", r"^mute$", r"^mute-",
                  r"^ink-(muted|subtle|soft|tertiary|secondary|light|meta|note|"
-                 r"caption|nav|list|lead)", r"^text-(secondary|muted|soft|tertiary)$",
+                 r"caption|nav|list|lead)", r"^on-[a-z]+-mute", r"^text-(secondary|muted|soft|tertiary)$",
                  r"^body-(soft|muted|secondary)$", r"^subtle$", r"^secondary$",
                  r"^on-dark-soft$", r"^caption$"],
     "border":   [r"^hairline$", r"^hairline-", r"^border$", r"^border-", r"^divider$",
                  r"^rule$", r"^stroke$", r"^outline$", r"^line$"],
     "accent":   [r"^primary$", r"^accent$", r"^brand$", r"^accent-", r"^primary-"],
     "on-accent":[r"^on-primary$", r"^accent-contrast$", r"^on-accent$", r"^on-brand$",
-                 r"^on-primary-"],
+                 r"^on-primary-", r"^(primary|accent|brand)-on$",
+                 r"^(primary|accent|brand)-on-"],
     "focus":    [r"^focus$", r"^focus-ring$", r"^focus-", r"^ring$"],
 }
 REQUIRED_SECTIONS = ["Overview", "Colors", "Typography", "Layout", "Elevation & Depth",
