@@ -26,7 +26,8 @@ REQUIRED_COLOR_ROLES = {
                  r"^foreground$", r"^on-canvas$", r"^on-(light|cream|paper|white)$",
                  r"^ink-(strong|deep|black|primary)$"],
     "text-dim": [r"^text-dim$", r"^muted$", r"^muted-", r"^mute$", r"^mute-",
-                 r"^ink-(muted|subtle|soft|tertiary|secondary|light)", r"^text-(secondary|muted|soft|tertiary)$",
+                 r"^ink-(muted|subtle|soft|tertiary|secondary|light|meta|note|"
+                 r"caption|nav|list|lead)", r"^text-(secondary|muted|soft|tertiary)$",
                  r"^body-(soft|muted|secondary)$", r"^subtle$", r"^secondary$",
                  r"^on-dark-soft$", r"^caption$"],
     "border":   [r"^hairline$", r"^hairline-", r"^border$", r"^border-", r"^divider$",
@@ -216,18 +217,30 @@ def audit(path):
     if not roles.get("surface"):
         CONTAINERISH = re.compile(r"(card|panel|band|tile|well|surface|sheet|"
                                   r"modal|drawer|section|container)")
+        # A hero, masthead or display fill is a statement surface, not the
+        # raised neutral the role means.
+        NOT_A_SURFACE = re.compile(r"(hero|masthead|display|title|banner|jumbo|"
+                                   r"splash|cover)")
         canvas_hex = colors.get(roles.get("canvas") or "", None)
+        candidates = []
         for cname, props in parse_components(text).items():
-            if not CONTAINERISH.search(cname):
+            if not CONTAINERISH.search(cname) or NOT_A_SURFACE.search(cname):
                 continue
             m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("backgroundColor") or "")
             if not m or m.group(1) not in colors:
                 continue
             if canvas_hex and colors[m.group(1)] == canvas_hex:
                 continue            # the page floor, not a raised surface
-            roles["surface"] = m.group(1)
-            r.setdefault("roles_from_bindings", []).append("surface=" + m.group(1))
-            break
+            candidates.append(m.group(1))
+        if candidates and canvas_hex:
+            # Nearest the canvas: a raised surface is a step off the page, not
+            # a saturated field.
+            best = min(candidates, key=lambda k: contrast(colors[k], canvas_hex))
+            roles["surface"] = best
+            r.setdefault("roles_from_bindings", []).append("surface=" + best)
+        elif candidates:
+            roles["surface"] = candidates[0]
+            r.setdefault("roles_from_bindings", []).append("surface=" + candidates[0])
 
     # A role no pattern can guess by name is still resolvable from what the
     # components bind. Mercury's boundaries are `fog` and `slate`; both are

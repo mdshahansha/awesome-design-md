@@ -59,7 +59,11 @@ role reports, while every tone in the role is measured separately. mydealz's
 extracted hairline is still reported at 1.2:1 and 1.31:1 after a passing
 `hairline-strong` took the role name — if a role looks unsatisfied but
 the palette plainly contains it under another name, that is a harness bug to
-report under Shared issues, not a token to invent. Brand documents should not
+report under Shared issues, not a token to invent. The same applies, and
+matters more, when the harness satisfies a role **wrongly** — resolving
+`surface` to a hero fill hides the real card tone and then measures failures
+against a ground the site never renders. Say which token it should have picked
+and why, and disclose the manufactured pairs as manufactured. Brand documents should not
 carry tokens that exist only to please a regex:
 
 | Role | Purpose |
