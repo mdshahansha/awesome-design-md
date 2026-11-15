@@ -222,6 +222,15 @@ def audit(path):
     dual_theme = any(re.search(r"(canvas|background|bg|base|surface)", k)
                      and re.search(r"(light|dark)", k) for k in colors)
 
+    canvas_polarity = None
+    for pat in REQUIRED_COLOR_ROLES["canvas"]:
+        for k in colors:
+            if re.match(pat, k):
+                canvas_polarity = "dark" if luminance(colors[k]) < 0.2 else "light"
+                break
+        if canvas_polarity:
+            break
+
     def theme_of(key):
         """Which theme a token belongs to. None means the file's default."""
         # An on-dark / on-light ink declares its own target surface, so it is
@@ -232,11 +241,16 @@ def audit(path):
             return "light"
         if not dual_theme:
             return None
+        marker = None
         if re.search(r"dark($|[-_])|[-_]dark", key):
-            return "dark"
-        if re.search(r"light($|[-_])|[-_]light", key):
-            return "light"
-        return None
+            marker = "dark"
+        elif re.search(r"light($|[-_])|[-_]light", key):
+            marker = "light"
+        # A marker matching the file's own canvas polarity is a tone name, not a
+        # second theme: ink-dark in a dark-canvas file belongs to the default.
+        if marker and marker == canvas_polarity:
+            return None
+        return marker
 
     def same_theme(fg_key, bg_key):
         """A light-mode ink is never drawn on a dark-mode surface.
@@ -331,7 +345,7 @@ def audit(path):
     # when ANY ring clears 3:1 on it, so a ring named for one context
     # (focus-on-gradient, focus-ink) is not charged for surfaces another ring
     # serves. A failure means no ring in the file covers that surface at all.
-    for s in dict.fromkeys(surface_keys):
+    for s in dict.fromkeys(surface_keys):   # every surface, theme-independent
         if not focus_tokens:
             break
         best_ring, best = None, -1.0
@@ -479,11 +493,13 @@ def audit(path):
     # --- score ----------------------------------------------------------
     r["score"] = {
         "tokens":   5 if not r["roles_missing"] else max(1, 5 - len(r["roles_missing"])),
-        "refs":     5 if not r["dangling_refs"] else 2,
+        # Floored at 1 with no frontmatter: nothing was measured, so a 5 would
+        # mean "nothing to find" rather than "nothing wrong".
+        "refs":     (5 if not r["dangling_refs"] else 2) if groups else 1,
         # Scored on undisclosed failures only: documenting a frozen brand
         # failure is the required outcome, not a deduction.
-        "contrast": 5 if not r["contrast_unresolved"]
-                    else max(1, 5 - len(r["contrast_unresolved"])),
+        "contrast": (5 if not r["contrast_unresolved"]
+                     else max(1, 5 - len(r["contrast_unresolved"]))) if groups else 1,
         "sections": max(1, 5 - len(r["sections_missing"])),
         "motion":   5 if (r["has_motion_section"] and not r["motion_keys_missing"]
                           and r["has_reduced_motion"]) else
