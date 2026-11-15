@@ -430,7 +430,7 @@ def audit(path):
         # controls it surrounds — requiring both is arithmetically impossible
         # (see 34a4499). Decided by what the COMPONENT is, since a signal fill
         # can be named anything: amber, nav-gold, commerce.
-        if ACCENTISH.match(m.group(1)) or not CONTAINER.search(name):
+        if not CONTAINER.search(name):
             continue
         surface_keys.append(m.group(1))
     accent_key = roles.get("accent")
