@@ -27,10 +27,11 @@ REQUIRED_COLOR_ROLES = {
                  r"^foreground$", r"^on-canvas$", r"^on-(light|cream|paper|white)$",
                  r"^ink-(strong|deep|black|primary)$"],
     "text-dim": [r"^text-dim$", r"^muted$", r"^muted-", r"^mute$", r"^mute-",
-                 r"^ink-(muted|subtle|soft|tertiary|secondary|light|meta|note|"
-                 r"caption|nav|list|lead)", r"^on-[a-z]+-mute", r"^text-(secondary|muted|soft|tertiary)$",
+                 r"^ink-(muted|mute|faint|subtle|soft|tertiary|secondary|light|"
+                 r"meta|note|caption|nav|list|lead)", r"^text-(secondary|muted|soft|tertiary)$",
                  r"^body-(soft|muted|secondary)$", r"^subtle$", r"^secondary$",
-                 r"^on-dark-soft$", r"^caption$"],
+                 r"^caption$", r"^on-dark-soft$", r"^on-[a-z]+-mute",
+                 r"^on-[a-z]+-faint"],
     "border":   [r"^hairline$", r"^hairline-", r"^border$", r"^border-", r"^divider$",
                  r"^rule$", r"^stroke$", r"^outline$", r"^line$"],
     "accent":   [r"^primary$", r"^accent$", r"^brand$", r"^accent-", r"^primary-"],
@@ -274,6 +275,19 @@ def audit(path):
 
     # Boundary and focus tokens are judged on the strongest variant the file owns.
     canvas_key = roles.get("canvas")
+    if canvas_key and roles.get("surface"):
+        # Candidates include canvas-prefixed raised tones: superhuman's real
+        # raised neutral is `canvas-soft`, which the canvas patterns claim,
+        # leaving a violet pill fill as the only surface-pattern match.
+        cand = [k for k in colors
+                if (any(re.match(pat, k) for pat in REQUIRED_COLOR_ROLES["surface"])
+                    or re.match(r"^(canvas|page|paper)[-_]", k))
+                and colors[k] != colors[canvas_key]
+                and not re.search(r"(hero|pill|badge|chip|masthead|banner)", k)]
+        if cand:
+            roles["surface"] = min(cand,
+                                   key=lambda k: contrast(colors[k], colors[canvas_key]))
+
     if canvas_key:
         for role in ("border", "focus", "text-dim"):
             if roles.get(role):
@@ -300,8 +314,19 @@ def audit(path):
     # alternate-theme surface. In 36 of 84 files it is just a tone suffix
     # (border-light, m-blue-dark), and reading those as a separate theme
     # silenced real failures — reported by agent A14.
+    def _pol(hexstr):
+        return "dark" if luminance(hexstr) < 0.2 else "light"
+
+    _ground_keys = [k for k in colors
+                    if re.search(r"(canvas|background|base|surface|card|panel)", k)
+                    and not re.search(r"^(ink|text|body|muted|hairline|border|focus)", k)]
+    _cv = next((colors[k] for pat in REQUIRED_COLOR_ROLES["canvas"]
+                for k in colors if re.match(pat, k)), None)
+    # Either naming or measured polarity: a palette with a white body and an
+    # indigo surface is dual-theme whether or not it says so in its token names.
     dual_theme = any(re.search(r"(canvas|background|bg|base|surface)", k)
-                     and re.search(r"(light|dark)", k) for k in colors)
+                     and re.search(r"(light|dark)", k) for k in colors) or (
+        _cv is not None and any(_pol(colors[k]) != _pol(_cv) for k in _ground_keys))
 
     canvas_polarity = None
     for pat in REQUIRED_COLOR_ROLES["canvas"]:
