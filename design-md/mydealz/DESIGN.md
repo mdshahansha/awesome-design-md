@@ -18,6 +18,8 @@ colors:
   body: "#6b6d70"
   muted: "#a7a9ac"
   hairline: "#dfe1e4"
+  hairline-strong: "#8a8d91"
+  focus: "#197e25"
   warning-surface: "#faf9ca"
   warning-text: "#9f5c0c"
 
@@ -93,6 +95,22 @@ spacing:
   xl: 24px
   xxl: 40px
 
+shadow:
+  soft: "rgba(11,22,44,0.09) 0 4px 12px"
+  deep: "rgba(0,0,0,0.38) -1px 11px 15px -11px"
+
+motion:
+  duration-instant: 70ms
+  duration-fast: 130ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 450ms
+  ease-standard: cubic-bezier(0.3, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 60ms
+  duration-reduced: 130ms
+
 components:
   nav-bar:
     backgroundColor: "{colors.surface}"
@@ -137,7 +155,8 @@ components:
     textColor: "{colors.body}"
     typography: "{typography.body}"
     rounded: "{rounded.full}"
-    borderColor: "{colors.hairline}"
+    borderColor: "{colors.hairline-strong}"
+    focusRing: "{colors.focus}"
   deal-card:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
@@ -195,12 +214,16 @@ components:
     typography: "{typography.body}"
     rounded: "{rounded.full}"
     padding: "9px 35px"
+    borderColor: "{colors.hairline-strong}"
+    focusRing: "{colors.focus}"
   email-input:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     typography: "{typography.body}"
     rounded: "{rounded.md}"
     padding: "9px 16px"
+    borderColor: "{colors.hairline-strong}"
+    focusRing: "{colors.focus}"
   timestamp-pill:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.body}"
@@ -221,7 +244,8 @@ components:
     textColor: "{colors.ink}"
     typography: "{typography.body}"
     rounded: "{rounded.md}"
-    borderColor: "{colors.hairline}"
+    borderColor: "{colors.hairline-strong}"
+    focusRing: "{colors.focus}"
   footer:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.body}"
@@ -322,12 +346,14 @@ Geometrically the system is defined by the **fully-round 540px pill** — button
 ### Surface
 - **Canvas** (`{colors.canvas}`): The cool light-gray page ground that stacked white cards sit on.
 - **Surface** (`{colors.surface}`): Pure white — every card, the nav, the footer, buttons.
-- **Hairline** (`{colors.hairline}`): The 1px border on cards, buttons, and dividers.
+- **Hairline** (`{colors.hairline}`): The extracted 1px border on cards, buttons, and dividers. It measures 1.2:1 on `{colors.canvas}` and 1.31:1 on `{colors.surface}` — far below the 3:1 a boundary needs. Treat it as **decoration only**: the card-to-card separation it provides is reinforced by the canvas gutter, not carried by the line alone.
+- **Hairline Strong** (`{colors.hairline-strong}` — *prescribed, not extracted*): The accessible parallel to `{colors.hairline}`, for any boundary that is the *only* thing defining a control — the edge of a `text-input`, `email-input`, `search-pill` or `country-selector`. 3.05:1 on `{colors.canvas}`, 3.33:1 on `{colors.surface}`.
+- **Focus Ring** (`{colors.focus}` — *prescribed, not extracted*): mydealz publishes no focus ring, so this one is specified here. It takes the brand's own deep green value (the same hex as `{colors.green-strong}`), given its own role name because it is drawn as a 2px ring with a 2px offset outside the control, never as a fill. One mid-luminance ring serves every ground this file defines: 4.74:1 on `{colors.canvas}`, 5.18:1 on `{colors.surface}`, 4.05:1 on the black `ex-pricing-tier-featured` fill — so no `focus-on-dark` counterpart is needed.
 
 ### Text
 - **Ink** (`{colors.ink}`): True black for deal titles, headings, and primary text.
 - **Body** (`{colors.body}`): Mid gray for secondary copy, metadata, muted button labels.
-- **Muted** (`{colors.muted}`): Light gray for the quietest captions and placeholder text.
+- **Muted** (`{colors.muted}`): Light gray for the struck-through original price and placeholder text. At 2.16:1 on `{colors.canvas}` and 2.36:1 on `{colors.surface}` it fails AA for text; the real brand uses it anyway. Scope it to **decorative or redundant** ink only — a struck-through price whose live price is stated beside it, a placeholder whose field carries a visible label. Any secondary copy that must be read uses `{colors.body}` (4.75:1 / 5.19:1).
 
 ### Semantic
 - **Warning Surface / Text** (`{colors.warning-surface}` / `{colors.warning-text}`): The soft-yellow pill and amber-brown text used for expiring / caution deal states.
@@ -373,31 +399,14 @@ A two-column shell above ~768px: the main deal feed (single stacked column of fu
 ### Whitespace Philosophy
 Whitespace is rationed — this is an information product, not a marketing page. Cards sit close together with tight internal padding; the cool-gray canvas gutters between white cards do the separating work, and the hairline borders keep each card crisp against its neighbors.
 
-### Responsive Strategy
-
-#### Breakpoints
-| Name | Width | Key Changes |
-|---|---|---|
-| Mobile | < 768px | Single-column feed; sidebar drops; nav collapses to the "Menü" pill; temperature control and CTA stack under the card body |
-| Desktop | ≥ 768px | Feed + right sidebar two-column shell; full nav row with search pill and category strip |
-
-#### Touch Targets
-Pill buttons (`{components.button-primary}`) and the temperature control clear a comfortable tap height; vote arrows, comment, share, and bookmark icons carry generous hit areas on the card foot.
-
-#### Collapsing Strategy
-The category strip and right sidebar collapse first; the nav condenses to the "Menü" pill + search + submit; deal cards reflow from a media-left row into a stacked thumbnail-over-body layout on narrow screens.
-
-#### Image Behavior
-Deal thumbnails are contained in `{rounded.md}` frames on the card's media side, never full-bleed; avatars are perfect circles (`{rounded.circle}`). Merchant logos and app-store badges render inline at fixed heights.
-
 ## Elevation & Depth
 
 | Level | Treatment | Use |
 |---|---|---|
 | 0 | Flat on `{colors.canvas}` | Page ground, footer |
 | 1 | 1px `{colors.hairline}` border | Deal cards, sidebar cards, buttons, inputs |
-| 2 | Soft shadow `rgba(11,22,44,0.09) 0 4px 12px` | Elevated / hovered cards, dropdowns |
-| 3 | Deeper drop `rgba(0,0,0,0.38) -1px 11px 15px -11px` | Overlays, sticky bars |
+| 2 | Soft shadow `{shadow.soft}` (`rgba(11,22,44,0.09) 0 4px 12px`) | Elevated / hovered cards, dropdowns |
+| 3 | Deeper drop `{shadow.deep}` (`rgba(0,0,0,0.38) -1px 11px 15px -11px`) | Overlays, sticky bars |
 
 Depth is hairline-first. Cards separate by border and canvas gutter; the soft 4–12px shadow is reserved for elements that lift (menus, sticky bars, elevated cards). There are no heavy shadow stacks in the resting feed.
 
@@ -416,10 +425,46 @@ The brand's playfulness lives in illustration, not gradients — a green cartoon
 | `{rounded.full}` | 540px | Buttons, search pill, temperature control, filter chips — the pill signature |
 | `{rounded.circle}` | 9999px | Avatars, icon buttons |
 
+### Focus Ring
+*Prescribed — mydealz publishes no focus-ring geometry.*
+
+| Property | Value |
+|---|---|
+| Color | `{colors.focus}` |
+| Width | 2px |
+| Offset | 2px, drawn **outside** the control so it is judged against the surface behind it, per WCAG 2.2 Focus Appearance |
+| Radius | Follows the control: `{rounded.full}` on pills, search and the temperature control; `{rounded.md}` on cards and `email-input`; `{rounded.circle}` on avatars and icon buttons |
+
+The ring never replaces a border and never fills; it sits proud of the control's own edge so a green ring on a green `button-primary` stays legible against the white or cool-gray ground, not against the fill.
+
 ### Photography Geometry
 Deal thumbnails sit in `{rounded.md}` frames on the card's media column; author and community avatars are circles (`{rounded.circle}`). There is no hero photography — the product IS the card grid.
 
 ## Components
+
+### State Coverage
+
+Which states each entry supports. Hover and pressed feedback is *prescribed* (see Motion & Animation); the resting appearance of every entry is extracted from the live feed. A dash means the state does not exist for that entry, and several entries genuinely have one.
+
+| Component | States |
+|---|---|
+| `button-primary` | default · hover (fill darkens to `{colors.green-strong}`) · focus-visible (`{colors.focus}` ring) · pressed (0.97 scale) · disabled · loading (inline spinner, label held) |
+| `button-outline-green` | default · hover (`{colors.discount-surface}` tint fill) · focus-visible · pressed · disabled |
+| `button-outline-neutral` | default · hover (`{colors.canvas}` fill) · focus-visible · pressed · disabled |
+| `button-muted` | default · hover · focus-visible · pressed · disabled |
+| `button-tag` | default · hover · focus-visible · pressed · selected (`{colors.primary}` label + border) |
+| `search-pill` | default · hover · focus-visible (ring, border to `{colors.focus}`) · loading (suggestion fetch) · error |
+| `text-input` / `email-input` | default · hover · focus-visible · disabled · error (`{colors.hot}` border + message) |
+| `nav-bar` | default · selected (active category underlined in `{colors.primary}`); its children carry their own hover / focus-visible |
+| `deal-card` | default · hover (level-1 border to level-2 `{shadow.soft}`) · focus-visible (ring on the title link) · selected (visited / expanded) · loading (skeleton) |
+| `sidebar-card` | default · hover · focus-visible on its links · loading (skeleton) |
+| `temperature-control` | default · hover · focus-visible (ring on each arrow) · pressed (arrow pops) · selected (the user's own vote stays filled) · disabled (voting closed on expired deals) · loading (vote in flight) · error (vote rejected, reverts with a `{colors.hot}` flash) |
+| `temperature-up` / `temperature-down` | default · hover · focus-visible · pressed · selected · disabled |
+| `country-selector` | default · hover · focus-visible · selected (current country) |
+| `footer` | default only; its links carry hover / focus-visible |
+| `price-lockup` | default only — a static lockup, no interactive states |
+| `discount-badge`, `badge-neutral-subtle`, `badge-filled`, `premium-badge`, `warning-badge`, `timestamp-pill` | default only — non-interactive status chips |
+| `avatar` | default · hover · focus-visible where it links to a profile; otherwise default only |
 
 ### Buttons
 
@@ -532,6 +577,103 @@ Deal thumbnails sit in `{rounded.md}` frames on the card's media column; author 
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or curve below was extracted from mydealz; they come from the **Playful** profile in `theme-audit/SPEC.md`, chosen because saturated colour here sits on the interactive elements themselves — the hot/cold vote arrows, the green pills, the mint saving badges — and the voice (frog mascot, crowd-voted "temperature") is informal rather than editorial.
+
+### Principles
+- The temperature vote is the one place motion carries meaning: a vote should feel like a tap that *lands*, which is what `{motion.ease-enter}`'s overshoot is for.
+- Everything else is quick and almost unnoticed. This is a feed of hundreds of cards; a reveal that choreographs itself is a reveal that gets in the way.
+- `transform` and `opacity` only. Never `width`, `height`, `top`, `left` or `margin` — a feed this dense cannot afford layout work mid-scroll.
+- Every exit is shorter than its matching entrance.
+- Nothing animates on first paint in a way that delays a card becoming readable.
+- No infinite animation except the loading skeleton and spinner. There is no brand ambience; the palette is flat and the mascot is a static illustration.
+
+### Interaction Table
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (pills, cards, links) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`, `transform: translateY(-1px)` on `deal-card` | Travel removed; colour/opacity change only at `{motion.duration-reduced}` |
+| Press (any pill, vote arrow) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.97)`; vote arrow releases to `scale(1.06)` then settles via `{motion.ease-enter}` | Scale removed entirely; the state change is instant |
+| Focus (`{colors.focus}` ring) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the ring | Ring appears instantly, no fade; it is never animated away |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` on the feed column only | Cross-fade at `{motion.duration-reduced}`; no transform |
+| Modal / drawer (consent sheet, mobile "Menü") | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(16px)` in, `translateY(8px)` out | Opacity only at `{motion.duration-reduced}`; sheet appears in place |
+| Dropdown (`country-selector`, nav menu, search suggestions) | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: scale(0.98 → 1)` from the top edge | Opacity only at `{motion.duration-reduced}` |
+| Toast (`ex-toast`, "Deal gespeichert") | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(12px)` | Opacity only at `{motion.duration-reduced}`; it still auto-dismisses |
+| List enter (cards appended by "Mehr laden") | `{motion.duration-base}`, staggered `{motion.stagger-step}`, capped at 5 steps | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px)` | Stagger and travel removed; the batch fades in together at `{motion.duration-reduced}` |
+| List exit (filtered-out or expired card) | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform: scale(0.98)` | Opacity only at `{motion.duration-reduced}` |
+| Loading (card skeleton, vote spinner) | `{motion.duration-emphasis}` loop | `{motion.ease-standard}`, alternating | `opacity` 0.6 ↔ 1 on the skeleton block; `transform: rotate()` on the spinner | Pulse and rotation frozen; a static skeleton with `aria-busy` remains |
+
+### Reduced Motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translate), all scale — including the press pop on
+     the temperature control — and the list-enter stagger.
+     Frozen: the skeleton pulse and the vote spinner, which hold a static frame.
+     Kept: opacity fades, capped at {motion.duration-reduced} (130ms).
+     Unchanged: the focus ring, which appears instantly in both modes, and
+     toast auto-dismissal, which is a timeout, not an animation. */
+  *, *::before, *::after {
+    transition-duration: 130ms !important;   /* {motion.duration-reduced} */
+    animation-duration: 130ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property: opacity, color, background-color, border-color !important;
+    transform: none !important;
+  }
+}
+```
+
+## Accessibility
+
+Contrast measured with WCAG 2.1 relative luminance on the hexes in this file's own frontmatter. Everything a rendered page would be needed for — real tap-target sizes, focus order, overflow — is in Known Gaps, not claimed here.
+
+### Measured contrast
+
+| Foreground / Background | Ratio | Required | Verdict |
+|---|---|---|---|
+| `ink` on `canvas` | 19.21:1 | 4.5:1 | Pass |
+| `ink` on `surface` | 21.0:1 | 4.5:1 | Pass |
+| `body` on `canvas` | 4.75:1 | 4.5:1 | Pass |
+| `body` on `surface` | 5.19:1 | 4.5:1 | Pass |
+| `green-strong` on `discount-surface` | 4.76:1 | 4.5:1 | Pass |
+| `warning-text` on `warning-surface` | 4.85:1 | 4.5:1 | Pass |
+| `hot` on `surface` | 5.53:1 | 4.5:1 | Pass |
+| `cold` on `surface` | 7.7:1 | 4.5:1 | Pass |
+| `premium` on `surface` | 5.06:1 | 4.5:1 | Pass |
+| `focus` on `canvas` | 4.74:1 | 3.0:1 | Pass |
+| `focus` on `surface` | 5.18:1 | 3.0:1 | Pass |
+| `hairline-strong` on `canvas` | 3.05:1 | 3.0:1 | Pass (prescribed token) |
+| `hairline-strong` on `surface` | 3.33:1 | 3.0:1 | Pass (prescribed token) |
+
+### Where the real brand fails AA
+
+These are extracted values, frozen. mydealz genuinely fails AA at each of these points; the document's job is to say so, not to repaint the brand.
+
+- **`button-primary`** — white `on-primary` on the brand green `primary` measures **3.09:1** against a 4.5:1 requirement at its 14px/700 `{typography.ui}` label. The single most-used control on the site is below AA for body-size text. It would clear 4.5:1 at `{colors.green-strong}` (5.18:1) with no change to the label colour.
+- **`button-outline-green`** — the same green as a *label* on white measures **3.09:1**, same shortfall. `{colors.green-strong}` is already the documented answer for green text on light surfaces (5.18:1); the outline button should use it and the brand does not.
+- **`price-lockup`** — the green price on `canvas` measures **2.83:1**. It is set at 24px/700, so WCAG's large-text threshold of 3:1 applies, and it misses even that by 0.17. On `surface`, where prices actually sit inside a card, the same pair reaches 3.09:1 and clears large-text AA. The failure is real only for a price rendered directly on the page floor.
+- **`hairline`** — **1.2:1** on `canvas`, **1.31:1** on `surface`, against 3:1 for a boundary. Decorative here by scope: card separation is carried by the `canvas` gutter as well as the line. Any control whose edge is its only definition uses `{colors.hairline-strong}` instead.
+- **`muted`** — **2.16:1** on `canvas`, **2.36:1** on `surface`, against 4.5:1. Restricted to the struck-through original price (redundant next to the live price) and to placeholder text in labelled fields. It is not an acceptable colour for secondary copy; `{colors.body}` is.
+- **`warning-surface`** — the soft-yellow pill measures **1.01:1** against `canvas`. This is a background, not ink: the pair that carries text is `warning-text` on `warning-surface` at 4.85:1, which passes. The consequence is that an isolated warning pill has no visible edge on the page floor, so it is only ever used inside a card on `surface` (1.09:1 there — still edgeless, so it carries a `{colors.hairline-strong}` border when it sits alone).
+- **`warm`** — rising-orange measures **3.1:1** on `surface` and **2.84:1** on `canvas`. Usable for a 24px+ numeral or an icon paired with text, never for 14px label copy.
+
+### Focus ring visibility, per surface
+
+| Drawn on | Ring | Ratio | Required |
+|---|---|---|---|
+| `{colors.canvas}` (page floor) | `{colors.focus}` | 4.74:1 | 3.0:1 |
+| `{colors.surface}` (every card, nav, footer) | `{colors.focus}` | 5.18:1 | 3.0:1 |
+| `ex-pricing-tier-featured` black fill (`{colors.ink}`) | `{colors.focus}` | 4.05:1 | 3.0:1 |
+
+One ring covers all three grounds, so this file defines `focus` and no `focus-on-dark`. The ring is drawn 2px outside the control with a 2px offset, which is why it is measured against the surface behind the control and not against the control's own fill — a green ring on the green `button-primary` would be invisible measured that way, and WCAG 2.2 Focus Appearance asks for the former.
+
+### Other
+
+- **Tap targets**: the system's pill padding (`0px 14px` on `button-primary`) sets no height, so the rendered target cannot be verified from this document. Prescribed minimum: 44×44px for every pill, vote arrow, and card-foot icon, with hit area extended beyond the visual bounds where the glyph is smaller. See Known Gaps.
+- **Reduced motion**: handled in full under Motion & Animation. Travel and scale removed, loaders frozen, opacity fades capped at `{motion.duration-reduced}` (130ms).
+- **Colour is never the only signal**: hot/cold is the one place the brand leans on colour alone, and the arrows carry direction as well as hue — up/down glyphs stay distinguishable in monochrome.
+
 ## Do's and Don'ts
 
 ### Do
@@ -549,3 +691,38 @@ Deal thumbnails sit in `{rounded.md}` frames on the card's media column; author 
 - Don't use a third or fourth type weight — the system is 500 and 700 only.
 - Don't let `{colors.warm}` orange or `{colors.premium}` violet drift into decorative use; they are functional status colors.
 - Don't square off the pills — the fully-round `{rounded.full}` button is the brand's shape signature.
+- Don't use `{colors.muted}` for copy anyone has to read, or `{colors.hairline}` as a control's only edge — those are the brand's two AA failures and `{colors.body}` / `{colors.hairline-strong}` are the replacements.
+- Don't animate `width`, `height`, `top`, `left` or `margin`; a feed this long cannot afford layout work mid-scroll.
+- Don't suppress the focus ring on the pills. It is `{colors.focus}` at 2px with a 2px outside offset, on every interactive element.
+
+## Responsive Behavior
+
+### Breakpoints
+| Name | Width | Key Changes |
+|---|---|---|
+| Mobile | < 768px | Single-column feed; sidebar drops; nav collapses to the "Menü" pill; temperature control and CTA stack under the card body |
+| Desktop | ≥ 768px | Feed + right sidebar two-column shell; full nav row with search pill and category strip |
+
+### Touch Targets
+Pill buttons (`{components.button-primary}`) and the temperature control clear a comfortable tap height; vote arrows, comment, share, and bookmark icons carry generous hit areas on the card foot.
+
+### Collapsing Strategy
+The category strip and right sidebar collapse first; the nav condenses to the "Menü" pill + search + submit; deal cards reflow from a media-left row into a stacked thumbnail-over-body layout on narrow screens.
+
+### Image Behavior
+Deal thumbnails are contained in `{rounded.md}` frames on the card's media side, never full-bleed; avatars are perfect circles (`{rounded.circle}`). Merchant logos and app-store badges render inline at fixed heights.
+
+## Known Gaps
+
+What this document does not know, kept separate from what it does.
+
+- **Motion is prescribed, not extracted.** Every duration, curve, stagger and reduced-motion rule in Motion & Animation comes from the **Playful** profile in the audit spec. mydealz's real timings were never measured.
+- **The focus ring is prescribed.** mydealz publishes no focus indicator. `{colors.focus}`, its 2px width and 2px offset are specified here; only the colour value is brand-derived (it is `{colors.green-strong}`'s hex).
+- **`{colors.hairline-strong}` is prescribed.** It is the accessible parallel to the extracted `{colors.hairline}`, not a colour the brand uses.
+- **Tap-target sizes are unverifiable from this document.** Component padding is extracted but no height is; the 44×44px minimum in Accessibility is a prescription, not a measurement. Confirming it needs a rendered page.
+- **Nothing here is measured from a running page**: overlap, horizontal overflow, clipping, frame rate and layout shift are all out of reach of a document audit. No claim about them appears above.
+- **Button heights, line-height on buttons, and icon sizes** are absent from the token block — only horizontal padding was extracted.
+- **No dark mode.** The `ex-pricing-tier-featured` description mentions a light/dark polarity flip, but this file documents one light theme only; there is no dark-mode palette, and no dark canvas, surface or text tokens exist to build one.
+- **State styling is partly prescribed.** Resting appearance is extracted for every component; the hover tints, pressed scales and error treatments in the State Coverage table are specified to be consistent with the brand, not observed.
+- **Averta CY is commercial**, so the metrics behind the type scale cannot be re-verified from an open-source substitute.
+- **The `ex-*` entries are illustrative kit-mirror surfaces**, not brand-native components. They inherit this file's tokens but no mydealz screen contains a pricing tier, cart drawer or data table.
