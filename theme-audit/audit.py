@@ -245,7 +245,10 @@ def audit(path):
     check("text-dim", "canvas", 4.5, "secondary text")
     check("text-dim", "surface", 4.5, "secondary text on surface")
     check_all("text-dim", "canvas", 4.5, "secondary text, all tones")
+    check_all("text", "canvas", 4.5, "body text, all tones")
+    check_all("text", "surface", 4.5, "body text on surface, all tones")
     check_all("text-dim", "surface", 4.5, "secondary text on surface, all tones")
+    check_all("border", "surface", 3.0, "boundary on surface, all tones")
     check_all("border", "canvas", 3.0, "boundary, all tones")
 
     # Semantic tones, measured as text on the canvas. Many are used as fills,
@@ -274,13 +277,44 @@ def audit(path):
         rgb = [int(h[i:i + 2], 16) for i in (0, 2, 4)]
         return max(rgb) - min(rgb) <= 8
 
-    for bg in ("canvas", "surface", "accent"):
-        key = roles.get(bg)
-        # A monochrome brand's accent is its ink or its paper, not a surface a
-        # ring sits on; forcing a ratio there invents a colour the brand lacks.
-        if bg == "accent" and key and achromatic(colors[key]):
+    # An inner or inset band of a composite ring is meant to match the surface
+    # it sits on — WCAG 2.2 Focus Appearance measures the two bands against
+    # each other, not against the background. Measured separately below.
+    focus_tokens = [k for k in colors if re.match(r"^focus($|[-_])", k)
+                    and not re.search(r"(inner|inset|halo)", k)]
+    focus_bands = [k for k in colors if re.match(r"^focus", k)
+                   and re.search(r"(inner|inset|halo)", k)]
+    surface_keys = [k for k in colors
+                    if re.match(r"^(canvas|background|bg|base|surface|card|panel)", k)]
+    accent_key = roles.get("accent")
+
+    for ring in focus_tokens:
+        ring_theme = theme_of(ring)
+        targets = [s for s in surface_keys if theme_of(s) == ring_theme]
+        if not targets:
+            # A ring named for a theme this palette never surfaces (focus-on-dark
+            # where the dark bands are untokenised) has nothing measurable here.
             continue
-        check("focus", bg, 3.0, f"focus indicator on {bg}")
+        # The accent fill is a surface a ring can land on, unless the brand's
+        # accent is its own ink or paper, where polarity offset covers it.
+        if accent_key and not achromatic(colors[accent_key]) and ring_theme is None:
+            targets = targets + [accent_key]
+        for s in dict.fromkeys(targets):
+            ratio = round(contrast(colors[ring], colors[s]), 2)
+            if ratio < 3.0:
+                fails.append({"pair": f"{ring} on {s}", "fg": colors[ring],
+                              "bg": colors[s], "ratio": ratio, "required": 3.0,
+                              "role": "focus indicator"})
+
+    # Composite ring: the two bands must separate from each other by 3:1.
+    for band in focus_bands:
+        best = max((round(contrast(colors[band], colors[r]), 2)
+                    for r in focus_tokens), default=None)
+        if best is not None and best < 3.0:
+            fails.append({"pair": f"{band} against its outer ring",
+                          "fg": colors[band], "bg": colors[focus_tokens[0]],
+                          "ratio": best, "required": 3.0,
+                          "role": "composite ring band separation"})
 
     # Every background/text pair the components block actually asserts — 1808
     # of them across the repo, and the name-matching check saw none.
