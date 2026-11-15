@@ -17,6 +17,32 @@ colors:
   canvas: "#101010"
   canvas-soft: "#1a1a1a"
   canvas-text-soft: "#f5f6f7"
+  # Focus ring. Not a new brand colour: both values are tones the palette
+  # already owns, bound to the ring job the prose already assigns them.
+  # `focus` is the primary-soft green the Colors section already names as the
+  # "tooltip / focus indicator" tone. `focus-on-light` is the brand's own
+  # on-primary near-black, needed because `ex-pricing-tier-featured` paints a
+  # light fill on which the green ring collapses to 1.67:1. Measured ratios
+  # are in the Accessibility section.
+  focus: "#2fd6a1"
+  focus-on-light: "#101010"
+
+shadow:
+  none: none
+  glow: "0 0 15px rgba(92, 88, 85, 0.2)"
+  modal: "0 20px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(148, 163, 184, 0.1) inset"
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
 
 typography:
   display-xl:
@@ -255,11 +281,14 @@ components:
   ex-auth-form-card:
     description: "Sign-in / sign-up card. Re-uses feature-card chrome with text-input primitives inside."
     backgroundColor: "{colors.canvas-soft}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.md}"
     padding: "{spacing.2xl}"
   ex-modal-card:
     description: "Modal dialog surface — same chrome as feature-card with elevated shadow."
     backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    shadow: "{shadow.modal}"
     rounded: "{rounded.md}"
     padding: "{spacing.2xl}"
   ex-empty-state-card:
@@ -271,6 +300,8 @@ components:
   ex-toast:
     description: "Toast notification surface — feature-card shape + medium shadow."
     backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    shadow: "{shadow.glow}"
     rounded: "{rounded.md}"
     padding: "{spacing.md} {spacing.lg}"
     typography: "{typography.body-sm}"
@@ -304,8 +335,8 @@ Type stays calm. Hero display sits at 60 px in regular weight with `-0.65 px` tr
 ### Surface
 - **Canvas** (`{colors.canvas}` — `#101010`): The default near-black page background. The only surface mode in the brand's marketing system.
 - **Canvas Soft** (`{colors.canvas-soft}` — `#1a1a1a`): A slightly lighter dark fill used inside code blocks and form inputs to mark them visually distinct against the canvas.
-- **Hairline** (`{colors.hairline}` — `#3d3a39`): 1 px solid borders — feature cards, buttons, dividers between rows. The brand's universal "edge" colour.
-- **Hairline Soft** (`{colors.hairline-soft}` — `#b8b3b0`): A lighter divider tint used in rare on-light secondary contexts.
+- **Hairline** (`{colors.hairline}` — `#3d3a39`): 1 px solid borders — feature cards, buttons, dividers between rows. The brand's universal "edge" colour. **This is an extracted value and it fails WCAG non-text contrast on both of the brand's own grounds: 1.69:1 on `{colors.canvas}` and 1.54:1 on `{colors.canvas-soft}`, against the 3.0:1 a component boundary needs.** Treat it as decoration — card edges, row rules, section dividers — not as the only boundary of an interactive control.
+- **Hairline Soft** (`{colors.hairline-soft}` — `#b8b3b0`): A lighter divider tint. Originally documented for rare on-light secondary contexts; it is also the palette's one boundary tone that clears 3.0:1 on dark (9.16:1 on `{colors.canvas}`, 8.38:1 on `{colors.canvas-soft}`), so it is the accessible boundary for any control whose border is its only edge — text inputs, outline buttons, selectable rows. No new token was added for this; the brand already owned a passing tone.
 
 ### Text
 - **Ink** (`{colors.ink}` — `#f2f2f2`): Default text colour on the dark canvas — slightly off-white to reduce contrast strain.
@@ -366,33 +397,18 @@ Two faces carry the system:
 - Marketing container centres at roughly 1200 – 1400 px; content stays edge-to-edge in colour with horizontal gutters of `{spacing.3xl}` on desktop.
 - Feature-card grids: 2-up to 3-up at desktop, 1-up at mobile.
 
-### Responsive Strategy
-
-#### Breakpoints
-
-| Name | Width | Key Changes |
-|---|---|---|
-| Mobile | < 768px | Hero 60→32 px; cards 1-up; nav hamburger. |
-| Tablet | 768–1023px | Cards 2-up; nav stays horizontal. |
-| Desktop | ≥ 1024px | Full 3-up card grids. |
-
-#### Touch Targets
-Buttons render at ~44 px tall (12 px vertical padding + 24 px line-height). Meet WCAG AAA at all breakpoints.
-
-#### Collapsing Strategy
-Nav collapses to hamburger at mobile; the menu overlay keeps the same green CTA pinned at the bottom. Feature-card grids drop to 1-up; hero typography scales fluidly.
-
-#### Image Behavior
-Code-editor mockups render as image-like cards with copy-to-clipboard affordances. No photography in the brand's marketing surface.
+Breakpoints, touch targets, collapsing and image behaviour now live in their own top-level `## Responsive Behavior` section, moved verbatim out of this one.
 
 ## Elevation & Depth
 
 | Level | Treatment | Use |
 |---|---|---|
-| Level 0 — Flat | No shadow, no border. | Full-bleed bands. |
+| Level 0 — Flat | `{shadow.none}` — no shadow, no border. | Full-bleed bands. |
 | Level 1 — Hairline | 1 px solid `{colors.hairline}` border on `{colors.canvas}`. | Default for every feature card and button. |
-| Level 2 — Inset Glow | `0 0 15px rgba(92, 88, 85, 0.2)` subtle outer glow. | Hovering / featured cards. |
-| Level 3 — Modal Stack | `0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(148,163,184,0.1) inset` heavy drop + inset ring. | Modal / dialog surfaces in-product. |
+| Level 2 — Inset Glow | `{shadow.glow}` — `0 0 15px rgba(92, 88, 85, 0.2)` subtle outer glow. | Hovering / featured cards. |
+| Level 3 — Modal Stack | `{shadow.modal}` — heavy drop + inset ring. | Modal / dialog surfaces in-product. |
+
+The ladder is expressed two ways on purpose, and the seam is worth naming: Levels 0–1 are the marketing surface and are **border-only**, which is what the Don'ts enforce; Levels 2–3 are **shadow-only** and belong to in-product and overlay chrome (`ex-modal-card`, `ex-toast`). No single element mixes a hairline with a drop shadow. Note that Level 1 carries the whole marketing elevation system on a 1.69:1 hairline over a card fill identical to the page (`card-feature` paints `{colors.canvas}` on a `{colors.canvas}` band, a 1.00:1 step), so the only thing separating a card from the page is a boundary below threshold. See Accessibility.
 
 ### Decorative Depth
 - Hairline cards on dark canvas — the brand's only true elevation mode.
@@ -406,7 +422,7 @@ Code-editor mockups render as image-like cards with copy-to-clipboard affordance
 | Token | Value | Use |
 |---|---|---|
 | `{rounded.none}` | 0px | Full-bleed bands. |
-| `{rounded.xs}` | 4px | Smallest inline pills, code inline chips. |
+| `{rounded.xs}` | 4px | Smallest inline pills and icon chips. (Inline code chips use `{rounded.sm}`, as `code-inline-chip` binds.) |
 | `{rounded.sm}` | 6px | Default button and input radius. |
 | `{rounded.md}` | 8px | Card chrome, code-block chrome. |
 | `{rounded.pill}` | 9999px | Inline status tags ("Live", "Beta"). |
@@ -469,6 +485,24 @@ Code-editor mockups render as image-like cards with copy-to-clipboard affordance
 **`green-divider-band`** — a thin green-glow band that occasionally separates major sections.
 - Background `{colors.canvas}`, 2 px solid `{colors.primary}` top/bottom border. The brand's only chromatic divider.
 
+### Interaction States
+
+Every state below is a **paint-only** change plus the shared focus ring — no travel, no scale. That is a deliberate reading of a brand whose own Don'ts forbid shadows on cards and reserve the green for CTAs: on a near-monochrome dark surface the hover state *is* a border or fill shift, and inventing a scale pop to look animated would contradict the brand. Property, duration and easing for each are in Motion & Animation.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | `{colors.primary}` fill, `{colors.on-primary}` label | fill steps to `{colors.primary-soft}` | 2 px `{colors.focus}` ring, 2 px offset on `{colors.canvas}` | fill steps to `{colors.primary-deep}` | fill at 40 % opacity, label `{colors.mute}`, `cursor: not-allowed` | label opacity 0; `{colors.on-primary}` spinner centred; button keeps its measured size | n/a — not a toggle | n/a — form-level, shown on the field |
+| `button-outline-on-dark` | `{colors.canvas}` fill, 1 px `{colors.hairline-soft}` border | border to `{colors.ink}` | 2 px `{colors.focus}` ring, 2 px offset | border to `{colors.primary}` | border + label to `{colors.mute}` at 50 % | spinner replaces label, border held | n/a | n/a |
+| `button-ghost-green` | `{colors.primary-soft}` label, no border | label to `{colors.primary}` | 2 px `{colors.focus}` ring, 2 px offset | label to `{colors.primary-deep}` | label `{colors.mute}` | spinner in `{colors.primary-soft}` | n/a | n/a |
+| `button-pill-tag` | `{colors.canvas}` fill, `{colors.hairline-soft}` border | border to `{colors.ink}` | 2 px `{colors.focus}` ring, 2 px offset | border to `{colors.primary}` | label `{colors.mute}`, border `{colors.hairline}` | n/a — static label | 2 px `{colors.primary}` border marks the chosen tag | n/a |
+| `text-input` | `{colors.canvas-soft}` fill, 1 px `{colors.hairline-soft}` border | border to `{colors.ink}` | 2 px `{colors.focus}` ring, 2 px offset, border held | caret visible, border `{colors.primary}` | fill `{colors.canvas}`, border `{colors.hairline}`, text `{colors.mute}`, `readonly` | trailing spinner in `{colors.primary-soft}`, field locked | n/a — single field | 1 px `{colors.ink-strong}` border plus a `{typography.caption}` message in `{colors.ink}`; the brand ships no red, see Known Gaps |
+| `card-feature` | `{colors.canvas}` fill, 1 px `{colors.hairline}` edge | adds `{shadow.glow}`; edge to `{colors.hairline-soft}` | 2 px `{colors.focus}` ring, 2 px offset — only when the card is a link | edge to `{colors.primary}` | whole card at 50 % opacity, pointer events off | skeleton rows in `{colors.canvas-soft}` | 2 px `{colors.primary}` edge (`card-feature-emphasized` chrome) | n/a |
+| `nav-link` | `{colors.body}` | `{colors.ink}` | 2 px `{colors.focus}` ring, 2 px offset | `{colors.primary-soft}` | `{colors.mute}` | n/a | current route in `{colors.ink}` with a 2 px `{colors.primary}` underline | n/a |
+| `ex-app-shell-row` | `{colors.canvas}` fill | fill to `{colors.canvas-soft}` | 2 px `{colors.focus}` ring, inset 2 px (row is flush to the rail) | fill `{colors.canvas-soft}`, label `{colors.ink-strong}` | label `{colors.mute}` | n/a | 2 px `{colors.primary}` `activeIndicator` on the leading edge | n/a |
+| `code-mockup` | `{colors.canvas}` fill, 1 px `{colors.hairline}` | copy button becomes opaque | ring applies to the copy button, not the frame | copy button label to `{colors.primary}` | n/a — never disabled | n/a | n/a | n/a |
+| `code-inline-chip` | `{colors.canvas-soft}` fill, `{colors.canvas-text-soft}` text | **two states only** — default and hover (text to `{colors.primary-soft}`). It is static inline typography, not a control, so it takes no focus, no pressed, no disabled, no loading, no selected and no error state. | — | — | — | — | — | — |
+| `green-divider-band` | 2 px `{colors.primary}` rule | **one state only** — decorative, non-interactive. | — | — | — | — | — | — |
+
 ### Examples (illustrative)
 
 > Auto-derived kit-mirror demonstration surfaces (`scripts/derive-examples-block.mjs`). Each `ex-*` entry references brand-native primitives so downstream consumers (`/preview-design`, `/generate-kit`) re-skin the same 10 surfaces consistently. `TO_FILL` markers indicate missing primitives — resolve in the LLM judgment pass.
@@ -504,6 +538,141 @@ Code-editor mockups render as image-like cards with copy-to-clipboard affordance
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No duration, easing curve or transition is recorded anywhere in the source material for this file, so every value below comes from the **Crisp** profile in `theme-audit/SPEC.md` section 5, used verbatim. Nothing here is an extracted fact; there is no extracted/prescribed seam in this file because there is nothing extracted to displace the profile.
+
+Crisp is the right profile for this brand on SPEC's own assignment rule 2 — developer-tool identity. The evidence is in the file: an AI agent engineering platform for developers, code-editor mockups as the hero, copy-to-clipboard on every snippet, SF Mono carrying code and metrics, and a page the Overview itself calls "polished documentation that decided to also sell something." State changes should read as instant; there is no entrance choreography.
+
+### Tokens
+
+| Token | Value |
+|---|---|
+| `{motion.duration-instant}` | 60ms |
+| `{motion.duration-fast}` | 100ms |
+| `{motion.duration-base}` | 150ms |
+| `{motion.duration-slow}` | 220ms |
+| `{motion.duration-emphasis}` | 300ms |
+| `{motion.ease-standard}` | cubic-bezier(0.2, 0, 0.2, 1) |
+| `{motion.ease-enter}` | cubic-bezier(0, 0, 0.2, 1) |
+| `{motion.ease-exit}` | cubic-bezier(0.4, 0, 1, 1) |
+| `{motion.stagger-step}` | 20ms |
+| `{motion.duration-reduced}` | 100ms |
+
+### Inventory
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, nav links, cards) | `{motion.duration-fast}` | `{motion.ease-standard}` | `background-color`, `color`, `border-color` — paint only, no travel and no scale, which is what this near-monochrome brand's hover actually is | Unchanged. Nothing moves, so there is nothing to remove; the colour step still runs at `{motion.duration-fast}`. |
+| Press / active | `{motion.duration-instant}` | `{motion.ease-standard}` | `background-color`, `border-color` | Unchanged — paint only. |
+| Focus ring appear | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` of the 2 px `{colors.focus}` ring; `box-shadow` colour for the offset | Ring appears immediately, no fade. Visibility never depends on motion. |
+| Page / route transition | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` only — no slide. Content is painted at final position on first frame, so nothing is delayed. | `opacity` cross-fade at `{motion.duration-reduced}`. |
+| Modal / drawer open | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` plus `transform: translateY(8px) → none` (drawer: `translateX`) | `transform` dropped; `opacity` fade at `{motion.duration-reduced}`. |
+| Modal / drawer close | `{motion.duration-fast}` | `{motion.ease-exit}` | same pair, reversed — exit is shorter than its entrance | `transform` dropped; `opacity` fade at `{motion.duration-reduced}`. |
+| Dropdown / menu open | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity` plus `transform: translateY(-4px) → none` | `transform` dropped; `opacity` at `{motion.duration-reduced}`. |
+| Dropdown / menu close | `{motion.duration-instant}` | `{motion.ease-exit}` | same pair, reversed | `opacity` at `{motion.duration-reduced}`. |
+| Toast enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` plus `transform: translateY(12px) → none` | `transform` dropped; `opacity` at `{motion.duration-reduced}`. |
+| Toast exit | `{motion.duration-fast}` | `{motion.ease-exit}` | same pair, reversed | `opacity` at `{motion.duration-reduced}`. |
+| List / card-grid enter | `{motion.duration-base}` per item, `{motion.stagger-step}` 20ms between items | `{motion.ease-enter}` | `opacity` plus `transform: translateY(6px) → none`; stagger caps at 6 items, then the rest arrive together | Stagger and `transform` both dropped; the whole grid fades in once at `{motion.duration-reduced}`. |
+| List / card-grid exit | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` plus `transform: translateY(4px)` | `transform` dropped; `opacity` at `{motion.duration-reduced}`. |
+| Loading (button spinner, inline `{colors.primary-soft}` spinner) | 700ms per revolution, infinite — the one permitted infinite animation | `linear` | `transform: rotate()` only | Rotation frozen. The spinner is replaced by a static `{colors.primary-soft}` glyph and the accessible status text; progress is announced, not animated. |
+| Loading (skeleton rows in `{colors.canvas-soft}`) | `{motion.duration-emphasis}`, infinite alternate | `{motion.ease-standard}` | `opacity` 0.4 ↔ 1 | Pulse frozen at `opacity: 0.7`. |
+
+### Rules this file follows
+
+- Animate `transform` and `opacity` only. The brand's state changes are paint changes — `background-color`, `color`, `border-color`, `box-shadow` — which are permitted because they trigger no layout; this file never transitions a layout-driving property such as width, height, top, left or margin.
+- Every exit is shorter than its matching entrance.
+- Nothing animates on first paint in a way that delays content: the hero, its 60 px headline and the code mockup are painted at final position and full opacity.
+- The only infinite animations are the two loaders above. The brand ships no ambient motion — no gradient drift, no glow pulse — and should not acquire any; `{shadow.glow}` is a static hover shadow, not a breathing effect.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel and all scale. Every translateY / translateX above
+     resolves to none, and the list stagger collapses to zero so a grid
+     arrives in one step. The spinner's rotate() and the skeleton pulse are
+     frozen; the spinner becomes a static glyph beside its status text. */
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 100ms !important;  /* {motion.duration-reduced} */
+    transform: none !important;
+  }
+  /* Kept: opacity fades, capped at {motion.duration-reduced} 100ms, and every
+     paint-only state change — hover, press, selected and error all still read,
+     because on this brand they were never motion to begin with. The focus ring
+     is never faded or delayed in either mode. */
+}
+```
+
+## Accessibility
+
+Every ratio here was computed with WCAG 2.1 relative luminance from this file's own frontmatter hexes. Nothing in this section was rendered or screenshotted.
+
+### Text contrast — all pass
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` `#f2f2f2` on `{colors.canvas}` `#101010` | 17.00:1 | 4.5 | Pass |
+| `{colors.ink}` `#f2f2f2` on `{colors.canvas-soft}` `#1a1a1a` | 15.55:1 | 4.5 | Pass |
+| `{colors.ink-strong}` `#ffffff` on `{colors.canvas}` | 19.03:1 | 4.5 | Pass |
+| `{colors.body}` `#bdbdbd` on `{colors.canvas}` | 10.13:1 | 4.5 | Pass |
+| `{colors.body}` `#bdbdbd` on `{colors.canvas-soft}` | 9.26:1 | 4.5 | Pass |
+| `{colors.mute}` `#8b949e` on `{colors.canvas}` | 6.19:1 | 4.5 | Pass |
+| `{colors.mute}` `#8b949e` on `{colors.canvas-soft}` | 5.66:1 | 4.5 | Pass |
+| `{colors.canvas-text-soft}` `#f5f6f7` on `{colors.canvas-soft}` | 16.08:1 | 4.5 | Pass |
+| `{colors.on-primary}` `#101010` on `{colors.primary}` `#00d992` | 10.28:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.primary-soft}` `#2fd6a1` | 10.20:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.primary-deep}` `#10b981` | 7.50:1 | 4.5 | Pass |
+| `{colors.on-primary}` `#101010` on the `ex-pricing-tier-featured` light fill (`{colors.ink}` `#f2f2f2` used as a background) | 17.00:1 | 4.5 | Pass |
+
+All three greens also clear the 3.0:1 non-text threshold on both grounds: `{colors.primary}` at 10.28:1 / 9.40:1, `{colors.primary-soft}` at 10.20:1 / 9.33:1, `{colors.primary-deep}` at 7.50:1 / 6.86:1 on `{colors.canvas}` / `{colors.canvas-soft}`. The brand has one accent, so there is no second signal colour hiding a failure.
+
+### Disclosed failures — the brand's real hairline does not meet AA
+
+These are extracted values and they are **not** corrected in place. They are stated here because that is the useful fact for anyone building on this document.
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.hairline}` `#3d3a39` on `{colors.canvas}` `#101010` | 1.69:1 | 3.0 | **Fail** — boundary, 44 % of threshold |
+| `{colors.hairline}` `#3d3a39` on `{colors.canvas-soft}` `#1a1a1a` | 1.54:1 | 3.0 | **Fail** — boundary on surface, all tones |
+| `{colors.canvas-soft}` `#1a1a1a` on `{colors.canvas}` `#101010` | 1.09:1 | 3.0 | **Fail** — the two surface layers are effectively one colour |
+
+What this means in practice: **Voltagent's real site fails WCAG 2.1 SC 1.4.11 Non-text Contrast at every component boundary.** The brand's entire chrome is 1 px `#3d3a39` hairlines, and on `#101010` that edge sits at 1.69:1. Because `card-feature` also paints `{colors.canvas}` on a `{colors.canvas}` band, a feature card is separated from the page by nothing but that sub-threshold line — a user who cannot resolve a 1.69:1 edge cannot see where one card ends and the next begins. In a text input the same hairline is the only indication that there is a field to type into.
+
+The remedy used here needs no new token, because the palette already owned a passing boundary tone. `{colors.hairline-soft}` `#b8b3b0` measures **9.16:1** on `{colors.canvas}` and **8.38:1** on `{colors.canvas-soft}`, so the Interaction States table draws every control whose border is its only edge — `text-input`, `button-outline-on-dark`, `button-pill-tag` — with `{colors.hairline-soft}`, and leaves `{colors.hairline}` to decorative edges and row rules. The `components:` bindings in the frontmatter are left exactly as extracted: they are facts about the real site, and re-pointing them silently would make this document describe a product that does not exist. Re-binding them for real is a brand-owner decision and is recorded under Needs approval in `theme-audit/reports/A78-voltagent.md`.
+
+`{colors.hairline-soft}` is also the nearest passing value in the brand's own palette: no synthetic hex is needed. If the dashed `rgba(79, 93, 117, 0.4)` section divider and the Level-1 card edge are to stay at the extracted tone, they are defensible only as pure decoration conveying no information — SC 1.4.11 exempts a boundary that is not needed to identify a control or its state. That exemption does not cover the text input.
+
+### Focus ring
+
+No file in this collection defined a focus ring before this audit; this one now does, and both values are tones the palette already owned rather than new brand colours.
+
+| Ring | Value | Drawn on | Ratio | Required | Result |
+|---|---|---|---|---|---|
+| `{colors.focus}` | `#2fd6a1` — the `{colors.primary-soft}` green the Colors section already names as the tooltip / focus-indicator tone | `{colors.canvas}` `#101010` | 10.20:1 | 3.0 | Pass |
+| `{colors.focus}` | same | `{colors.canvas-soft}` `#1a1a1a` | 9.33:1 | 3.0 | Pass |
+| `{colors.focus-on-light}` | `#101010` — the brand's own `{colors.on-primary}` near-black | the `ex-pricing-tier-featured` light fill `#f2f2f2` | 17.00:1 | 3.0 | Pass |
+
+Geometry: **2 px solid ring, 2 px offset, drawn outside the control** so it is judged against the surface behind it, as WCAG 2.2 SC 2.4.13 Focus Appearance asks. The offset gap is the surface colour, not the control fill. One exception, stated in the states table: `ex-app-shell-row` sits flush against the sidebar rail and takes the same 2 px ring **inset** instead, where the ring is judged against the row's own `{colors.canvas}` fill — still 10.20:1.
+
+Why two rings, when the brand is dark-only. The green ring is correct on every surface the marketing site renders. It is wrong on exactly one surface this file declares: `ex-pricing-tier-featured` paints a light `#f2f2f2` fill, and on that ground `{colors.focus}` collapses to **1.67:1** — below threshold. `{colors.primary}` is no better at 1.65:1 and `{colors.primary-deep}` reaches only 2.27:1, so no green in the palette can serve a light ground. Hence the second ring in the opposite polarity, per SPEC section 1. A light-mode counterpart to the marketing surface is still forbidden by the Don'ts; `focus-on-light` exists for the one illustrative light fill, not as the start of a light theme.
+
+### Tap targets
+
+Computed from the file's own tokens, not measured on a rendered page: `button-primary` is `{spacing.md}` 12 px of vertical padding plus the 24 px line-height of `{typography.button-md}`, so 48 px — clearing both the 24 px of WCAG 2.2 SC 2.5.8 (AA) and the 44 px of SC 2.5.5 (AAA). `button-pill-tag` uses `{spacing.xs}` 4 px of vertical padding on a 20 px line-height, giving 28 px: it clears AA but not AAA, which is acceptable for an inline tag only where it is not the sole means of performing the action. Actual rendered geometry is outside what this document can verify — see Known Gaps.
+
+### Reduced motion
+
+Honoured in full; the rule and the exact list of what is removed and what remains are in Motion & Animation. In short: all travel, all scale and the list stagger are removed, the two loaders are frozen, opacity fades are capped at `{motion.duration-reduced}` 100 ms, and every paint-only state change plus the focus ring is untouched — none of this brand's state information was ever carried by movement.
+
+### Other notes
+
+- No state in this file is signalled by colour alone where the colour is the only cue: `selected` pairs the green edge with a 2 px border mass change, and `error` pairs its border with a `{typography.caption}` message.
+- The brand ships no red. The `error` state therefore borrows `{colors.ink-strong}` plus text, which is an honest limit of the palette rather than a design choice — see Known Gaps.
+- `{typography.caption}` at 12 px is the smallest role. In `{colors.mute}` on `{colors.canvas}` it measures 6.19:1, so it passes AA for normal text at that size.
+
 ## Do's and Don'ts
 
 ### Do
@@ -512,10 +681,44 @@ Code-editor mockups render as image-like cards with copy-to-clipboard affordance
 - Build cards with 1 px `{colors.hairline}` borders, not shadows. Hairlines on dark IS the brand's elevation system.
 - Pair Inter (sentence-case) with SF Mono (inline code, command snippets). Every uppercase moment uses Inter at weight 600 with `2.52 px` tracking — not a separate mono.
 - Use `{rounded.sm}` 6 px for buttons, `{rounded.md}` 8 px for cards, `{rounded.pill}` 9999 px only for inline status tags.
+- Draw a control whose border is its only edge — text inputs, outline buttons, selectable rows — with `{colors.hairline-soft}` (9.16:1 on canvas), and keep `{colors.hairline}` for decorative edges and row rules. The extracted hairline is 1.69:1 and cannot be seen as a boundary.
+- Give every interactive element the 2 px `{colors.focus}` ring at 2 px offset. It is the brand's own `{colors.primary-soft}` green, so a visible focus state costs the brand nothing.
 
 ### Don't
 - Don't introduce a light-mode counterpart. The brand is dark-canvas only.
 - Don't use the primary green as a body-text fill. It's CTA-only.
 - Don't drop a soft drop-shadow on cards. The brand uses hairlines + occasional glow, never material shadows.
 - Don't render the hero headline in heavy weight (700+). The brand's display is intentionally calm at weight 400.
+- Don't animate a layout-driving property. State changes on this brand are paint changes — `background-color`, `color`, `border-color` — and anything that moves uses `transform` and `opacity` only; never width, height, top, left or margin.
+- Don't add a scale pop or a springy reveal. This is a Crisp profile: state change reads as instant and there is no entrance choreography.
 - Don't replace Inter or SF Mono with a different family — both faces are part of the brand's voice and pairing.
+
+## Responsive Behavior
+
+### Breakpoints
+
+| Name | Width | Key Changes |
+|---|---|---|
+| Mobile | < 768px | Hero 60→32 px; cards 1-up; nav hamburger. |
+| Tablet | 768–1023px | Cards 2-up; nav stays horizontal. |
+| Desktop | ≥ 1024px | Full 3-up card grids. |
+
+### Touch Targets
+Buttons render at ~44 px tall (12 px vertical padding + 24 px line-height). Meet WCAG AAA at all breakpoints.
+
+### Collapsing Strategy
+Nav collapses to hamburger at mobile; the menu overlay keeps the same green CTA pinned at the bottom. Feature-card grids drop to 1-up; hero typography scales fluidly.
+
+### Image Behavior
+Code-editor mockups render as image-like cards with copy-to-clipboard affordances. No photography in the brand's marketing surface.
+
+## Known Gaps
+
+- **Motion is entirely prescribed.** No duration, easing curve, stagger or transition is recorded in this file's source material. The whole Motion & Animation section is the SPEC Crisp profile applied to this brand, labelled as such in its first line. Nothing in it should be cited as an observed Voltagent behaviour.
+- **No semantic palette.** The brand surfaces no error, warning or success colour on its marketing pages — the Colors section says so explicitly, and the Docusaurus defaults it mentions are an in-product concern that was not extracted. The `error` state in the Interaction States table is therefore built from `{colors.ink-strong}` and a text message rather than a red, and `success` reuses `{colors.primary}`. A real error colour is a brand-owner decision, not something this document can invent.
+- **Rendered geometry is unverifiable here.** Tap-target sizes are arithmetic from padding and line-height tokens; overlap, horizontal overflow, clipping, layout shift and frame rate need a live page and are not claimed anywhere in this file.
+- **The dashed divider has no token.** `1px dashed rgba(79, 93, 117, 0.4)` appears twice in the prose as an extracted value but is an alpha composite over an unstated ground, so it is not expressible as a flat hex in `colors:` and no token was invented for it. Its measured contrast is therefore unknown.
+- **Mono weight 549 is unexplained.** The Typography section records SF Mono weights 400 / 549 / 550 / 700. Only 550 is tokenised (`{typography.code-strong}`); 549 is almost certainly a variable-font artefact of the extraction rather than a designed step, but that is inference, not evidence.
+- **Container width is approximate.** "Roughly 1200 – 1400 px" is as precise as the source gets; no exact max-width was extracted.
+- **`{colors.hairline-soft}` has no extracted on-dark usage.** It was documented for "rare on-light secondary contexts". Using it as the accessible boundary on dark is this audit's re-scoping of an existing brand tone, not an observed behaviour — the visual consequence is a lighter, more visible card edge than the real site draws. Flagged for a brand owner under Needs approval.
+- **The Examples block is illustrative.** Every `ex-*` entry was auto-derived by `scripts/derive-examples-block.mjs` to mirror a standard kit, not extracted from Voltagent. `ex-pricing-tier-featured`'s light fill in particular is a kit convention, and it is the only reason this dark-only brand needs a second focus ring at all.
