@@ -14,6 +14,8 @@ colors:
   muted-soft: "#a8acb3"
   hairline: "#dee1e6"
   hairline-soft: "#eef0f3"
+  hairline-strong: "#767b85"
+  focus: "#0052ff"
   canvas: "#ffffff"
   surface-soft: "#f7f7f7"
   surface-card: "#ffffff"
@@ -145,6 +147,18 @@ spacing:
   xl: 32px
   xxl: 48px
   section: 96px
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 500ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
+  duration-reduced: 150ms
 
 components:
   top-nav-light:
@@ -331,8 +345,12 @@ The page rhythm rotates three modes: bright white editorial sections, soft-gray 
 - **Surface Dark Elevated** (`{colors.surface-dark-elevated}` — #16181c): One step lighter, used for floating product-UI mockup cards inside dark heroes.
 
 ### Hairlines
-- **Hairline** (`{colors.hairline}` — #dee1e6): Default 1px divider on white surfaces.
-- **Hairline Soft** (`{colors.hairline-soft}` — #eef0f3): Lighter divider — same hex as `{colors.surface-strong}`.
+- **Hairline** (`{colors.hairline}` — #dee1e6): Default 1px divider on white surfaces. Extracted and frozen. At 1.31:1 on `{colors.canvas}` it is **decoration only** — table rules, card outlines, footer dividers. Never use it as the sole boundary of an interactive control.
+- **Hairline Soft** (`{colors.hairline-soft}` — #eef0f3): Lighter divider — same hex as `{colors.surface-strong}`. 1.14:1 on canvas; decoration only, same restriction.
+- **Hairline Strong** (`{colors.hairline-strong}` — #767b85): **Prescribed, not extracted.** A parallel accessible boundary token for anything whose edge must be seen: text input, search pill, checkbox, segmented control. 4.25:1 on `{colors.canvas}`, clearing the 3:1 non-text-contrast threshold the two real hairlines miss.
+
+### Focus
+- **Focus** (`{colors.focus}` — #0052ff): **Prescribed, not extracted** — no focus ring was observable on the captured marketing surfaces. Coinbase Blue is reused deliberately rather than a new colour being invented, because the brand's first rule is that it has exactly one voltage. Drawn as a 2px ring with a 2px offset in the underlying surface colour (`{colors.canvas}` on light bands, `{colors.surface-dark}` on dark bands), so the ring never sits directly on a blue fill. Measured ratios in the Accessibility section.
 
 ### Text
 - **Ink** (`{colors.ink}` — #0a0b0d): Display headings, primary nav, body emphasis.
@@ -490,9 +508,9 @@ Pill for interactive, card-radius (24px) for containers, full circle for icons. 
 
 ### Forms
 
-**`text-input`** — Standard text input. Background `{colors.canvas}`, text `{colors.ink}`, rounded `{rounded.md}` (12px), padding 14px × 16px, height 48px, 1px hairline border. On focus, border thickens to 2px Coinbase Blue.
+**`text-input`** — Standard text input. Background `{colors.canvas}`, text `{colors.ink}`, rounded `{rounded.md}` (12px), padding 14px × 16px, height 48px, 1px `{colors.hairline-strong}` border (the control boundary must clear 3:1; `{colors.hairline}` does not). On focus-visible, the border thickens to 2px `{colors.focus}` and a 2px `{colors.focus}` ring is drawn with a 2px `{colors.canvas}` offset.
 
-**`search-input-pill`** — Pill-shaped search bar. Background `{colors.surface-strong}`, rounded `{rounded.pill}`, padding 12px × 20px, height 44px.
+**`search-input-pill`** — Pill-shaped search bar. Background `{colors.surface-strong}`, rounded `{rounded.pill}`, padding 12px × 20px, height 44px. Its fill against `{colors.canvas}` is 1.07:1, so the 1px `{colors.hairline-strong}` boundary is what makes it findable.
 
 ### Tags & Badges
 
@@ -507,6 +525,155 @@ Pill for interactive, card-radius (24px) for containers, full circle for icons. 
 **`footer-link`** — Individual footer link. Background transparent, text `{colors.body}`.
 
 **`legal-band`** — Bottom strip beneath footer columns. All text `{colors.muted}` at `{typography.caption}`.
+
+### Component States
+
+Default is implicit in every row. `hover`, `focus-visible`, `pressed`, `loading`,
+`selected` and `error` are **prescribed** where the captured surfaces showed no
+such state; only `default`, `active/pressed` and `disabled` on the primary pill
+were observable. Rows that say "two states only" mean it — a static display cell
+has no interaction to document.
+
+| Component | States |
+|---|---|
+| `top-nav-light` / `top-nav-on-dark` | default, hover (link), focus-visible, selected (current section) |
+| `button-primary` / `button-pill-cta` | default, hover, focus-visible, pressed (`{colors.primary-active}`), disabled (`{colors.primary-disabled}`), loading (inline spinner, label retained) |
+| `button-secondary-light` / `button-secondary-dark` | default, hover, focus-visible, pressed, disabled |
+| `button-outline-on-dark` | default, hover, focus-visible, pressed, disabled |
+| `button-tertiary-text` | default, hover (underline), focus-visible, pressed, disabled (`{colors.muted-soft}`) |
+| `text-input` | default, hover, focus-visible, disabled, error (2px `{colors.semantic-down}` border plus a text message — never colour alone) |
+| `search-input-pill` | default, hover, focus-visible, loading (results pending), disabled |
+| `asset-row` | default, hover, focus-visible, selected (row opens asset detail) |
+| `feature-card` / `product-ui-card-light` | default, hover (soft drop tier), focus-visible when the whole card is a link |
+| `pricing-tier-card` | default, hover, focus-visible, selected (`pricing-tier-featured` is the selected presentation) |
+| `badge-pill` | two states only — default; non-interactive label |
+| `price-up-cell` / `price-down-cell` | two states only — default up and default down; static display, no interaction |
+| `asset-icon-circular` | two states only — default and loading (placeholder plate before the glyph resolves) |
+| `footer-link` | default, hover (underline), focus-visible |
+| `legal-band` / `hero-band-dark` / `hero-band-light` / `cta-band-dark` / `product-ui-card-dark` / `footer-light` | two states only — default; static layout containers |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was
+not measured from the live site.** No timing function, duration or choreography
+below was extracted; every value comes from the shared **Calm** profile in
+`theme-audit/SPEC.md`, chosen because this file's own identity is editorial and
+composed: display weight 400, one accent, no gradients, 96px band rhythm.
+
+Calm means short opacity-led fades with very little travel. Travel is capped at
+8px for page and band transitions and 4px for component entrances — enough to
+read as arriving, not enough to look like a consumer app bouncing.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (pill, card, nav link) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`, `transform: scale(1.01)` on cards only | Scale removed; opacity change at `{motion.duration-reduced}` |
+| Press (pill) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.98)` plus the `{colors.primary-active}` fill | Scale removed; the colour change remains, untimed |
+| Focus-visible ring | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the `{colors.focus}` ring | Ring appears instantly at full opacity; never animated away |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` 0→1, `transform: translateY(8px)`→0 | Travel removed; cross-fade at `{motion.duration-reduced}` |
+| Modal / drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px)` (drawer: `translateX`) | Travel removed; fade at `{motion.duration-reduced}` |
+| Modal / drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform` | Travel removed; fade at `{motion.duration-reduced}` |
+| Dropdown / nav mega-menu enter | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(4px)` | Travel removed; fade at `{motion.duration-reduced}` |
+| Dropdown exit | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity` | Fade at `{motion.duration-reduced}` |
+| Toast enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px)` | Travel removed; fade at `{motion.duration-reduced}` |
+| Toast exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform` | Travel removed; fade at `{motion.duration-reduced}` |
+| List enter (asset rows, feature cards) | `{motion.duration-base}`, staggered `{motion.stagger-step}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(4px)` | Stagger and travel removed; the whole list fades once at `{motion.duration-reduced}` |
+| List exit | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` | Fade at `{motion.duration-reduced}` |
+| Loading (button spinner, skeleton plate) | `{motion.duration-emphasis}` loop | linear (rotation only) | `transform: rotate` / `opacity` pulse | Animation frozen; a static indeterminate indicator remains |
+| Hero product-UI card reveal | `{motion.duration-emphasis}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px)` | Travel removed; fade at `{motion.duration-reduced}`, content never delayed |
+
+### Rules
+
+- Animate `transform` and `opacity` only. Never `width`, `height`, `top`, `left`
+  or `margin` — layout properties are off limits in this system.
+- Every exit is shorter than its matching entrance.
+- Nothing animates on first paint in a way that delays content: the hero
+  headline and its CTAs are painted and interactive before any reveal runs.
+- The only looping animation is the loader. There is no brand ambience — a
+  perpetual motion loop would contradict the editorial calm this brand trades on.
+- Numbers never tween. A price in `{typography.number-display}` swaps value
+  instantly; a rolling-digit animation reads as a trading-floor ticker and is
+  the opposite of this brand's register.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate and scale travel, all list stagger,
+     the hero product-UI card reveal, the loader's rotation. */
+  /* Retained: opacity fades, capped at {motion.duration-reduced} (150ms),
+     and every colour/state change, which is information, not decoration. */
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    transform: none !important;
+  }
+}
+```
+
+The focus ring is exempt from removal in every case: it appears instantly and
+stays until blur.
+
+## Accessibility
+
+Ratios below are computed with WCAG 2.1 relative luminance from the hexes in
+this file's own frontmatter. **Several are real failures of the real brand**, not
+errors in this document — the extracted hexes are frozen, so the failure is
+recorded rather than patched.
+
+### Measured contrast
+
+| Foreground | Background | Ratio | Required | Verdict |
+|---|---|---|---|---|
+| `{colors.ink}` #0a0b0d | `{colors.canvas}` #ffffff | 19.69:1 | 4.5:1 | Pass |
+| `{colors.ink}` #0a0b0d | `{colors.surface-soft}` #f7f7f7 | 18.38:1 | 4.5:1 | Pass |
+| `{colors.body}` #5b616e | `{colors.canvas}` #ffffff | 6.21:1 | 4.5:1 | Pass |
+| `{colors.body}` #5b616e | `{colors.surface-soft}` #f7f7f7 | 5.8:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` #ffffff | `{colors.primary}` #0052ff | 5.75:1 | 4.5:1 | Pass |
+| `{colors.on-dark}` #ffffff | `{colors.surface-dark}` #0a0b0d | 19.69:1 | 4.5:1 | Pass |
+| `{colors.on-dark-soft}` #a8acb3 | `{colors.surface-dark}` #0a0b0d | 8.64:1 | 4.5:1 | Pass |
+| `{colors.hairline-strong}` #767b85 | `{colors.canvas}` #ffffff | 4.25:1 | 3.0:1 | Pass (prescribed token) |
+| `{colors.focus}` #0052ff | `{colors.canvas}` #ffffff | 5.75:1 | 3.0:1 | Pass |
+| `{colors.focus}` #0052ff | `{colors.surface-soft}` #f7f7f7 | 5.37:1 | 3.0:1 | Pass |
+| `{colors.focus}` #0052ff | `{colors.surface-strong}` #eef0f3 | 5.04:1 | 3.0:1 | Pass |
+| `{colors.focus}` #0052ff | `{colors.surface-dark}` #0a0b0d | 3.42:1 | 3.0:1 | Pass |
+| `{colors.focus}` #0052ff | `{colors.surface-dark-elevated}` #16181c | 3.09:1 | 3.0:1 | Pass, with no margin |
+| `{colors.focus}` #0052ff | `{colors.primary}` #0052ff | 1.0:1 | 3.0:1 | **Fail by construction** — the ring is never drawn on the blue fill. A mandatory 2px offset in `{colors.canvas}` (or `{colors.surface-dark}` on dark bands) sits between fill and ring, and the ring is measured against that offset instead |
+| `{colors.muted}` #7c828a | `{colors.canvas}` #ffffff | 3.88:1 | 4.5:1 | **Fail** — real brand grey. Passes only as large text (3:1 applies at 24px+, or 18.66px+ at weight 700) |
+| `{colors.muted}` #7c828a | `{colors.surface-soft}` #f7f7f7 | 3.62:1 | 4.5:1 | **Fail** — same grey, same caveat |
+| `{colors.muted}` #7c828a in `{component.legal-band}` at `{typography.caption}` 13px | `{colors.canvas}` #ffffff | 3.88:1 | 4.5:1 | **Fail** — 13px is small text, so the large-text exemption does not apply. This is the clearest real AA failure in the brand: the legal strip is unreadable to low-vision users at the documented colour |
+| `{colors.muted-soft}` #a8acb3 | `{colors.canvas}` #ffffff | 2.28:1 | 4.5:1 | **Fail** — used for disabled link text, where WCAG sets no requirement; any non-disabled use is a failure |
+| `{colors.muted-soft}` #a8acb3 | `{colors.surface-soft}` #f7f7f7 | 2.13:1 | 4.5:1 | **Fail** — same |
+| `{colors.hairline}` #dee1e6 | `{colors.canvas}` #ffffff | 1.31:1 | 3.0:1 | **Fail** — real brand hairline, scoped to decoration; `{colors.hairline-strong}` is the token for control boundaries |
+| `{colors.hairline-soft}` #eef0f3 | `{colors.canvas}` #ffffff | 1.14:1 | 3.0:1 | **Fail** — same, decoration only |
+| `{colors.semantic-up}` #05b169 | `{colors.canvas}` #ffffff | 2.8:1 | 4.5:1 | **Fail** — the "price up" green fails AA as text at any size. Never carry up/down by colour alone; pair it with a sign or arrow glyph |
+| `{colors.semantic-down}` #cf202f | `{colors.canvas}` #ffffff | 5.38:1 | 4.5:1 | Pass |
+| `{colors.accent-yellow}` #f4b000 | `{colors.canvas}` #ffffff | 1.9:1 | 4.5:1 | **Fail as text** — not a failure in practice, since it is an illustrative glyph fill and never text or a boundary |
+| `{colors.surface-soft}` #f7f7f7 | `{colors.canvas}` #ffffff | 1.07:1 | — | Band separation is below any perceptible-boundary threshold; the bands read as rhythm through spacing, not edge |
+| `{colors.surface-dark-elevated}` #16181c | `{colors.surface-dark}` #0a0b0d | 1.11:1 | — | The dark card layer separates from the dark canvas by 1.11:1 only; on a low-quality display the floating product-UI card will disappear into the hero unless it carries its own 1px edge |
+
+### Focus ring per surface
+
+One ring serves every surface this file defines, because `{colors.focus}` clears
+3:1 against all five of them (white canvas 5.75:1, soft band 5.37:1, strong grey
+5.04:1, dark hero 3.42:1, dark elevated card 3.09:1). No `focus-on-dark` variant
+is needed. On the blue CTAs themselves the ring is drawn outside a 2px offset in
+the underlying surface, as recorded above.
+
+### Other
+
+- **Minimum tap target:** every interactive control documented here is at least
+  44px high (`{component.button-primary}` 44px, `{component.button-pill-cta}`
+  56px, `{component.text-input}` 48px, `{component.search-input-pill}` 44px).
+  `{component.asset-icon-circular}` is 32px but non-interactive; the row around
+  it is the target. Rendered tap area is not verifiable from a document.
+- **Reduced motion:** honoured as specified in Motion & Animation — travel,
+  scale, stagger and the loader's rotation removed; opacity fades retained at
+  `{motion.duration-reduced}` (150ms).
+- **Colour alone:** trading direction must never be conveyed by
+  `{colors.semantic-up}` / `{colors.semantic-down}` alone, both because the green
+  fails AA and because the pair is indistinguishable to red-green colour blind
+  users. Sign, arrow or label is mandatory.
 
 ## Do's and Don'ts
 
@@ -557,7 +724,7 @@ Pill for interactive, card-radius (24px) for containers, full circle for icons. 
 2. New CTAs default to `{rounded.pill}` (100px); new icon plates default to `{rounded.full}`. Cards use `{rounded.xl}`.
 3. Variants live as separate entries inside the `components:` block.
 4. Use `{token.refs}` everywhere — never inline hex.
-5. Hover state never documented. Only Default and Active/Pressed.
+5. Only Default, Active/Pressed and Disabled were observable on the captured surfaces; every other state in the Component States table is prescribed. Label any state you add the same way.
 6. CoinbaseDisplay 400 for display, CoinbaseSans 400/600/700 for body. CoinbaseMono on every number.
 7. Coinbase Blue stays scarce — one or two blue moments per band.
 
@@ -565,6 +732,8 @@ Pill for interactive, card-radius (24px) for containers, full circle for icons. 
 
 - CoinbaseDisplay, CoinbaseSans, CoinbaseMono are licensed; Inter and JetBrains Mono are documented substitutes.
 - In-product trading surfaces (order book, charts, order forms) are behind login walls — this document covers marketing only.
-- Animation timings out of scope.
-- Form validation states beyond focus not visible on captured surfaces.
+- **No motion value here was measured.** The Motion & Animation section is the shared Calm profile from `theme-audit/SPEC.md`, prescribed to fit the brand's visual identity. Real Coinbase timings are unknown.
+- The focus ring (`{colors.focus}`), the accessible boundary token (`{colors.hairline-strong}`), and every state beyond default/pressed/disabled are prescribed, not extracted.
+- Form validation states beyond focus not visible on captured surfaces; the error state documented for `{component.text-input}` is prescribed.
+- `{colors.muted}` at `{typography.caption}` in `{component.legal-band}` is a genuine AA failure in the real brand (3.88:1 against white, 4.5:1 required). Fixing it needs a brand decision, not a document change.
 - Accent yellow appears only inside Bitcoin asset glyph illustrations; documented as illustrative-only.
