@@ -34,6 +34,8 @@ colors:
   hairline: "#e0e2e8"
   hairline-soft: "#eef0f3"
   hairline-strong: "#c7cad5"
+  hairline-control: "#8a8d9c"
+  focus: "#4262ff"
   ink-deep: "#050038"
   ink: "#1c1c1e"
   charcoal: "#2c2c34"
@@ -167,6 +169,18 @@ spacing:
   section: 64px
   section-lg: 96px
   hero: 120px
+
+motion:
+  duration-instant: 70ms
+  duration-fast: 130ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 450ms
+  ease-standard: cubic-bezier(0.3, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 60ms
+  duration-reduced: 130ms
 
 components:
   button-primary:
@@ -481,6 +495,10 @@ Roobert PRO — Miro's custom display face — anchors every typographic surface
 - **Hairline** ({colors.hairline}): 1px borders and primary dividers
 - **Hairline Soft** ({colors.hairline-soft}): Quieter table-row dividers
 - **Hairline Strong** ({colors.hairline-strong}): Stronger 1px border for inputs
+- **Hairline Control** ({colors.hairline-control}): **Prescribed, not extracted.** A parallel accessible boundary for controls whose border is their only edge — text inputs, filter dropdowns, the search pill. Measures 3.3:1 on {colors.canvas} and 3.1:1 on {colors.surface}, clearing the 3:1 non-text minimum that all three extracted hairlines miss. The extracted hairlines stay as documented and are scoped to decoration: table-row rules, card edges, and footer dividers, where no boundary carries meaning.
+
+### Focus
+- **Focus** ({colors.focus}): The focus ring is Miro's own action blue, the same value the file already documents as the focused-input border. A single mid-luminance ring serves every surface in this system rather than a light/dark pair: it measures 4.75:1 on {colors.canvas}, 4.47:1 on {colors.surface}, 3.58:1 on the dark {colors.primary} CTA banner and footer, and 3.2:1 or better on every pastel feature card. Drawn as a 2px ring with a 2px offset, so it is judged against the surface behind the control, not the control's own fill.
 
 ### Text
 - **Ink Deep** ({colors.ink-deep}): Headlines on lighter feature cards
@@ -588,9 +606,38 @@ The system runs predominantly flat with strategic depth on hero mockups.
 - Template card thumbnails use `{rounded.xl}` (16px) with photographic content
 - Customer logos wall presents wordmarks inline at consistent 100px height
 
+### Focus Ring Geometry
+- Ring: 2px solid {colors.focus}, 2px offset outside the control, so the ring sits on the surface behind the control rather than on its fill
+- Ring corner radius follows the control's own radius token — `{rounded.full}` on pills and badges, `{rounded.md}` on inputs, `{rounded.xl}` on cards — so the ring never sits outside the radius ladder
+- The one exception is `text-input-focused`, which keeps its extracted inset `2px solid {colors.brand-blue}` border and carries the offset ring in addition, not instead
+
 ## Components
 
-> Per the no-hover policy, hover states are NOT documented. Default and pressed/active states only.
+> Only `default`, `active`/`pressed` and `disabled` were extracted from the live pages. The `hover`, `focus-visible`, `loading`, `selected` and `error` columns below are **prescribed** — derived from the tokens this file already carries, not measured. An earlier revision of this file claimed a "no-hover policy" and documented no hover state at all; there is no such policy in this collection, and the claim is removed.
+
+### State Coverage
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | {colors.primary} | lifts to {colors.charcoal} | 2px {colors.focus} ring, 2px offset | `button-primary-pressed` | `button-primary-disabled` | label swaps for an inline spinner, width held | n/a | n/a |
+| `button-yellow` | {colors.brand-yellow} | deepens to {colors.brand-yellow-deep} | 2px {colors.focus} ring, 2px offset | 96% scale pop | {colors.hairline} bg, {colors.muted} ink | inline spinner in {colors.primary} | n/a | n/a |
+| `button-blue` | {colors.brand-blue} | deepens to {colors.blue-450} | 2px {colors.focus} ring, 2px offset | {colors.blue-pressed} | {colors.hairline} bg, {colors.muted} ink | inline spinner in {colors.on-primary} | n/a | n/a |
+| `button-secondary` | 1px {colors.hairline-strong} | border to {colors.hairline-control} | 2px {colors.focus} ring, 2px offset | {colors.surface} fill | {colors.muted} ink and border | inline spinner in {colors.ink} | n/a | n/a |
+| `button-on-dark` | {colors.on-dark} | drops to {colors.surface} | 2px {colors.focus} ring, 2px offset — 3.58:1 on {colors.primary} | 96% scale pop | 40% opacity | inline spinner in {colors.primary} | n/a | n/a |
+| `button-ghost` | transparent | {colors.surface} fill | 2px {colors.focus} ring, 2px offset | {colors.hairline-soft} fill | {colors.muted} ink | n/a | n/a | n/a |
+| `button-link` | {colors.brand-blue} | underline appears | 2px {colors.focus} ring, 2px offset | {colors.blue-pressed} | {colors.muted} ink | n/a | n/a | n/a |
+| `button-icon-circular` | 1px {colors.hairline} | border to {colors.hairline-control} | 2px {colors.focus} ring, 2px offset | 94% scale pop | {colors.muted} glyph | n/a | n/a | n/a |
+| `text-input` | 1px {colors.hairline-strong} | border to {colors.hairline-control} | `text-input-focused` plus 2px {colors.focus} ring | n/a — inputs have no pressed state | {colors.surface} fill, {colors.muted} ink | n/a | n/a | 1px {colors.brand-red-dark} border on a {colors.brand-red} fill, message in {colors.coral-dark} |
+| `search-pill` | {colors.surface} | {colors.canvas} fill | 2px {colors.focus} ring, 2px offset | n/a | {colors.muted} placeholder | results area shows a skeleton block at {colors.hairline-soft} | n/a | n/a |
+| `filter-dropdown` | 1px {colors.hairline-strong} | border to {colors.hairline-control} | 2px {colors.focus} ring, 2px offset | {colors.surface} fill | {colors.muted} ink | n/a | {colors.primary} fill, {colors.on-primary} label, count chip appended | n/a |
+| `pill-tab` | `pill-tab` | border to {colors.hairline-control} | 2px {colors.focus} ring, 2px offset | 96% scale pop | {colors.muted} ink | n/a | `pill-tab-active` | n/a |
+| `toggle-monthly-yearly` | {colors.surface} track | thumb lightens to {colors.canvas} | 2px {colors.focus} ring on the track | thumb travels | 40% opacity | n/a | active half carries {colors.canvas} thumb | n/a |
+| `faq-accordion-item` | collapsed | {colors.surface} fill on the header row | 2px {colors.focus} ring, 2px offset | 98% scale pop on the header | n/a | n/a | expanded, chevron rotated 180° | n/a |
+| `card-customer-story` | 1px {colors.hairline-soft} | elevates to level 2, image scales 1.02 | 2px {colors.focus} ring, 2px offset | 99% scale | n/a | skeleton block at {colors.hairline-soft} | n/a | n/a |
+| `template-card` | 1px {colors.hairline} | elevates to level 1 | 2px {colors.focus} ring, 2px offset | 98% scale pop | n/a | skeleton block at {colors.hairline-soft} | outline switches to 2px {colors.brand-blue} | n/a |
+| `pricing-card` | 1px {colors.hairline} | elevates to level 2 | 2px {colors.focus} ring, 2px offset | n/a | n/a | n/a | `pricing-card-featured` | n/a |
+| `badge-promo`, `badge-tag-*`, `badge-discount`, `badge-success` | default only | n/a | n/a | n/a | n/a | n/a | n/a | n/a — these are non-interactive labels with a single state |
+| `logo-wall-item`, `capterra-badge`, `card-stat`, `comparison-row` | default only | n/a | n/a | n/a | n/a | n/a | n/a | n/a — static presentation, genuinely one state |
 
 ### Buttons
 
@@ -756,6 +803,134 @@ The system runs predominantly flat with strategic depth on hero mockups.
 **`footer-link`** — Individual link in the footer.
 - Background transparent, text `{colors.on-dark-muted}`, typography `{typography.body-sm}`, padding `{spacing.xxs} 0`.
 
+## Motion & Animation
+
+This motion system is **prescribed to match the brand's visual identity and was not measured from the live site** — no timing function, duration or stagger below was extracted from miro.com. It applies the **Playful** profile, which fits this brand on all three of the profile's tests: saturated colour sits on interactive elements (the canary-yellow pill, the blue CTA, the pastel feature cards), the type voice is informal ("See how teams get great done"), and the product itself is a direct-manipulation canvas where a dragged sticky note is expected to settle with a little spring.
+
+### Interaction Inventory
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, pills, cards) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`, and `transform: scale(1.02)` on cards | Colour change only; scale removed, opacity cross-fade at `{motion.duration-reduced}` |
+| Press (pill buttons, tabs, accordion headers) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.96)` | Scale pop removed entirely; the pressed fill applies with no travel |
+| Focus (ring appearance) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the 2px `{colors.focus}` ring | Ring appears at full opacity immediately; never delayed or faded |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, plus `transform: translateY(8px)` on the incoming band | Opacity fade only at `{motion.duration-reduced}`; travel removed |
+| Modal / drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: scale(0.97 → 1)` — the overshoot in `ease-enter` gives the sticky-note settle | Opacity fade at `{motion.duration-reduced}`; no scale, no overshoot |
+| Modal / drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform: scale(1 → 0.98)` | Opacity fade at `{motion.duration-reduced}`; no scale |
+| Dropdown (`filter-dropdown` menu) enter | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(-4px → 0)` | Opacity fade at `{motion.duration-reduced}`; no travel |
+| Dropdown exit | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity` | Opacity fade at `{motion.duration-reduced}` |
+| Toast enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(12px → 0)` | Opacity fade at `{motion.duration-reduced}`; no travel |
+| Toast exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform: translateY(0 → 6px)` | Opacity fade at `{motion.duration-reduced}`; no travel |
+| List enter (pricing tiers, customer-story grid, template cards) | `{motion.duration-base}` per item, `{motion.stagger-step}` between | `{motion.ease-enter}` | `opacity`, `transform: translateY(12px → 0)` | Stagger collapses to zero; all items fade in together at `{motion.duration-reduced}` |
+| List exit (filtered-out story cards) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity`, `transform: scale(0.98)` | Opacity fade at `{motion.duration-reduced}`; no scale |
+| Loading (button spinner, card skeleton) | `{motion.duration-emphasis}` loop | `linear` for the spinner rotation | `transform: rotate()` on the spinner; `opacity` pulse on skeletons | Spinner frozen; skeleton pulse replaced by a static `{colors.hairline-soft}` block |
+| Hero mockup ambience (sticky notes drifting at z-offsets) | `{motion.duration-emphasis}` loop | `{motion.ease-standard}` | `transform: translate()` and `opacity` | Frozen at its rest frame |
+
+### Motion Rules
+
+- Only `transform` and `opacity` are animated. Never animate `width`, `height`, `top`, `left` or `margin` — the comparison table and the 4-tier pricing row are wide enough that a layout-triggering property would stutter.
+- Every exit is shorter than its matching entrance: modal `{motion.duration-fast}` out against `{motion.duration-base}` in, dropdown `{motion.duration-instant}` out against `{motion.duration-fast}` in.
+- Nothing animates on first paint in a way that delays content. The hero headline and its CTA row render immediately; the whiteboard mockup's ambient drift starts only after the mockup has painted.
+- The only infinite animations are the loading spinner, the skeleton pulse, and the hero whiteboard's sticky-note ambience. That ambience is deliberate brand atmosphere, stated as such, and it is the one place this system moves without a user action.
+- The `{motion.ease-enter}` overshoot is the brand signature: a reveal that lands slightly past its mark and settles, mirroring how a dragged sticky note behaves on the real canvas. Keep it on enter only; an exit that overshoots reads as a glitch.
+
+### Reduced Motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel and all scale. No translateY on page, toast, dropdown
+     or list enter; no scale pop on press; no 1.02 card hover scale; no
+     overshoot from {motion.ease-enter}. */
+  /* Kept: opacity cross-fades only, capped at {motion.duration-reduced} (130ms).
+     Focus rings appear instantly at full opacity. */
+  /* Frozen: the hero whiteboard sticky-note ambience holds its rest frame, and
+     the loading spinner stops rotating — a static skeleton block at
+     {colors.hairline-soft} stands in for the pulse. */
+}
+```
+
+## Accessibility
+
+### Measured Contrast
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's own token values. **Miro's extracted utility tones genuinely fail WCAG AA, and the failures are disclosed rather than corrected** — these are real extracted values, and falsifying them would make the document wrong.
+
+Passing pairs:
+
+| Pair | Ratio | Required | Result |
+|---|---|---|---|
+| {colors.ink} on {colors.canvas} | 17.01:1 | 4.5:1 | Pass |
+| {colors.ink} on {colors.surface} | 16.01:1 | 4.5:1 | Pass |
+| {colors.on-primary} on {colors.primary} | 17.01:1 | 4.5:1 | Pass |
+| {colors.slate} on {colors.canvas} | 6.87:1 | 4.5:1 | Pass |
+| {colors.steel} on {colors.canvas} | 5.0:1 | 4.5:1 | Pass |
+| {colors.yellow-dark} on {colors.surface-yellow} | 5.76:1 | 4.5:1 | Pass |
+| {colors.coral-dark} on {colors.coral-light} | 9.45:1 | 4.5:1 | Pass |
+| {colors.moss-dark} on {colors.teal-light} | 4.77:1 | 4.5:1 | Pass |
+| {colors.primary} on {colors.brand-yellow} | 11.6:1 | 4.5:1 | Pass |
+| {colors.primary} on {colors.coral-light} | 11.46:1 | 4.5:1 | Pass |
+| {colors.primary} on {colors.teal-light} | 14.84:1 | 4.5:1 | Pass |
+| {colors.primary} on {colors.rose-light} | 13.85:1 | 4.5:1 | Pass |
+| {colors.on-dark-muted} on {colors.footer-bg} | 7.19:1 | 4.5:1 | Pass |
+| {colors.hairline-control} on {colors.canvas} | 3.3:1 | 3.0:1 | Pass (prescribed token) |
+| {colors.hairline-control} on {colors.surface} | 3.1:1 | 3.0:1 | Pass (prescribed token) |
+
+Disclosed failures — the real brand does not reach AA at these points:
+
+| Pair | Ratio | Required | Note |
+|---|---|---|---|
+| `hairline-soft` on `surface` | 1.07:1 | 3.0:1 | Decorative table-row rule only. Fails as a component boundary; use `{colors.hairline-control}` where the edge carries meaning. |
+| `hairline-soft` on `canvas` | 1.14:1 | 3.0:1 | Decorative card and row edge only. Fails as a component boundary. |
+| `hairline` on `surface` | 1.22:1 | 3.0:1 | Decorative divider only. Fails as a component boundary. |
+| `hairline` on `canvas` | 1.3:1 | 3.0:1 | Decorative divider only. Fails as a component boundary; the real `search-pill`, `template-card` and `faq-accordion-item` borders sit here. |
+| `hairline-strong` on `surface` | 1.54:1 | 3.0:1 | Fails as a control boundary even at its strongest extracted value. |
+| `hairline-strong` on `canvas` | 1.64:1 | 3.0:1 | This is the only edge of `text-input`, `button-secondary` and `filter-dropdown` on the live site, and it fails the 3:1 non-text minimum by a wide margin. The prescribed `{colors.hairline-control}` is the accessible parallel. |
+| `muted` on `surface` | 2.23:1 | 4.5:1 | Placeholder and disabled-label tone. Fails as secondary text. |
+| `muted` on `canvas` | 2.37:1 | 4.5:1 | Fails as secondary text. Use `{colors.steel}` (5.0:1) or `{colors.slate}` (6.87:1) for any caption that must be read. |
+| `success-accent` on `canvas` | 2.7:1 | 4.5:1 | Fails as text. Usable as a fill or an icon beside a text label, not as the label. |
+| `footer-link` | 2.37:1 | 4.5:1 | `{colors.on-dark-muted}` reaches 7.19:1 on the actual dark footer it is drawn on; the 2.37:1 figure is that same ink measured against the page canvas, which is not where the component sits. Disclosed because the component declares no `backgroundColor` of its own. |
+| `badge-success` | 2.7:1 | 4.5:1 | White label on {colors.success-accent}. Fails. {colors.primary} on the same green reaches 6.3:1 and is the recommended correction. |
+| `badge-tag-purple` | 4.33:1 | 4.5:1 | {colors.brand-blue} on {colors.surface-pricing-featured}, a near miss on 13px text. Passes at 3:1 if the chip label is set at 18.66px/700 or larger, which it is not. |
+
+Two tones the palette carries — {colors.brand-orange-light} and {colors.brand-red-dark} — are **never bound to an ink in `components:`**, so no text pair involving them is measurable from this file. They are documented as a feature-card background and an error border respectively; the pairs they would form were never asserted.
+
+### Focus Ring Visibility
+
+{colors.focus} is a single ring for every surface this file defines, drawn 2px wide at a 2px offset outside the control, so it is measured against the surface behind the control:
+
+| Surface drawn on | Ratio | Required | Result |
+|---|---|---|---|
+| {colors.canvas} | 4.75:1 | 3.0:1 | Pass |
+| {colors.surface} | 4.47:1 | 3.0:1 | Pass |
+| {colors.surface-soft} | 4.58:1 | 3.0:1 | Pass |
+| {colors.surface-yellow} | 4.47:1 | 3.0:1 | Pass |
+| {colors.surface-pricing-featured} | 4.33:1 | 3.0:1 | Pass |
+| {colors.primary} / {colors.footer-bg} (dark CTA banner, footer, enterprise card) | 3.58:1 | 3.0:1 | Pass |
+| {colors.brand-yellow} feature card | 3.24:1 | 3.0:1 | Pass |
+| {colors.coral-light} feature card | 3.2:1 | 3.0:1 | Pass |
+| {colors.teal-light} feature card | 4.14:1 | 3.0:1 | Pass |
+| {colors.rose-light} / {colors.brand-pink} feature card | 3.87:1 | 3.0:1 | Pass |
+| {colors.brand-rose} feature card | 3.7:1 | 3.0:1 | Pass |
+| {colors.brand-orange-light} feature card | 3.95:1 | 3.0:1 | Pass |
+
+One ring serves all of them because {colors.brand-blue} sits mid-luminance: light enough to clear 3:1 on the dark footer, dark enough to clear 3:1 on white. No `focus-on-dark` companion is needed, and inventing one would be a token that exists only to fill a slot. The single gap is {colors.brand-red-dark} at 2.95:1, which is an error *border* and never a surface a control is placed on.
+
+### Minimum Tap Target
+
+Taken from the values this file already documents, not from a rendered page:
+
+- Pill buttons: 40–44px effective height — meets the 44px AAA floor at the top of that range and sits 4px under it at the bottom
+- Form inputs: 44px — passes
+- `search-pill`: 40px — passes the 24px AA minimum, under the 44px AAA floor
+- `button-icon-circular`: 36×36px on desktop, 44×44px on mobile — the desktop size passes AA (24px) and fails AAA
+- `filter-dropdown`: ~36px, bumping to 44px on mobile — same result
+
+Rendered tap-target size cannot be verified from a document; these are the documented box sizes, not measured hit areas.
+
+### Reduced Motion
+
+The full rule is in **Motion & Animation** above. In short: all travel and all scale are removed, opacity cross-fades are capped at `{motion.duration-reduced}` (130ms), focus rings appear instantly, and the hero whiteboard's sticky-note ambience freezes at its rest frame.
+
 ## Do's and Don'ts
 
 ### Do
@@ -766,6 +941,9 @@ The system runs predominantly flat with strategic depth on hero mockups.
 - Apply `{rounded.xxxl}` (28px) to pastel feature cards
 - Use real Miro-board mockups as feature illustrations
 - Maintain Roobert PRO across every UI surface
+- Draw focus with the single {colors.focus} ring at 2px width and 2px offset, on every surface including the dark footer
+- Use {colors.hairline-control} wherever a border is a control's only edge; keep the extracted hairlines for decoration
+- Keep the `{motion.ease-enter}` overshoot on entrances only — it is the sticky-note settle, and it is the brand's one motion signature
 
 ### Don't
 - Don't use `{colors.brand-yellow}` on standard CTAs or large background surfaces
@@ -774,6 +952,9 @@ The system runs predominantly flat with strategic depth on hero mockups.
 - Don't reduce hero leading below 1.05
 - Don't apply heavy shadows on flat documentation cards; reserve elevation for whiteboard mockups
 - Don't use stock photography — show the live product board UI
+- Don't animate `width`, `height`, `top`, `left` or `margin`; `transform` and `opacity` only
+- Don't let an exit run longer than its matching entrance
+- Don't use {colors.muted} or {colors.success-accent} as text — both fail AA on {colors.canvas}
 
 ## Responsive Behavior
 
@@ -820,6 +1001,8 @@ The system runs predominantly flat with strategic depth on hero mockups.
 ## Known Gaps
 
 - Specific dark-mode token values not surfaced
-- Animation/transition timings not extracted; recommend 150–200ms ease
+- Animation and transition timings were **not** extracted from the live site. The Motion & Animation section is prescribed from the Playful profile and says so in its own first line; do not cite any duration or easing in this file as a measured Miro value.
+- `{colors.hairline-control}` is prescribed, not extracted. Miro's real control borders are `{colors.hairline-strong}` at 1.64:1 and fail WCAG AA.
+- Hover, focus-visible, loading, selected and error states were not extracted; the State Coverage table derives them from tokens this file already carries and is labelled prescribed
 - Form validation success state not explicitly captured beyond defaults
 - Sticky note color tints inside the actual whiteboard product are richer than what marketing surfaces capture
