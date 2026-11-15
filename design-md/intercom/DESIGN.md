@@ -11,14 +11,19 @@ colors:
   ink-subtle: "#7b7b78"
   ink-tertiary: "#9c9fa5"
   canvas: "#f5f1ec"
+  surface: "#ffffff"
   surface-1: "#ffffff"
   surface-2: "#ebe7e1"
+  text-dim: "#626260"
   inverse-canvas: "#000000"
   inverse-surface-1: "#313130"
   inverse-ink: "#ffffff"
   inverse-ink-muted: "#9c9fa5"
   hairline: "#d3cec6"
   hairline-soft: "#ebe7e1"
+  hairline-strong: "#857f75"
+  focus: "#0007cb"
+  focus-on-dark: "#65b5ff"
   fin-orange: "#ff5600"
   report-orange: "#fe4c02"
   report-blue: "#65b5ff"
@@ -119,6 +124,18 @@ rounded:
   xxl: 24px
   pill: 9999px
   full: 9999px
+
+motion:
+  duration-instant: 70ms
+  duration-fast: 130ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 450ms
+  ease-standard: cubic-bezier(0.3, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 60ms
+  duration-reduced: 130ms
 
 spacing:
   xxs: 4px
@@ -407,72 +424,203 @@ Intercom resists drop shadows. Depth is communicated by the white-on-cream surfa
 
 ## Components
 
+Interaction states below are **prescribed**, not extracted: the inspected marketing pages are static captures, and only `button-primary-pressed`, `text-input-focused` and `pricing-tab-selected` existed as documented variants. Every other state named here is a recommendation consistent with the brand's restraint.
+
 ### Buttons
 
 **`button-primary`** — Charcoal CTA. The default primary CTA across all pages.
 - Background `{colors.ink}`, text `{colors.on-primary}`, type `{typography.button}`, padding 10px 18px, rounded `{rounded.md}`.
 - Pressed state lives in `button-primary-pressed`.
+- States: default · hover (fill deepens toward `{colors.inverse-canvas}`) · focus-visible (2px `{colors.focus}` ring, 2px `{colors.canvas}` offset) · active/pressed (`button-primary-pressed`, `transform: scale(0.97)`) · disabled (`{colors.ink-tertiary}` fill, `{colors.canvas}` label, no ring, `cursor: not-allowed`) · loading (label held, inline spinner in `{colors.on-primary}`, button stays width-stable).
 
 **`button-secondary`** — White button on cream. Used for secondary CTAs.
 - Background `{colors.surface-1}`, text `{colors.ink}`, type `{typography.button}`, padding 10px 18px, rounded `{rounded.md}`. 1px `{colors.hairline}` border.
+- States: default · hover (border steps to `{colors.hairline-strong}`) · focus-visible (2px `{colors.focus}` ring) · active/pressed (`transform: scale(0.97)`) · disabled (`{colors.ink-tertiary}` label, `{colors.hairline-soft}` border) · loading (inline spinner in `{colors.ink}`).
 
 **`button-tertiary`** — Plain text button.
 - Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.button}`, rounded `{rounded.md}`, padding 10px 18px.
+- States: default · hover (label to `{colors.text-dim}`, 1px underline) · focus-visible (2px `{colors.focus}` ring) · active/pressed (`transform: scale(0.97)`) · disabled (`{colors.ink-tertiary}` label) · loading (not supported — a tertiary button never carries an async action).
 
 **`button-fin`** — Fin Orange CTA — reserved for Fin AI product CTAs.
 - Background `{colors.fin-orange}`, text `{colors.on-primary}`, type `{typography.button}`, rounded `{rounded.md}`, padding 10px 18px.
+- States: default · hover (fill deepens to `{colors.report-orange}` #fe4c02) · focus-visible (2px `{colors.focus}` ring at 3.48:1 on the orange fill) · active/pressed (`transform: scale(0.97)`) · disabled (`{colors.ink-tertiary}` fill — never a desaturated orange, which reads as a live Fin CTA) · loading (inline spinner in `{colors.on-primary}`).
 
 ### Pricing Tabs
 
 **`pricing-tab-default`** + **`pricing-tab-selected`** — Pill-toggle on `/pricing`.
 - Default: `{colors.canvas}` background, `{colors.ink-muted}` text, rounded `{rounded.pill}`.
 - Selected: `{colors.surface-1}` white background, `{colors.ink}` text — selected = lift onto white.
+- States: default · hover (label to `{colors.ink}`, background unchanged) · focus-visible (2px `{colors.focus}` ring inside the pill group) · active/pressed (`transform: scale(0.97)`) · selected (`pricing-tab-selected`, plus a weight step to 500 so selection is not colour-only) · disabled (`{colors.ink-tertiary}` label) · loading (the tier grid below shows skeletons; the pill itself has no loading state).
 
 ### Cards & Containers
 
 **`pricing-card`** — Each tier on `/pricing`.
 - Background `{colors.surface-1}`, text `{colors.ink}`, type `{typography.body}`, rounded `{rounded.lg}`, padding 24px.
+- States: default · hover (`transform: translateY(-1px)`, no shadow — Intercom resists shadows) · focus-visible (ring on the card's CTA, not the card) · selected (`pricing-card-featured`) · loading (skeleton: `{colors.surface-2}` blocks at card radius) · disabled, active/pressed and error: not applicable — a pricing card is not an interactive control.
 
 **`pricing-card-featured`** — Featured / recommended tier — inverts to charcoal.
 - Background `{colors.ink}`, text `{colors.on-primary}`, otherwise identical structure.
+- States: default (this *is* the selected state of `pricing-card`) · hover (`transform: translateY(-1px)`) · focus-visible (its CTA uses `{colors.focus-on-dark}` — `{colors.focus}` sits at 1.7:1 on charcoal and would vanish) · loading (skeleton blocks in `{colors.inverse-surface-1}`). No disabled, active/pressed or error state.
 
 **`feature-card`** — Generic feature highlight.
 - Background `{colors.surface-1}`, text `{colors.ink}`, type `{typography.body}`, rounded `{rounded.lg}`, padding 24px.
+- States: two only — default and hover (`transform: translateY(-1px)`), plus focus-visible when the whole card is a link (2px `{colors.focus}` ring at the card radius). It carries no disabled, loading, selected, active/pressed or error state.
 
 **`product-mockup-card`** — The dominant card type — frames a high-fidelity product UI screenshot.
 - Background `{colors.surface-1}`, text `{colors.ink}`, type `{typography.body}`, rounded `{rounded.xl}`, padding 24px.
+- States: default and loading only — the screenshot is the section's payload, so it renders with no entrance and reserves its aspect ratio with a `{colors.surface-2}` skeleton while the image decodes. No hover, focus-visible, active/pressed, disabled, selected or error state: it is presentational.
 
 **`testimonial-card`** — Customer quote with avatar + name + company.
 - Background `{colors.surface-1}`, text `{colors.ink}`, type `{typography.body-lg}`, rounded `{rounded.lg}`, padding 32px.
+- States: default · hover (only where it links to a customer story: `transform: translateY(-1px)`) · focus-visible (2px `{colors.focus}` ring) · loading (skeleton with a `{rounded.full}` avatar block). No active/pressed, disabled, selected or error state.
 
 **`startup-discount-card`** — The "Startups get 90% off" tinted card.
 - Background `{colors.surface-2}`, text `{colors.ink}`, type `{typography.body}`, rounded `{rounded.lg}`, padding 32px.
+- States: default only, as a static promotional panel. Its embedded `button-primary` carries the hover, focus-visible, active/pressed, disabled and loading states; the panel itself has none.
 
 **`customer-logo-tile`** — Small tile in the customer marquee.
 - Background `{colors.canvas}`, text `{colors.ink-muted}`, type `{typography.caption}`, rounded `{rounded.xs}`, padding 16px.
+- States: default · hover (logo lifts from `{colors.text-dim}` to full `{colors.ink}` opacity) · focus-visible (2px `{colors.focus}` ring where the tile links to a customer story) · loading (tile holds its box in `{colors.surface-2}`). No active/pressed, disabled, selected or error state.
 
 **`cta-banner`** — Closing CTA panel near page bottom.
 - Background `{colors.surface-1}`, text `{colors.ink}`, type `{typography.headline}`, rounded `{rounded.lg}`, padding 48px.
+- States: default only. Hover, focus-visible, active/pressed, disabled and loading all belong to the `button-primary` and `button-fin` it contains; the panel is a container with no error state.
 
 ### Inputs & Forms
 
 **`text-input`** + **`text-input-focused`** — Form fields on contact and search overlays.
 - Background `{colors.surface-1}`, text `{colors.ink}`, type `{typography.body}`, rounded `{rounded.md}`, padding 10px 14px.
+- Boundary: 1px `{colors.hairline-strong}` #857f75 (3.97:1 on white), **not** `{colors.hairline}` — the input's edge is its only affordance, and `{colors.hairline}` measures 1.57:1 there.
+- States: default · hover (border to `{colors.ink}` at 20% weight) · focus-visible (`text-input-focused` plus a 2px `{colors.focus}` ring, 2px offset) · active/pressed (no distinct state; focus-visible covers it) · disabled (`{colors.surface-2}` fill, `{colors.ink-tertiary}` text, `{colors.hairline-soft}` border) · loading (field locked, trailing spinner, value preserved) · error (1px `{colors.semantic-error}` border plus a `{typography.body-sm}` message in `{colors.semantic-error}` — never colour alone).
 
 ### FAQ
 
 **`faq-row`** — Expandable accordion row in the pricing FAQ.
 - Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body}`, rounded `{rounded.md}`, padding 24px. 1px `{colors.hairline-soft}` bottom rule.
+- States: default (collapsed) · hover (question to `{colors.text-dim}`, chevron rotates) · focus-visible (2px `{colors.focus}` ring on the row header) · active/pressed (`transform: scale(0.99)` on the header) · selected (expanded; chevron rotated 180°, `aria-expanded="true"`) · disabled and loading: not supported — FAQ content ships with the page · error: not applicable.
 
 ### Navigation
 
 **`top-nav`** — Sticky cream bar with the Intercom wordmark left, nav links centered, log-in + sign-up pair right.
 - Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body-sm}`, height 56px.
+- Link states: default · hover (label to `{colors.text-dim}`) · focus-visible (2px `{colors.focus}` ring, 2px `{colors.canvas}` offset) · active/pressed (`transform: scale(0.97)` on the CTA pair only) · selected (current section, weight 500 plus a 2px `{colors.ink}` underline) · disabled and loading: not supported · error: not applicable.
+- Bar states: default (transparent over `{colors.canvas}`) and scrolled (1px `{colors.hairline-strong}` bottom rule once the page leaves the hero).
 
 ### Footer
 
 **`footer`** — Dense link grid on `{colors.canvas}` cream with the Intercom wordmark left.
 - Background `{colors.canvas}`, text `{colors.ink-muted}`, type `{typography.caption}`, padding 64px 32px.
+- Link states: default (`{colors.text-dim}` #626260 at 5.44:1 — **not** `{colors.ink-subtle}`, which measures 3.78:1 at this 12px size) · hover (to `{colors.ink}`, underline) · focus-visible (2px `{colors.focus}` ring) · active/pressed (no travel; colour only) · disabled, loading, selected and error: not supported in the footer.
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or easing curve below was extracted from intercom.com; they are the **Playful** profile values from the audit spec, chosen so the small scale-pop on press and the springy card reveal match a friendly, conversational support brand — then damped by Intercom's editorial restraint (short travel, no ornament, opacity doing most of the work).
+
+All values reference the `motion:` token group. Only `transform` and `opacity` animate — never `width`, `height`, `top`, `left` or `margin`. Every exit is shorter than its matching entrance.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, cards, nav links) | `{motion.duration-fast}` 130ms | `{motion.ease-standard}` | `opacity`, `transform: translateY(-1px)` | Travel removed; opacity only at `{motion.duration-reduced}` 130ms |
+| Press / active | `{motion.duration-instant}` 70ms | `{motion.ease-standard}` | `transform: scale(0.97)` | Scale removed; background swap to `button-primary-pressed` is instant |
+| Focus-visible ring | `{motion.duration-instant}` 70ms | `{motion.ease-standard}` | `opacity` on the `{colors.focus}` ring | Ring appears with no transition — never delayed, never faded |
+| Page / route transition | `{motion.duration-base}` 200ms in · `{motion.duration-fast}` 130ms out | `{motion.ease-enter}` in · `{motion.ease-exit}` out | `opacity`, `transform: translateY(8px)` | Travel removed; cross-fade only at `{motion.duration-reduced}` 130ms |
+| Modal / drawer | `{motion.duration-slow}` 320ms in · `{motion.duration-base}` 200ms out | `{motion.ease-enter}` in · `{motion.ease-exit}` out | `opacity`, `transform: scale(0.98→1)`; drawer uses `translateX(100%→0)` | Scale and slide removed; scrim and panel fade at `{motion.duration-reduced}` 130ms |
+| Dropdown (nav mega-menu, pricing selector) | `{motion.duration-fast}` 130ms in · `{motion.duration-instant}` 70ms out | `{motion.ease-enter}` in · `{motion.ease-exit}` out | `opacity`, `transform: translateY(-4px) scale(0.99)` | Travel and scale removed; opacity only at `{motion.duration-reduced}` 130ms |
+| Toast | `{motion.duration-base}` 200ms in · `{motion.duration-fast}` 130ms out | `{motion.ease-enter}` in · `{motion.ease-exit}` out | `opacity`, `transform: translateY(12px)` | Travel removed; fade at `{motion.duration-reduced}` 130ms |
+| List enter (pricing tiers, feature cards, customer logos) | `{motion.duration-base}` 200ms, staggered `{motion.stagger-step}` 60ms | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px)` | Stagger and travel removed; one simultaneous fade at `{motion.duration-reduced}` 130ms |
+| List exit | `{motion.duration-fast}` 130ms, no stagger | `{motion.ease-exit}` | `opacity`, `transform: scale(0.98)` | Scale removed; fade at `{motion.duration-reduced}` 130ms |
+| Loading (spinner, skeleton) | 900ms spinner rotation, infinite; skeleton shimmer 1200ms, infinite | `linear` | `transform: rotate()` on the spinner; `opacity` on the skeleton | Spinner rotation replaced by an opacity pulse at `{motion.duration-reduced}` 130ms; skeleton shimmer frozen at its mid tone |
+
+### Choreography notes
+
+- **The press pop is the one playful gesture.** A 3% scale dip on `button-primary` and `button-fin` is the whole of Intercom's friendliness budget — there is no bounce on cards, no overshoot on hero type, no parallax on the product mockups.
+- **`{motion.ease-enter}` overshoots** (`cubic-bezier(0.17, 0.89, 0.32, 1.28)`), so entrances settle slightly past their resting position. Hold the travel to 8px or less; on a 1280px editorial canvas a longer throw reads as cheap.
+- **Product mockup cards never animate on first paint.** The screenshot is the payload of every section; it renders immediately and does not wait on a reveal.
+- **FAQ accordion:** the panel cross-fades with `opacity` plus a `translateY(-4px)` lead-in over `{motion.duration-fast}`. The row's own height change is not animated — it resolves in one layout pass.
+- **No infinite animation** anywhere except the spinner and skeleton above. Intercom has no brand ambience loop; the cream canvas is static.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translateX/Y), all scale, the 60ms list stagger,
+     the press pop, and the spinner's rotation. */
+  /* Kept: opacity cross-fades, capped at 130ms — {motion.duration-reduced}. */
+  /* Frozen: skeleton shimmer holds its mid tone; the spinner becomes an
+     opacity pulse so progress is still conveyed. */
+  *, *::before, *::after {
+    transition-duration: 130ms !important;
+    transition-property: opacity !important;
+    animation-duration: 130ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .focus-ring { transition: none !important; }
+}
+```
+
+The focus ring is exempt from the cap in both directions: it must appear instantly, so it carries no transition at all under reduced motion.
+
+## Accessibility
+
+### Measured contrast
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's own hexes. Brand hexes are extracted and frozen — the failures are real and are not fixed in place.
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` #111111 on `{colors.canvas}` #f5f1ec | 16.79:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface}` #ffffff | 18.88:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-2}` #ebe7e1 | 15.33:1 | 4.5:1 | Pass |
+| `{colors.text-dim}` #626260 on `{colors.canvas}` | 5.44:1 | 4.5:1 | Pass |
+| `{colors.text-dim}` on `{colors.surface-2}` | 4.96:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.primary}` charcoal | 18.88:1 | 4.5:1 | Pass |
+| `{colors.inverse-ink}` on `{colors.inverse-canvas}` | 21.0:1 | 4.5:1 | Pass |
+| `{colors.semantic-error}` on `{colors.canvas}` | 5.29:1 | 4.5:1 | Pass |
+| `{colors.hairline-strong}` #857f75 on `{colors.canvas}` | 3.53:1 | 3.0:1 | Pass |
+| `{colors.hairline-strong}` on `{colors.surface}` | 3.97:1 | 3.0:1 | Pass |
+| `{colors.ink-subtle}` #7b7b78 on canvas / on `{colors.surface}` | 3.78:1 / 4.25:1 | 4.5:1 | **Fail — real brand tone** |
+| `{colors.ink-tertiary}` #9c9fa5 on canvas / on `{colors.surface}` | 2.36:1 / 2.65:1 | 4.5:1 | **Fail — real brand tone** |
+| `{colors.hairline}` #d3cec6 on canvas / on `{colors.surface}` | 1.39:1 / 1.57:1 | 3.0:1 | **Fail — decorative only** |
+| `{colors.hairline-soft}` #ebe7e1 on canvas / on `{colors.surface}` | 1.1:1 / 1.23:1 | 3.0:1 | **Fail — decorative only** |
+| `{colors.semantic-success}` #0bdf50 on `{colors.canvas}` | 1.6:1 | 4.5:1 | **Fail — chart fill, never text** |
+| `button-fin` — `{colors.on-primary}` white on `{colors.fin-orange}` #ff5600 | 3.19:1 | 4.5:1 | **Fail — real brand CTA** |
+
+### What the failures mean
+
+- **Intercom's hairlines fail AA for boundaries, plainly.** `{colors.hairline}` at 1.39:1 and `{colors.hairline-soft}` at 1.1:1 are extracted facts, not defects to patch. They are scoped to **decoration**: card edge definition and FAQ/footer dividers, where the white-on-cream surface change already carries the boundary. `{colors.hairline-strong}` #857f75 is a **prescribed** parallel token, not extracted from the site, and is the only boundary permitted on a control whose edge is the sole affordance — a `text-input`, a `pricing-tab-default`, a checkbox.
+- **`{colors.ink-subtle}` and `{colors.ink-tertiary}` fail AA as body text.** `{colors.ink-subtle}` at 3.78:1 clears the 3:1 large-text threshold, so it is permissible at 24px+, or 18.66px+ at weight 700 — not at the 14px footer size the site uses it at. `{colors.ink-tertiary}` at 2.36:1 clears no threshold and must be treated as a disabled tone only, where WCAG sets no requirement. Use `{colors.text-dim}` #626260 (5.44:1) for any secondary text that must be read.
+- **`button-fin` fails AA.** White on Fin Orange measures 3.19:1, below 4.5:1 for its 15px / weight 500 label. It clears 3:1, so the same label at `{typography.headline}` 28px would pass as large text. The fix that does not falsify the brand is type size, not a new orange.
+- **`{colors.semantic-success}` is a chart fill**, drawn inside product mockups. It must never carry text or convey state by colour alone.
+
+### Focus ring
+
+No focus treatment was documented for this brand, so one is prescribed. `{colors.focus}` #0007cb is Intercom's own `brand-blue`, reused rather than invented: a 2px ring with a 2px `{colors.canvas}` offset.
+
+| Surface it is drawn on | Ring | Ratio | Required |
+|---|---|---|---|
+| `{colors.canvas}` cream | `{colors.focus}` | 9.87:1 | 3.0:1 |
+| `{colors.surface}` / `{colors.surface-1}` white | `{colors.focus}` | 11.09:1 | 3.0:1 |
+| `{colors.surface-2}` cream-dark | `{colors.focus}` | 9.01:1 | 3.0:1 |
+| `{colors.fin-orange}` CTA fill | `{colors.focus}` | 3.48:1 | 3.0:1 |
+| `{colors.primary}` / `{colors.ink}` charcoal CTA and featured tier | `{colors.focus-on-dark}` #65b5ff | 8.64:1 | 3.0:1 |
+| `{colors.inverse-canvas}` black quote strip | `{colors.focus-on-dark}` | 9.61:1 | 3.0:1 |
+| `{colors.inverse-surface-1}` #313130 | `{colors.focus-on-dark}` | 5.96:1 | 3.0:1 |
+
+Two rings exist because the file documents both light and dark signature surfaces: #0007cb sits at 1.7:1 on charcoal and would vanish there. `{colors.focus-on-dark}` reuses the `report-blue` hex. Over a product screenshot, which has no measurable colour, draw `{colors.focus}` with a 1px `{colors.on-primary}` outer edge.
+
+### Tap targets
+
+Documented in Responsive Behavior: CTAs and pricing tab pills hold ≥40px, form inputs ≥44px. These are the file's stated intent and were **not** verified against a rendered page — tap-target size is not measurable from a document.
+
+### Reduced motion
+
+Honoured as specified in Motion & Animation: all travel, scale and stagger removed, opacity fades capped at `{motion.duration-reduced}` 130ms, skeleton shimmer frozen, and the focus ring left untransitioned so it never lags the keyboard.
+
+### Known accessibility gaps
+
+- Colour is not the only state signal anywhere documented, but no non-colour indicator is specified for `pricing-tab-selected` beyond the white lift; add a weight change.
+- Error text styling is undocumented (see Known Gaps), so no error-text contrast could be measured.
+- Keyboard order, landmark structure and screen-reader naming need a rendered page and are outside this audit's reach.
 
 ## Do's and Don'ts
 
