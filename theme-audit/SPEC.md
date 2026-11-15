@@ -142,6 +142,7 @@ motion:
   ease-enter: cubic-bezier(0, 0, 0, 1)
   ease-exit: cubic-bezier(0.3, 0, 1, 1)
   stagger-step: 40ms
+  duration-reduced: 150ms
 ```
 
 Values are per profile. Use the profile's block verbatim, so the same
@@ -159,6 +160,7 @@ motion:
   ease-enter: cubic-bezier(0, 0, 0.2, 1)
   ease-exit: cubic-bezier(0.4, 0, 1, 1)
   stagger-step: 20ms
+  duration-reduced: 100ms
 ```
 
 **Calm**
@@ -173,6 +175,7 @@ motion:
   ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
   ease-exit: cubic-bezier(0.4, 0, 1, 1)
   stagger-step: 40ms
+  duration-reduced: 150ms
 ```
 
 **Playful**
@@ -187,6 +190,7 @@ motion:
   ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
   ease-exit: cubic-bezier(0.4, 0, 1, 1)
   stagger-step: 60ms
+  duration-reduced: 130ms
 ```
 
 **Cinematic**
@@ -201,6 +205,7 @@ motion:
   ease-enter: cubic-bezier(0.16, 1, 0.3, 1)
   ease-exit: cubic-bezier(0.5, 0, 0.75, 0)
   stagger-step: 80ms
+  duration-reduced: 150ms
 ```
 
 Deviate from a value only with a reason stated in the file, and never to the
@@ -244,7 +249,10 @@ Assignment rule, applied in order:
 - No infinite animation except loaders and deliberate brand ambience, and that
   ambience must be stated as such.
 - `@media (prefers-reduced-motion: reduce)`: remove all travel and scale, keep
-  opacity fades at 150ms or less, and freeze ambience. Every file states this.
+  opacity fades at `{motion.duration-reduced}` — never more than 150ms, whatever
+  the profile's own base — and freeze ambience. Every file states this. The
+  token exists so a Cinematic file never has to hardcode a bare value to satisfy
+  this rule, since its own `duration-fast` is 240ms.
 
 Each file's Motion & Animation section must cover, as a table of interaction ×
 duration × easing × property × reduced-motion behaviour: hover, press,
