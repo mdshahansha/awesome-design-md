@@ -121,7 +121,12 @@ two CTA colours was hiding one failure entirely. Tokens whose name contains
 **Extracted values are frozen, including the utility tones.** A hairline at
 1.36:1 is as much an extracted fact as the brand's red, so do not "fix" it in
 place. Where a frozen tone is doing a job that needs contrast — a hairline that
-is the only boundary of a text input, say — add a **parallel accessible token**
+is the only boundary of a text input, say — add a **parallel accessible token**, leaving the frozen tone's existing
+`components:` bindings exactly as extracted — they are facts about the real
+site, and silently re-pointing them would make the document describe a product
+that does not exist. Scope the original in prose, add the accessible token for
+implementers, and put the question of re-binding under Needs approval, where a
+brand owner can answer it. Then
 alongside it (`hairline-strong`, `divider` versus a control boundary), scope the
 original to decoration in the prose, and label the new token as prescribed. Then
 say plainly in the file that the real brand fails AA at that point. That is the

@@ -320,6 +320,25 @@ def audit(path):
     check_all("text-dim", "surface", 4.5, "secondary text on surface, all tones")
     check_all("border", "surface", 3.0, "boundary on surface, all tones")
 
+    # Every token a component actually binds as a boundary, whatever its name
+    # and whether or not a pattern already satisfied the role.
+    bound_borders = set()
+    for props in parse_components(text).values():
+        for prop in ("borderColor", "border", "outlineColor"):
+            m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get(prop) or "")
+            if m and m.group(1) in colors:
+                bound_borders.add(m.group(1))
+    for key in bound_borders:
+        for bg_role in ("canvas", "surface"):
+            bg = roles.get(bg_role)
+            if not bg or not same_theme(key, bg):
+                continue
+            ratio = round(contrast(colors[key], colors[bg]), 2)
+            if ratio < 3.0:
+                fails.append({"pair": f"{key} on {bg}", "fg": colors[key],
+                              "bg": colors[bg], "ratio": ratio, "required": 3.0,
+                              "role": "bound boundary"})
+
     # Each theme's own ground, so a dark-mode boundary is measured against the
     # dark canvas rather than silently skipped for belonging to another theme.
     alt_grounds = {}
