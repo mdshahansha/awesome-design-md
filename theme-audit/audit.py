@@ -261,6 +261,27 @@ def audit(path):
             roles["surface"] = candidates[0]
             r.setdefault("roles_from_bindings", []).append("surface=" + candidates[0])
 
+    if not roles.get("text-dim") and roles.get("canvas"):
+        # The most muted ink a component actually draws on the canvas: lowest
+        # contrast against it, while still being used as text.
+        cands = []
+        for props in parse_components(text).values():
+            fgm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("textColor") or "")
+            if not fgm or fgm.group(1) not in colors:
+                continue
+            k = fgm.group(1)
+            if k == roles.get("text"):
+                continue
+            # Same polarity as the canvas, measured — same_theme is not yet in
+            # scope here, and a dark-track ink must not claim the light role.
+            if (luminance(colors[k]) < 0.2) == (luminance(colors[roles["canvas"]]) < 0.2):
+                continue
+            cands.append(k)
+        if cands:
+            pick = min(cands, key=lambda k: contrast(colors[k], colors[roles["canvas"]]))
+            roles["text-dim"] = pick
+            r.setdefault("roles_from_bindings", []).append("text-dim=" + pick)
+
     # A role no pattern can guess by name is still resolvable from what the
     # components bind. Mercury's boundaries are `fog` and `slate`; both are
     # declared as borderColor, which is better evidence than any regex.
@@ -287,6 +308,13 @@ def audit(path):
         if cand:
             roles["surface"] = min(cand,
                                    key=lambda k: contrast(colors[k], colors[canvas_key]))
+        else:
+            # No distinct raised tone: this brand's cards are the same colour as
+            # its page, separated by a hairline. Keep the surface it names.
+            same = [k for pat in REQUIRED_COLOR_ROLES["surface"] for k in colors
+                    if re.match(pat, k)]
+            if same:
+                roles["surface"] = same[0]
 
     if canvas_key:
         for role in ("border", "focus", "text-dim"):
@@ -337,8 +365,30 @@ def audit(path):
         if canvas_polarity:
             break
 
+    # Polarity evidence from bindings: a token drawn as textColor on grounds of
+    # one polarity belongs to that polarity, whatever its name says.
+    bound_polarity = {}
+    for props in parse_components(text).values():
+        bgm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                           props.get("backgroundColor") or "")
+        fgm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                           props.get("textColor") or "")
+        if not bgm or not fgm:
+            continue
+        if bgm.group(1) not in colors or fgm.group(1) not in colors:
+            continue
+        pol = "dark" if luminance(colors[bgm.group(1)]) < 0.2 else "light"
+        bound_polarity.setdefault(fgm.group(1), set()).add(pol)
+
     def theme_of(key):
         """Which theme a token belongs to. None means the file's default."""
+        pols = bound_polarity.get(key)
+        if pols and len(pols) == 1:
+            only = next(iter(pols))
+            # Evidence beats naming, but only where it disagrees with nothing.
+            if only != canvas_polarity:
+                return only
+            return None
         # An on-dark / on-light ink declares its own target surface, so it is
         # theme-scoped whether or not the file has a second theme.
         if re.search(r"(^|[-_])on-dark($|[-_])", key):
@@ -348,9 +398,11 @@ def audit(path):
         if not dual_theme:
             return None
         marker = None
-        if re.search(r"dark($|[-_])|[-_]dark", key):
+        if re.search(r"(dark|night|midnight|noir|black|ink)($|[-_])"
+                     r"|[-_](dark|night|midnight|noir|black)", key):
             marker = "dark"
-        elif re.search(r"light($|[-_])|[-_]light", key):
+        elif re.search(r"(light|day|paper|snow|white|cream)($|[-_])"
+                       r"|[-_](light|day|paper|snow|white|cream)", key):
             marker = "light"
         # A marker matching the file's own canvas polarity is a tone name, not a
         # second theme: ink-dark in a dark-canvas file belongs to the default.
@@ -394,6 +446,11 @@ def audit(path):
                     continue
                 if not same_theme(key, bg):
                     continue
+                named = re.match(r"^on-([a-z]+)", key)
+                if named and named.group(1) not in ("primary", "accent", "brand"):
+                    word = named.group(1)
+                    if word not in bg and theme_of(key) != theme_of(bg):
+                        continue      # the token names its ground; this is not it
                 fg_hex = effective(key, colors[bg])
                 ratio = round(contrast(fg_hex, colors[bg]), 2)
                 if ratio < minimum:
