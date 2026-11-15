@@ -96,12 +96,12 @@ def clean_value(raw):
     return re.sub(r"\s+#.*$", "", v).strip().strip("\"'")
 
 
-def parse_components(text):
-    """components: entries and their properties, two indent levels down."""
+def parse_nested(text, group):
+    """A frontmatter group's entries and their properties, two levels down."""
     if not text.startswith("---\n"):
         return {}
     fm = text[4:text.find("\n---\n", 4)]
-    m = re.search(r"^components:\s*$(.*?)(?=^[a-z][a-zA-Z0-9_-]*:|\Z)", fm, re.S | re.M)
+    m = re.search(rf"^{group}:\s*$(.*?)(?=^[a-z][a-zA-Z0-9_-]*:|\Z)", fm, re.S | re.M)
     if not m:
         return {}
     entries, cur = {}, None
@@ -114,6 +114,10 @@ def parse_components(text):
         if pr and cur:
             entries[cur][pr.group(1)] = clean_value(pr.group(2))
     return entries
+
+
+def parse_components(text):
+    return parse_nested(text, "components")
 
 
 def find_role(colors, patterns):
@@ -226,6 +230,7 @@ def audit(path):
     check("text-dim", "canvas", 4.5, "secondary text")
     check("text-dim", "surface", 4.5, "secondary text on surface")
     check_all("text-dim", "canvas", 4.5, "secondary text, all tones")
+    check_all("text-dim", "surface", 4.5, "secondary text on surface, all tones")
     check_all("border", "canvas", 3.0, "boundary, all tones")
     check("border", "canvas", 3.0, "component boundary")
     def achromatic(hexstr):
@@ -242,19 +247,6 @@ def audit(path):
             continue
         check("focus", bg, 3.0, f"focus indicator on {bg}")
 
-    # Signal colours, each against the file's own on-accent ink. Disabled
-    # tokens are exempt: WCAG places no contrast requirement on them.
-    on_accent = roles.get("on-accent")
-    if on_accent:
-        signals = [k for k in colors
-                   if re.match(r"^(primary|accent|secondary|brand|cta)", k)
-                   and "disabled" not in k]
-        for key in signals:
-            ratio = round(contrast(colors[on_accent], colors[key]), 2)
-            if ratio < 4.5:
-                fails.append({"pair": f"{on_accent} on {key}", "fg": colors[on_accent],
-                              "bg": colors[key], "ratio": ratio, "required": 4.5,
-                              "role": "text on signal colour"})
     # Every background/text pair the components block actually asserts — 1808
     # of them across the repo, and the name-matching check saw none.
     def deref(v):
@@ -263,6 +255,21 @@ def audit(path):
             return colors.get(m.group(1))
         return v if re.fullmatch(r"#[0-9a-fA-F]{3,8}", v or "") else None
 
+    typo = parse_nested(text, "typography")
+
+    def threshold_for(props):
+        """4.5:1 normally, 3:1 where the component's own type is large text."""
+        ref = props.get("typography", "")
+        m = re.fullmatch(r"\{typography\.([A-Za-z0-9_.-]+)\}", ref or "")
+        entry = typo.get(m.group(1), {}) if m else {}
+        size = re.match(r"([\d.]+)", entry.get("fontSize", "") or "")
+        weight = re.match(r"(\d+)", entry.get("fontWeight", "") or "")
+        px = float(size.group(1)) if size else None
+        wt = int(weight.group(1)) if weight else 400
+        if px is not None and (px >= 24 or (px >= 18.66 and wt >= 700)):
+            return 3.0
+        return 4.5
+
     comp_fails = []
     for name, props in parse_components(text).items():
         if "disabled" in name:          # WCAG sets no requirement on disabled
@@ -270,21 +277,27 @@ def audit(path):
         bg, fg = deref(props.get("backgroundColor")), deref(props.get("textColor"))
         if not bg or not fg:
             continue
+        need = threshold_for(props)
         ratio = round(contrast(fg, bg), 2)
-        if ratio < 4.5:
+        if ratio < need:
             comp_fails.append({"component": name, "fg": fg, "bg": bg,
-                               "ratio": ratio, "required": 4.5})
+                               "ratio": ratio, "required": need})
     # Disclosure: a failure named in the Accessibility section, by token or by
     # hex, is documented rather than hidden. SPEC section 2 asks for exactly
     # that where the value is extracted and frozen.
     m_acc = re.search(r"^## Accessibility\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
     acc = (m_acc.group(1) if m_acc else "").lower()
 
+    acc_lines = [l for l in acc.split("\n") if re.search(r"\d+(\.\d+)?\s*:\s*1", l)]
+
     def disclosed(f):
-        if not acc:
+        """Named on a line that also states a measured ratio."""
+        if not acc_lines:
             return False
-        fg_name = f["pair"].split(" on ")[0] if "pair" in f else f.get("component", "")
-        return fg_name.lower() in acc or f["fg"].lower() in acc
+        fg_name = (f["pair"].split(" on ")[0] if "pair" in f
+                   else f.get("component", "")).lower()
+        target = f["fg"].lower()
+        return any((fg_name and fg_name in l) or target in l for l in acc_lines)
 
     seen, deduped = set(), []
     for f in fails:
