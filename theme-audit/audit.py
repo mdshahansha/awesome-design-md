@@ -37,7 +37,8 @@ REQUIRED_COLOR_ROLES = {
     "on-accent":[r"^on-primary$", r"^accent-contrast$", r"^on-accent$", r"^on-brand$",
                  r"^on-primary-", r"^(primary|accent|brand)-on$",
                  r"^(primary|accent|brand)-on-"],
-    "focus":    [r"^focus$", r"^focus-ring$", r"^focus-", r"^ring$"],
+    "focus":    [r"^focus$", r"^focus-ring$", r"^focus-", r"^ring$", r"^ring-",
+                 r"^[a-z]+-focus$", r"^[a-z]+-ring$"],
 }
 REQUIRED_SECTIONS = ["Overview", "Colors", "Typography", "Layout", "Elevation & Depth",
                      "Shapes", "Components", "Motion & Animation", "Accessibility",
@@ -233,7 +234,7 @@ def audit(path):
     roles = {role: find_role(colors, cands) for role, cands in REQUIRED_COLOR_ROLES.items()}
     if not roles.get("surface"):
         CONTAINERISH = re.compile(r"(card|panel|band|tile|well|surface|sheet|"
-                                  r"modal|drawer|section|container)")
+                                  r"modal|drawer|section|container|tier|block)")
         # A hero, masthead or display fill is a statement surface, not the
         # raised neutral the role means.
         NOT_A_SURFACE = re.compile(r"(hero|masthead|display|title|banner|jumbo|"
@@ -471,9 +472,10 @@ def audit(path):
     # An inner or inset band of a composite ring is meant to match the surface
     # it sits on — WCAG 2.2 Focus Appearance measures the two bands against
     # each other, not against the background. Measured separately below.
-    focus_tokens = [k for k in colors if re.match(r"^focus($|[-_])", k)
+    RINGISH = re.compile(r"(^|[-_])(focus|ring)($|[-_])")
+    focus_tokens = [k for k in colors if RINGISH.search(k)
                     and not re.search(r"(inner|inset|halo)", k)]
-    focus_bands = [k for k in colors if re.match(r"^focus", k)
+    focus_bands = [k for k in colors if RINGISH.search(k)
                    and re.search(r"(inner|inset|halo)", k)]
     for props in parse_components(text).values():
         for prop in ("ringColor", "outlineColor", "focusRing", "focusColor"):
