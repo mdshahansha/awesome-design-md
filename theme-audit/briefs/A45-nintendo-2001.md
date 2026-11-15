@@ -9,8 +9,8 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: accent, border, canvas, focus, on-accent, surface, text, text-dim.
-- Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Iteration Guide, Known Gaps.
-- States never named anywhere in the file: focus-visible, disabled, selected.
+- Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Known Gaps.
+- States never named anywhere in the file: hover, focus-visible, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

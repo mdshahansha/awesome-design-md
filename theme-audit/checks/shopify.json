@@ -19,6 +19,7 @@
     "Accessibility",
     "Known Gaps"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas-night",
     "surface": "surface-elevated-dark",
@@ -61,6 +62,9 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "pressed"
+  ],
   "states_missing": [
     "hover",
     "focus-visible",

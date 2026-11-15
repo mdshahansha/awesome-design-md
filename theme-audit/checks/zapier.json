@@ -16,8 +16,10 @@
     "Motion & Animation",
     "Accessibility",
     "Responsive Behavior",
-    "Iteration Guide",
     "Known Gaps"
+  ],
+  "optional_sections_missing": [
+    "Iteration Guide"
   ],
   "roles_resolved": {
     "canvas": "canvas",
@@ -39,7 +41,7 @@
       "bg": "#ff4f00",
       "ratio": 3.27,
       "required": 4.5,
-      "role": "text on accent"
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -53,6 +55,9 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active"
+  ],
   "states_missing": [
     "hover",
     "focus-visible",

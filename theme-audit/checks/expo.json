@@ -19,12 +19,13 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface-card",
     "text": "ink",
     "text-dim": "muted",
-    "border": "hairline",
+    "border": "hairline-strong",
     "accent": "primary",
     "on-accent": "on-primary"
   },
@@ -42,12 +43,28 @@
       "role": "secondary text"
     },
     {
-      "pair": "hairline on canvas",
-      "fg": "#f0f0f3",
+      "pair": "muted on surface-card",
+      "fg": "#999999",
       "bg": "#ffffff",
-      "ratio": 1.14,
+      "ratio": 2.85,
+      "required": 4.5,
+      "role": "secondary text on surface"
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#dcdee0",
+      "bg": "#ffffff",
+      "ratio": 1.35,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on accent-link-bright",
+      "fg": "#ffffff",
+      "bg": "#47c2ff",
+      "ratio": 2.01,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -61,16 +78,22 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
     "pressed",
+    "disabled",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 4,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 1,
     "sections": 3,
     "motion": 1,
     "states": 1

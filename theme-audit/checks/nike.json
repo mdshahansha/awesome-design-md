@@ -19,6 +19,7 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "text": "ink",
@@ -40,6 +41,38 @@
       "ratio": 1.64,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on accent-pink",
+      "fg": "#ffffff",
+      "bg": "#ed1aa0",
+      "ratio": 4.0,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-pink-soft",
+      "fg": "#ffffff",
+      "bg": "#ffb0dd",
+      "ratio": 1.68,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-purple-soft",
+      "fg": "#ffffff",
+      "bg": "#beaffd",
+      "ratio": 1.96,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-purple-pale",
+      "fg": "#ffffff",
+      "bg": "#d6d1ff",
+      "ratio": 1.46,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -53,17 +86,24 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "selected"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
+    "disabled",
     "loading",
     "error"
   ],
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 1,
     "sections": 3,
     "motion": 1,
-    "states": 2
+    "states": 1
   }
 }

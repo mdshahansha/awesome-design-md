@@ -33,9 +33,12 @@ REQUIRED_COLOR_ROLES = {
                  r"^on-primary-"],
     "focus":    [r"^focus$", r"^focus-ring$", r"^focus-", r"^ring$"],
 }
-SECTIONS = ["Overview", "Colors", "Typography", "Layout", "Elevation & Depth",
-            "Shapes", "Components", "Motion & Animation", "Accessibility",
-            "Do's and Don'ts", "Responsive Behavior", "Iteration Guide", "Known Gaps"]
+REQUIRED_SECTIONS = ["Overview", "Colors", "Typography", "Layout", "Elevation & Depth",
+                     "Shapes", "Components", "Motion & Animation", "Accessibility",
+                     "Do's and Don'ts", "Responsive Behavior", "Known Gaps"]
+# Optional per SPEC section 3: tracked for reporting, never counted against a score.
+OPTIONAL_SECTIONS = ["Iteration Guide"]
+SECTIONS = REQUIRED_SECTIONS + OPTIONAL_SECTIONS
 MOTION_KEYS_MIN = {"duration-fast", "duration-base", "ease-standard"}
 STATE_WORDS = ["hover", "focus-visible", "active", "pressed", "disabled",
                "loading", "selected", "error"]
@@ -83,11 +86,25 @@ def parse_frontmatter(text):
 
 
 def find_role(colors, patterns):
+    """First pattern wins, so the representative token is the canonical one."""
     for pat in patterns:
         for key in colors:
             if re.match(pat, key):
                 return key
     return None
+
+
+def find_role_strongest(colors, patterns, against):
+    """Pick the matching key with the highest contrast against `against`.
+
+    Used for roles whose threshold is about visibility rather than identity: a
+    file that defines hairline, hairline-soft and border-strong should be judged
+    on border-strong, since that is the one drawn where a boundary must be seen.
+    """
+    matches = [k for pat in patterns for k in colors if re.match(pat, k)]
+    if not matches or against not in colors:
+        return find_role(colors, patterns)
+    return max(dict.fromkeys(matches), key=lambda k: contrast(colors[k], colors[against]))
 
 
 def audit(path):
@@ -101,10 +118,18 @@ def audit(path):
     # --- sections -------------------------------------------------------
     present = {s for s in SECTIONS if f"## {s}" in text}
     r["sections_present"] = sorted(present)
-    r["sections_missing"] = [s for s in SECTIONS if s not in present]
+    r["sections_missing"] = [s for s in REQUIRED_SECTIONS if s not in present]
+    r["optional_sections_missing"] = [s for s in OPTIONAL_SECTIONS if s not in present]
 
     # --- required token roles -------------------------------------------
     roles = {role: find_role(colors, cands) for role, cands in REQUIRED_COLOR_ROLES.items()}
+    # Boundary and focus tokens are judged on the strongest variant the file owns.
+    canvas_key = roles.get("canvas")
+    if canvas_key:
+        for role in ("border", "focus"):
+            if roles.get(role):
+                roles[role] = find_role_strongest(
+                    colors, REQUIRED_COLOR_ROLES[role], canvas_key)
     r["roles_resolved"] = {k: v for k, v in roles.items() if v}
     r["roles_missing"] = sorted(k for k, v in roles.items() if not v)
 
@@ -133,9 +158,24 @@ def audit(path):
     check("text", "canvas", 4.5, "body text")
     check("text", "surface", 4.5, "body text on surface")
     check("text-dim", "canvas", 4.5, "secondary text")
-    check("on-accent", "accent", 4.5, "text on accent")
+    check("text-dim", "surface", 4.5, "secondary text on surface")
     check("border", "canvas", 3.0, "component boundary")
-    check("focus", "canvas", 3.0, "focus indicator")
+    for bg in ("canvas", "surface", "accent"):
+        check("focus", bg, 3.0, f"focus indicator on {bg}")
+
+    # Signal colours, each against the file's own on-accent ink. Disabled
+    # tokens are exempt: WCAG places no contrast requirement on them.
+    on_accent = roles.get("on-accent")
+    if on_accent:
+        signals = [k for k in colors
+                   if re.match(r"^(primary|accent|secondary|brand|cta)", k)
+                   and "disabled" not in k]
+        for key in signals:
+            ratio = round(contrast(colors[on_accent], colors[key]), 2)
+            if ratio < 4.5:
+                fails.append({"pair": f"{on_accent} on {key}", "fg": colors[on_accent],
+                              "bg": colors[key], "ratio": ratio, "required": 4.5,
+                              "role": "text on signal colour"})
     r["contrast_failures"] = fails
 
     # --- motion ---------------------------------------------------------
@@ -147,11 +187,36 @@ def audit(path):
     r["durations_found"] = sorted(set(re.findall(r"\b(\d{2,4})ms\b", text)), key=int)
     r["easings_found"] = len(re.findall(r"cubic-bezier\([^)]*\)", text))
     # motion rule violations: animating layout-triggering properties
-    bad = re.findall(r"animat\w*[^.\n]{0,60}\b(width|height|top|left|margin)\b", text, re.I)
-    r["layout_animation_mentions"] = sorted(set(b.lower() for b in bad))
+    NEGATED = re.compile(r"\b(don't|do not|never|avoid|no|rather than|instead of|not)\b", re.I)
+    bad = set()
+    for line in text.split("\n"):
+        for m in re.finditer(r"animat\w*[^.\n]{0,60}?\b(width|height|top|left|margin)\b",
+                             line, re.I):
+            # Look at the clause leading up to the match; a prohibition is fine.
+            lead = line[max(0, m.start() - 80):m.start() + 10]
+            if not NEGATED.search(lead):
+                bad.add(m.group(1).lower())
+    for m in re.finditer(r"transition:[^;`\n]*?\b(width|height|top|left|margin)\b",
+                         text, re.I):
+        lead = text[max(0, m.start() - 80):m.start()]
+        if not NEGATED.search(lead):
+            bad.add(m.group(1).lower())
+    r["layout_animation_mentions"] = sorted(bad)
 
     # --- states ---------------------------------------------------------
-    r["states_missing"] = [w for w in STATE_WORDS if w not in text.lower()]
+    # Only the Components section counts, and only structured lines within it:
+    # a bare mention elsewhere (a Known Gaps line saying loading is undocumented,
+    # for instance) is not documentation of that state.
+    comp = ""
+    m = re.search(r"^## Components\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
+    if m:
+        comp = m.group(1)
+    structured = "\n".join(line for line in comp.split("\n")
+                           if line.lstrip().startswith(("|", "-", "*"))
+                           or re.search(r"\*\*[^*]+\*\*\s*[:—-]", line))
+    hay = structured.lower()
+    r["states_documented"] = [w for w in STATE_WORDS if w in hay]
+    r["states_missing"] = [w for w in STATE_WORDS if w not in hay]
 
     # --- score ----------------------------------------------------------
     r["score"] = {

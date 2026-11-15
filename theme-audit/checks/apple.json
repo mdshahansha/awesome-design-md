@@ -19,6 +19,7 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "text": "ink",
@@ -48,6 +49,14 @@
       "ratio": 1.32,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on primary-on-dark",
+      "fg": "#ffffff",
+      "bg": "#2997ff",
+      "ratio": 3.02,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -61,15 +70,24 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "selected"
+  ],
   "states_missing": [
-    "focus-visible"
+    "hover",
+    "focus-visible",
+    "pressed",
+    "disabled",
+    "loading",
+    "error"
   ],
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 2,
     "sections": 3,
     "motion": 1,
-    "states": 4
+    "states": 1
   }
 }

@@ -10,8 +10,9 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
 - Contrast: hairline on canvas (#e5e7eb on #ffffff) measures 1.24:1, below the 3.0:1 required for component boundary.
+- Contrast: on-primary on brand-accent (#ffffff on #3b82f6) measures 3.68:1, below the 4.5:1 required for text on signal colour.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible, loading, selected.
+- States never named anywhere in the file: focus-visible, pressed, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

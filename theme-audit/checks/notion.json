@@ -19,12 +19,13 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface",
     "text": "ink",
     "text-dim": "muted",
-    "border": "hairline",
+    "border": "hairline-strong",
     "accent": "primary",
     "on-accent": "on-primary"
   },
@@ -42,12 +43,68 @@
       "role": "secondary text"
     },
     {
-      "pair": "hairline on canvas",
-      "fg": "#e5e3df",
+      "pair": "muted on surface",
+      "fg": "#bbb8b1",
+      "bg": "#f6f5f4",
+      "ratio": 1.82,
+      "required": 4.5,
+      "role": "secondary text on surface"
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#c8c4be",
       "bg": "#ffffff",
-      "ratio": 1.28,
+      "ratio": 1.74,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on brand-orange",
+      "fg": "#ffffff",
+      "bg": "#dd5b00",
+      "ratio": 3.77,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-pink",
+      "fg": "#ffffff",
+      "bg": "#ff64c8",
+      "ratio": 2.66,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-purple-300",
+      "fg": "#ffffff",
+      "bg": "#d6b6f6",
+      "ratio": 1.77,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-teal",
+      "fg": "#ffffff",
+      "bg": "#2a9d99",
+      "ratio": 3.29,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-green",
+      "fg": "#ffffff",
+      "bg": "#1aae39",
+      "ratio": 2.93,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-yellow",
+      "fg": "#ffffff",
+      "bg": "#f5d75e",
+      "ratio": 1.42,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -63,17 +120,24 @@
   ],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "disabled"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 4,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 1,
     "sections": 3,
     "motion": 3,
-    "states": 2
+    "states": 1
   }
 }

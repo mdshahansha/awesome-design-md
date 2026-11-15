@@ -19,6 +19,7 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface-card",
@@ -44,11 +45,17 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed"
+  ],
   "states_missing": [
     "hover",
     "focus-visible",
+    "disabled",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 1,

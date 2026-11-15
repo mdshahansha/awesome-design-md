@@ -19,6 +19,7 @@
     "Responsive Behavior",
     "Known Gaps"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {},
   "roles_missing": [
     "accent",
@@ -43,9 +44,16 @@
   "durations_found": [],
   "easings_found": 1,
   "layout_animation_mentions": [],
+  "states_documented": [],
   "states_missing": [
+    "hover",
     "focus-visible",
-    "selected"
+    "active",
+    "pressed",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 1,
@@ -53,6 +61,6 @@
     "contrast": 5,
     "sections": 1,
     "motion": 1,
-    "states": 3
+    "states": 1
   }
 }

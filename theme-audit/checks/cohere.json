@@ -19,6 +19,7 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "card-border",
@@ -41,6 +42,14 @@
       "role": "secondary text"
     },
     {
+      "pair": "muted on card-border",
+      "fg": "#93939f",
+      "bg": "#f2f2f2",
+      "ratio": 2.71,
+      "required": 4.5,
+      "role": "secondary text on surface"
+    },
+    {
       "pair": "hairline on canvas",
       "fg": "#d9d9dd",
       "bg": "#ffffff",
@@ -60,18 +69,21 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [],
   "states_missing": [
     "hover",
     "focus-visible",
+    "active",
     "pressed",
     "disabled",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 5,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 2,
     "sections": 3,
     "motion": 1,
     "states": 1

@@ -16,8 +16,10 @@
     "Motion & Animation",
     "Accessibility",
     "Responsive Behavior",
-    "Iteration Guide",
     "Known Gaps"
+  ],
+  "optional_sections_missing": [
+    "Iteration Guide"
   ],
   "roles_resolved": {
     "canvas": "canvas",
@@ -40,6 +42,30 @@
       "ratio": 1.3,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "focus on primary",
+      "fg": "#227e9e",
+      "bg": "#312d2a",
+      "ratio": 2.95,
+      "required": 3.0,
+      "role": "focus indicator on accent"
+    },
+    {
+      "pair": "on-primary on accent-gold",
+      "fg": "#ffffff",
+      "bg": "#f0cc71",
+      "ratio": 1.55,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-gold-soft",
+      "fg": "#ffffff",
+      "bg": "#f7e0a1",
+      "ratio": 1.3,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -53,17 +79,24 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "disabled",
+    "selected"
+  ],
   "states_missing": [
     "hover",
     "focus-visible",
-    "loading"
+    "loading",
+    "error"
   ],
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 1,
     "sections": 1,
     "motion": 1,
-    "states": 2
+    "states": 1
   }
 }

@@ -19,6 +19,7 @@
     "Do's and Don'ts",
     "Responsive Behavior"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {},
   "roles_missing": [
     "accent",
@@ -43,8 +44,14 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [],
   "states_missing": [
+    "hover",
     "focus-visible",
+    "active",
+    "pressed",
+    "disabled",
+    "loading",
     "selected",
     "error"
   ],
@@ -54,6 +61,6 @@
     "contrast": 5,
     "sections": 1,
     "motion": 1,
-    "states": 2
+    "states": 1
   }
 }

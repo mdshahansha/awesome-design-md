@@ -19,11 +19,12 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface-dark",
     "text": "ink",
-    "border": "hairline",
+    "border": "hairline-strong",
     "accent": "primary",
     "on-accent": "on-primary"
   },
@@ -42,12 +43,20 @@
       "role": "body text on surface"
     },
     {
-      "pair": "hairline on canvas",
-      "fg": "#cccccc",
-      "bg": "#ffffff",
+      "pair": "on-primary on accent-purple",
+      "fg": "#000000",
+      "bg": "#952fc6",
+      "ratio": 3.5,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-purple-deep",
+      "fg": "#000000",
+      "bg": "#4d1368",
       "ratio": 1.61,
-      "required": 3.0,
-      "role": "component boundary"
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -61,17 +70,24 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "disabled"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 2,
     "sections": 3,
     "motion": 1,
-    "states": 2
+    "states": 1
   }
 }

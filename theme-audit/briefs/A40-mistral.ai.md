@@ -10,10 +10,11 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
 - Contrast: muted on canvas (#a8a8a8 on #ffffff) measures 2.38:1, below the 4.5:1 required for secondary text.
-- Contrast: on-primary on primary (#ffffff on #fa520f) measures 3.34:1, below the 4.5:1 required for text on accent.
-- Contrast: hairline on canvas (#e5e5e5 on #ffffff) measures 1.26:1, below the 3.0:1 required for component boundary.
+- Contrast: muted on surface (#a8a8a8 on #fafafa) measures 2.28:1, below the 4.5:1 required for secondary text on surface.
+- Contrast: hairline-strong on canvas (#c7c7c7 on #ffffff) measures 1.69:1, below the 3.0:1 required for component boundary.
+- Contrast: on-primary on primary (#ffffff on #fa520f) measures 3.34:1, below the 4.5:1 required for text on signal colour.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible, loading, selected, error.
+- States never named anywhere in the file: hover, focus-visible, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

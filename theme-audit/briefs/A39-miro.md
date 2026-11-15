@@ -10,9 +10,19 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
 - Contrast: muted on canvas (#a5a8b5 on #ffffff) measures 2.37:1, below the 4.5:1 required for secondary text.
-- Contrast: hairline on canvas (#e0e2e8 on #ffffff) measures 1.3:1, below the 3.0:1 required for component boundary.
+- Contrast: muted on surface (#a5a8b5 on #f7f8fa) measures 2.23:1, below the 4.5:1 required for secondary text on surface.
+- Contrast: hairline-strong on canvas (#c7cad5 on #ffffff) measures 1.64:1, below the 3.0:1 required for component boundary.
+- Contrast: on-primary on brand-yellow (#ffffff on #ffd02f) measures 1.47:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-yellow-deep (#ffffff on #fcb900) measures 1.74:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-coral (#ffffff on #ff9999) measures 2.05:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-rose (#ffffff on #ffd8f4) measures 1.28:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-pink (#ffffff on #fde0f0) measures 1.23:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-teal (#ffffff on #0fbcb0) measures 2.38:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-orange-light (#ffffff on #ffe6cd) measures 1.2:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-red (#ffffff on #fbd4d4) measures 1.36:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-red-dark (#ffffff on #e3c5c5) measures 1.61:1, below the 4.5:1 required for text on signal colour.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible, loading, selected.
+- States never named anywhere in the file: hover, focus-visible, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

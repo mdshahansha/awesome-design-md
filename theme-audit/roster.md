@@ -7,7 +7,7 @@
 |---|---|---|---|---|---|
 | A01 | `1win` | An analysis of 1win's design language — a near-black | `design-md/1win/DESIGN.md` | Calm |  |
 | A02 | `airbnb` | A warm, generous consumer marketplace anchored on a clean | `design-md/airbnb/DESIGN.md` | Playful |  |
-| A03 | `airtable` | A sober, editorial workflow-software interface anchored on white canvas | `design-md/airtable/DESIGN.md` | Playful |  |
+| A03 | `airtable` | A sober, editorial workflow-software interface anchored on white canvas | `design-md/airtable/DESIGN.md` | Calm |  |
 | A04 | `aljazeera` | An analysis of Al Jazeera's design language — a | `design-md/aljazeera/DESIGN.md` | Calm |  |
 | A05 | `apple` | A photography-first interface that turns marketing into a museum | `design-md/apple/DESIGN.md` | Cinematic |  |
 | A06 | `binance` | A confident financial-platform interface anchored on a deep near-black | `design-md/binance/DESIGN.md` | Calm |  |
@@ -94,5 +94,5 @@
 
 - **Crisp**: 30
 - **Cinematic**: 20
-- **Calm**: 18
-- **Playful**: 16
+- **Calm**: 19
+- **Playful**: 15

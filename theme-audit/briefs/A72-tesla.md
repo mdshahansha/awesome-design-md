@@ -10,7 +10,7 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: accent, border, canvas, focus, on-accent, surface, text, text-dim.
 - Missing sections: Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Motion & Animation, Accessibility, Do's and Don'ts, Responsive Behavior, Known Gaps.
-- States never named anywhere in the file: focus-visible, selected.
+- States never named anywhere in the file: hover, focus-visible, active, pressed, disabled, loading, selected, error.
 - No frontmatter token block at all (legacy format file).
 
 PROCESS

@@ -22,7 +22,12 @@ DEVTOOL = {"cursor", "expo", "raycast", "superhuman", "vercel", "warp", "ollama"
            "posthog", "sanity", "sentry", "supabase", "replicate", "resend",
            "together.ai", "voltagent", "x.ai", "mintlify", "linear.app",
            "cohere", "minimax", "mistral.ai"}
-PLAYFUL = {"airtable", "figma", "miro", "zapier", "lovable", "clay", "pinterest",
+# airtable was here until agent A03 argued it out on evidence from the file:
+# its own description says sober and editorial, display weight is 400 with an
+# explicit Don't against bolding, gradients are forbidden, and the bright tones
+# are static card backgrounds rather than interactive surfaces. Rule 3 had been
+# firing on colour count. See SPEC section 5.
+PLAYFUL = {"figma", "miro", "zapier", "lovable", "clay", "pinterest",
            "nintendo-2001", "starbucks", "slack", "intercom", "mydealz"}
 CINEMATIC = AUTOMOTIVE | {"apple", "spacex", "playstation", "nike", "spotify",
                           "shopify", "runwayml", "elevenlabs", "revolut",

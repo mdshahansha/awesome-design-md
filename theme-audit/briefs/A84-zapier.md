@@ -9,8 +9,8 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: border, focus, surface, text-dim.
-- Contrast: on-primary on primary (#fffefb on #ff4f00) measures 3.27:1, below the 4.5:1 required for text on accent.
-- Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Iteration Guide, Known Gaps.
+- Contrast: on-primary on primary (#fffefb on #ff4f00) measures 3.27:1, below the 4.5:1 required for text on signal colour.
+- Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Known Gaps.
 - States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected, error.
 
 PROCESS

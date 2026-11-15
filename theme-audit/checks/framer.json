@@ -19,6 +19,7 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "text": "ink",
@@ -53,11 +54,17 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "selected"
+  ],
   "states_missing": [
     "hover",
     "focus-visible",
     "disabled",
-    "loading"
+    "loading",
+    "error"
   ],
   "score": {
     "tokens": 2,

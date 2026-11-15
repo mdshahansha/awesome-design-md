@@ -10,7 +10,7 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: border, focus, on-accent, text-dim.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: hover, focus-visible, loading, selected.
+- States never named anywhere in the file: hover, focus-visible, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

@@ -19,12 +19,13 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface",
     "text": "ink",
     "text-dim": "muted",
-    "border": "hairline",
+    "border": "hairline-strong",
     "accent": "primary",
     "on-accent": "on-primary"
   },
@@ -42,12 +43,92 @@
       "role": "secondary text"
     },
     {
-      "pair": "hairline on canvas",
-      "fg": "#e0e2e8",
+      "pair": "muted on surface",
+      "fg": "#a5a8b5",
+      "bg": "#f7f8fa",
+      "ratio": 2.23,
+      "required": 4.5,
+      "role": "secondary text on surface"
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#c7cad5",
       "bg": "#ffffff",
-      "ratio": 1.3,
+      "ratio": 1.64,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on brand-yellow",
+      "fg": "#ffffff",
+      "bg": "#ffd02f",
+      "ratio": 1.47,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-yellow-deep",
+      "fg": "#ffffff",
+      "bg": "#fcb900",
+      "ratio": 1.74,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-coral",
+      "fg": "#ffffff",
+      "bg": "#ff9999",
+      "ratio": 2.05,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-rose",
+      "fg": "#ffffff",
+      "bg": "#ffd8f4",
+      "ratio": 1.28,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-pink",
+      "fg": "#ffffff",
+      "bg": "#fde0f0",
+      "ratio": 1.23,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-teal",
+      "fg": "#ffffff",
+      "bg": "#0fbcb0",
+      "ratio": 2.38,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-orange-light",
+      "fg": "#ffffff",
+      "bg": "#ffe6cd",
+      "ratio": 1.2,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-red",
+      "fg": "#ffffff",
+      "bg": "#fbd4d4",
+      "ratio": 1.36,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-red-dark",
+      "fg": "#ffffff",
+      "bg": "#e3c5c5",
+      "ratio": 1.61,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -63,17 +144,24 @@
   ],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "disabled"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 4,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 1,
     "sections": 3,
     "motion": 3,
-    "states": 2
+    "states": 1
   }
 }

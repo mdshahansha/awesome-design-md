@@ -1,7 +1,7 @@
 You are Agent A03, the dedicated reviewer for the site file `airtable` in the repo at /Users/mohammadshahansha/Desktop/awesome-design-md.
 
 Theme intent: A sober, editorial workflow-software interface anchored on white canvas
-Motion profile: Playful
+Motion profile: Calm
 File you may edit: `design-md/airtable/DESIGN.md` — ONLY this file. Everything else in the repo is read-only, including theme-audit/*, README.md and every other site's DESIGN.md.
 
 Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the token contract, the contrast thresholds, the section contract, the motion token block, the four motion profiles and their values, the motion rules, and the honest limits of this audit. Follow it exactly.
@@ -9,9 +9,9 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
-- Contrast: hairline on canvas (#dddddd on #ffffff) measures 1.36:1, below the 3.0:1 required for component boundary.
+- Contrast: border-strong on canvas (#9297a0 on #ffffff) measures 2.93:1, below the 3.0:1 required for component boundary.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible, loading, selected.
+- States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.
@@ -29,14 +29,14 @@ C. Background and elevation: compute the ratios between canvas, surface and rais
 D. Typography: does every role have size, weight and line height? Is body text readable on this file's own surfaces?
 E. Borders, radius, focus ring: internally consistent ladders, with no value sitting outside its own scale.
 F. Motion and animation — the main gap, and the reason this audit exists. Add:
-   - a `motion:` group to the frontmatter carrying the **Playful** profile's values per SPEC section 5;
+   - a `motion:` group to the frontmatter carrying the **Calm** profile's values per SPEC section 5;
    - a `## Motion & Animation` section placed after `## Components`, whose FIRST line states that this motion system is prescribed to match the brand's visual identity and was not measured from the live site;
    - inside it, a table of interaction x duration x easing x property x reduced-motion behaviour covering hover, press, focus, page transition, modal or drawer, dropdown, toast, list enter, list exit and loading;
    - a `@media (prefers-reduced-motion: reduce)` rule stating what is removed and what remains.
    Reference every value as {motion.duration-base} and so on. Animate transform and opacity only.
 G. Accessibility: add a `## Accessibility` section covering measured contrast for the key pairs, focus ring visibility on each surface this file defines, minimum tap target, and reduced-motion. State real failures rather than hiding them.
 H. States: every component entry names its states, from default, hover, focus-visible, active/pressed, disabled, loading, selected, error. A component with genuinely two states says so.
-I. Identity: after your edits, does the file still read as this specific brand, or has it drifted toward a generic token dump? If the assigned Playful profile is wrong for this brand, argue for a different one in the report and use the one you conclude is right — do not switch silently.
+I. Identity: after your edits, does the file still read as this specific brand, or has it drifted toward a generic token dump? If the assigned Calm profile is wrong for this brand, argue for a different one in the report and use the one you conclude is right — do not switch silently.
 
 RULES
 - One file only. If the root cause sits in README.md, CONTRIBUTING.md or the harness, do not edit it: list it under "Shared issues" with the file, the line and your proposed fix.

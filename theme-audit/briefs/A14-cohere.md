@@ -9,9 +9,10 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Contrast: muted on canvas (#93939f on #ffffff) measures 3.04:1, below the 4.5:1 required for secondary text.
+- Contrast: muted on card-border (#93939f on #f2f2f2) measures 2.71:1, below the 4.5:1 required for secondary text on surface.
 - Contrast: hairline on canvas (#d9d9dd on #ffffff) measures 1.41:1, below the 3.0:1 required for component boundary.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected.
+- States never named anywhere in the file: hover, focus-visible, active, pressed, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

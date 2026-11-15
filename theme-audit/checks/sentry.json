@@ -19,6 +19,7 @@
     "Accessibility",
     "Known Gaps"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "text": "ink",
     "border": "hairline-violet",
@@ -32,7 +33,24 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [],
+  "contrast_failures": [
+    {
+      "pair": "on-primary on accent-lime",
+      "fg": "#ffffff",
+      "bg": "#c2ef4e",
+      "ratio": 1.33,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-pink",
+      "fg": "#ffffff",
+      "bg": "#fa7faa",
+      "ratio": 2.42,
+      "required": 4.5,
+      "role": "text on signal colour"
+    }
+  ],
   "motion_group": [],
   "motion_keys_missing": [
     "duration-base",
@@ -44,17 +62,24 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "pressed",
+    "disabled"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
+    "active",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 1,
     "refs": 5,
-    "contrast": 5,
+    "contrast": 3,
     "sections": 2,
     "motion": 1,
-    "states": 2
+    "states": 1
   }
 }

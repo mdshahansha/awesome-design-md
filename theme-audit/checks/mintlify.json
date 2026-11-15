@@ -19,12 +19,13 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface",
     "text": "ink",
     "text-dim": "muted",
-    "border": "hairline",
+    "border": "hairline-dark",
     "accent": "primary",
     "on-accent": "on-primary"
   },
@@ -42,12 +43,68 @@
       "role": "secondary text"
     },
     {
-      "pair": "hairline on canvas",
-      "fg": "#e5e5e5",
-      "bg": "#ffffff",
-      "ratio": 1.26,
-      "required": 3.0,
-      "role": "component boundary"
+      "pair": "muted on surface",
+      "fg": "#a8a8aa",
+      "bg": "#f7f7f7",
+      "ratio": 2.22,
+      "required": 4.5,
+      "role": "secondary text on surface"
+    },
+    {
+      "pair": "on-primary on brand-green",
+      "fg": "#ffffff",
+      "bg": "#00d4a4",
+      "ratio": 1.92,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-green-deep",
+      "fg": "#ffffff",
+      "bg": "#00b48a",
+      "ratio": 2.66,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-green-soft",
+      "fg": "#ffffff",
+      "bg": "#7cebcb",
+      "ratio": 1.44,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-warn",
+      "fg": "#ffffff",
+      "bg": "#c37d0d",
+      "ratio": 3.35,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-annotate",
+      "fg": "#ffffff",
+      "bg": "#1ba673",
+      "ratio": 3.11,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-error",
+      "fg": "#ffffff",
+      "bg": "#d45656",
+      "ratio": 3.99,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-cursor",
+      "fg": "#ffffff",
+      "bg": "#888888",
+      "ratio": 3.54,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -63,16 +120,24 @@
   ],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "disabled",
+    "selected",
+    "error"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
     "loading"
   ],
   "score": {
     "tokens": 4,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 1,
     "sections": 3,
     "motion": 3,
-    "states": 3
+    "states": 2
   }
 }

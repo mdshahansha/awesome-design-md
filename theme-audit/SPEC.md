@@ -12,6 +12,10 @@ no screenshot. So:
 - **Computable here:** token coverage, contrast ratios, reference integrity,
   section coverage, state coverage, internal consistency of the spacing and
   radius ladders.
+- **Scored honestly, after two corrections:** the states check counts a state
+  only where the Components section documents it in a table row or list item,
+  not anywhere the word appears in the file; and `Iteration Guide` is optional,
+  so its absence costs nothing.
 - **Not computable here:** overlap, horizontal overflow, clipping, tap-target
   size, frame rate, layout shift. Those need a rendered page. Any claim about
   them in a report is invalid.
@@ -22,7 +26,10 @@ no screenshot. So:
 ## 1. Frontmatter token contract
 
 Every file carries a YAML block. Required groups: `colors`, `typography`,
-`spacing`, `rounded`, `components`, and now `motion`.
+`spacing`, `rounded`, `components`, and now `motion`. Add a `shadow:` group
+where the file documents real shadow values in its prose — several state an
+`rgba(...)` elevation with no token to reference, which is why a `{shadow.small}`
+reference once pointed at nothing.
 
 Required colour roles. A role is satisfied by any key matching its pattern, so
 `surface-cream` satisfies `surface`:
@@ -37,6 +44,12 @@ Required colour roles. A role is satisfied by any key matching its pattern, so
 | `accent` | the brand's signal colour |
 | `on-accent` | text or icon sitting on the accent |
 | `focus` | focus ring — **currently absent from all 84 files** |
+
+Where a file documents both light and dark signature surfaces, one ring cannot
+serve both: a blue that passes on white can sit at 1.2:1 on a coral card. Such a
+file defines `focus` **and** `focus-on-dark`, and its Accessibility section
+states which surface each one is drawn on. The ring must reach 3:1 against every
+surface it can appear over, not just the canvas.
 
 Every `{group.token}` in the prose must resolve to a key in that file's
 frontmatter. The repo is at zero dangling references; keep it there.
@@ -53,6 +66,19 @@ Measured with WCAG 2.1 relative luminance.
 | `on-accent` on `accent` | 4.5:1 |
 | `border` on `canvas` | 3.0:1 |
 | `focus` on `canvas` | 3.0:1 |
+
+Every signal colour is checked, not just the representative accent: a brand with
+two CTA colours was hiding one failure entirely. Tokens whose name contains
+`disabled` are exempt, since WCAG sets no contrast requirement on them.
+
+**Extracted values are frozen, including the utility tones.** A hairline at
+1.36:1 is as much an extracted fact as the brand's red, so do not "fix" it in
+place. Where a frozen tone is doing a job that needs contrast — a hairline that
+is the only boundary of a text input, say — add a **parallel accessible token**
+alongside it (`hairline-strong`, `divider` versus a control boundary), scope the
+original to decoration in the prose, and label the new token as prescribed. Then
+say plainly in the file that the real brand fails AA at that point. That is the
+useful fact for anyone building on the document.
 
 **Do not change a brand's identity colour to pass.** These files document real
 brands; falsifying a hex makes the document wrong. A failing pair is recorded
@@ -119,7 +145,14 @@ Assignment rule, applied in order:
 
 1. Dark canvas + luxury/automotive/hardware identity → **Cinematic**
 2. Terminal, IDE, infra or developer-tool identity → **Crisp**
-3. Saturated multi-colour or illustration-led consumer identity → **Playful**
+3. Saturated multi-colour or illustration-led consumer identity → **Playful**.
+   Judge this on saturation *and role*, not on how many colours the palette
+   lists. Bright tones used as static card backgrounds behind screenshots are
+   not a playful identity; the test is whether saturated colour appears on
+   interactive elements and whether the type voice is light and informal. A file
+   whose own description says "sober" or "editorial", whose display weight is
+   400, and which forbids gradients is **Calm** no matter how many hexes it
+   defines.
 4. Everything else → **Calm**
 
 ## 6. Motion rules (every profile)

@@ -19,10 +19,11 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "text": "ink",
-    "border": "hairline",
+    "border": "hairline-tertiary",
     "accent": "primary",
     "on-accent": "on-primary"
   },
@@ -34,12 +35,28 @@
   "dangling_refs": [],
   "contrast_failures": [
     {
-      "pair": "hairline on canvas",
-      "fg": "#23252a",
+      "pair": "hairline-tertiary on canvas",
+      "fg": "#3e3e44",
       "bg": "#010102",
-      "ratio": 1.36,
+      "ratio": 1.96,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on primary-hover",
+      "fg": "#ffffff",
+      "bg": "#828fff",
+      "ratio": 2.87,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-secure",
+      "fg": "#ffffff",
+      "bg": "#7a7fad",
+      "ratio": 3.84,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -53,17 +70,24 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "hover",
+    "pressed",
+    "selected"
+  ],
   "states_missing": [
     "focus-visible",
     "active",
-    "loading"
+    "disabled",
+    "loading",
+    "error"
   ],
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 2,
     "sections": 3,
     "motion": 1,
-    "states": 2
+    "states": 1
   }
 }

@@ -10,8 +10,8 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, surface, text-dim.
 - Contrast: hairline on canvas (#3f3a36 on #2b2622) measures 1.33:1, below the 3.0:1 required for component boundary.
-- Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Iteration Guide, Known Gaps.
-- States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected.
+- Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Known Gaps.
+- States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

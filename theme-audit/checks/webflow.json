@@ -16,8 +16,10 @@
     "Motion & Animation",
     "Accessibility",
     "Responsive Behavior",
-    "Iteration Guide",
     "Known Gaps"
+  ],
+  "optional_sections_missing": [
+    "Iteration Guide"
   ],
   "roles_resolved": {
     "canvas": "canvas",
@@ -40,6 +42,54 @@
       "ratio": 1.43,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on accent-pink",
+      "fg": "#ffffff",
+      "bg": "#ed52cb",
+      "ratio": 3.15,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-blue",
+      "fg": "#ffffff",
+      "bg": "#3b89ff",
+      "ratio": 3.38,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-orange",
+      "fg": "#ffffff",
+      "bg": "#ff6b00",
+      "ratio": 2.86,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-green",
+      "fg": "#ffffff",
+      "bg": "#00d722",
+      "ratio": 1.95,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-yellow",
+      "fg": "#ffffff",
+      "bg": "#ffae13",
+      "ratio": 1.86,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on accent-red",
+      "fg": "#ffffff",
+      "bg": "#ee1d36",
+      "ratio": 4.32,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -53,18 +103,22 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active"
+  ],
   "states_missing": [
     "hover",
     "focus-visible",
     "pressed",
     "disabled",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 1,
     "sections": 1,
     "motion": 1,
     "states": 1

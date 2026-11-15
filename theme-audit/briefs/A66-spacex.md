@@ -10,9 +10,8 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, surface, text-dim.
 - Contrast: ink on canvas-night (#000000 on #000000) measures 1.0:1, below the 4.5:1 required for body text.
-- Contrast: hairline-on-dark on canvas-night (#3a3a3f on #000000) measures 1.86:1, below the 3.0:1 required for component boundary.
 - Missing sections: Motion & Animation, Accessibility, Known Gaps.
-- States never named anywhere in the file: focus-visible, active, pressed, disabled, loading, selected, error.
+- States never named anywhere in the file: hover, focus-visible, active, pressed, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

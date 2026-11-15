@@ -10,8 +10,14 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
 - Contrast: hairline on canvas (#e5e5e5 on #fffaf0) measures 1.21:1, below the 3.0:1 required for component boundary.
+- Contrast: on-primary on brand-pink (#ffffff on #ff4d8b) measures 3.14:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-lavender (#ffffff on #b8a4ed) measures 2.19:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-peach (#ffffff on #ffb084) measures 1.78:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-ochre (#ffffff on #e8b94a) measures 1.83:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-mint (#ffffff on #a4d4c5) measures 1.64:1, below the 4.5:1 required for text on signal colour.
+- Contrast: on-primary on brand-coral (#ffffff on #ff6b5a) measures 2.8:1, below the 4.5:1 required for text on signal colour.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible, pressed, loading, selected.
+- States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

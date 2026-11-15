@@ -9,9 +9,10 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
+- Contrast: muted on surface-card (#7e7e7e on #1a1a1a) measures 4.29:1, below the 4.5:1 required for secondary text on surface.
 - Contrast: hairline on canvas (#3c3c3c on #000000) measures 1.9:1, below the 3.0:1 required for component boundary.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible, loading, selected.
+- States never named anywhere in the file: focus-visible, pressed, disabled, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

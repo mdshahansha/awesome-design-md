@@ -19,6 +19,7 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface",
@@ -42,12 +43,68 @@
       "role": "secondary text"
     },
     {
+      "pair": "muted on surface",
+      "fg": "#a8aab2",
+      "bg": "#f7f8fa",
+      "ratio": 2.18,
+      "required": 4.5,
+      "role": "secondary text on surface"
+    },
+    {
       "pair": "hairline on canvas",
       "fg": "#e5e7eb",
       "bg": "#ffffff",
       "ratio": 1.24,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on brand-coral",
+      "fg": "#ffffff",
+      "bg": "#ff5530",
+      "ratio": 3.18,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-magenta",
+      "fg": "#ffffff",
+      "bg": "#ea5ec1",
+      "ratio": 3.06,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-blue-mid",
+      "fg": "#ffffff",
+      "bg": "#3b82f6",
+      "ratio": 3.68,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-cyan",
+      "fg": "#ffffff",
+      "bg": "#3daeff",
+      "ratio": 2.41,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-blue-200",
+      "fg": "#ffffff",
+      "bg": "#bfdbfe",
+      "ratio": 1.42,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-purple",
+      "fg": "#ffffff",
+      "bg": "#a855f7",
+      "ratio": 3.96,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -63,7 +120,14 @@
   ],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "disabled",
+    "error"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
     "loading",
     "selected"
@@ -71,9 +135,9 @@
   "score": {
     "tokens": 4,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 1,
     "sections": 3,
     "motion": 3,
-    "states": 2
+    "states": 1
   }
 }

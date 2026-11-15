@@ -19,10 +19,11 @@
     "Accessibility",
     "Known Gaps"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas-night",
     "text": "ink",
-    "border": "hairline-on-dark",
+    "border": "hairline-on-light",
     "accent": "primary",
     "on-accent": "on-primary"
   },
@@ -40,14 +41,6 @@
       "ratio": 1.0,
       "required": 4.5,
       "role": "body text"
-    },
-    {
-      "pair": "hairline-on-dark on canvas-night",
-      "fg": "#3a3a3f",
-      "bg": "#000000",
-      "ratio": 1.86,
-      "required": 3.0,
-      "role": "component boundary"
     }
   ],
   "motion_group": [],
@@ -61,7 +54,9 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [],
   "states_missing": [
+    "hover",
     "focus-visible",
     "active",
     "pressed",
@@ -73,7 +68,7 @@
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 4,
     "sections": 2,
     "motion": 1,
     "states": 1

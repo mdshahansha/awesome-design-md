@@ -11,9 +11,9 @@ Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
 - Contrast: ink on surface-card-dark (#181a20 on #1e2329) measures 1.1:1, below the 4.5:1 required for body text on surface.
 - Contrast: muted on canvas-light (#707a8a on #ffffff) measures 4.34:1, below the 4.5:1 required for secondary text.
-- Contrast: hairline-on-light on canvas-light (#eaecef on #ffffff) measures 1.18:1, below the 3.0:1 required for component boundary.
+- Contrast: muted on surface-card-dark (#707a8a on #1e2329) measures 3.65:1, below the 4.5:1 required for secondary text on surface.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible, loading, selected.
+- States never named anywhere in the file: hover, focus-visible, pressed, loading, selected, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

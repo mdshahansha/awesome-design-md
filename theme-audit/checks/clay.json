@@ -19,6 +19,7 @@
     "Motion & Animation",
     "Accessibility"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "surface": "surface-soft",
@@ -40,6 +41,54 @@
       "ratio": 1.21,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on brand-pink",
+      "fg": "#ffffff",
+      "bg": "#ff4d8b",
+      "ratio": 3.14,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-lavender",
+      "fg": "#ffffff",
+      "bg": "#b8a4ed",
+      "ratio": 2.19,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-peach",
+      "fg": "#ffffff",
+      "bg": "#ffb084",
+      "ratio": 1.78,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-ochre",
+      "fg": "#ffffff",
+      "bg": "#e8b94a",
+      "ratio": 1.83,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-mint",
+      "fg": "#ffffff",
+      "bg": "#a4d4c5",
+      "ratio": 1.64,
+      "required": 4.5,
+      "role": "text on signal colour"
+    },
+    {
+      "pair": "on-primary on brand-coral",
+      "fg": "#ffffff",
+      "bg": "#ff6b5a",
+      "ratio": 2.8,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -53,16 +102,22 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active"
+  ],
   "states_missing": [
+    "hover",
     "focus-visible",
     "pressed",
+    "disabled",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 4,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 1,
     "sections": 3,
     "motion": 1,
     "states": 1

@@ -19,10 +19,11 @@
     "Accessibility",
     "Known Gaps"
   ],
+  "optional_sections_missing": [],
   "roles_resolved": {
     "canvas": "canvas",
     "text": "ink",
-    "border": "hairline",
+    "border": "hairline-strong",
     "accent": "primary",
     "on-accent": "on-primary"
   },
@@ -32,16 +33,7 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
-    {
-      "pair": "hairline on canvas",
-      "fg": "#e6e6e6",
-      "bg": "#ffffff",
-      "ratio": 1.25,
-      "required": 3.0,
-      "role": "component boundary"
-    }
-  ],
+  "contrast_failures": [],
   "motion_group": [],
   "motion_keys_missing": [
     "duration-base",
@@ -53,17 +45,22 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "hover",
+    "pressed"
+  ],
   "states_missing": [
     "focus-visible",
     "active",
     "disabled",
     "loading",
-    "selected"
+    "selected",
+    "error"
   ],
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 5,
     "sections": 2,
     "motion": 1,
     "states": 1

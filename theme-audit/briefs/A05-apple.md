@@ -11,8 +11,9 @@ Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, surface.
 - Contrast: body-muted on canvas (#cccccc on #ffffff) measures 1.61:1, below the 4.5:1 required for secondary text.
 - Contrast: hairline on canvas (#e0e0e0 on #ffffff) measures 1.32:1, below the 3.0:1 required for component boundary.
+- Contrast: on-primary on primary-on-dark (#ffffff on #2997ff) measures 3.02:1, below the 4.5:1 required for text on signal colour.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible.
+- States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

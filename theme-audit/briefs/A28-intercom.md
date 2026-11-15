@@ -11,7 +11,7 @@ Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, surface, text-dim.
 - Contrast: hairline on canvas (#d3cec6 on #f5f1ec) measures 1.39:1, below the 3.0:1 required for component boundary.
 - Missing sections: Motion & Animation, Accessibility.
-- States never named anywhere in the file: focus-visible, active, loading.
+- States never named anywhere in the file: hover, focus-visible, active, disabled, loading, error.
 
 PROCESS
 1. Read theme-audit/SPEC.md, then read your owned file end to end.

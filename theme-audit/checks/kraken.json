@@ -15,8 +15,10 @@
     "Accessibility",
     "Do's and Don'ts",
     "Responsive Behavior",
-    "Iteration Guide",
     "Known Gaps"
+  ],
+  "optional_sections_missing": [
+    "Iteration Guide"
   ],
   "roles_resolved": {},
   "roles_missing": [
@@ -42,6 +44,7 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [],
   "states_missing": [
     "hover",
     "focus-visible",

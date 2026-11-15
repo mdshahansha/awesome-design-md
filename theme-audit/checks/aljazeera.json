@@ -16,8 +16,10 @@
     "Motion & Animation",
     "Accessibility",
     "Responsive Behavior",
-    "Iteration Guide",
     "Known Gaps"
+  ],
+  "optional_sections_missing": [
+    "Iteration Guide"
   ],
   "roles_resolved": {
     "canvas": "canvas",
@@ -34,20 +36,20 @@
   "dangling_refs": [],
   "contrast_failures": [
     {
-      "pair": "on-primary on primary",
-      "fg": "#ffffff",
-      "bg": "#fa9000",
-      "ratio": 2.32,
-      "required": 4.5,
-      "role": "text on accent"
-    },
-    {
       "pair": "hairline on canvas",
       "fg": "#d8d8d8",
       "bg": "#ffffff",
       "ratio": 1.43,
       "required": 3.0,
       "role": "component boundary"
+    },
+    {
+      "pair": "on-primary on primary",
+      "fg": "#ffffff",
+      "bg": "#fa9000",
+      "ratio": 2.32,
+      "required": 4.5,
+      "role": "text on signal colour"
     }
   ],
   "motion_group": [],
@@ -61,6 +63,9 @@
   "durations_found": [],
   "easings_found": 0,
   "layout_animation_mentions": [],
+  "states_documented": [
+    "active"
+  ],
   "states_missing": [
     "hover",
     "focus-visible",
