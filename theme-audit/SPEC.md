@@ -60,7 +60,12 @@ better served by one mid-luminance ring that clears 3:1 against all of them
 than by a pair named for light and dark. Over full-bleed photography, which has
 no measurable colour, specify a two-tone ring: the brand colour with a 1px
 outer edge in the opposite polarity. The ring must reach 3:1 against every
-surface it can appear over, not just the canvas.
+surface it can appear over, not just the canvas — meaning the surfaces it is
+drawn *on*, not the control fill it surrounds. Requiring both is often
+arithmetically impossible: a white canvas caps a ring's luminance while a
+saturated CTA fill demands a higher one, with no value satisfying each. A ring
+drawn outside its control, with a stated offset, is judged against the surface
+behind it, which is what WCAG 2.2 Focus Appearance asks for. State the offset.
 
 Where the prose says a particular ink is drawn on a particular ground — a
 label on a product colour, a caption on a tinted band — declare that pair in

@@ -288,23 +288,23 @@ def audit(path):
                     if re.match(r"^(canvas|background|bg|base|surface|card|panel)", k)]
     accent_key = roles.get("accent")
 
-    for ring in focus_tokens:
-        ring_theme = theme_of(ring)
-        targets = [s for s in surface_keys if theme_of(s) == ring_theme]
-        if not targets:
-            # A ring named for a theme this palette never surfaces (focus-on-dark
-            # where the dark bands are untokenised) has nothing measurable here.
-            continue
-        # The accent fill is a surface a ring can land on, unless the brand's
-        # accent is its own ink or paper, where polarity offset covers it.
-        if accent_key and not achromatic(colors[accent_key]) and ring_theme is None:
-            targets = targets + [accent_key]
-        for s in dict.fromkeys(targets):
+    # A file's rings are a system, not independent claims. A surface is covered
+    # when ANY ring clears 3:1 on it, so a ring named for one context
+    # (focus-on-gradient, focus-ink) is not charged for surfaces another ring
+    # serves. A failure means no ring in the file covers that surface at all.
+    for s in dict.fromkeys(surface_keys):
+        if not focus_tokens:
+            break
+        best_ring, best = None, -1.0
+        for ring in focus_tokens:
             ratio = round(contrast(colors[ring], colors[s]), 2)
-            if ratio < 3.0:
-                fails.append({"pair": f"{ring} on {s}", "fg": colors[ring],
-                              "bg": colors[s], "ratio": ratio, "required": 3.0,
-                              "role": "focus indicator"})
+            if ratio > best:
+                best_ring, best = ring, ratio
+        if best < 3.0:
+            fails.append({"pair": f"no ring covers {s} (best: {best_ring})",
+                          "fg": colors[best_ring], "bg": colors[s],
+                          "ratio": best, "required": 3.0,
+                          "role": "focus indicator coverage"})
 
     # Composite ring: the two bands must separate from each other by 3:1.
     for band in focus_bands:
@@ -378,7 +378,7 @@ def audit(path):
 
     seen, deduped = set(), []
     for f in fails:
-        k = (f["pair"], f["required"])
+        k = (f["fg"], f["bg"], f["required"])
         if k not in seen:
             seen.add(k); deduped.append(f)
     fails[:] = sorted(deduped, key=lambda f: f["ratio"])
