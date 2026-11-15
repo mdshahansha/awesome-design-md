@@ -30,7 +30,9 @@ colors:
   stone: "#8595a4"
   hairline: "#ced0d4"
   hairline-soft: "#dee3e9"
+  hairline-strong: "#868b92"
   disabled-text: "#bcc0c4"
+  focus: "#0064e0"
 
 typography:
   hero-display:
@@ -131,6 +133,18 @@ rounded:
   feature: 40px
   full: 100px
   circle: 9999px
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.22, 1, 0.36, 1)
+  ease-enter: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-exit: cubic-bezier(0.5, 0, 0.75, 0)
+  stagger-step: 80ms
+  duration-reduced: 150ms
 
 spacing:
   xxs: 4px
@@ -314,7 +328,7 @@ components:
     padding: "{spacing.section} {spacing.xxl}"
     border: "1px solid {colors.hairline-soft}"
   hero-band-marketing:
-    backgroundColor: "{colors.canvas}"
+    backgroundColor: "{colors.ink-deep}"
     textColor: "{colors.canvas}"
     typography: "{typography.hero-display}"
     rounded: "{rounded.xxxl}"
@@ -379,6 +393,11 @@ Optimistic VF — Meta's variable display face — anchors the entire system, ra
 - **Soft Cloud** ({colors.surface-soft}): Subtle product-thumbnail and warranty-card background; also the search-pill rest state.
 - **Hairline Gray** ({colors.hairline}): 1px input border and form-control divider.
 - **Hairline Soft** ({colors.hairline-soft}): Quieter divider used on cards, footer separators, and section breaks.
+- **Hairline Strong** ({colors.hairline-strong}): **Prescribed, not extracted.** A darkened sibling of {colors.hairline} for any boundary that is the *only* boundary of an interactive control — the `text-input` edge, the `radio-option` edge, the inactive `button-pill-tab` edge. Both extracted hairlines fail the 3:1 non-text contrast minimum (measurements in Accessibility); this token clears it on both grounds the file defines. Scope the two extracted hairlines to decoration: card chrome, footer separators, section breaks, table row rules.
+
+### Focus
+
+- **Focus Cobalt** ({colors.focus}): **Prescribed, not extracted** — no focus ring was captured on these surfaces. The ring is the brand's own cobalt signal, drawn as a 2px solid ring with a 2px offset *outside* the control, so it is judged against the surface behind the control rather than the control's fill. One ring serves all three of this system's surface polarities (measurements in Accessibility), so no `focus-on-dark` companion is needed. Over full-bleed photography, which has no measurable colour, the ring is two-tone: 2px {colors.focus} with a 1px {colors.canvas} outer edge.
 
 ### Text
 - **Deep Ink** ({colors.ink-deep}): Primary headline and body text on light surfaces.
@@ -484,7 +503,28 @@ The system runs predominantly flat. Elevation is reserved for two interaction la
 
 ## Components
 
-> Per the no-hover policy, hover states are NOT documented for any component below. Default and pressed/active states only.
+> Pressed, disabled, selected and error states below are extracted from the captured surfaces. Hover, focus-visible and loading states were **not** captured (the pages were read statically) and are therefore **prescribed** in the state matrix below, consistent with the pressed states that were extracted. The earlier "no-hover policy" note in this file was a capture gap described as a policy; Meta's commerce surfaces do have hover affordances.
+
+### State Matrix
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | yes | yes — fill lifts to `{colors.charcoal}` | yes — 2px `{colors.focus}` ring, 2px offset | yes — `button-primary-pressed` | yes — `button-primary-disabled` | yes — label swaps for a spinner, width locked | n/a | n/a |
+| `button-buy-cta` | yes | yes — fill deepens toward `{colors.primary-deep}` | yes — 2px `{colors.focus}` ring, 2px offset | yes — `button-buy-cta-pressed` | yes — `{colors.disabled-text}` fill | yes — "Adding…" spinner during cart POST | n/a | n/a |
+| `button-secondary` / `button-ghost` | yes | yes — border darkens to `{colors.ink-deep}` | yes — 2px `{colors.focus}` ring, 2px offset | yes — border weight holds, label drops to `{colors.charcoal}` | yes — border and label at `{colors.disabled-text}` | n/a | n/a | n/a |
+| `button-pill-tab` | yes | yes — border steps to `{colors.hairline-strong}` | yes — 2px `{colors.focus}` ring, 2px offset | yes | n/a | n/a | yes — `button-pill-tab-active` | n/a |
+| `button-icon-circular` | yes | yes — `{colors.surface-soft}` fill appears | yes — 2px `{colors.focus}` ring, 2px offset | yes — fill holds, icon to `{colors.ink-deep}` | yes | n/a | n/a | n/a |
+| `text-input` | yes | yes — border steps to `{colors.hairline-strong}` | yes — `text-input-focused`, 2px `{colors.fb-blue}` inner border plus the `{colors.focus}` ring | n/a | yes — `{colors.surface-soft}` fill, `{colors.disabled-text}` label | n/a | n/a | yes — `text-input-error` |
+| `search-pill` | yes | yes — fill lightens to `{colors.canvas}` with a `{colors.hairline-strong}` border | yes — 2px `{colors.focus}` ring, 2px offset | n/a | n/a | yes — inline spinner replaces the search glyph | n/a | n/a |
+| `radio-option` | yes | yes — border steps to `{colors.hairline-strong}` | yes — 2px `{colors.focus}` ring, 2px offset | yes | yes — label at `{colors.disabled-text}` | n/a | yes — `radio-option-selected` | yes — border to `{colors.critical-strong}` |
+| `color-swatch-circle` | yes | yes — ring grows 1px | yes — 2px `{colors.focus}` ring outside the 2px `{colors.canvas}` ring | yes | yes — 40% opacity, diagonal rule for out-of-stock | n/a | yes — 2px `{colors.canvas}` ring | n/a |
+| `card-product-feature` / `card-feature-photo` / `why-buy-tile` | yes | yes — 1.02 scale on the image only, border to `{colors.hairline}` | yes — 2px `{colors.focus}` ring, 2px offset on the whole card when linked | n/a | n/a | yes — `{colors.surface-soft}` skeleton block in the image slot | n/a | n/a |
+| `faq-accordion-item` | yes | yes — chevron darkens to `{colors.ink}` | yes — 2px `{colors.focus}` ring, 2px offset on the question row | yes — chevron rotates 180° | n/a | n/a | yes — expanded item keeps the chevron rotated | n/a |
+| `badge-promo-yellow` / `badge-attention` / `badge-success` / `badge-critical` | yes | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+| `product-thumbnail` | yes | yes — border appears in `{colors.hairline}` | yes — 2px `{colors.focus}` ring, 2px offset | yes | n/a | yes — `{colors.surface-soft}` skeleton until the image decodes | yes — 2px `{colors.ink-deep}` border | n/a |
+| `tech-specs-table` / `testimonial-customer-card` / `promo-banner` / `footer-region` | yes | n/a (static content) | n/a | n/a | n/a | n/a | n/a | n/a |
+
+Badges and the static content blocks above genuinely have one state each — they are non-interactive, so hover, focus-visible, pressed, disabled, loading, selected and error do not apply to them.
 
 ### Buttons
 
@@ -593,6 +633,7 @@ The system runs predominantly flat. Elevation is reserved for two interaction la
 
 **`hero-band-marketing`** — Full-bleed photographic hero with overlaid copy + dual-CTA pair.
 - Edge-to-edge product photography on a dark or photographic background. Overlay copy in `{typography.hero-display}` white. Below the title: 1-line subtitle in `{typography.subtitle-md}` then `button-primary` + `button-secondary` pair.
+- The declared ground for this component is `{colors.ink-deep}`, not `{colors.canvas}`. The hero's actual ground is a photograph, which has no measurable colour; the file's own Elevation & Depth section records that dark hero photography carries a translucent darkening overlay to lift overlaid text. `{colors.ink-deep}` is the darkest ground this file documents and is the ground every other white-on-dark component in the system binds (`card-promo-strip`, `promo-banner`, `button-pill-tab-active`), so the hero is declared against it: white on `{colors.ink-deep}` measures 18.78:1. Requirement for implementers: the photographic ground under hero type must be darkened to at least the luminance of `{colors.ink-deep}` within the type's footprint. Over an undarkened photograph the ratio is not measurable — see Known Gaps.
 
 **`product-gallery-pdp`** — Product detail page main hero: 4-up vertical thumbnail strip on the left, large product image center, sticky purchase rail right.
 - Thumbnails: 80×80px, `{rounded.lg}`, `{colors.surface-soft}` background, 1px `{colors.hairline-soft}` border (active border switches to `{colors.ink-deep}`).
@@ -616,6 +657,118 @@ The system runs predominantly flat. Elevation is reserved for two interaction la
 
 **`footer-region`** — Dense multi-column site footer.
 - Background `{colors.canvas}`, top border `1px solid {colors.hairline-soft}`, padding `{spacing.section} {spacing.xxl}`. Six column groups with section headings in `{typography.body-sm-bold}` `{colors.ink}` and link lists in `{typography.body-sm}` `{colors.steel}`. Bottom row contains language picker, region selector, legal links in `{typography.caption}` `{colors.stone}`.
+
+## Motion & Animation
+
+This motion system is **prescribed to match the brand's visual identity and was not measured from the live site** — no timing function, duration or choreography below was extracted from meta.com. It is the **Cinematic** profile, assigned because the identity is hardware-flagship (Quest VR, Ray-Ban Meta glasses) and the file's own evidence is the Cinematic tell: full-bleed product photography given 50–70% of viewport height, sparse `{typography.hero-display}` type over it, and photography-as-depth instead of shadow. The white canvas does not argue against it.
+
+Duration and easing tokens live in the `motion:` group: `{motion.duration-instant}` (120ms), `{motion.duration-fast}` (240ms), `{motion.duration-base}` (400ms), `{motion.duration-slow}` (600ms), `{motion.duration-emphasis}` (900ms), `{motion.ease-standard}`, `{motion.ease-enter}`, `{motion.ease-exit}`, `{motion.stagger-step}` (80ms), `{motion.duration-reduced}` (150ms).
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, pill tabs, cards) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`, `transform: scale(1.02)` on card imagery only | Scale removed; `opacity` only at `{motion.duration-reduced}` |
+| Press (all pills and controls) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.98)`, `opacity` | Scale removed; fill change applied with no transition |
+| Focus (ring appearance) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the ring | Ring appears instantly, no transition — never suppressed |
+| Page / route transition (PDP ↔ configurator) | enter `{motion.duration-slow}`, exit `{motion.duration-base}` | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity`, `transform: translateY(16px)` | Travel removed; cross-fade at `{motion.duration-reduced}` |
+| Modal / drawer (mobile nav drawer, size guide) | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity`, `transform: translateX(100%)` (drawer) / `scale(0.96)` (modal) | Travel and scale removed; `opacity` only at `{motion.duration-reduced}` |
+| Dropdown (account menu, region selector) | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity`, `transform: translateY(-8px)` | Travel removed; `opacity` only at `{motion.duration-reduced}` |
+| Toast ("Added to cart") | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity`, `transform: translateY(12px)` | Travel removed; `opacity` only at `{motion.duration-reduced}` |
+| List enter (feature grids, `color-sku-picker-row`, FAQ stack) | `{motion.duration-base}` per item, `{motion.stagger-step}` between items, capped at 6 items | `{motion.ease-enter}` | `opacity`, `transform: translateY(12px)` | Stagger and travel removed; all items fade together at `{motion.duration-reduced}` |
+| List exit (filter change, variant swap) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity`, `transform: scale(0.98)` | Scale removed; `opacity` only at `{motion.duration-reduced}` |
+| Loading (cart POST, image skeleton) | `{motion.duration-emphasis}` loop, infinite | `{motion.ease-standard}` | `opacity` pulse on the `{colors.surface-soft}` skeleton; `transform: rotate()` on the button spinner | Spinner rotation frozen; skeleton holds a static `{colors.surface-soft}` block, no pulse |
+
+### Motion Rules
+
+- `transform` and `opacity` only. Never `width`, `height`, `top`, `left` or `margin` — the hero photography scales with `transform`, never by animating its box.
+- Every exit is shorter than its matching entrance (600→400 page, 400→240 modal, 240→120 dropdown, 400→240 toast, 400→240 list).
+- Nothing animates on first paint in a way that delays content: the hero image and its type render immediately; the `{motion.stagger-step}` list reveal applies only to grids below the fold.
+- The only infinite animations are the two loaders above. This system has no brand ambience loop.
+- Hero photography is the one place the Cinematic signature is explicit: a 1.02→1.00 `transform: scale` settle over `{motion.duration-emphasis}` with `{motion.ease-enter}`, with the `{typography.hero-display}` type arriving `{motion.stagger-step}` after it.
+
+### Reduced Motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate, all scale, all rotate, all stagger delays,
+     and the hero photography settle. */
+  /* Removed: the loading skeleton's opacity pulse and the spinner's rotation,
+     which are frozen to a static state. */
+  /* Kept: opacity fades only, at {motion.duration-reduced} (150ms), which is
+     shorter than this profile's own {motion.duration-fast} (240ms). */
+  /* Kept at full strength and never suppressed: the {colors.focus} ring. */
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    transition-property: opacity !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+## Accessibility
+
+### Measured contrast — key pairs
+
+All ratios below are computed with WCAG 2.1 relative luminance from this file's own frontmatter hexes.
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 16.71:1 | 4.5:1 | Pass |
+| `{colors.ink-deep}` on `{colors.canvas}` | 18.78:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 15.13:1 | 4.5:1 | Pass |
+| `{colors.charcoal}` on `{colors.canvas}` | 9.07:1 | 4.5:1 | Pass |
+| `{colors.slate}` on `{colors.canvas}` | 8.59:1 | 4.5:1 | Pass |
+| `{colors.steel}` on `{colors.canvas}` | 5.39:1 | 4.5:1 | Pass |
+| `{colors.steel}` on `{colors.surface-soft}` | 4.88:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.primary}` | 5.39:1 | 4.5:1 | Pass |
+| `{colors.on-ink-button}` on `{colors.ink-button}` | 21.0:1 | 4.5:1 | Pass |
+| `{colors.canvas}` on `{colors.ink-deep}` (promo strip, hero band) | 18.78:1 | 4.5:1 | Pass |
+| `{colors.hairline-strong}` on `{colors.canvas}` | 3.43:1 | 3.0:1 | Pass |
+| `{colors.hairline-strong}` on `{colors.surface-soft}` | 3.11:1 | 3.0:1 | Pass |
+| `{colors.ink-deep}` on `{colors.warning}` (yellow promo badge) | 10.66:1 | 4.5:1 | Pass |
+| `{colors.critical}` on `{colors.canvas}` | 4.61:1 | 4.5:1 | Pass |
+
+### Where this brand genuinely fails AA
+
+These are extracted, frozen brand values. They are disclosed here rather than corrected, because the document's job is to be true about the brand:
+
+- `hairline` (#ced0d4) on `canvas` measures **1.54:1** against the 3:1 non-text minimum. It is the only boundary of `text-input` and of `button-pill-tab` in its inactive state, so at those two points **the real Meta commerce UI fails WCAG 1.4.11**. Use `{colors.hairline-strong}` for control boundaries; keep `hairline` for decoration.
+- `hairline` (#ced0d4) on `surface-soft` measures **1.40:1** against the 3:1 minimum. Same disposition.
+- `hairline-soft` (#dee3e9) on `canvas` measures **1.29:1** against the 3:1 minimum. This tone is card chrome and footer separators only, where no boundary contrast is required, so the failure is cosmetic — but it must not be used as a control edge.
+- `hairline-soft` (#dee3e9) on `surface-soft` measures **1.17:1** against the 3:1 minimum. Same disposition.
+- `warning` (#f7b928) on `canvas` measures **1.76:1** against the 4.5:1 text minimum. This tone is a *fill* — promo-banner and badge backgrounds carrying `{colors.ink-deep}` type at 10.66:1 — and is never drawn as text. Do not use it as a text colour.
+- `warning-bg` (#ffe200) on `canvas` measures **1.30:1** against the 4.5:1 text minimum. Fill only, same disposition.
+- `success-bg` (#24e400) on `canvas` measures **1.73:1** against the 4.5:1 text minimum. Fill only, same disposition.
+- `success` (#31a24c) on `canvas` measures **3.28:1** against the 4.5:1 text minimum. This one **is** used as text ("In stock", "Free returns"), so the failure is real: it passes only as large text at 18.66px+ bold or 24px+ regular, which `{typography.body-sm}` (14px) does not satisfy. See Needs approval in the audit report.
+- `badge-success` draws `{colors.canvas}` on `{colors.success}` at **3.28:1** against the 4.5:1 minimum for its 12px `{typography.caption-bold}` label. A real failure at the captured size.
+- `badge-attention` draws `{colors.canvas}` on `{colors.attention}` at **2.01:1** against the 4.5:1 minimum for its 12px label. The worst text pair in the system; `{colors.ink-deep}` on `{colors.attention}` would measure 9.36:1, which is the fix this document recommends but does not apply, because the white label is the extracted value.
+- `stone` (#8595a4) on `canvas` measures 3.07:1. It is scoped in this file to disabled and de-emphasised labels, where WCAG sets no requirement, and to the breadcrumb separator dot, which is decorative. It must not carry informational text.
+
+### Focus ring visibility on every surface this file defines
+
+The ring is `{colors.focus}` (#0064e0), 2px solid, with a 2px offset **outside** the control, so WCAG 2.2 Focus Appearance measures it against the surface behind the control, not against the control's own fill:
+
+| Surface the ring is drawn on | Ratio vs `{colors.focus}` | Required | Result |
+|---|---|---|---|
+| `{colors.canvas}` (#ffffff) — pages, cards, inputs, nav | 5.39:1 | 3.0:1 | Pass |
+| `{colors.surface-soft}` (#f1f4f7) — thumbnails, warranty cards, search pill | 4.88:1 | 3.0:1 | Pass |
+| `{colors.ink-deep}` (#0a1317) — promo strip, promo banner, active pill tab, hero band | 3.49:1 | 3.0:1 | Pass |
+
+One ring covers all three polarities, so this file defines no `focus-on-dark`. Over full-bleed photography the ring is two-tone — 2px `{colors.focus}` with a 1px `{colors.canvas}` outer edge — because a photograph has no measurable colour and neither band can be verified against it.
+
+### Minimum tap target
+
+These are the sizes this document **specifies**, not measurements of a rendered page — no page was rendered for this audit, so no claim here is a verification.
+
+- Specified floor: 44×44px. Pill buttons specify 14px label plus `14px 30px` padding, which the Responsive Behavior section records as a 40–44px effective height.
+- `button-icon-circular` and `search-pill` are specified at 40×40px, below the 44px floor, with a documented bump to 44×44px on mobile. On desktop they remain under the floor.
+- `color-swatch-circle` is specified at 32×32px with a 12px clear hit zone, giving a specified ~56px target.
+- `text-input` is specified at 44px height.
+
+### Reduced motion
+
+Every animation in Motion & Animation respects `@media (prefers-reduced-motion: reduce)`: all travel, scale and rotation are removed, stagger delays collapse to zero, both loaders freeze, and only `opacity` fades remain at `{motion.duration-reduced}` (150ms) — shorter than this profile's own `{motion.duration-fast}` (240ms). The `{colors.focus}` ring is never suppressed or delayed under reduced motion.
 
 ## Do's and Don'ts
 
@@ -678,6 +831,9 @@ The system runs predominantly flat. Elevation is reserved for two interaction la
 ## Known Gaps
 
 - Selected/checked states for non-button form controls (toggle, multi-select) were not visible on the captured surfaces — implement following the cobalt-on-white pattern from `radio-option-selected`.
-- Animation/transition timings are not extracted; recommend 150–250ms ease-out for primary surface transitions and 300ms ease-in-out for accordion expand/collapse.
+- Animation/transition timings are not extracted. The Motion & Animation section is prescribed from the Cinematic profile and labelled as such; nothing in it is an observed value. An earlier note in this slot recommended 150–250ms ease-out, which was also a guess and is superseded by the profile tokens.
+- Hover, focus-visible and loading states were not captured. They are prescribed in the Components state matrix and labelled there.
+- The `hero-band-marketing` and `card-feature-photo` grounds are photographs, which have no measurable colour. `hero-band-marketing` is declared against `{colors.ink-deep}` as the darkening requirement its white type depends on; `card-feature-photo` declares no text colour at all, so its white overlaid copy is an undeclared and therefore unmeasured pair. Neither can be verified without a rendered page.
+- The focus ring is prescribed, not extracted: no focused control was captured on any of the four source pages.
 - Specific dark-mode token values for canvas, surface, ink, and hairline are not defined; the brand has not surfaced a published dark-mode token set on these commerce pages.
 - Pastel decorative tints inside accessory cards (soft pink, ice blue, mint) appear visually but are not formalized — treat them as photographic content, not as system colors.
