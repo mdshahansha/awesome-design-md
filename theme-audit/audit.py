@@ -310,6 +310,8 @@ def audit(path):
         if "disabled" in name:          # WCAG sets no requirement on disabled
             continue
         bg, fg = deref(props.get("backgroundColor")), deref(props.get("textColor"))
+        if fg and not bg and roles.get("canvas"):
+            bg = colors[roles["canvas"]]        # drawn on the page floor
         if not bg or not fg:
             continue
         need = threshold_for(props)

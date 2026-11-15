@@ -118,7 +118,7 @@ useful information for anyone building on it.
 | **Motion & Animation** | yes — new, missing from all 84 |
 | **Accessibility** | yes — new, missing from all 84 |
 | Do's and Don'ts | yes |
-| Responsive Behavior | yes |
+| Responsive Behavior | yes — as a top-level `##`; where a file already carries it as a Layout subsection, **move** it verbatim, never duplicate it |
 | Iteration Guide | optional |
 | Known Gaps | yes |
 
