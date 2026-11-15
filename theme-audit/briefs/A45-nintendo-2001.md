@@ -8,7 +8,9 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
-- Missing colour roles: accent, border, canvas, focus, on-accent, surface, text, text-dim.
+- Missing colour roles: focus.
+- Contrast: muted-indigo on canvas (#60619c on #7a8aba) measures 1.67:1, below the 4.5:1 required for secondary text.
+- Contrast: hairline on canvas (#5a5f8c on #7a8aba) measures 1.79:1, below the 3.0:1 required for boundary, all tones.
 - Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Known Gaps.
 - States never named anywhere in the file: hover, focus-visible, disabled, loading, selected, error.
 

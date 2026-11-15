@@ -33,54 +33,46 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#dcdfd2",
+      "bg": "#eeefe9",
+      "ratio": 1.17,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
     {
       "pair": "hairline on canvas",
       "fg": "#bfc1b7",
       "bg": "#eeefe9",
       "ratio": 1.58,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#dcdfd2",
+      "bg": "#eeefe9",
+      "ratio": 1.17,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on primary-active",
-      "fg": "#23251d",
-      "bg": "#b17816",
-      "ratio": 4.11,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-blue",
-      "fg": "#23251d",
-      "bg": "#2c84e0",
-      "ratio": 4.05,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-red",
-      "fg": "#23251d",
-      "bg": "#cd4239",
-      "ratio": 3.28,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-green",
-      "fg": "#23251d",
-      "bg": "#2c8c66",
-      "ratio": 3.73,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-purple",
-      "fg": "#23251d",
-      "bg": "#7c44a6",
-      "ratio": 2.39,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "pair": "hairline on canvas",
+      "fg": "#bfc1b7",
+      "bg": "#eeefe9",
+      "ratio": 1.58,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -109,7 +101,7 @@
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 1,
+    "contrast": 3,
     "sections": 3,
     "motion": 1,
     "states": 1

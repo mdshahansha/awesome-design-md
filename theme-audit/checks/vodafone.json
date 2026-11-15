@@ -34,6 +34,9 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [],
+  "contrast_disclosed": [],
   "contrast_failures": [],
   "motion_group": [],
   "motion_keys_missing": [

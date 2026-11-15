@@ -33,6 +33,19 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline on canvas",
+      "fg": "#242728",
+      "bg": "#07080a",
+      "ratio": 1.33,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
   "contrast_failures": [
     {
       "pair": "hairline on canvas",
@@ -40,7 +53,8 @@
       "bg": "#07080a",
       "ratio": 1.33,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],

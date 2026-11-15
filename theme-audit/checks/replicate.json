@@ -33,16 +33,44 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
     {
-      "pair": "on-primary on primary",
+      "component": "button-primary",
       "fg": "#ffffff",
       "bg": "#ea2804",
       "ratio": 4.37,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
+    },
+    {
+      "component": "badge-status",
+      "fg": "#fcfcfc",
+      "bg": "#2b9a66",
+      "ratio": 3.46,
+      "required": 4.5,
+      "disclosed": false
     }
   ],
+  "contrast_unresolved": [
+    {
+      "component": "button-primary",
+      "fg": "#ffffff",
+      "bg": "#ea2804",
+      "ratio": 4.37,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-status",
+      "fg": "#fcfcfc",
+      "bg": "#2b9a66",
+      "ratio": 3.46,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [],
   "motion_group": [],
   "motion_keys_missing": [
     "duration-base",
@@ -69,7 +97,7 @@
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 3,
     "sections": 3,
     "motion": 1,
     "states": 1

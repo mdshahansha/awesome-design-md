@@ -33,14 +33,63 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
+    {
+      "component": "gradient-spotlight-card-orange",
+      "fg": "#ffffff",
+      "bg": "#ff7a3d",
+      "ratio": 2.59,
+      "required": 3.0,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#1a1a1a",
+      "bg": "#090909",
+      "ratio": 1.14,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
     {
       "pair": "hairline on canvas",
       "fg": "#262626",
       "bg": "#090909",
       "ratio": 1.32,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "gradient-spotlight-card-orange",
+      "fg": "#ffffff",
+      "bg": "#ff7a3d",
+      "ratio": 2.59,
+      "required": 3.0,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#1a1a1a",
+      "bg": "#090909",
+      "ratio": 1.14,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#262626",
+      "bg": "#090909",
+      "ratio": 1.32,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -69,7 +118,7 @@
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 2,
     "sections": 3,
     "motion": 1,
     "states": 1

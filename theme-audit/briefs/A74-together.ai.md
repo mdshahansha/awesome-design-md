@@ -9,11 +9,6 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, text-dim.
-- Contrast: ink on surface-dark-soft (#000000 on #313641) measures 1.73:1, below the 4.5:1 required for body text on surface.
-- Contrast: on-primary on accent-orange (#ffffff on #fc4c02) measures 3.4:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-magenta (#ffffff on #ef2cc1) measures 3.62:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-periwinkle (#ffffff on #bdbbff) measures 1.79:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-mint (#ffffff on #c8f6f9) measures 1.17:1, below the 4.5:1 required for text on signal colour.
 - Missing sections: Motion & Animation, Accessibility, Responsive Behavior, Known Gaps.
 - States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected, error.
 

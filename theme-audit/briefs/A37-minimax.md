@@ -9,15 +9,10 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
-- Contrast: muted on canvas (#a8aab2 on #ffffff) measures 2.32:1, below the 4.5:1 required for secondary text.
+- Contrast: hairline-soft on canvas (#eaecf0 on #ffffff) measures 1.18:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline on canvas (#e5e7eb on #ffffff) measures 1.24:1, below the 3.0:1 required for boundary, all tones.
 - Contrast: muted on surface (#a8aab2 on #f7f8fa) measures 2.18:1, below the 4.5:1 required for secondary text on surface.
-- Contrast: hairline on canvas (#e5e7eb on #ffffff) measures 1.24:1, below the 3.0:1 required for component boundary.
-- Contrast: on-primary on brand-coral (#ffffff on #ff5530) measures 3.18:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-magenta (#ffffff on #ea5ec1) measures 3.06:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-blue-mid (#ffffff on #3b82f6) measures 3.68:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-cyan (#ffffff on #3daeff) measures 2.41:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-blue-200 (#ffffff on #bfdbfe) measures 1.42:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-purple (#ffffff on #a855f7) measures 3.96:1, below the 4.5:1 required for text on signal colour.
+- Contrast: muted on canvas (#a8aab2 on #ffffff) measures 2.32:1, below the 4.5:1 required for secondary text.
 - Missing sections: Motion & Animation, Accessibility.
 - States never named anywhere in the file: hover, focus-visible, loading, selected.
 

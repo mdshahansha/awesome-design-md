@@ -10,7 +10,6 @@ WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, text-dim.
 - Contrast: ink on canvas-night (#000000 on #000000) measures 1.0:1, below the 4.5:1 required for body text.
-- Contrast: ink on surface-elevated-dark (#000000 on #1e2c31) measures 1.46:1, below the 4.5:1 required for body text on surface.
 - Missing sections: Motion & Animation, Accessibility, Known Gaps.
 - States never named anywhere in the file: hover, focus-visible, active, disabled, loading, selected, error.
 

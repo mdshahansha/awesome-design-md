@@ -1,7 +1,7 @@
 {
   "site": "nintendo-2001",
   "has_frontmatter": true,
-  "color_count": 0,
+  "color_count": 22,
   "sections_present": [
     "Colors",
     "Components",
@@ -21,19 +21,142 @@
   "optional_sections_missing": [
     "Iteration Guide"
   ],
-  "roles_resolved": {},
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface",
+    "text": "ink",
+    "text-dim": "muted-indigo",
+    "border": "hairline",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
   "roles_missing": [
-    "accent",
-    "border",
-    "canvas",
-    "focus",
-    "on-accent",
-    "surface",
-    "text",
-    "text-dim"
+    "focus"
   ],
   "dangling_refs": [],
-  "contrast_failures": [],
+  "component_contrast_failures": [
+    {
+      "component": "button-submit",
+      "fg": "#ffffff",
+      "bg": "#f68d1f",
+      "ratio": 2.4,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "button-icon-arrow",
+      "fg": "#ffffff",
+      "bg": "#f68d1f",
+      "ratio": 2.4,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "button-arrow-chip",
+      "fg": "#ffffff",
+      "bg": "#f68d1f",
+      "ratio": 2.4,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "dotted-divider",
+      "fg": "#60619c",
+      "bg": "#60619c",
+      "ratio": 1.0,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "hero-panel",
+      "fg": "#ffffff",
+      "bg": "#acace7",
+      "ratio": 2.14,
+      "required": 3.0,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "muted-indigo on canvas",
+      "fg": "#60619c",
+      "bg": "#7a8aba",
+      "ratio": 1.67,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#5a5f8c",
+      "bg": "#7a8aba",
+      "ratio": 1.79,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "button-submit",
+      "fg": "#ffffff",
+      "bg": "#f68d1f",
+      "ratio": 2.4,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "button-icon-arrow",
+      "fg": "#ffffff",
+      "bg": "#f68d1f",
+      "ratio": 2.4,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "button-arrow-chip",
+      "fg": "#ffffff",
+      "bg": "#f68d1f",
+      "ratio": 2.4,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "dotted-divider",
+      "fg": "#60619c",
+      "bg": "#60619c",
+      "ratio": 1.0,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "hero-panel",
+      "fg": "#ffffff",
+      "bg": "#acace7",
+      "ratio": 2.14,
+      "required": 3.0,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "muted-indigo on canvas",
+      "fg": "#60619c",
+      "bg": "#7a8aba",
+      "ratio": 1.67,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#5a5f8c",
+      "bg": "#7a8aba",
+      "ratio": 1.79,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
   "motion_group": [],
   "motion_keys_missing": [
     "duration-base",
@@ -58,9 +181,9 @@
     "error"
   ],
   "score": {
-    "tokens": 1,
+    "tokens": 4,
     "refs": 5,
-    "contrast": 5,
+    "contrast": 1,
     "sections": 1,
     "motion": 1,
     "states": 1

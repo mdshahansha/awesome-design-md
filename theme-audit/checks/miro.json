@@ -33,22 +33,42 @@
     "focus"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
     {
-      "pair": "muted on canvas",
-      "fg": "#a5a8b5",
-      "bg": "#ffffff",
-      "ratio": 2.37,
+      "component": "badge-tag-purple",
+      "fg": "#4262ff",
+      "bg": "#f5f3ff",
+      "ratio": 4.33,
       "required": 4.5,
-      "role": "secondary text"
+      "disclosed": false
     },
     {
-      "pair": "muted on surface",
-      "fg": "#a5a8b5",
-      "bg": "#f7f8fa",
-      "ratio": 2.23,
+      "component": "badge-success",
+      "fg": "#ffffff",
+      "bg": "#00b473",
+      "ratio": 2.7,
       "required": 4.5,
-      "role": "secondary text on surface"
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#eef0f3",
+      "bg": "#ffffff",
+      "ratio": 1.14,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e0e2e8",
+      "bg": "#ffffff",
+      "ratio": 1.3,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
       "pair": "hairline-strong on canvas",
@@ -56,79 +76,90 @@
       "bg": "#ffffff",
       "ratio": 1.64,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-yellow",
-      "fg": "#ffffff",
-      "bg": "#ffd02f",
-      "ratio": 1.47,
+      "pair": "muted on surface",
+      "fg": "#a5a8b5",
+      "bg": "#f7f8fa",
+      "ratio": 2.23,
       "required": 4.5,
-      "role": "text on signal colour"
+      "role": "secondary text on surface",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-yellow-deep",
-      "fg": "#ffffff",
-      "bg": "#fcb900",
-      "ratio": 1.74,
+      "pair": "muted on canvas",
+      "fg": "#a5a8b5",
+      "bg": "#ffffff",
+      "ratio": 2.37,
       "required": 4.5,
-      "role": "text on signal colour"
+      "role": "secondary text",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-coral",
-      "fg": "#ffffff",
-      "bg": "#ff9999",
-      "ratio": 2.05,
+      "component": "badge-tag-purple",
+      "fg": "#4262ff",
+      "bg": "#f5f3ff",
+      "ratio": 4.33,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-rose",
+      "component": "badge-success",
       "fg": "#ffffff",
-      "bg": "#ffd8f4",
-      "ratio": 1.28,
+      "bg": "#00b473",
+      "ratio": 2.7,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#eef0f3",
+      "bg": "#ffffff",
+      "ratio": 1.14,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-pink",
-      "fg": "#ffffff",
-      "bg": "#fde0f0",
-      "ratio": 1.23,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "pair": "hairline on canvas",
+      "fg": "#e0e2e8",
+      "bg": "#ffffff",
+      "ratio": 1.3,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-teal",
-      "fg": "#ffffff",
-      "bg": "#0fbcb0",
-      "ratio": 2.38,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "pair": "hairline-strong on canvas",
+      "fg": "#c7cad5",
+      "bg": "#ffffff",
+      "ratio": 1.64,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-orange-light",
-      "fg": "#ffffff",
-      "bg": "#ffe6cd",
-      "ratio": 1.2,
+      "pair": "muted on surface",
+      "fg": "#a5a8b5",
+      "bg": "#f7f8fa",
+      "ratio": 2.23,
       "required": 4.5,
-      "role": "text on signal colour"
+      "role": "secondary text on surface",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-red",
-      "fg": "#ffffff",
-      "bg": "#fbd4d4",
-      "ratio": 1.36,
+      "pair": "muted on canvas",
+      "fg": "#a5a8b5",
+      "bg": "#ffffff",
+      "ratio": 2.37,
       "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on brand-red-dark",
-      "fg": "#ffffff",
-      "bg": "#e3c5c5",
-      "ratio": 1.61,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "role": "secondary text",
+      "disclosed": false
     }
   ],
   "motion_group": [],

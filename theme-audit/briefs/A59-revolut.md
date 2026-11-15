@@ -9,10 +9,7 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, text-dim.
-- Contrast: on-primary on accent-teal (#ffffff on #00a87e) measures 3.04:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-yellow (#ffffff on #b09000) measures 3.07:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-warning (#ffffff on #ec7e00) measures 2.78:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-danger (#ffffff on #e23b4a) measures 4.24:1, below the 4.5:1 required for text on signal colour.
+- Contrast: hairline-light on canvas-light (#e2e2e7 on #ffffff) measures 1.29:1, below the 3.0:1 required for boundary, all tones.
 - Missing sections: Motion & Animation, Accessibility.
 - States never named anywhere in the file: hover, focus-visible, active, disabled, loading, selected, error.
 

@@ -33,22 +33,100 @@
     "focus"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#1a1a1a",
+      "bg": "#0f0f0f",
+      "ratio": 1.1,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#222222",
+      "bg": "#0f0f0f",
+      "ratio": 1.2,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
     {
       "pair": "hairline-strong on canvas",
       "fg": "#333333",
       "bg": "#0f0f0f",
       "ratio": 1.52,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on accent-cyan",
-      "fg": "#ffffff",
-      "bg": "#00d4ff",
-      "ratio": 1.77,
+      "pair": "muted-soft on surface-card",
+      "fg": "#666666",
+      "bg": "#181818",
+      "ratio": 3.09,
       "required": 4.5,
-      "role": "text on signal colour"
+      "role": "secondary text on surface, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "muted-soft on canvas",
+      "fg": "#666666",
+      "bg": "#0f0f0f",
+      "ratio": 3.34,
+      "required": 4.5,
+      "role": "secondary text, all tones",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#1a1a1a",
+      "bg": "#0f0f0f",
+      "ratio": 1.1,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#222222",
+      "bg": "#0f0f0f",
+      "ratio": 1.2,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#333333",
+      "bg": "#0f0f0f",
+      "ratio": 1.52,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "muted-soft on surface-card",
+      "fg": "#666666",
+      "bg": "#181818",
+      "ratio": 3.09,
+      "required": 4.5,
+      "role": "secondary text on surface, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "muted-soft on canvas",
+      "fg": "#666666",
+      "bg": "#0f0f0f",
+      "ratio": 3.34,
+      "required": 4.5,
+      "role": "secondary text, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -77,7 +155,7 @@
   "score": {
     "tokens": 4,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 1,
     "sections": 3,
     "motion": 1,
     "states": 1

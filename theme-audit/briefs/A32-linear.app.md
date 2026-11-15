@@ -9,9 +9,9 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, surface, text-dim.
-- Contrast: hairline-tertiary on canvas (#3e3e44 on #010102) measures 1.96:1, below the 3.0:1 required for component boundary.
-- Contrast: on-primary on primary-hover (#ffffff on #828fff) measures 2.87:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-secure (#ffffff on #7a7fad) measures 3.84:1, below the 4.5:1 required for text on signal colour.
+- Contrast: hairline on canvas (#23252a on #010102) measures 1.36:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline-strong on canvas (#34343a on #010102) measures 1.69:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline-tertiary on canvas (#3e3e44 on #010102) measures 1.96:1, below the 3.0:1 required for boundary, all tones.
 - Missing sections: Motion & Animation, Accessibility.
 - States never named anywhere in the file: focus-visible, active, disabled, loading, error.
 

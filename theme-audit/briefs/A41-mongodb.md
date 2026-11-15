@@ -9,15 +9,11 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
-- Contrast: muted on canvas (#a8b3bc on #ffffff) measures 2.13:1, below the 4.5:1 required for secondary text.
+- Contrast: hairline-soft on canvas (#eceff1 on #ffffff) measures 1.15:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline on canvas (#e1e5e8 on #ffffff) measures 1.27:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline-strong on canvas (#c1ccd6 on #ffffff) measures 1.63:1, below the 3.0:1 required for boundary, all tones.
 - Contrast: muted on surface (#a8b3bc on #f9fbfa) measures 2.05:1, below the 4.5:1 required for secondary text on surface.
-- Contrast: on-primary on primary-pressed (#001e2b on #008c34) measures 3.93:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-green-dark (#001e2b on #00684a) measures 2.52:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-teal-deep (#001e2b on #001e2b) measures 1.0:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-teal (#001e2b on #003d4f) measures 1.46:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-teal-mid (#001e2b on #00684a) measures 2.52:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-purple (#001e2b on #7b3ff2) measures 3.14:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-blue (#001e2b on #3d4f9f) measures 2.31:1, below the 4.5:1 required for text on signal colour.
+- Contrast: muted on canvas (#a8b3bc on #ffffff) measures 2.13:1, below the 4.5:1 required for secondary text.
 - Missing sections: Motion & Animation, Accessibility.
 - States never named anywhere in the file: hover, focus-visible, loading, selected, error.
 

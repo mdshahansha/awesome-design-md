@@ -34,6 +34,43 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [
+    {
+      "component": "badge-negative",
+      "fg": "#0e0f0c",
+      "bg": "#320707",
+      "ratio": 1.07,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "ex-pricing-tier-featured",
+      "fg": "#0e0f0c",
+      "bg": "#0e0f0c",
+      "ratio": 1.0,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "component": "badge-negative",
+      "fg": "#0e0f0c",
+      "bg": "#320707",
+      "ratio": 1.07,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "ex-pricing-tier-featured",
+      "fg": "#0e0f0c",
+      "bg": "#0e0f0c",
+      "ratio": 1.0,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
   "contrast_failures": [],
   "motion_group": [],
   "motion_keys_missing": [
@@ -61,7 +98,7 @@
   "score": {
     "tokens": 1,
     "refs": 5,
-    "contrast": 5,
+    "contrast": 3,
     "sections": 1,
     "motion": 1,
     "states": 1

@@ -34,6 +34,36 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [
+    {
+      "component": "category-card-orange",
+      "fg": "#ffffff",
+      "bg": "#ff6b00",
+      "ratio": 2.86,
+      "required": 3.0,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline on canvas",
+      "fg": "#d8d8d8",
+      "bg": "#ffffff",
+      "ratio": 1.43,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "category-card-orange",
+      "fg": "#ffffff",
+      "bg": "#ff6b00",
+      "ratio": 2.86,
+      "required": 3.0,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
   "contrast_failures": [
     {
       "pair": "hairline on canvas",
@@ -41,55 +71,8 @@
       "bg": "#ffffff",
       "ratio": 1.43,
       "required": 3.0,
-      "role": "component boundary"
-    },
-    {
-      "pair": "on-primary on accent-pink",
-      "fg": "#ffffff",
-      "bg": "#ed52cb",
-      "ratio": 3.15,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-blue",
-      "fg": "#ffffff",
-      "bg": "#3b89ff",
-      "ratio": 3.38,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-orange",
-      "fg": "#ffffff",
-      "bg": "#ff6b00",
-      "ratio": 2.86,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-green",
-      "fg": "#ffffff",
-      "bg": "#00d722",
-      "ratio": 1.95,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-yellow",
-      "fg": "#ffffff",
-      "bg": "#ffae13",
-      "ratio": 1.86,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-red",
-      "fg": "#ffffff",
-      "bg": "#ee1d36",
-      "ratio": 4.32,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -118,7 +101,7 @@
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 1,
+    "contrast": 3,
     "sections": 1,
     "motion": 1,
     "states": 1

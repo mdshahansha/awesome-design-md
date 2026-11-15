@@ -34,14 +34,42 @@
     "focus"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
+    {
+      "component": "button-primary",
+      "fg": "#ffffff",
+      "bg": "#30a83c",
+      "ratio": 3.09,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "button-outline-green",
+      "fg": "#30a83c",
+      "bg": "#ffffff",
+      "ratio": 3.09,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline on canvas",
+      "fg": "#dfe1e4",
+      "bg": "#f3f5f7",
+      "ratio": 1.2,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
     {
       "pair": "muted on canvas",
       "fg": "#a7a9ac",
       "bg": "#f3f5f7",
       "ratio": 2.16,
       "required": 4.5,
-      "role": "secondary text"
+      "role": "secondary text",
+      "disclosed": false
     },
     {
       "pair": "muted on surface",
@@ -49,23 +77,54 @@
       "bg": "#ffffff",
       "ratio": 2.36,
       "required": 4.5,
-      "role": "secondary text on surface"
+      "role": "secondary text on surface",
+      "disclosed": false
     },
+    {
+      "component": "button-primary",
+      "fg": "#ffffff",
+      "bg": "#30a83c",
+      "ratio": 3.09,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "button-outline-green",
+      "fg": "#30a83c",
+      "bg": "#ffffff",
+      "ratio": 3.09,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
     {
       "pair": "hairline on canvas",
       "fg": "#dfe1e4",
       "bg": "#f3f5f7",
       "ratio": 1.2,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on primary",
-      "fg": "#ffffff",
-      "bg": "#30a83c",
-      "ratio": 3.09,
+      "pair": "muted on canvas",
+      "fg": "#a7a9ac",
+      "bg": "#f3f5f7",
+      "ratio": 2.16,
       "required": 4.5,
-      "role": "text on signal colour"
+      "role": "secondary text",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on surface",
+      "fg": "#a7a9ac",
+      "bg": "#ffffff",
+      "ratio": 2.36,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
     }
   ],
   "motion_group": [],

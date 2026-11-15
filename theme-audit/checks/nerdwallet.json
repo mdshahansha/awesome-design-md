@@ -34,14 +34,95 @@
     "surface"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
+    {
+      "component": "award-ribbon-pill",
+      "fg": "#008254",
+      "bg": "#e3faf2",
+      "ratio": 4.45,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-compare",
+      "fg": "#008254",
+      "bg": "#e8fdac",
+      "ratio": 4.41,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "marquee-ribbon",
+      "fg": "#008254",
+      "bg": "#a8ea4c",
+      "ratio": 3.36,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline on canvas",
+      "fg": "#ebebec",
+      "bg": "#ffffff",
+      "ratio": 1.19,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
     {
       "pair": "hairline-strong on canvas",
       "fg": "#d8d9da",
       "bg": "#ffffff",
       "ratio": 1.41,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "award-ribbon-pill",
+      "fg": "#008254",
+      "bg": "#e3faf2",
+      "ratio": 4.45,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-compare",
+      "fg": "#008254",
+      "bg": "#e8fdac",
+      "ratio": 4.41,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "marquee-ribbon",
+      "fg": "#008254",
+      "bg": "#a8ea4c",
+      "ratio": 3.36,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline on canvas",
+      "fg": "#ebebec",
+      "bg": "#ffffff",
+      "ratio": 1.19,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#d8d9da",
+      "bg": "#ffffff",
+      "ratio": 1.41,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -70,7 +151,7 @@
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 1,
     "sections": 1,
     "motion": 1,
     "states": 1

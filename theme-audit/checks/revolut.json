@@ -33,38 +33,28 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-light on canvas-light",
+      "fg": "#e2e2e7",
+      "bg": "#ffffff",
+      "ratio": 1.29,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
   "contrast_failures": [
     {
-      "pair": "on-primary on accent-teal",
-      "fg": "#ffffff",
-      "bg": "#00a87e",
-      "ratio": 3.04,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-yellow",
-      "fg": "#ffffff",
-      "bg": "#b09000",
-      "ratio": 3.07,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-warning",
-      "fg": "#ffffff",
-      "bg": "#ec7e00",
-      "ratio": 2.78,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-danger",
-      "fg": "#ffffff",
-      "bg": "#e23b4a",
-      "ratio": 4.24,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "pair": "hairline-light on canvas-light",
+      "fg": "#e2e2e7",
+      "bg": "#ffffff",
+      "ratio": 1.29,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -93,7 +83,7 @@
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 1,
+    "contrast": 4,
     "sections": 3,
     "motion": 1,
     "states": 1

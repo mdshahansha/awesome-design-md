@@ -9,7 +9,6 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, text-dim.
-- Contrast: on-primary on primary (#ffffff on #ea2804) measures 4.37:1, below the 4.5:1 required for text on signal colour.
 - Missing sections: Motion & Animation, Accessibility.
 - States never named anywhere in the file: hover, focus-visible, disabled, loading, selected, error.
 

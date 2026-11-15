@@ -33,30 +33,63 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
+    {
+      "component": "badge-sale-coral",
+      "fg": "#ffffff",
+      "bg": "#ff5050",
+      "ratio": 3.22,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e8e8e8",
+      "bg": "#ffffff",
+      "ratio": 1.23,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
     {
       "pair": "hairline-strong on canvas",
       "fg": "#c2c2c2",
       "bg": "#ffffff",
       "ratio": 1.78,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on primary-bright",
+      "component": "badge-sale-coral",
       "fg": "#ffffff",
-      "bg": "#296ef9",
-      "ratio": 4.48,
+      "bg": "#ff5050",
+      "ratio": 3.22,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e8e8e8",
+      "bg": "#ffffff",
+      "ratio": 1.23,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on primary-soft",
-      "fg": "#ffffff",
-      "bg": "#c9e0fc",
-      "ratio": 1.35,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "pair": "hairline-strong on canvas",
+      "fg": "#c2c2c2",
+      "bg": "#ffffff",
+      "ratio": 1.78,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],

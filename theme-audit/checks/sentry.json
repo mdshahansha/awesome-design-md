@@ -33,24 +33,10 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
-    {
-      "pair": "on-primary on accent-lime",
-      "fg": "#ffffff",
-      "bg": "#c2ef4e",
-      "ratio": 1.33,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-pink",
-      "fg": "#ffffff",
-      "bg": "#fa7faa",
-      "ratio": 2.42,
-      "required": 4.5,
-      "role": "text on signal colour"
-    }
-  ],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [],
+  "contrast_disclosed": [],
+  "contrast_failures": [],
   "motion_group": [],
   "motion_keys_missing": [
     "duration-base",
@@ -77,7 +63,7 @@
   "score": {
     "tokens": 1,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 5,
     "sections": 2,
     "motion": 1,
     "states": 1

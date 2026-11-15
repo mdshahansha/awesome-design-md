@@ -9,15 +9,11 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
-- Contrast: muted on canvas (#bbb8b1 on #ffffff) measures 1.98:1, below the 4.5:1 required for secondary text.
+- Contrast: hairline-soft on canvas (#ede9e4 on #ffffff) measures 1.21:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline on canvas (#e5e3df on #ffffff) measures 1.28:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline-strong on canvas (#c8c4be on #ffffff) measures 1.74:1, below the 3.0:1 required for boundary, all tones.
 - Contrast: muted on surface (#bbb8b1 on #f6f5f4) measures 1.82:1, below the 4.5:1 required for secondary text on surface.
-- Contrast: hairline-strong on canvas (#c8c4be on #ffffff) measures 1.74:1, below the 3.0:1 required for component boundary.
-- Contrast: on-primary on brand-orange (#ffffff on #dd5b00) measures 3.77:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-pink (#ffffff on #ff64c8) measures 2.66:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-purple-300 (#ffffff on #d6b6f6) measures 1.77:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-teal (#ffffff on #2a9d99) measures 3.29:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-green (#ffffff on #1aae39) measures 2.93:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on brand-yellow (#ffffff on #f5d75e) measures 1.42:1, below the 4.5:1 required for text on signal colour.
+- Contrast: muted on canvas (#bbb8b1 on #ffffff) measures 1.98:1, below the 4.5:1 required for secondary text.
 - Missing sections: Motion & Animation, Accessibility.
 - States never named anywhere in the file: hover, focus-visible, loading, selected, error.
 

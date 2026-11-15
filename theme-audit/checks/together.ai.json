@@ -34,48 +34,28 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
     {
-      "pair": "ink on surface-dark-soft",
-      "fg": "#000000",
-      "bg": "#313641",
-      "ratio": 1.73,
+      "component": "data-table-header",
+      "fg": "#959494",
+      "bg": "#ffffff",
+      "ratio": 3.03,
       "required": 4.5,
-      "role": "body text on surface"
-    },
-    {
-      "pair": "on-primary on accent-orange",
-      "fg": "#ffffff",
-      "bg": "#fc4c02",
-      "ratio": 3.4,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-magenta",
-      "fg": "#ffffff",
-      "bg": "#ef2cc1",
-      "ratio": 3.62,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-periwinkle",
-      "fg": "#ffffff",
-      "bg": "#bdbbff",
-      "ratio": 1.79,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on accent-mint",
-      "fg": "#ffffff",
-      "bg": "#c8f6f9",
-      "ratio": 1.17,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
     }
   ],
+  "contrast_unresolved": [
+    {
+      "component": "data-table-header",
+      "fg": "#959494",
+      "bg": "#ffffff",
+      "ratio": 3.03,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [],
   "motion_group": [],
   "motion_keys_missing": [
     "duration-base",
@@ -102,7 +82,7 @@
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 1,
+    "contrast": 4,
     "sections": 1,
     "motion": 1,
     "states": 1

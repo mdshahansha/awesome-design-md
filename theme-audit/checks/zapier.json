@@ -34,16 +34,28 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
     {
-      "pair": "on-primary on primary",
+      "component": "button-primary",
       "fg": "#fffefb",
       "bg": "#ff4f00",
       "ratio": 3.27,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
     }
   ],
+  "contrast_unresolved": [
+    {
+      "component": "button-primary",
+      "fg": "#fffefb",
+      "bg": "#ff4f00",
+      "ratio": 3.27,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [],
   "motion_group": [],
   "motion_keys_missing": [
     "duration-base",

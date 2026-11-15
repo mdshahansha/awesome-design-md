@@ -34,6 +34,27 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [
+    {
+      "component": "toggle-switch",
+      "fg": "#554e7b",
+      "bg": "#5266eb",
+      "ratio": 1.61,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "component": "toggle-switch",
+      "fg": "#554e7b",
+      "bg": "#5266eb",
+      "ratio": 1.61,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
   "contrast_failures": [],
   "motion_group": [],
   "motion_keys_missing": [
@@ -61,7 +82,7 @@
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 5,
+    "contrast": 4,
     "sections": 1,
     "motion": 1,
     "states": 1

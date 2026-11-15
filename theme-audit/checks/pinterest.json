@@ -33,46 +33,64 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
-    {
-      "pair": "hairline on canvas",
-      "fg": "#dadad3",
-      "bg": "#ffffff",
-      "ratio": 1.4,
-      "required": 3.0,
-      "role": "component boundary"
-    },
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
     {
       "pair": "focus-outer on primary",
       "fg": "#435ee5",
       "bg": "#e60023",
       "ratio": 1.11,
       "required": 3.0,
-      "role": "focus indicator on accent"
+      "role": "focus indicator on accent",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on secondary-bg",
-      "fg": "#ffffff",
-      "bg": "#e5e5e0",
+      "pair": "hairline-soft on canvas",
+      "fg": "#e5e5e0",
+      "bg": "#ffffff",
       "ratio": 1.26,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on secondary-pressed",
-      "fg": "#ffffff",
-      "bg": "#c8c8c1",
-      "ratio": 1.68,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "pair": "hairline on canvas",
+      "fg": "#dadad3",
+      "bg": "#ffffff",
+      "ratio": 1.4,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "focus-outer on primary",
+      "fg": "#435ee5",
+      "bg": "#e60023",
+      "ratio": 1.11,
+      "required": 3.0,
+      "role": "focus indicator on accent",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on accent-pressed-blue",
-      "fg": "#ffffff",
-      "bg": "#617bff",
-      "ratio": 3.63,
-      "required": 4.5,
-      "role": "text on signal colour"
+      "pair": "hairline-soft on canvas",
+      "fg": "#e5e5e0",
+      "bg": "#ffffff",
+      "ratio": 1.26,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#dadad3",
+      "bg": "#ffffff",
+      "ratio": 1.4,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -101,7 +119,7 @@
   "score": {
     "tokens": 4,
     "refs": 5,
-    "contrast": 1,
+    "contrast": 2,
     "sections": 3,
     "motion": 1,
     "states": 1

@@ -9,11 +9,8 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus, surface, text-dim.
-- Contrast: hairline on canvas (#cacacb on #ffffff) measures 1.64:1, below the 3.0:1 required for component boundary.
-- Contrast: on-primary on accent-pink (#ffffff on #ed1aa0) measures 4.0:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-pink-soft (#ffffff on #ffb0dd) measures 1.68:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-purple-soft (#ffffff on #beaffd) measures 1.96:1, below the 4.5:1 required for text on signal colour.
-- Contrast: on-primary on accent-purple-pale (#ffffff on #d6d1ff) measures 1.46:1, below the 4.5:1 required for text on signal colour.
+- Contrast: hairline-soft on canvas (#e5e5e5 on #ffffff) measures 1.26:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline on canvas (#cacacb on #ffffff) measures 1.64:1, below the 3.0:1 required for boundary, all tones.
 - Missing sections: Motion & Animation, Accessibility.
 - States never named anywhere in the file: hover, focus-visible, disabled, loading, error.
 

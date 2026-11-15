@@ -9,7 +9,7 @@ Scores before -> after (1-5), from the harness: tokens · refs · contrast · se
 
 **Both rows measured with the same harness build.** `theme-audit/audit.py` was upgraded mid-review (component-pair checking, all-tones role checking, an achromatic-accent exemption, and disclosure-based contrast scoring). The before-row above is the original file re-scored under the new build, so the two rows are comparable; the brief's quoted before-figures came from the older build and differ in the contrast dimension only.
 
-Contrast reaches 5 by disclosure, not by falsification: 11 failures remain and all 11 are now stated with their measured ratios in `## Accessibility`. No extracted brand hex was changed.
+Contrast reaches 5 by disclosure, not by falsification: 10 failures remain (9 role-level, 1 component-level) and all 10 are now stated with their measured ratios in `## Accessibility`. No extracted brand hex was changed.
 
 ### Findings
 
@@ -99,6 +99,7 @@ All computed with `theme-audit/audit.py`'s WCAG 2.1 relative-luminance functions
 | `success` #22c55e / `canvas` (as text) | 2.19:1 | 4.5:1 | **Fail** |
 | `warning` #f59e0b / `canvas` (as text) | 2.06:1 | 4.5:1 | **Fail** |
 | `hairline` #e5e5e5 / `canvas` | 1.21:1 | 3.0:1 | **Fail** (frozen, scoped to decoration) |
+| `hairline-soft` #f0f0f0 / `canvas` | 1.10:1 | 3.0:1 | **Fail** (frozen, internal dividers only) |
 | `hairline-strong` #7a736a / `canvas` | 4.50:1 | 3.0:1 | Pass |
 | `hairline-strong` / `surface-soft` | 4.30:1 | 3.0:1 | Pass |
 | `hairline-strong` / `surface-card` | 4.10:1 | 3.0:1 | Pass |
@@ -152,15 +153,18 @@ Every exit is shorter than its matching entrance. Only `transform` and `opacity`
 
 | File | Issue | Proposed fix |
 |---|---|---|
-| `theme-audit/audit.py` lines 169–178 | The signal-colour loop pairs the single `on-accent` token against every token matching `^(primary\|accent\|secondary\|brand\|cta)`, regardless of whether the file documents that pairing. For clay this produces 6 failures of which 5 are combinations the file explicitly routes to `{colors.ink}` instead. The score then clamps to 1 and cannot move however the file is corrected. | Let a file declare its ink per signal colour — e.g. honour a `components:` entry's `textColor` when the signal token is used as a `backgroundColor` there — and fall back to the blanket `on-accent` pairing only when no component binds that colour. Failing that, split the score so a documented-and-measured failure costs less than an undocumented one. |
-| `theme-audit/audit.py` lines 19–35, 125 | `find_role` is first-pattern-wins for `text-dim`, so `muted` (5.20:1) represents the role and `muted-soft` (2.70:1) is never checked — the opposite of the `find_role_strongest` treatment given to `border` and `focus`. Real failures hide behind a passing sibling. | Check every token matching a role's patterns, not only the representative one; keep the representative for reporting. |
-| `theme-audit/audit.py` lines 160–161, 22 | `text-dim` on `surface` is checked only against the first matching surface (`surface-soft`, 4.97:1). `muted` on `surface-strong` is 4.33:1 and goes unreported. | Check text roles against every `surface*` token, or against the darkest one. |
-| `theme-audit/audit.py` line 164 | `focus` is checked against `canvas`, `surface` and `accent`, which forces one token to clear 3:1 on both a cream canvas and a near-black CTA. SPEC §1 anticipates two rings (`focus` / `focus-on-dark`) but the strongest-vs-canvas selection then feeds the dark ring into the accent check, where it must fail. The two models are inconsistent. | When a file defines more than one `focus*` token, check the set collectively: each surface must be cleared by at least one ring, rather than by the single representative. |
-| `theme-audit/SPEC.md` §1 | Names `focus-on-dark` as the second ring, but the harness's role patterns (`^focus-`) plus strongest-vs-canvas selection make that naming actively counterproductive — a dark-surface ring is light, so it is never selected, while a light-surface ring that happens to be darker gets checked against the accent. | State the composite/dual-ring contract explicitly, and say which token the harness will treat as representative. |
+Three of the five harness issues this review found were fixed in `audit.py` mid-review (all-tones role checking, component-pair checking, the achromatic-accent exemption for the focus ring, and disclosure-based contrast scoring). What remains:
+
+| File | Issue | Proposed fix |
+|---|---|---|
+| `theme-audit/audit.py` lines 225–237 | The signal-colour loop still pairs the single `on-accent` token against every token matching `^(primary\|accent\|secondary\|brand\|cta)`, regardless of whether the file documents that pairing. For clay this reports 6 failures of which 5 are combinations the file explicitly routes to `{colors.ink}` instead. Disclosure scoring means they no longer cost points, but the file is now obliged to disclose five pairings it does not use, which is noise presented as a finding. | The `parse_components` pass already derefs real `backgroundColor`/`textColor` bindings. Suppress a blanket `on-accent` × signal pairing when some component binds that signal colour to a different, passing ink, and report it as "not used" rather than as a failure. |
+| `theme-audit/audit.py` lines 206–209 | `check_all` was added for `text-dim` on `canvas` but not for `text-dim` on `surface` — that pair is still single-representative. `{colors.muted}` is 4.97:1 on `surface-soft` (pass, and the one checked) but 4.33:1 on `{colors.surface-strong}` (fail, unreported). | Add `check_all("text-dim", "surface", …)`, or check text roles against the darkest `surface*` tone rather than the first match. |
+| `theme-audit/audit.py` lines 263–267 | `disclosed()` matches on the foreground token name or hex appearing anywhere in `## Accessibility`, which is satisfied by naming the token in a passing row. A file can bank the credit without disclosing the failing pair. | Require the failing *pair* — both token names, or the name plus its measured ratio — within the same line or table row. |
+| `theme-audit/SPEC.md` §1 | Names `focus-on-dark` as the second ring. With the harness's `^focus-` pattern plus strongest-vs-canvas selection, that naming is counterproductive: a dark-surface ring is light, so it is never the representative, while a light-surface ring that happens to be darker is. Nothing states which token the harness will judge. SPEC also does not say what to do when no single luminance can clear 3:1 on both a near-black CTA and a mid-light saturated card — the case clay actually has. | State the dual-ring contract explicitly: name the representative-selection rule, and allow the composite construction (inner halo + outer band) that WCAG 2.2 Focus Appearance permits, with the collective requirement that every surface be cleared by at least one band. |
 
 ### Needs approval
 
-Six contrast failures remain. None can be fixed without falsifying an extracted brand hex, so all are recorded here rather than applied.
+Ten contrast failures remain (9 role-level, 1 component-level), all disclosed in the file, none fixable without falsifying an extracted brand hex. Only one is a combination the live site actually uses.
 
 1. **`on-primary` #ffffff on `brand-pink` #ff4d8b — 3.14:1, needs 4.5:1.** This is a real combination on the live site: white copy on the hot-pink feature card. Nearest passing value: **#d13f72** (4.50:1), an 18% luminance reduction that visibly dulls the brand's most recognisable card. Usage note that makes the real value defensible: *white on `{colors.brand-pink}` is permitted only at `{typography.title-lg}` (24px / 400) and above, where WCAG's 3:1 large-text threshold applies; body copy and captions on that card use `{colors.ink}` at 6.30:1.* The file now says this, and says plainly that the brand fails AA at that point. **Approval needed only if you want the hex changed.**
 
@@ -168,7 +172,9 @@ Six contrast failures remain. None can be fixed without falsifying an extracted 
 
 7. **Focus ring on `brand-lavender` and `brand-coral`.** Neither band of the composite ring reaches 3:1 against those two fills (outer 2.68:1 / 2.10:1, inner 2.11:1 / 2.69:1), and no single luminance can clear 3:1 against both `{colors.primary}` (#0a0a0a) and `{colors.brand-lavender}` — the windows do not overlap. Nearest passing values: lighten lavender to **#c3aefb** (outer band reaches 3.01:1) or darken it to **#9988c5** (inner band 3.02:1); darken coral to **#f06555** (inner band 3.01:1, and visually near-identical to #ff6b5a). The file's current answer is a system rule instead of a hex change — `{component.button-on-color}` is a cream button, so its ring is drawn against the canvas, and the file forbids bare focusable elements on those two fills. **Approval needed if you prefer the #f06555 coral correction, which is cheap.**
 
-8. **Prescribed values introduced, listed for the record:** `{colors.focus}` #c2185b, `{colors.focus-inset}` #fffaf0, `{colors.hairline-strong}` #7a736a, the whole `motion:` group, the `shadow:` group, and `{component.text-input-error}`. All are labelled prescribed in the file and in Known Gaps.
+8. **Frozen utility tones, no approval sought, listed for completeness:** `{colors.hairline}` 1.21:1 and `{colors.hairline-soft}` 1.10:1 on canvas; `{colors.muted-soft}` 2.70:1 and `{colors.on-dark-soft}` 2.51:1 on canvas; `{colors.success}` 2.19:1, `{colors.warning}` 2.06:1 and `{colors.error}` 3.62:1 as ink on canvas. All are extracted and stay as they are, scoped in the prose to the job each can actually do, with `{colors.hairline-strong}` added as the parallel accessible boundary.
+
+9. **Prescribed values introduced, listed for the record:** `{colors.focus}` #c2185b, `{colors.focus-inset}` #fffaf0, `{colors.hairline-strong}` #7a736a, the whole `motion:` group, the `shadow:` group, and `{component.text-input-error}`. All are labelled prescribed in the file and in Known Gaps.
 
 ### Identity verdict
 

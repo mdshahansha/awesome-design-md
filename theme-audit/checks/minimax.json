@@ -33,22 +33,65 @@
     "focus"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
     {
-      "pair": "muted on canvas",
-      "fg": "#a8aab2",
-      "bg": "#ffffff",
-      "ratio": 2.32,
+      "component": "product-card-coral",
+      "fg": "#ffffff",
+      "bg": "#ff5530",
+      "ratio": 3.18,
       "required": 4.5,
-      "role": "secondary text"
+      "disclosed": false
     },
     {
-      "pair": "muted on surface",
-      "fg": "#a8aab2",
-      "bg": "#f7f8fa",
-      "ratio": 2.18,
+      "component": "product-card-magenta",
+      "fg": "#ffffff",
+      "bg": "#ea5ec1",
+      "ratio": 3.06,
       "required": 4.5,
-      "role": "secondary text on surface"
+      "disclosed": false
+    },
+    {
+      "component": "product-card-purple",
+      "fg": "#ffffff",
+      "bg": "#a855f7",
+      "ratio": 3.96,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "promo-cta-card",
+      "fg": "#ffffff",
+      "bg": "#ff5530",
+      "ratio": 3.18,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-success",
+      "fg": "#1ba673",
+      "bg": "#e8ffea",
+      "ratio": 2.95,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-new",
+      "fg": "#ffffff",
+      "bg": "#ff5530",
+      "ratio": 3.18,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#eaecf0",
+      "bg": "#ffffff",
+      "ratio": 1.18,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
       "pair": "hairline on canvas",
@@ -56,55 +99,113 @@
       "bg": "#ffffff",
       "ratio": 1.24,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-coral",
+      "pair": "muted on surface",
+      "fg": "#a8aab2",
+      "bg": "#f7f8fa",
+      "ratio": 2.18,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on canvas",
+      "fg": "#a8aab2",
+      "bg": "#ffffff",
+      "ratio": 2.32,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": false
+    },
+    {
+      "component": "product-card-coral",
       "fg": "#ffffff",
       "bg": "#ff5530",
       "ratio": 3.18,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-magenta",
+      "component": "product-card-magenta",
       "fg": "#ffffff",
       "bg": "#ea5ec1",
       "ratio": 3.06,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-blue-mid",
-      "fg": "#ffffff",
-      "bg": "#3b82f6",
-      "ratio": 3.68,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on brand-cyan",
-      "fg": "#ffffff",
-      "bg": "#3daeff",
-      "ratio": 2.41,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on brand-blue-200",
-      "fg": "#ffffff",
-      "bg": "#bfdbfe",
-      "ratio": 1.42,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on brand-purple",
+      "component": "product-card-purple",
       "fg": "#ffffff",
       "bg": "#a855f7",
       "ratio": 3.96,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
+    },
+    {
+      "component": "promo-cta-card",
+      "fg": "#ffffff",
+      "bg": "#ff5530",
+      "ratio": 3.18,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-success",
+      "fg": "#1ba673",
+      "bg": "#e8ffea",
+      "ratio": 2.95,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-new",
+      "fg": "#ffffff",
+      "bg": "#ff5530",
+      "ratio": 3.18,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#eaecf0",
+      "bg": "#ffffff",
+      "ratio": 1.18,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e5e7eb",
+      "bg": "#ffffff",
+      "ratio": 1.24,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on surface",
+      "fg": "#a8aab2",
+      "bg": "#f7f8fa",
+      "ratio": 2.18,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on canvas",
+      "fg": "#a8aab2",
+      "bg": "#ffffff",
+      "ratio": 2.32,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": false
     }
   ],
   "motion_group": [],

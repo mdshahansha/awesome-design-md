@@ -33,6 +33,19 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-light on canvas-light",
+      "fg": "#f3f3f3",
+      "bg": "#ffffff",
+      "ratio": 1.11,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
   "contrast_failures": [
     {
       "pair": "hairline-light on canvas-light",
@@ -40,7 +53,8 @@
       "bg": "#ffffff",
       "ratio": 1.11,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],

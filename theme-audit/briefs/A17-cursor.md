@@ -9,10 +9,13 @@ Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the toke
 WHAT THE HARNESS ALREADY MEASURED FOR YOUR SITE
 Confirm each of these yourself; do not take them on trust.
 - Missing colour roles: focus.
+- Contrast: hairline-soft on canvas (#efeee8 on #f7f7f4) measures 1.08:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline on canvas (#e6e5e0 on #f7f7f4) measures 1.18:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: hairline-strong on canvas (#cfcdc4 on #f7f7f4) measures 1.48:1, below the 3.0:1 required for boundary, all tones.
+- Contrast: muted-soft on canvas (#a09c92 on #f7f7f4) measures 2.55:1, below the 4.5:1 required for secondary text, all tones.
+- Contrast: muted-soft on surface-card (#a09c92 on #ffffff) measures 2.74:1, below the 4.5:1 required for secondary text on surface, all tones.
 - Contrast: muted on canvas (#807d72 on #f7f7f4) measures 3.84:1, below the 4.5:1 required for secondary text.
 - Contrast: muted on surface-card (#807d72 on #ffffff) measures 4.12:1, below the 4.5:1 required for secondary text on surface.
-- Contrast: hairline-strong on canvas (#cfcdc4 on #f7f7f4) measures 1.48:1, below the 3.0:1 required for component boundary.
-- Contrast: on-primary on primary (#ffffff on #f54e00) measures 3.52:1, below the 4.5:1 required for text on signal colour.
 - Missing sections: Motion & Animation, Accessibility.
 - States never named anywhere in the file: hover, focus-visible, pressed, disabled, loading, selected, error.
 

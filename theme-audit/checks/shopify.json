@@ -33,6 +33,19 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#000000",
+      "bg": "#000000",
+      "ratio": 1.0,
+      "required": 4.5,
+      "role": "body text",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
   "contrast_failures": [
     {
       "pair": "ink on canvas-night",
@@ -40,15 +53,8 @@
       "bg": "#000000",
       "ratio": 1.0,
       "required": 4.5,
-      "role": "body text"
-    },
-    {
-      "pair": "ink on surface-elevated-dark",
-      "fg": "#000000",
-      "bg": "#1e2c31",
-      "ratio": 1.46,
-      "required": 4.5,
-      "role": "body text on surface"
+      "role": "body text",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -77,7 +83,7 @@
   "score": {
     "tokens": 3,
     "refs": 5,
-    "contrast": 3,
+    "contrast": 4,
     "sections": 2,
     "motion": 1,
     "states": 1

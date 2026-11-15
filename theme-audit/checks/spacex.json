@@ -33,6 +33,19 @@
     "text-dim"
   ],
   "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#000000",
+      "bg": "#000000",
+      "ratio": 1.0,
+      "required": 4.5,
+      "role": "body text",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
   "contrast_failures": [
     {
       "pair": "ink on canvas-night",
@@ -40,7 +53,8 @@
       "bg": "#000000",
       "ratio": 1.0,
       "required": 4.5,
-      "role": "body text"
+      "role": "body text",
+      "disclosed": false
     }
   ],
   "motion_group": [],

@@ -33,14 +33,63 @@
     "text-dim"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
+    {
+      "component": "button-fin",
+      "fg": "#ffffff",
+      "bg": "#ff5600",
+      "ratio": 3.19,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#ebe7e1",
+      "bg": "#f5f1ec",
+      "ratio": 1.1,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
     {
       "pair": "hairline on canvas",
       "fg": "#d3cec6",
       "bg": "#f5f1ec",
       "ratio": 1.39,
       "required": 3.0,
-      "role": "component boundary"
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "button-fin",
+      "fg": "#ffffff",
+      "bg": "#ff5600",
+      "ratio": 3.19,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#ebe7e1",
+      "bg": "#f5f1ec",
+      "ratio": 1.1,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#d3cec6",
+      "bg": "#f5f1ec",
+      "ratio": 1.39,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     }
   ],
   "motion_group": [],
@@ -69,7 +118,7 @@
   "score": {
     "tokens": 2,
     "refs": 5,
-    "contrast": 4,
+    "contrast": 2,
     "sections": 3,
     "motion": 1,
     "states": 1

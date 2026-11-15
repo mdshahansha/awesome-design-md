@@ -33,14 +33,58 @@
     "focus"
   ],
   "dangling_refs": [],
-  "contrast_failures": [
+  "component_contrast_failures": [
     {
-      "pair": "muted on canvas",
-      "fg": "#a8a8aa",
-      "bg": "#ffffff",
-      "ratio": 2.37,
+      "component": "testimonial-card-feature",
+      "fg": "#ffffff",
+      "bg": "#f55a3c",
+      "ratio": 3.28,
       "required": 4.5,
-      "role": "secondary text"
+      "disclosed": false
+    },
+    {
+      "component": "badge-required",
+      "fg": "#ffffff",
+      "bg": "#d45656",
+      "ratio": 3.99,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "hero-band-sky",
+      "fg": "#ffffff",
+      "bg": "#87a8c8",
+      "ratio": 2.48,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "founder-quote-card",
+      "fg": "#ffffff",
+      "bg": "#f55a3c",
+      "ratio": 3.28,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#ededed",
+      "bg": "#ffffff",
+      "ratio": 1.17,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e5e5e5",
+      "bg": "#ffffff",
+      "ratio": 1.26,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
     },
     {
       "pair": "muted on surface",
@@ -48,63 +92,88 @@
       "bg": "#f7f7f7",
       "ratio": 2.22,
       "required": 4.5,
-      "role": "secondary text on surface"
+      "role": "secondary text on surface",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-green",
-      "fg": "#ffffff",
-      "bg": "#00d4a4",
-      "ratio": 1.92,
+      "pair": "muted on canvas",
+      "fg": "#a8a8aa",
+      "bg": "#ffffff",
+      "ratio": 2.37,
       "required": 4.5,
-      "role": "text on signal colour"
+      "role": "secondary text",
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-green-deep",
+      "component": "testimonial-card-feature",
       "fg": "#ffffff",
-      "bg": "#00b48a",
-      "ratio": 2.66,
+      "bg": "#f55a3c",
+      "ratio": 3.28,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-green-soft",
-      "fg": "#ffffff",
-      "bg": "#7cebcb",
-      "ratio": 1.44,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on brand-warn",
-      "fg": "#ffffff",
-      "bg": "#c37d0d",
-      "ratio": 3.35,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on brand-annotate",
-      "fg": "#ffffff",
-      "bg": "#1ba673",
-      "ratio": 3.11,
-      "required": 4.5,
-      "role": "text on signal colour"
-    },
-    {
-      "pair": "on-primary on brand-error",
+      "component": "badge-required",
       "fg": "#ffffff",
       "bg": "#d45656",
       "ratio": 3.99,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
     },
     {
-      "pair": "on-primary on brand-cursor",
+      "component": "hero-band-sky",
       "fg": "#ffffff",
-      "bg": "#888888",
-      "ratio": 3.54,
+      "bg": "#87a8c8",
+      "ratio": 2.48,
       "required": 4.5,
-      "role": "text on signal colour"
+      "disclosed": false
+    },
+    {
+      "component": "founder-quote-card",
+      "fg": "#ffffff",
+      "bg": "#f55a3c",
+      "ratio": 3.28,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#ededed",
+      "bg": "#ffffff",
+      "ratio": 1.17,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e5e5e5",
+      "bg": "#ffffff",
+      "ratio": 1.26,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on surface",
+      "fg": "#a8a8aa",
+      "bg": "#f7f7f7",
+      "ratio": 2.22,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on canvas",
+      "fg": "#a8a8aa",
+      "bg": "#ffffff",
+      "ratio": 2.37,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": false
     }
   ],
   "motion_group": [],
