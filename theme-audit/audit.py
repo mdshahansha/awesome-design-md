@@ -219,7 +219,7 @@ def audit(path):
     # alternate-theme surface. In 36 of 84 files it is just a tone suffix
     # (border-light, m-blue-dark), and reading those as a separate theme
     # silenced real failures — reported by agent A14.
-    dual_theme = any(re.match(r"^(canvas|background|bg|base|surface)", k)
+    dual_theme = any(re.search(r"(canvas|background|bg|base|surface)", k)
                      and re.search(r"(light|dark)", k) for k in colors)
 
     def theme_of(key):
@@ -291,10 +291,13 @@ def audit(path):
                 r"^semantic-", r"^positive", r"^negative")
     canvas_key = roles.get("canvas")
     if canvas_key:
+        FILL_MARKER = re.compile(r"(subtle|soft|bg|background|fill|tint|wash|surface|band)")
         for pat in SEMANTIC:
             for key in colors:
                 if not re.match(pat, key) or "disabled" in key:
                     continue
+                if FILL_MARKER.search(key):
+                    continue   # a fill tone, never the label drawn on it
                 if not same_theme(key, canvas_key):
                     continue
                 ratio = round(contrast(colors[key], colors[canvas_key]), 2)
@@ -317,8 +320,11 @@ def audit(path):
                     and not re.search(r"(inner|inset|halo)", k)]
     focus_bands = [k for k in colors if re.match(r"^focus", k)
                    and re.search(r"(inner|inset|halo)", k)]
+    # Not anchored: an inverse-canvas or hero-surface band is a surface a ring
+    # can land on, and anchoring hid every one of them.
     surface_keys = [k for k in colors
-                    if re.match(r"^(canvas|background|bg|base|surface|card|panel)", k)]
+                    if re.search(r"(canvas|background|base|surface|card|panel|tile|band)", k)
+                    and not re.search(r"^(ink|text|body|muted|hairline|border|focus)", k)]
     accent_key = roles.get("accent")
 
     # A file's rings are a system, not independent claims. A surface is covered

@@ -51,8 +51,10 @@ carry tokens that exist only to please a regex:
 
 Where a file documents both light and dark signature surfaces, one ring cannot
 serve both: a blue that passes on white can sit at 1.2:1 on a coral card. Such a
-file defines `focus` **and** `focus-on-dark`, and its Accessibility section
-states which surface each one is drawn on.
+file defines two rings: `focus` for its default surfaces and a counterpart
+named for the other polarity — `focus-on-dark` in a light-default file,
+`focus-on-light` in a dark-default one. Its Accessibility section states which
+surface each one is drawn on.
 
 Polarity naming breaks down in two real cases, so prefer the simpler answer
 where it works. A monochrome brand whose accent **is** its ink or its paper has
@@ -137,6 +139,11 @@ useful information for anyone building on it.
 | Responsive Behavior | yes — as a top-level `##`; where a file already carries it as a Layout subsection, **move** it verbatim, never duplicate it, promoting its child headings one level so the section reads at the same depth as its peers |
 | Iteration Guide | optional |
 | Known Gaps | yes |
+
+A legacy section with no slot in this contract — `## 9. Agent Prompt Guide`,
+for instance — is kept verbatim as an unnumbered section after Known Gaps, not
+deleted and not folded into another section. Its content was extracted; losing
+it would be a regression.
 
 Ten early files carry no frontmatter and use a numbered variant of these
 headings. Convert them to the current format: build the token block from the
