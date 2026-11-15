@@ -317,6 +317,10 @@ def audit(path):
         neutral_bound = [k for k in distinct_bound if saturation(colors[k]) <= 0.12]
         if neutral_bound:
             distinct_bound = neutral_bound
+        elif distinct_bound and neutral_cand:
+            # No neutral ground is bound, but the palette names one: prefer it
+            # over a saturated fill a container happens to use.
+            distinct_bound = []
         elif distinct_bound and bound_surfaces - set(distinct_bound):
             # Every distinct bound ground is saturated, but a container binds
             # the page colour: this brand paints cards the same tone as the page
@@ -377,6 +381,11 @@ def audit(path):
             if contrast(colors[best], colors[canvas_tok]) >= 3.0:
                 roles["text"] = best
                 r.setdefault("roles_from_bindings", []).append("text=" + best)
+            else:
+                r["text_role_mismatch"] = (
+                    f"no tone in the text role reaches 3:1 on {canvas_tok}; "
+                    f"this file's ink for that ground is named outside the role")
+                roles["text"] = None
 
     if not roles.get("text-dim"):
         for k in ("body", "body-soft", "secondary"):
@@ -384,6 +393,12 @@ def audit(path):
                 roles["text-dim"] = k
                 r.setdefault("roles_from_bindings", []).append("text-dim=" + k)
                 break
+
+    if roles.get("surface") and saturation(colors[roles["surface"]]) > 0.3:
+        r["surface_role_mismatch"] = (
+            f"only candidate for surface was the saturated {roles['surface']}; "
+            f"this file names no raised neutral")
+        roles["surface"] = None
 
     _report_roles()      # again, after every fallback has had its say
     fails = []
@@ -516,8 +531,9 @@ def audit(path):
     check("text-dim", "surface", 4.5, "secondary text on surface")
     check("on-accent", "accent", 4.5, "text on the accent")
     check_all("text-dim", "canvas", 4.5, "secondary text, all tones")
-    check_all("text", "canvas", 4.5, "body text, all tones")
-    check_all("text", "surface", 4.5, "body text on surface, all tones")
+    if not r.get("text_role_mismatch"):
+        check_all("text", "canvas", 4.5, "body text, all tones")
+        check_all("text", "surface", 4.5, "body text on surface, all tones")
     check_all("text-dim", "surface", 4.5, "secondary text on surface, all tones")
     check_all("border", "surface", 3.0, "boundary on surface, all tones")
 
