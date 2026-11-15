@@ -300,9 +300,11 @@ def audit(path):
         for cname, props in parse_components(text).items():
             if not CONTAINERISH.search(cname) or NOT_A_SURFACE.search(cname):
                 continue
+            if cname.startswith("ex-"):
+                continue      # auto-derived demo block, not evidence of brand
             bm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
                               props.get("backgroundColor") or "")
-            if bm and bm.group(1) in colors:
+            if bm and bm.group(1) in colors and bm.group(1) != roles.get("text"):
                 bound_surfaces.add(bm.group(1))
         # What containers are actually painted with beats a wash nothing binds.
         # Prefer a bound tone DISTINCT from the page; fall back to a bound tone
@@ -365,6 +367,24 @@ def audit(path):
     r["dangling_refs"] = sorted(dangling)
 
     # --- contrast -------------------------------------------------------
+    canvas_tok = roles.get("canvas")
+    if canvas_tok and roles.get("text") and \
+            contrast(colors[roles["text"]], colors[canvas_tok]) < 3.0:
+        alts = [k for pat in REQUIRED_COLOR_ROLES["text"] for k in colors
+                if re.match(pat, k)]
+        if alts:
+            best = max(alts, key=lambda k: contrast(colors[k], colors[canvas_tok]))
+            if contrast(colors[best], colors[canvas_tok]) >= 3.0:
+                roles["text"] = best
+                r.setdefault("roles_from_bindings", []).append("text=" + best)
+
+    if not roles.get("text-dim"):
+        for k in ("body", "body-soft", "secondary"):
+            if k in colors and roles.get("text") != k:
+                roles["text-dim"] = k
+                r.setdefault("roles_from_bindings", []).append("text-dim=" + k)
+                break
+
     _report_roles()      # again, after every fallback has had its say
     fails = []
 
@@ -430,7 +450,7 @@ def audit(path):
         if not dual_theme:
             return None
         marker = None
-        if re.search(r"(dark|night|midnight|noir|black|ink)($|[-_])"
+        if re.search(r"(dark|night|midnight|noir|black)($|[-_])"
                      r"|[-_](dark|night|midnight|noir|black)", key):
             marker = "dark"
         elif re.search(r"(light|day|paper|snow|white|cream)($|[-_])"
