@@ -25,6 +25,8 @@ colors:
   hairline: "#242728"
   hairline-soft: "rgba(255,255,255,0.08)"
   hairline-strong: "rgba(255,255,255,0.16)"
+  hairline-accessible: "#646869"
+  focus: "#ffffff"
   accent-blue: "#57c1ff"
   accent-blue-soft: "rgba(87,193,255,0.15)"
   accent-red: "#ff6161"
@@ -163,6 +165,18 @@ spacing:
   xl: 24px
   xxl: 32px
   section: 96px
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
 
 components:
   button-primary:
@@ -359,9 +373,11 @@ The design philosophy is "the marketing page is the product." Section rhythm is 
 - **Surface Elevated** (`{colors.surface-elevated}` — `#101111`): button-tertiary fill, text-input fill, store-search-bar fill, pill-tab-active fill.
 - **Surface Card** (`{colors.surface-card}` — `#121212`): app-icon-tile background, keycap fill, command-palette row hover.
 - **Button FG (in-card)** (`{colors.button-fg}` — `#18191a`): rare deep-card variant used inside featured pricing tier card backgrounds.
-- **Hairline** (`{colors.hairline}` — `#242728`): the universal 1px card border. Carries every card edge across every page.
-- **Hairline Soft** (`{colors.hairline-soft}` — `rgba(255,255,255,0.08)`): even fainter border on translucent over-image overlays.
-- **Hairline Strong** (`{colors.hairline-strong}` — `rgba(255,255,255,0.16)`): stronger 1px divider where a regular hairline reads as too soft.
+- **Hairline** (`{colors.hairline}` — `#242728`): the universal 1px card border. Carries every card edge across every page. **Extracted and frozen; decorative only.** Measured at 1.33:1 on `{colors.canvas}` and 1.29:1 on `{colors.surface}` — far below the 3:1 WCAG non-text minimum. It may separate panels, but it must not be the *only* boundary of an interactive control.
+- **Hairline Soft** (`{colors.hairline-soft}` — `rgba(255,255,255,0.08)`): even fainter border on translucent over-image overlays. Extracted and frozen; decorative only — 1.17:1 composited over `{colors.canvas}`.
+- **Hairline Strong** (`{colors.hairline-strong}` — `rgba(255,255,255,0.16)`): stronger 1px divider where a regular hairline reads as too soft. Extracted and frozen; still decorative — 1.52:1 composited over `{colors.canvas}`, so "strong" is relative to the other two and not to WCAG.
+- **Hairline Accessible** (`{colors.hairline-accessible}` — `#646869`): **prescribed, not extracted.** A parallel boundary tone for implementers who need a control edge that actually reads: 3.55:1 on `{colors.canvas}`, 3.45:1 on `{colors.surface}`, 3.36:1 on `{colors.surface-elevated}`, 3.32:1 on `{colors.surface-card}`, 3.12:1 on `{colors.button-fg}` — clearing 3:1 on every surface this file defines. It sits in the same cool-grey family as `{colors.ash}`. Use it for text-input, search-bar and install-button edges; leave `{colors.hairline}` on cards and dividers, where it is what the real site draws.
+- **Focus** (`{colors.focus}` — `#ffffff`): **prescribed, not extracted.** The focus ring. It reuses the brand's existing white — the same hex as `{colors.primary}` and `{colors.on-dark}` — rather than introducing a new brand colour, because white is already this system's one interactive signal and a chromatic ring would break the "no saturated accent on chrome" rule. Drawn as a 2px ring with a 2px offset in the underlying surface colour, so it stays visible even around the white `{component.button-primary}` pill. See Accessibility for measured ratios on every surface.
 
 ### Text
 - **Ink** (`{colors.ink}` — `#f4f4f6`): primary headlines on dark canvas. Slightly off-white for tonal coherence with the near-black background.
@@ -443,7 +459,9 @@ Whitespace is generous and the canvas is uninterrupted. Sections sit 96px apart 
 | 2 — Hairline strong | 1px solid `{colors.hairline-strong}` | Stronger inline divider, table-row separator on the comparison table |
 | 3 — Surface ladder elevation | `{colors.canvas}` → `{colors.surface}` → `{colors.surface-elevated}` → `{colors.surface-card}` | Multi-step background-color ladder used to create elevation without shadows |
 
-The system has no drop-shadow elevation at all. Depth is built entirely from the surface-color ladder: each notch lighter on the dark scale reads as one step closer to the viewer.
+The system has no drop-shadow elevation at all. Depth is built entirely from the surface-color ladder: each notch lighter on the dark scale reads as one step closer to the viewer. Elevation is therefore expressed exactly one way — background colour, plus a 1px hairline where a card needs an edge — and never as a mix of shadow and border. There is no `shadow:` token group because the system documents no shadow values.
+
+**The ladder's steps are very close together, measured.** `{colors.canvas}` → `{colors.surface}` is 1.03:1, `{colors.surface}` → `{colors.surface-elevated}` 1.03:1, `{colors.surface-elevated}` → `{colors.surface-card}` 1.01:1, and `{colors.canvas}` → `{colors.surface-card}` only 1.07:1. Nothing in WCAG requires adjacent decorative surfaces to contrast, so these are not failures — but the ladder cannot be relied on to communicate structure on its own. Level 1's hairline is what actually separates a card from the canvas, and that hairline measures 1.33:1 (see Accessibility). On a dim display or at low vision, a Raycast card and the page behind it are effectively one flat field. Where a boundary must be perceivable rather than merely tasteful, draw `{colors.hairline-accessible}` instead.
 
 ### Decorative Depth
 Depth comes from product imagery and a single stripe-gradient band:
@@ -477,7 +495,7 @@ There is no traditional photography. Visual elements are limited to:
 
 ## Components
 
-> **No hover states documented** per system policy. Each spec covers Default and Active/Pressed only.
+> **No hover states were extracted** per the original capture policy: each spec below covers Default and Active/Pressed only, which is what the static captures show. The **Component States** table at the end of this section completes the matrix, and marks every row as *extracted* (visible in the captures, with a `components:` entry behind it) or *prescribed* (inferred for implementers, not measured from the live site).
 
 ### Buttons
 
@@ -595,6 +613,158 @@ There is no traditional photography. Visual elements are limited to:
 **`link-inline`** — body-prose anchor link
 - `{colors.on-dark}` text with no underline by default; underlines on focus. Inline body links are full-white rather than a tinted accent color, which keeps the dark canvas tonally pure.
 
+### Component States
+
+Extracted states are those with a `components:` entry or a documented treatment above. Prescribed states are inferred from the surface ladder and were not measured from the live site. "n/a" means the component genuinely has no such state.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | extracted | prescribed — fill holds `{colors.primary}`, label opacity 0.88 | prescribed — `{colors.focus}` ring, 2px offset | extracted — `{component.button-primary-pressed}` | extracted — `{component.button-disabled}` | prescribed — label swaps to a spinner, width locked | n/a — not a toggle | n/a — errors surface on the field, not the CTA |
+| `button-secondary` | extracted | prescribed — label opacity 0.72 | prescribed — `{colors.focus}` ring, 2px offset | prescribed — label opacity 0.6 | extracted — `{component.button-disabled}` | n/a | n/a | n/a |
+| `button-tertiary` | extracted | prescribed — fill steps to `{colors.surface-card}` | prescribed — `{colors.focus}` ring, 2px offset | prescribed — fill holds, label opacity 0.8 | extracted — `{component.button-disabled}` | prescribed — spinner in place of label | n/a | n/a |
+| `install-button` | extracted | prescribed — border steps `{colors.hairline-strong}` → `{colors.hairline-accessible}` | prescribed — `{colors.focus}` ring, 2px offset | prescribed — label opacity 0.8 | prescribed — border `{colors.hairline}`, label `{colors.ash}` | prescribed — label "Installing…", spinner glyph at left | prescribed — installed state reads "Open", fill `{colors.surface-elevated}` | prescribed — label "Retry", border `{colors.accent-red}` |
+| `text-input` | extracted | prescribed — border steps to `{colors.hairline-accessible}` | extracted shell `{component.text-input-focused}` (border → `{colors.hairline-strong}`); **prescribed override:** add the `{colors.focus}` ring, since the extracted border measures 1.56:1 | n/a — a field has no pressed state | prescribed — fill `{colors.surface}`, text `{colors.ash}` | n/a | n/a | prescribed — 1px `{colors.accent-red}` border plus a `{typography.caption-md}` message in `{colors.accent-red}` |
+| `store-search-bar` | extracted | prescribed — border steps to `{colors.hairline-accessible}` | prescribed — `{colors.focus}` ring, 2px offset | n/a | n/a | prescribed — results region shows skeleton rows | n/a | prescribed — "No extensions found" empty-result message in `{colors.mute}` |
+| `pill-tab` | extracted | prescribed — text `{colors.body}` → `{colors.on-dark}` | prescribed — `{colors.focus}` ring, 2px offset | prescribed — text opacity 0.8 | n/a | n/a | extracted — `{component.pill-tab-active}` | n/a |
+| `command-palette-row` | extracted | extracted — fill `{colors.surface-card}` (the in-product hover; the same fill the mockups show on the cursored row) | prescribed — `{colors.focus}` ring inset 1px, since rows sit flush inside the card | prescribed — fill holds, label opacity 0.9 | prescribed — label `{colors.stone}`, row not focusable | prescribed — trailing spinner where the command is running | extracted — `{component.command-palette-row-active}` | prescribed — trailing `{colors.accent-red}` glyph, label unchanged |
+| `link-inline` | extracted | prescribed — underline appears | extracted — underline appears; **prescribed addition:** `{colors.focus}` ring | prescribed — opacity 0.8 | n/a | n/a | n/a | n/a |
+| `badge-pro`, `badge-info-soft`, `keycap`, `app-icon-tile`, `app-icon-tile-large` | extracted | n/a | n/a | n/a | n/a | n/a | n/a | n/a — **single-state, non-interactive** display elements |
+| `command-palette-card`, `feature-card-dark`, `feature-card-elevated`, `pricing-tier-card`, `pricing-tier-card-featured`, `store-extension-card`, `hero-stripe-band`, `primary-nav`, `footer-section` | extracted | n/a — containers are not interactive; their inner controls carry the states | n/a | n/a | n/a | prescribed — `store-extension-card` only, skeleton rows on first store load | n/a | n/a |
+
+Note: `{component.text-input-focused}` and `{component.pill-tab-active}` keep their extracted `{colors.hairline-strong}` / `{colors.surface-elevated}` bindings in the frontmatter. Re-pointing them at `{colors.focus}` or `{colors.hairline-accessible}` would make the document describe a product that does not exist, so it is raised for a brand owner to decide rather than applied here.
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or easing curve below was extracted from raycast.com; the values come from the **Crisp** profile, assigned because Raycast is a developer-tool and launcher identity whose own product is a keyboard-driven command palette. Treat every number here as a proposal that happens to be comparable across every other Crisp file in this collection, not as a fact about Raycast's site.
+
+The profile fits the brand on its own evidence: the chrome is the in-product command palette at marketing scale, state change in a launcher has to read as instant, and the system has no drop shadows, no gradients outside the one hero band, and no entrance choreography to slow down. Motion here is a confirmation that a keypress landed, nothing more.
+
+### Principles
+- Animate `transform` and `opacity` only. Never `width`, `height`, `top`, `left` or `margin`. Where a state change is a surface-ladder step (`{colors.surface}` → `{colors.surface-card}` on a command-palette row, `transparent` → `{colors.surface-elevated}` on `{component.pill-tab-active}`), the fill is swapped with **no transition at all** — which is both the rule and the right feel for Crisp.
+- Exit is always shorter than its matching entrance.
+- Nothing animates on first paint. The hero `{component.command-palette-card}` and its stripe band are painted, not revealed.
+- The only infinite animation is the loading spinner. There is no brand ambience; the red hero stripe is a static gradient, not a moving one.
+
+### Inventory
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, links, pill-tabs) | `{motion.duration-fast}` (100ms) | `{motion.ease-standard}` | `opacity` only; surface-ladder fills swap with no transition | Unchanged — opacity already at `{motion.duration-reduced}` or below |
+| Press (all buttons, keycap echo) | `{motion.duration-instant}` (60ms) | `{motion.ease-standard}` | `transform: scale(0.98)` + `opacity` | Scale removed; `opacity` only at `{motion.duration-reduced}` (100ms) |
+| Focus (`{colors.focus}` ring appears) | `{motion.duration-instant}` (60ms) | `{motion.ease-standard}` | `opacity` on the ring; the ring never travels or scales | Unchanged — opacity at `{motion.duration-reduced}` |
+| Page / route transition | `{motion.duration-base}` (150ms) in, `{motion.duration-fast}` (100ms) out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` only — the dark canvas is continuous between pages, so there is nothing to slide | Unchanged — already opacity-only, clamped to `{motion.duration-reduced}` |
+| Modal / drawer (mobile nav drawer, from the left) | `{motion.duration-slow}` (220ms) in, `{motion.duration-base}` (150ms) out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `transform: translateX(-100%→0)` + `opacity` on the scrim | Travel removed; drawer and scrim cross-fade at `{motion.duration-reduced}` (100ms) |
+| Dropdown / menu (nav submenu, store filter menu) | `{motion.duration-fast}` (100ms) in, `{motion.duration-instant}` (60ms) out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(-4px→0)` | Travel removed; `opacity` only at `{motion.duration-reduced}` |
+| Toast / inline confirmation ("Extension installed") | `{motion.duration-base}` (150ms) in, `{motion.duration-fast}` (100ms) out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(8px→0)` | Travel removed; `opacity` only at `{motion.duration-reduced}` |
+| List enter (command-palette rows, store grid, footer columns) | `{motion.duration-fast}` (100ms) per item, offset by `{motion.stagger-step}` (20ms) | `{motion.ease-enter}` | `opacity` + `transform: translateY(4px→0)` | Stagger and travel both removed; the whole list fades in once at `{motion.duration-reduced}` |
+| List exit (filtered-out rows) | `{motion.duration-instant}` (60ms), no stagger | `{motion.ease-exit}` | `opacity` only | Unchanged — already opacity-only and under `{motion.duration-reduced}` |
+| Loading (install spinner, store skeleton rows) | Spinner: one revolution per `2 × {motion.duration-emphasis}` (600ms), infinite. Skeleton pulse: `{motion.duration-emphasis}` (300ms) each way | `{motion.ease-standard}` | Spinner: `transform: rotate`. Skeleton: `opacity` 0.4 ↔ 1.0 | Spinner stops rotating and holds as a static glyph; skeleton pulse freezes at full opacity. Progress is announced in text instead |
+
+The spinner is the one stated deviation from the profile block: a 60ms–300ms revolution would strobe, so it runs at a deliberate multiple of `{motion.duration-emphasis}` rather than a new hardcoded value.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel and all scale.
+     No translateX on the mobile drawer, no translateY on dropdowns,
+     toasts or list items, no scale(0.98) on press, no stagger.
+     The loading spinner stops rotating and holds as a static glyph. */
+  *, *::before, *::after {
+    animation-duration: 100ms !important;   /* {motion.duration-reduced} */
+    animation-iteration-count: 1 !important;
+    transition-duration: 100ms !important;  /* {motion.duration-reduced} */
+    transition-property: opacity !important;
+    transform: none !important;
+  }
+}
+```
+
+What is removed: every `transform` — drawer travel, dropdown and toast travel, list-item travel, the press scale, the list stagger, and the spinner's rotation. What remains: opacity fades at `{motion.duration-reduced}` (100ms, never more than 150ms), the instant surface-ladder fill swaps, and the `{colors.focus}` ring, which has no motion to remove. There is no brand ambience in this system, so there is none to freeze.
+
+## Accessibility
+
+Every ratio below was computed with WCAG 2.1 relative luminance from this file's own token values. Translucent tokens are composited over the stated background first. Anything this document cannot establish without a rendered page is in Known Gaps rather than asserted here.
+
+### Measured contrast — text
+
+| Foreground / Background | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` #f4f4f6 on `{colors.canvas}` | 18.24:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface}` | 17.69:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-elevated}` | 17.22:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-card}` | 17.05:1 | 4.5:1 | Pass |
+| `{colors.body}` #cdcdcd on `{colors.canvas}` | 12.60:1 | 4.5:1 | Pass |
+| `{colors.charcoal}` on `{colors.canvas}` | 13.39:1 | 4.5:1 | Pass |
+| `{colors.mute}` #9c9c9d on `{colors.canvas}` | 7.30:1 | 4.5:1 | Pass |
+| `{colors.on-dark}` #ffffff on `{colors.canvas}` | 20.04:1 | 4.5:1 | Pass |
+| `{colors.on-dark-mute}` composited on `{colors.canvas}` (→ #bababa) | 10.32:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` #000000 on `{colors.primary}` #ffffff | 21.00:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.primary-pressed}` #e8e8e8 | 17.14:1 | 4.5:1 | Pass |
+| `{colors.accent-blue}` on `{colors.canvas}` | 10.00:1 | 4.5:1 | Pass |
+| `{colors.accent-red}` on `{colors.canvas}` | 6.81:1 | 4.5:1 | Pass |
+| `{colors.accent-green}` on `{colors.canvas}` | 10.78:1 | 4.5:1 | Pass |
+| `{colors.accent-yellow}` on `{colors.canvas}` | 12.68:1 | 4.5:1 | Pass |
+| `{colors.accent-blue}` on `{colors.accent-blue-soft}` over canvas | 7.93:1 | 4.5:1 | Pass |
+| **`{colors.ash}` #6a6b6c on `{colors.canvas}`** | **3.75:1** | 4.5:1 | **Fail** |
+| **`{colors.stone}` #434345 on `{colors.canvas}`** | **2.03:1** | 4.5:1 | **Fail** |
+
+### Measured contrast — boundaries and the focus ring
+
+| Foreground / Background | Ratio | Required | Verdict |
+|---|---|---|---|
+| **`{colors.hairline}` #242728 on `{colors.canvas}`** | **1.33:1** | 3.0:1 | **Fail** |
+| **`{colors.hairline}` on `{colors.surface}`** | **1.29:1** | 3.0:1 | **Fail** |
+| **`{colors.hairline-soft}` composited on `{colors.canvas}` (→ #1b1c1e)** | **1.17:1** | 3.0:1 | **Fail** |
+| **`{colors.hairline-soft}` composited on `{colors.surface}` (→ #202020)** | **1.19:1** | 3.0:1 | **Fail** |
+| **`{colors.hairline-strong}` composited on `{colors.canvas}` (→ #2f3031)** | **1.52:1** | 3.0:1 | **Fail** |
+| **`{colors.hairline-strong}` composited on `{colors.surface}` (→ #343434)** | **1.56:1** | 3.0:1 | **Fail** |
+| `{colors.hairline-accessible}` #646869 on `{colors.canvas}` | 3.55:1 | 3.0:1 | Pass |
+| `{colors.hairline-accessible}` on `{colors.surface}` | 3.45:1 | 3.0:1 | Pass |
+| `{colors.hairline-accessible}` on `{colors.surface-elevated}` | 3.36:1 | 3.0:1 | Pass |
+| `{colors.hairline-accessible}` on `{colors.surface-card}` | 3.32:1 | 3.0:1 | Pass |
+| `{colors.hairline-accessible}` on `{colors.button-fg}` | 3.12:1 | 3.0:1 | Pass |
+| `{colors.focus}` #ffffff on `{colors.canvas}` | 20.04:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.surface}` | 19.44:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.surface-elevated}` | 18.91:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.surface-card}` | 18.73:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.button-fg}` | 17.61:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.hero-stripe-start}` #ff5757 | 3.11:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.hero-stripe-end}` #a1131a | 8.00:1 | 3.0:1 | Pass |
+| **`{colors.hero-stripe-end}` #a1131a on `{colors.canvas}`** | **2.50:1** | 3.0:1 | **Fail (decoration only)** |
+
+### Where the real brand fails AA, plainly
+
+These are extracted facts about Raycast's site, not defects in this document, and they are **not** corrected in place:
+
+1. **Every hairline in the system fails the 3:1 non-text minimum.** `{colors.hairline}` at 1.33:1 on canvas is the universal card border, and `{colors.hairline-strong}` — the strongest of the three at 1.52:1 — is the *entire* focus affordance on `{component.text-input-focused}`. A sighted low-vision user cannot reliably see where a Raycast text field begins or whether it is focused. This is the single most consequential accessibility failure in the system. `{colors.hairline-accessible}` and `{colors.focus}` are prescribed above as the fix; the extracted bindings are left as they are, because they describe the real product.
+2. **`{colors.ash}` (3.75:1) and `{colors.stone}` (2.03:1) fail 4.5:1 as text on canvas.** `{colors.ash}` is documented as disabled-state text, where WCAG sets no requirement, so that use is defensible. `{colors.stone}` is documented as "least-emphasis caption text", which is not exempt: at 2.03:1 it is unusable for any caption a reader is meant to read. Either restrict it to disabled icons only, or raise it — see Needs-approval notes in the audit report.
+3. **`{colors.hero-stripe-end}` (2.50:1 on canvas) is decoration with no informational content.** The gradient terminus carries no text and no meaning, so 3:1 does not apply; it is listed for completeness.
+4. **There is no light mode**, so there is no light-ground contrast story to tell. Every ratio above is the whole picture.
+
+### Focus ring
+
+`{colors.focus}` is `#ffffff` — the same white the brand already uses for `{colors.primary}` and `{colors.on-dark}`. It is a role binding onto an existing tone, not a new brand colour, and it is **prescribed**: the captured site shows only the `{colors.hairline-strong}` border brightening on `{component.text-input-focused}`, which measures 1.56:1.
+
+- **Treatment:** 2px solid `{colors.focus}`, drawn *outside* the control with a 2px offset in the colour of the surface behind it (`{colors.canvas}` on page chrome, `{colors.surface}` inside cards). The offset matters: `{component.button-primary}` is itself white, so without the dark gap the ring would be invisible against its own fill. Judged against the surface behind it — which is what WCAG 2.2 Focus Appearance asks for — the ring clears 3:1 on every surface in the table above, including both ends of the hero stripe gradient (3.11:1 at its lightest point).
+- **One ring is enough.** This file documents a single dark polarity; `{colors.primary}` white is a control *fill*, not a surface, so no `focus-on-light` counterpart is needed.
+- **Inside the command palette**, where rows sit flush against the card, the ring is drawn 1px inset instead of offset, against `{colors.surface}` (19.44:1).
+- `{colors.focus}` is never animated beyond the `opacity` fade in the motion inventory. It does not travel.
+
+### Tap targets
+
+`{component.button-primary}`, `{component.button-secondary}`, `{component.button-tertiary}` and `{component.text-input}` are documented at 36px height; `{component.store-search-bar}` at 44px; `{component.install-button}` at roughly 32px; `{component.pill-tab}` at roughly 24–28px with inline padding. 44×44px is the WCAG 2.1 AAA target (2.5.5) and 24×24px the AA minimum (2.5.8); on the documented numbers only `{component.store-search-bar}` clears AAA, and `{component.pill-tab}` sits close to the AA floor. **These are documented values, not measured ones** — rendered tap-target size cannot be established from a static document, so the real figures are in Known Gaps.
+
+### Reduced motion
+
+Honoured in full — see the `@media (prefers-reduced-motion: reduce)` rule above. All travel, all scale, the list stagger and the spinner rotation are removed; opacity fades remain at `{motion.duration-reduced}` (100ms).
+
+### Other
+
+- `ss03` and the other `font-feature-settings` are glyph substitutions only; they do not alter text selectability, copy/paste or screen-reader output.
+- Saturated category accents never carry meaning on their own — they appear inside illustrations, so no information is conveyed by colour alone.
+- `{component.keycap}` glyphs render real characters (`⌘`, `⏎`, `Esc`), not images, so shortcut hints are readable by a screen reader.
+
 ## Do's and Don'ts
 
 ### Do
@@ -606,6 +776,9 @@ There is no traditional photography. Visual elements are limited to:
 - Use `{component.keycap}` glyphs inline to indicate keyboard shortcuts. Subtle key-bg gradient (`{colors.key-bg-start}` → `{colors.key-bg-end}`) is the brand's only "depth" decoration.
 - Reserve `{colors.hero-stripe-start}` → `{colors.hero-stripe-end}` red gradient for the hero band exactly once per page. Never repeat the stripe gradient deeper in the page.
 - Use saturated category accents (`{colors.accent-yellow}`, `{colors.accent-red}`, `{colors.accent-green}`, `{colors.accent-blue}`) only inside extension and feature illustrations — never on chrome buttons or text.
+- Draw the focus ring in `{colors.focus}` (white) with a 2px offset in the surface behind the control. White is already the brand's one interactive signal, so the ring costs the system no new colour.
+- Use `{colors.hairline-accessible}` wherever a 1px edge is the only boundary of an interactive control — text inputs, the search bar, the install pill. Keep `{colors.hairline}` for card edges and dividers, which is what the real site draws.
+- Keep motion at the **Crisp** end: `{motion.duration-base}` is 150ms, press is `{motion.duration-instant}` (60ms), and a surface-ladder fill change is swapped with no transition at all. State change in a launcher should read as instant.
 
 ### Don't
 - Don't introduce a light mode. The system is dark-only by design.
@@ -615,6 +788,10 @@ There is no traditional photography. Visual elements are limited to:
 - Don't repeat the hero stripe gradient outside the top hero band. The one-band rule is the system's restraint.
 - Don't use Inter without the `ss03` feature flag enabled. The chrome will lose its signature voice.
 - Don't pad cards with 32px+ on all sides. The system runs tight at 16–24px in-card padding.
+- Don't rely on `{colors.hairline}`, `{colors.hairline-soft}` or `{colors.hairline-strong}` as the only focus indicator. All three measure under 1.6:1 — a brightening border is not a visible focus state. Add the `{colors.focus}` ring.
+- Don't animate `width`, `height`, `top`, `left` or `margin`, and don't add entrance choreography. `transform` and `opacity` only, and nothing animates on first paint.
+- Don't introduce a chromatic focus ring. A blue or red ring would break the "no saturated accent on chrome" rule for no contrast gain — `{colors.focus}` white already measures 17:1 or better on every surface in the system.
+- Don't set `{colors.stone}` as caption text a reader is meant to read. It measures 2.03:1 on `{colors.canvas}`.
 
 ## Responsive Behavior
 
@@ -662,7 +839,11 @@ The only "imagery" in the system is in-product Raycast UI screenshots and small 
 ## Known Gaps
 
 - **Mobile screenshots not captured** — responsive behavior synthesizes Raycast's mobile pattern (hamburger drawer, single-column grid, hero downscale) from desktop evidence and the breakpoint stack.
-- **Hover states not documented** by system policy. Raycast's in-product app has rich hover behavior on command-palette rows that this document doesn't capture.
+- **Hover states not extracted.** The static captures show no hover treatment; the Component States table fills the matrix with values labelled *prescribed*. Raycast's in-product app has rich hover behavior on command-palette rows that this document doesn't capture.
+- **All motion is prescribed, none measured.** No duration, easing curve or transition was read off raycast.com. The Motion & Animation section carries the collection's **Crisp** profile verbatim so that Raycast's file is comparable with other developer-tool files, which is a different claim from Raycast actually using 150ms and `cubic-bezier(0.2, 0, 0.2, 1)`.
+- **The focus ring is prescribed.** The captured site's only focus affordance is the `{component.text-input-focused}` border brightening to `{colors.hairline-strong}` (1.56:1). `{colors.focus}` and its 2px offset are this document's proposal, not an extracted fact. Whether Raycast's real site draws a ring elsewhere is unknown.
+- **`{colors.hairline-accessible}` is prescribed.** It is a parallel boundary tone added for implementers; Raycast draws no such colour. The frozen hairlines keep every `components:` binding they were extracted with.
+- **Tap-target sizes are documented, not measured.** The heights in Responsive Behavior come from the captures' own CSS values. Rendered hit area, inline-padding expansion, overlap and clipping need a live page and are not established here.
 - **In-product app chrome** (the actual Raycast launcher running on macOS) is referenced in marketing screenshots but not documented as a separate UI system here. The marketing site is documented; the in-product app surface is its own design system.
 - **Dark mode is the only mode** — no light variant exists in the captured surfaces.
 - **Form validation states** beyond the focused-input border treatment are not present in the captured surfaces.
