@@ -19,11 +19,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REQUIRED_COLOR_ROLES = {
     "canvas":   [r"^canvas$", r"^background$", r"^bg$", r"^base$", r"^surface-base$",
                  r"^paper$", r"^page$", r"^canvas-"],
-    "surface":  [r"^surface$", r"^surface-(card|soft|raised|elevated|cream|dark|light|alt|muted|subtle|panel|deep|strong|mid)",
-                 r"^card$", r"^card-", r"^panel$", r"^elevated$"],
+    "surface":  [r"^surface$", r"^surface[-_]?\d", r"^surface[-_]", r"^card$",
+                 r"^card[-_]", r"^panel$", r"^panel[-_]", r"^elevated$",
+                 r"^tile$", r"^tile[-_]"],
     "text":     [r"^ink$", r"^text$", r"^text-primary$", r"^body$", r"^body-strong$",
-                 r"^foreground$", r"^on-canvas$", r"^on-(light|cream|paper|white)$", r"^ink-"],
-    "text-dim": [r"^text-dim$", r"^muted$", r"^muted-", r"^text-(secondary|muted|soft|tertiary)$",
+                 r"^foreground$", r"^on-canvas$", r"^on-(light|cream|paper|white)$",
+                 r"^ink-(strong|deep|black|primary)$"],
+    "text-dim": [r"^text-dim$", r"^muted$", r"^muted-",
+                 r"^ink-(muted|subtle|soft|tertiary|secondary|light)", r"^text-(secondary|muted|soft|tertiary)$",
                  r"^body-(soft|muted|secondary)$", r"^subtle$", r"^secondary$",
                  r"^on-dark-soft$", r"^caption$"],
     "border":   [r"^hairline$", r"^hairline-", r"^border$", r"^border-", r"^divider$",
@@ -146,9 +149,39 @@ def audit(path):
     site = os.path.basename(os.path.dirname(path))
     text = open(path).read()
     groups, body = parse_frontmatter(text)
-    colors = {k: v for k, v in groups.get("colors", {}).items()
+    raw_colors = groups.get("colors", {})
+    colors = {k: v for k, v in raw_colors.items()
               if re.fullmatch(r"#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}", v)}
-    r = {"site": site, "has_frontmatter": bool(groups), "color_count": len(colors)}
+
+    # Composite any rgba()/rgb() tokens over the canvas, so an opacity ladder is
+    # measured as it renders rather than skipped.
+    def _canvas_hex():
+        for pat in REQUIRED_COLOR_ROLES["canvas"]:
+            for k in colors:
+                if re.match(pat, k):
+                    return colors[k]
+        return "#ffffff"
+
+    composited = []
+    base = _canvas_hex()
+    bh = base.lstrip("#")
+    bh = "".join(c * 2 for c in bh) if len(bh) == 3 else bh[:6]
+    br, bg_, bb = (int(bh[i:i + 2], 16) for i in (0, 2, 4))
+    for k, v in raw_colors.items():
+        if k in colors:
+            continue
+        m = re.fullmatch(r"rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)", v or "")
+        if not m:
+            continue
+        r_, g_, b_ = (int(m.group(i)) for i in (1, 2, 3))
+        a = float(m.group(4)) if m.group(4) else 1.0
+        colors[k] = "#%02x%02x%02x" % (
+            round(r_ * a + br * (1 - a)),
+            round(g_ * a + bg_ * (1 - a)),
+            round(b_ * a + bb * (1 - a)))
+        composited.append(k)
+    r = {"site": site, "has_frontmatter": bool(groups), "color_count": len(colors),
+         "composited_tokens": composited}
 
     # --- sections -------------------------------------------------------
     present = {s for s in SECTIONS if f"## {s}" in text}
