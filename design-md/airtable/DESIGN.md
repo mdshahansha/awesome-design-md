@@ -29,6 +29,8 @@ colors:
   link-active: "#1a3866"
   info: "#254fad"
   info-border: "#458fff"
+  focus: "#1b61c9"
+  focus-on-dark: "#ffffff"
   success: "#006400"
   success-border: "#39bf45"
   pricing-ink: "#1d1f25"
@@ -135,7 +137,19 @@ spacing:
   lg: 24px
   xl: 32px
   xxl: 48px
+  xxxl: 64px
   section: 96px
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 600ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
 
 components:
   button-primary:
@@ -281,7 +295,7 @@ components:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.body}"
     typography: "{typography.body-md}"
-    padding: 64px
+    padding: "{spacing.xxxl}"
 ---
 
 ## Overview
@@ -303,7 +317,7 @@ Type voice is Haas Grotesk at modest weights (400 for display, 500 for sub-title
 ## Colors
 
 ### Brand & Accent
-- **Primary** (`{colors.primary}` — #181d26): The dominant brand color. Used for the primary CTA background, h1/h2 display type, and the `{component.surface-dark}` band. Not "blue, then black" — black IS the primary throughout the marketing system.
+- **Primary** (`{colors.primary}` — #181d26): The dominant brand color. Used for the primary CTA background, h1/h2 display type, and the `{colors.surface-dark}` band. Not "blue, then black" — black IS the primary throughout the marketing system.
 - **Primary Active** (`{colors.primary-active}` — #0d1218): The press state on primary buttons.
 
 ### Surface
@@ -312,7 +326,7 @@ Type voice is Haas Grotesk at modest weights (400 for display, 500 for sub-title
 - **Surface Strong** (`{colors.surface-strong}` — #e0e2e6): The light gray "Start building with Airtable" CTA banner near the footer.
 - **Surface Dark** (`{colors.surface-dark}` — #181d26): The dark navy CTA cards used mid-page (for example "The path to 10× every person in your organization").
 - **Surface Dark Elevated** (`{colors.surface-dark-elevated}` — #1d1f25): The articles-page hero base behind the rainbow-stripe overlay.
-- **Hairline** (`{colors.hairline}` — #dddddd): The 1px border tone for input outlines, table dividers, secondary-button outlines.
+- **Hairline** (`{colors.hairline}` — #dddddd): The 1px border tone for input outlines, table dividers, secondary-button outlines. **This is the real extracted value and it fails WCAG non-text contrast: 1.36:1 against `{colors.canvas}`, against a 3:1 minimum.** It is left unchanged because falsifying it would make this document wrong about Airtable. Where the hairline is the *only* thing identifying a control — the `{component.button-secondary}` outline, the `{component.text-input}` border — Airtable's own site is below AA for non-text contrast; see Accessibility.
 
 ### Text
 - **Ink** (`{colors.ink}` — #181d26): The strongest text — h1/h2 display type and primary button text-on-light. Same hex as `{colors.primary}` because they are the same role expressed at type and button layers.
@@ -330,7 +344,9 @@ These are the colors that carry Airtable's brand voltage. They appear as full-bl
 
 ### Semantic
 - **Link** (`{colors.link}` — #1b61c9): Inline body links and anchor text. Darker on press to `{colors.link-active}` (#1a3866). Despite the `--theme_button-background-primary` CSS-variable name, this color is **not** the primary button color — it is the link color.
-- **Info** (`{colors.info}` — #254fad) and **Info Border** (`{colors.info-border}` — #458fff): Inline info badges and focused-input outline.
+- **Info** (`{colors.info}` — #254fad) and **Info Border** (`{colors.info-border}` — #458fff): Inline info badges and the recoloured border of a focused input.
+- **Focus** (`{colors.focus}` — #1b61c9): The keyboard focus ring on every light surface. Measured 5.83:1 against `{colors.canvas}`, 5.58:1 on `{colors.surface-soft}`, 4.50:1 on `{colors.surface-strong}` and 4.86:1 on `{colors.signature-cream}` — all above the 3:1 non-text minimum. It reuses Airtable's existing link blue rather than inventing a new hue, which is why the focus state reads as part of the system and not as a browser default. `{colors.info-border}` (#458fff) is the lighter fill inside a focused input; the ring itself is `{colors.focus}`.
+- **Focus On Dark** (`{colors.focus-on-dark}` — #ffffff): The ring on signature surfaces, where blue has nowhere to go. `{colors.focus}` measures only 1.17:1 on `{colors.signature-coral}` and 2.90:1 on `{colors.surface-dark}`, so a white ring is used instead: 16.90:1 on `{colors.surface-dark}`, 14.89:1 on `{colors.signature-forest}`, 6.81:1 on `{colors.signature-coral}`.
 - **Success** (`{colors.success}` — #006400) and **Success Border** (`{colors.success-border}` — #39bf45): Confirmation states.
 
 ## Typography
@@ -392,7 +408,7 @@ Airtable uses whitespace as the dominant atmospheric tool. Hero sections sit in 
 | Flat | No shadow, no border | Body sections, top nav, footer |
 | Soft hairline | 1px `{colors.hairline}` border | Inputs, sub-nav rails, comparison-table dividers, secondary buttons |
 | Button rest | Soft drop with subtle blue-tinted glow at low alpha | Primary CTA buttons (the blue tint is a holdover from the link color and reads as a faint accent under the dark button) |
-| Button focus | Outer 2px blue ring at higher alpha | Keyboard focus state on primary buttons |
+| Button focus | Outer 2px `{colors.focus}` ring with a 2px canvas-coloured offset; `{colors.focus-on-dark}` on signature surfaces | Keyboard focus state on buttons, links and inputs |
 | Card flat | No shadow; relies on color contrast against the surface band | Signature coral / forest / dark cards, cream callouts, demo-grid cards |
 
 The elevation philosophy is **color-block first, shadow second**. Shadows are minimal; depth is delegated to the contrast between white canvas and signature surface cards. There is no soft-glow / atmospheric-shadow / heavy-elevation language anywhere in the marketing system.
@@ -419,7 +435,29 @@ Product UI screenshots inside demo-card grids retain native aspect ratios (typic
 
 ## Components
 
-> **No hover states documented.** Per the global no-hover policy (Step 6), every component spec below documents only Default and Active/Pressed states. Variants live as separate entries in the `components:` front matter.
+> **Hover *styling* is not extracted; state *coverage* is.** The original extraction captured no hover colour values, so no hover hex is claimed below. What each component does support is named in the state matrix. Variants live as separate entries in the `components:` front matter.
+
+### State Matrix
+
+Every component names the states it supports. A dash means the state does not exist for that component — not that it was skipped.
+
+| Component | Default | Hover | Focus-visible | Active / Pressed | Disabled | Loading | Selected | Error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | yes | tone shift only, value not extracted | 2px `{colors.focus}` ring | `{colors.primary-active}` | 1px `{colors.border-strong}` outline, label to `{colors.border-strong}` | label swaps to an inline spinner, width held | — | — |
+| `button-secondary` | yes | tone shift only, value not extracted | 2px `{colors.focus}` ring | darkens toward `{colors.surface-strong}` | `{colors.border-strong}` outline and label | — | — | — |
+| `button-secondary-on-dark` | yes | tone shift only, value not extracted | 2px `{colors.focus-on-dark}` ring | darkens toward `{colors.surface-strong}` | `{colors.border-strong}` outline and label | — | — | — |
+| `button-pricing-pill` | yes | tone shift only, value not extracted | 2px `{colors.focus}` ring | darkens toward `{colors.surface-strong}` | `{colors.border-strong}` outline and label | — | — | — |
+| `button-legal` | yes | tone shift only, value not extracted | 2px `{colors.focus}` ring | `{colors.link-active}` | — | — | — | — |
+| `button-icon-circular` | yes | tone shift only, value not extracted | 2px `{colors.focus}` ring | darkens toward `{colors.surface-strong}` | `{colors.border-strong}` icon | — | — | — |
+| `text-link` | yes | underline appears | 2px `{colors.focus}` ring, radius `{rounded.xs}` | `{colors.link-active}` | — | — | — | — |
+| `text-input` | yes | — | `text-input-focus`: border to `{colors.info-border}` plus 2px `{colors.focus}` ring | — | `{colors.border-strong}` border, `{colors.muted}` text | — | — | not extracted — see Known Gaps |
+| `feature-card-tabbed` | yes | tab label tone shift, value not extracted | 2px `{colors.focus}` ring on the tab label | — | — | pane content fades in at `{motion.duration-base}` | active tab label at weight 500, inactive at 400 | — |
+| `topic-filter-rail` | yes | item tone shift, value not extracted | 2px `{colors.focus}` ring on the item | — | — | — | active item carries the numeric count badge | — |
+| `pricing-tier-card` | yes | — | — (the card is not focusable; its pill button is) | — | — | — | `pricing-tier-card-featured` shifts to `{colors.surface-soft}` | — |
+| `pricing-comparison-row` | yes | — | — | — | — | — | — | — |
+| `signature-coral-card`, `signature-forest-card`, `hero-card-dark`, `cream-callout-card`, `demo-grid-card`, `hero-band`, `logo-strip`, `cta-band-light`, `footer`, `top-nav` | yes | — | — (containers; focus lives on the controls inside them) | — | — | — | — | — |
+
+`pricing-comparison-row` and the static surfaces in the last row genuinely have **one** state. They are not interactive, carry no affordance of their own, and are listed so the gap is explicit rather than assumed.
 
 **`top-nav`** — A 64px-tall white bar pinned to the top of every page. Airtable wordmark sits at left; primary horizontal menu (Platform, Solutions, Resources, Enterprise, Pricing) sits center-left in `{typography.body-md}`; the right cluster carries a "Book Demo" outline link, "Sign up for free" `{component.button-primary}`, and "Log In" text link. The nav stays light on every page — Airtable does not invert the nav over dark sections.
 
@@ -486,6 +524,149 @@ Product UI screenshots inside demo-card grids retain native aspect ratios (typic
 
 **Articles Vertical Rainbow Stripe Hero** — The articles-page hero treatment. Multi-color vertical bands at varying widths sitting on `{colors.surface-dark-elevated}`. The h1 + sub-head + CTA cluster sits center-left on top of the stripes. This is a single-page hero treatment, not a system-wide signature — do not promote it to a multi-page pattern.
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity. It was not measured from the live site — no timing function, duration or easing curve below was extracted from Airtable's CSS or observed in a recording.** Treat it as the motion that *belongs* to this palette and type voice, and replace any value here with a measured one the moment one exists.
+
+**Profile: Calm** (composed, editorial). The assigned profile was Playful; this file argues for Calm instead. The evidence is in the file itself: the canvas is white with no gradient, mesh or aurora; display type sits at weight 400 and the document explicitly forbids bolding it; the signature colours that look multi-colour on a swatch list are in fact dark and desaturated in use (`{colors.signature-coral}` #aa2d00 is an oxide red, `{colors.signature-forest}` #0a2e0e a near-black green); elevation is "color-block first, shadow second" with no glow language; and whitespace, not animation, is named as "the dominant atmospheric tool". A springy overshoot and a scale-pop on press would read as a different company. The pastel demo-grid surfaces are the one Playful signal, and they are static card backgrounds behind product screenshots, not interactive elements.
+
+Calm values: base `{motion.duration-base}` (250ms), symmetric `{motion.ease-standard}`, stagger `{motion.stagger-step}` (40ms). Opacity leads; travel is small — 4–8px, never a slide across the viewport. Scale is used only where a surface genuinely grows, and never past 1.0 on enter.
+
+### Interaction Table
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, links, cards) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` on the tone layer | Unchanged — already opacity-only and under 150ms |
+| Press (`button-primary` to `{colors.primary-active}`) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the press layer; no scale | Unchanged — the colour swap is instant either way |
+| Focus ring appears | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` of the `{colors.focus}` ring | Ring appears with no transition — it must never lag the keyboard |
+| Page / route transition | `{motion.duration-base}` out via `{motion.duration-fast}` | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` 0→1, `transform: translateY(8px→0)` | Travel removed; cross-fade only, capped at `{motion.duration-fast}` |
+| Modal / drawer (mobile nav full-screen sheet) | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY(16px→0)` for modal, `translateX(100%→0)` for the sheet | Travel removed; the sheet and modal cross-fade at `{motion.duration-fast}`. Backdrop still fades |
+| Dropdown (top-nav menus) | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY(4px→0)` | Travel removed; fade at `{motion.duration-fast}` |
+| Toast | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY(8px→0)` | Travel removed; fade at `{motion.duration-fast}`. Auto-dismiss timing is unchanged |
+| List enter (demo-grid cards, article cards, pricing tiers) | `{motion.duration-base}` per item, `{motion.stagger-step}` between items | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px→0)` | Stagger and travel both removed; the whole group fades in once at `{motion.duration-fast}` |
+| List exit (filtering the articles grid via `{component.topic-filter-rail}`) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity`, `transform: translateY(-4px)` | Travel removed; fade at `{motion.duration-fast}` |
+| Loading (inline button spinner, skeleton on demo-grid cards) | `{motion.duration-emphasis}` per rotation, infinite while pending | linear for the spinner, `{motion.ease-standard}` for the skeleton sweep | `transform: rotate()` for the spinner, `opacity` for the skeleton | Spinner rotation and skeleton sweep both stop; a static indicator with a text label remains. This is the only infinite animation in the system — Airtable has no brand ambience loop |
+
+Signature-surface note: the full-bleed `{component.signature-coral-card}`, `{component.signature-forest-card}` and `{component.hero-card-dark}` enter as a single unit — one `{motion.duration-slow}` opacity fade with no internal stagger and no travel. They are editorial punctuation; choreographing their contents would turn a magazine spread into a slideshow. The `{spacing.section}` (96px) rhythm already does the pacing work that a longer entrance would try to do.
+
+### Motion Rules
+
+Only `transform` and `opacity` are ever transitioned. Layout-affecting properties are excluded by rule: `width`, `height`, `top`, `left` and `margin` are never transitioned, because each one forces layout and drops frames on the long-scroll explainer pages this system is built for.
+
+- Every exit is shorter than its matching entrance (`{motion.duration-fast}` out against `{motion.duration-base}` in).
+- Nothing moves on first paint in a way that delays content. Above-the-fold hero type and the `{component.button-primary}` render at their final position; only below-the-fold list groups use an entrance.
+- No infinite animation except the loading indicators named above. There is no brand ambience loop.
+- Travel never exceeds 16px, and only the mobile nav sheet uses a full-width translate.
+
+### Reduced Motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate and all scale, every stagger, the spinner
+     rotation and the skeleton sweep. */
+  /* Kept: opacity fades, capped at 150ms — {motion.duration-fast}. */
+  /* Kept at zero duration: the focus ring, which must track the keyboard. */
+  *, *::before, *::after {
+    transition-duration: 150ms !important;
+    transition-property: opacity !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+What is removed: every `translateY` / `translateX` / `translate` offset, every scale, the `{motion.stagger-step}` delay on list groups, the loading spinner's rotation and the skeleton sweep. What remains: opacity fades at `{motion.duration-fast}` (150ms) or less, the focus ring at zero duration, and a static labelled loading indicator in place of the spinner. Nothing becomes unreachable or unreadable when motion is off — no state in this system is communicated by movement alone.
+
+## Accessibility
+
+### Measured Contrast
+
+Computed with WCAG 2.1 relative luminance against the hexes in this file's frontmatter. Nothing here is estimated.
+
+| Pair | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 16.90:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 16.15:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.surface-strong}` | 13.03:1 | 4.5:1 | pass |
+| `{colors.body}` on `{colors.canvas}` | 11.79:1 | 4.5:1 | pass |
+| `{colors.muted}` on `{colors.canvas}` | 9.62:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.primary}` | 16.90:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.primary-active}` | 18.80:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.signature-coral}` | 6.81:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.signature-forest}` | 14.89:1 | 4.5:1 | pass |
+| `{colors.on-dark}` on `{colors.surface-dark-elevated}` | 16.47:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.signature-cream}` | 14.07:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.signature-peach}` | 9.05:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.signature-mint}` | 10.69:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.signature-yellow}` | 11.53:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.signature-mustard}` | 7.51:1 | 4.5:1 | pass |
+| `{colors.link}` on `{colors.canvas}` | 5.83:1 | 4.5:1 | pass |
+| `{colors.link-active}` on `{colors.canvas}` | 11.66:1 | 4.5:1 | pass |
+| `{colors.info}` on `{colors.canvas}` | 7.50:1 | 4.5:1 | pass |
+| `{colors.success}` on `{colors.canvas}` | 7.44:1 | 4.5:1 | pass |
+| `{colors.pricing-ink}` on `{colors.canvas}` | 16.47:1 | 4.5:1 | pass |
+| `{colors.focus}` on `{colors.canvas}` | 5.83:1 | 3.0:1 | pass |
+| `{colors.hairline}` on `{colors.canvas}` | **1.36:1** | 3.0:1 | **fail** |
+| `{colors.border-strong}` on `{colors.canvas}` | **2.93:1** | 3.0:1 | **fail, narrowly** |
+| `{colors.info-border}` on `{colors.canvas}` | 3.17:1 | 3.0:1 | pass |
+| `{colors.success-border}` on `{colors.canvas}` | **2.41:1** | 3.0:1 | **fail** |
+| `{colors.on-primary}` on `{colors.signature-mustard}` | **2.25:1** | 4.5:1 | **fail — never put white type on mustard** |
+
+The failures are real and are Airtable's, not this document's. Stated plainly: **Airtable's hairline border tone does not meet WCAG 1.4.11 non-text contrast.** At 1.36:1 it is decoration, not a boundary. Wherever that hairline is the only thing identifying a control — the `{component.button-secondary}` outline, the `{component.text-input}` border — a keyboard or low-vision user has no reliable edge. `{colors.border-strong}` at 2.93:1 misses by a hair and is used only on disabled controls, where 1.4.11 does not apply. `{colors.success-border}` and `{colors.info-border}` are 1px accent strokes alongside a text label, never the sole carrier of meaning. Candidate replacements are in the audit report under Needs approval; none is applied here, because changing a documented brand hex would make this file wrong.
+
+### Focus Ring Visibility Per Surface
+
+| Surface | Ring token | Ratio | Result |
+|---|---|---|---|
+| `{colors.canvas}` | `{colors.focus}` | 5.83:1 | pass |
+| `{colors.surface-soft}` | `{colors.focus}` | 5.58:1 | pass |
+| `{colors.surface-strong}` | `{colors.focus}` | 4.50:1 | pass |
+| `{colors.signature-cream}` | `{colors.focus}` | 4.86:1 | pass |
+| `{colors.signature-peach}` / `{colors.signature-mint}` / `{colors.signature-yellow}` | `{colors.focus}` | 3.12:1 / 3.69:1 / 3.98:1 | pass |
+| `{colors.surface-dark}` / `{colors.surface-dark-elevated}` | `{colors.focus-on-dark}` | 16.90:1 / 16.47:1 | pass |
+| `{colors.signature-forest}` | `{colors.focus-on-dark}` | 14.89:1 | pass |
+| `{colors.signature-coral}` | `{colors.focus-on-dark}` | 6.81:1 | pass |
+| `{colors.signature-mustard}` | `{colors.focus}` | 2.59:1 | **fail — use `{colors.ink}` (7.51:1) as the ring on mustard** |
+
+The ring is 2px with a 2px offset in the surface's own colour, so it never sits flush against the control edge. On signature surfaces the ring switches to `{colors.focus-on-dark}`; blue on `{colors.signature-coral}` measures 1.17:1 and is unusable.
+
+### Tap Targets
+
+- `{component.button-primary}` and its siblings: 16px vertical padding plus a 16px/1.4 line box gives roughly 48px of height — above the 44 × 44 minimum.
+- `{component.text-input}`: 44px declared height — exactly at the minimum.
+- `{component.button-icon-circular}`: **40 × 40px, below the 44 × 44 minimum.** This is the one measured tap-target failure in the system. The fix that does not disturb the visual is an invisible 44px hit area around the 40px circle.
+- `{component.pricing-comparison-row}` at 12px vertical padding is a static table row with no tap target, so the minimum does not apply.
+- Per the audit spec, nothing here claims a *rendered* tap-target size. These are the declared values in this file's own frontmatter, which is all that can honestly be checked from a document.
+
+### Reduced Motion
+
+Covered in full under Motion & Animation. In short: all travel, scale and stagger are removed; opacity fades remain at `{motion.duration-fast}` (150ms) or less; the focus ring is never animated; the loading spinner stops and a labelled static indicator takes its place. No information in this system is carried by movement alone.
+
+### Other
+
+- Type is never below 13.12px (`{typography.legal}`), and body copy sits at 14px / 1.25. A 1.25 line height at 14px is 17.5px of leading — tight for a long editorial paragraph and worth loosening to 1.5 for any body text that runs past a few lines.
+- Weight 400 display type at 40px is fine for contrast, but the system's refusal to bold means hierarchy depends on size and surface colour. Those are both visible to a screen reader only through heading levels, so heading markup has to be correct — it is the only hierarchy signal that survives.
+- `{colors.link}` links carry no underline by default, so colour alone distinguishes them from `{colors.body}` text at 2.02:1 between the two. Underline on hover and focus is therefore load-bearing, not decoration.
+
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.success-border}` (`#39bf45`) on `{colors.surface-soft}` (`#f8fafc`) | 2.30:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.border-strong}` (`#9297a0`) on `{colors.surface-soft}` (`#f8fafc`) | 2.80:1 | 3.0:1 | Fail — boundary on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do
@@ -504,7 +685,8 @@ Product UI screenshots inside demo-card grids retain native aspect ratios (typic
 - Don't bold display-weight type. `{typography.display-xl}` and `{typography.display-lg}` are intentionally weight 400 / 500 — going to 700 reads as marketing-page-template.
 - Don't use `{rounded.pill}` outside the pricing surface. It's a sub-system signal, not a general radius option.
 - Don't repeat the same surface mode in two consecutive bands. The editorial pacing depends on rhythm: white → signature card → white → cream → dark → white. Two whites in a row read as a typography blog.
-- Don't add hover state styling beyond what the system already encodes. The system documents Default and Active/Pressed only.
+- Don't invent hover *colour* values. No hover hex was extracted, so a hover tone is a guess; use an opacity shift at `{motion.duration-fast}` instead and leave the palette alone. Hover *timing* is prescribed in Motion & Animation and is safe to use.
+- Don't give the press state a scale pop. This is a Calm system, not a Playful one — `{component.button-primary}` changes colour and nothing else. A springy button in 96px of whitespace reads as a different company.
 - Don't introduce additional accent colors beyond the documented signature card palette. The system's voltage already uses coral, forest, dark navy, cream, peach, mint, yellow, and mustard.
 
 ## Responsive Behavior
@@ -520,7 +702,7 @@ Product UI screenshots inside demo-card grids retain native aspect ratios (typic
 
 ### Touch Targets
 - `{component.button-primary}` and siblings render at 48 × 48px minimum (16px vertical padding + 16px line-height) — comfortably above WCAG AAA's 44 × 44.
-- `{component.button-icon-circular}` is exactly 40 × 40px — slightly under WCAG's recommended 44, but the centered icon and dot-radius compensate visually.
+- `{component.button-icon-circular}` is exactly 40 × 40px — under the 44 × 44 minimum. This is a real failure, not a visual trade-off; see Accessibility for the fix.
 - `{component.text-input}` height is 44px.
 
 ### Collapsing Strategy
@@ -540,15 +722,18 @@ Product UI screenshots inside demo-card grids retain native aspect ratios (typic
 2. When adding a new component, decide first which sub-system it belongs to: the main editorial system (Haas, `{rounded.lg}`/`{rounded.md}`) or the pricing sub-system (Inter Display, `{rounded.pill}`).
 3. Variants of an existing component (`-active`, `-disabled`, `-focus`) live as separate entries in `components:` — never as nested state objects.
 4. Use `{token.refs}` everywhere prose mentions a color, a radius, a typography role, or a spacing value. Hex codes appear at most once next to the reference.
-5. Never document hover. The system documents Default and Active/Pressed states only.
+5. Document the state *set* for every new component using the State Matrix columns. Hover colour values stay unextracted; a hover entry is an opacity shift, not a new hex.
 6. Run `npx @google/design.md lint DESIGN.md` after edits — `broken-ref`, `contrast-ratio`, and `orphaned-tokens` warnings flag issues automatically.
 7. When in doubt about emphasis: bigger type before bolder type, signature surface card before solid accent.
 
 ## Known Gaps
 
 - The exact hex values of pastel demo-grid surfaces (`{colors.signature-peach}`, `{colors.signature-mint}`, `{colors.signature-yellow}`, `{colors.signature-mustard}`) are inferred from screenshot pixel sampling. Some product launches may swap these surfaces seasonally.
-- Hover behavior across all components is not documented (per global no-hover policy).
-- Animation and transition timings are not in scope.
+- Hover *colour values* across all components are not extracted. The State Matrix names which components have a hover state; none of them claims a hover hex.
+- **Every value in Motion & Animation is prescribed, not measured.** No duration, easing curve or property list was taken from Airtable's CSS or from a recording of the site. The Calm profile is an argument from the file's own palette and type voice, not an observation. The `motion:` token group carries the same caveat.
+- `{colors.focus}` and `{colors.focus-on-dark}` are a prescribed consolidation. The source file described a "blue ring" on primary buttons and `{colors.info-border}` on focused inputs without giving the ring its own hex; `{colors.focus}` adopts the documented link blue so the ring is a real token that passes 3:1, and `{colors.focus-on-dark}` covers the signature surfaces where no blue can. Neither hex was sampled from a rendered focus ring.
+- `{spacing.xxxl}` (64px) names a value that was already present as a literal in the `footer` and `top-nav` entries but sat outside the spacing ladder. The value is extracted; the token name is not.
+- `{rounded.pill}` and `{rounded.full}` are both 9999px. Two names for one value, kept because they signal different intents (pricing sub-system vs. circular geometry). Anyone generating CSS from this should expect the duplicate.
 - Form validation states beyond `text-input-focus` are not extracted — error and success states for inputs would need a dedicated form page to confirm.
 - The pricing comparison table's checkmark glyph and column-divider widths are described structurally but not formalized as tokens.
 - The CSS variable `--theme_button-background-primary: #1b61c9` exists at `:root` but is not used as the primary CTA color anywhere on the marketing site. It maps to the link/info color role instead. Documented here so future extractions don't re-trip over the misleading variable name.

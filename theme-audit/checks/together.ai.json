@@ -1,0 +1,126 @@
+{
+  "site": "together.ai",
+  "has_frontmatter": true,
+  "color_count": 13,
+  "composited_tokens": [],
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Layout",
+    "Overview",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Responsive Behavior",
+    "Known Gaps"
+  ],
+  "optional_sections_missing": [
+    "Iteration Guide"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface-dark-soft",
+    "text": "ink",
+    "border": "hairline",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "component_contrast_failures": [
+    {
+      "component": "nav-link",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1.0,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "data-table-header",
+      "fg": "#959494",
+      "bg": "#ffffff",
+      "ratio": 3.03,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "body on canvas",
+      "fg": "#959494",
+      "bg": "#ffffff",
+      "ratio": 3.03,
+      "required": 4.5,
+      "role": "body text, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "nav-link",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1.0,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "data-table-header",
+      "fg": "#959494",
+      "bg": "#ffffff",
+      "ratio": 3.03,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "body on canvas",
+      "fg": "#959494",
+      "bg": "#ffffff",
+      "ratio": 3.03,
+      "required": 4.5,
+      "role": "body text, all tones",
+      "disclosed": false
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_documented": [
+    "active"
+  ],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "pressed",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 3,
+    "refs": 5,
+    "contrast": 2,
+    "sections": 1,
+    "motion": 1,
+    "states": 1
+  }
+}

@@ -1,0 +1,915 @@
+#!/usr/bin/env python3
+"""Measurable audit of every design-md/<site>/DESIGN.md.
+
+No dependencies, no network, no rendering. Everything here is computed from the
+file itself, so results are reproducible and comparable between runs.
+
+  python3 theme-audit/audit.py            # table for all sites
+  python3 theme-audit/audit.py --json     # machine-readable, one object per site
+  python3 theme-audit/audit.py --site claude
+"""
+import argparse, glob, json, os, re, sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Tokens SPEC.md requires every file to define, by role.
+# A role is satisfied by any colors: key matching one of its patterns, so a file
+# naming its surface "surface-cream" still counts. Patterns are ordered: the
+# first match becomes the representative token used for contrast checks.
+REQUIRED_COLOR_ROLES = {
+    "canvas":   [r"^canvas$", r"^background$", r"^bg$", r"^base$", r"^surface-base$",
+                 r"^paper$", r"^page$", r"^canvas-", r"^surface-canvas",
+                 r"^page-", r"^body-bg"],
+    "surface":  [r"^surface$", r"^surface[-_]?\d", r"^surface[-_]", r"^card$",
+                 r"^card[-_]", r"^panel$", r"^panel[-_]", r"^elevated$",
+                 r"^tile$", r"^tile[-_]"],
+    "text":     [r"^ink$", r"^text$", r"^text-primary$", r"^body$", r"^body-strong$",
+                 r"^foreground$", r"^on-canvas$", r"^on-(light|cream|paper|white)$",
+                 r"^ink-(strong|deep|black|primary)$"],
+    "text-dim": [r"^text-dim$", r"^muted$", r"^muted-", r"^mute$", r"^mute-",
+                 r"^ink-(muted|mute|faint|subtle|soft|tertiary|secondary|light|"
+                 r"meta|note|caption|nav|list|lead)", r"^text-(secondary|muted|soft|tertiary)$",
+                 r"^body-(soft|muted|secondary)$", r"^subtle$", r"^secondary$",
+                 r"^caption$", r"^on-dark-soft$", r"^on-[a-z]+-mute",
+                 r"^on-[a-z]+-faint"],
+    "border":   [r"^hairline$", r"^hairline-", r"^border$", r"^border-", r"^divider$",
+                 r"^rule$", r"^stroke$", r"^outline$", r"^line$"],
+    "accent":   [r"^primary$", r"^accent$", r"^brand$", r"^accent-", r"^primary-"],
+    "on-accent":[r"^on-primary$", r"^accent-contrast$", r"^on-accent$", r"^on-brand$",
+                 r"^on-primary-", r"^(primary|accent|brand)-on$",
+                 r"^(primary|accent|brand)-on-"],
+    "focus":    [r"^focus$", r"^focus-ring$", r"^focus-", r"^ring$", r"^ring-",
+                 r"^[a-z]+-focus$", r"^[a-z]+-ring$"],
+}
+REQUIRED_SECTIONS = ["Overview", "Colors", "Typography", "Layout", "Elevation & Depth",
+                     "Shapes", "Components", "Motion & Animation", "Accessibility",
+                     "Do's and Don'ts", "Responsive Behavior", "Known Gaps"]
+# Optional per SPEC section 3: tracked for reporting, never counted against a score.
+OPTIONAL_SECTIONS = ["Iteration Guide"]
+SECTIONS = REQUIRED_SECTIONS + OPTIONAL_SECTIONS
+MOTION_KEYS_MIN = {"duration-fast", "duration-base", "ease-standard"}
+STATE_WORDS = ["hover", "focus-visible", "active", "pressed", "disabled",
+               "loading", "selected", "error"]
+
+
+def srgb(c):
+    c = c / 255
+    return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+
+
+def luminance(hexstr):
+    h = hexstr.lstrip("#")
+    if len(h) == 3:
+        h = "".join(ch * 2 for ch in h)
+    h = h[:6]
+    r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return 0.2126 * srgb(r) + 0.7152 * srgb(g) + 0.0722 * srgb(b)
+
+
+def contrast(a, b):
+    la, lb = luminance(a), luminance(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def composite(rgba, ground_hex):
+    """Flatten (r, g, b, a) over a ground, so a translucent tone is measured
+    against the surface it is actually drawn on rather than the canvas."""
+    r_, g_, b_, a = rgba
+    gh = ground_hex.lstrip("#")
+    gh = "".join(c * 2 for c in gh) if len(gh) == 3 else gh[:6]
+    gr, gg, gb = (int(gh[i:i + 2], 16) for i in (0, 2, 4))
+    return "#%02x%02x%02x" % (round(r_ * a + gr * (1 - a)),
+                              round(g_ * a + gg * (1 - a)),
+                              round(b_ * a + gb * (1 - a)))
+
+
+def parse_frontmatter(text):
+    """Return {group: {key: raw_value}} for the top two indent levels."""
+    if not text.startswith("---\n"):
+        return {}, ""
+    end = text.find("\n---\n", 4)
+    if end == -1:
+        return {}, text
+    fm, body = text[4:end], text[end + 5:]
+    groups, cur = {}, None
+    for line in fm.split("\n"):
+        m = re.match(r"^([A-Za-z][A-Za-z0-9_-]*):\s*(.*)$", line)
+        if m:
+            cur = m.group(1)
+            groups.setdefault(cur, {})
+            continue
+        m = re.match(r"^  ([A-Za-z0-9][A-Za-z0-9_.-]*):\s*(.*)$", line)
+        if m and cur:
+            groups[cur][m.group(1)] = clean_value(m.group(2))
+    return groups, body
+
+
+def clean_value(raw):
+    """Strip a trailing comment and surrounding quotes from a YAML scalar."""
+    v = raw.strip()
+    if v.startswith(('"', "'")):
+        q = v[0]
+        end = v.find(q, 1)
+        if end != -1:
+            return v[1:end]
+    return re.sub(r"\s+#.*$", "", v).strip().strip("\"'")
+
+
+def parse_nested(text, group):
+    """A frontmatter group's entries and their properties, two levels down."""
+    if not text.startswith("---\n"):
+        return {}
+    fm = text[4:text.find("\n---\n", 4)]
+    m = re.search(rf"^{group}:\s*$(.*?)(?=^[a-z][a-zA-Z0-9_-]*:|\Z)", fm, re.S | re.M)
+    if not m:
+        return {}
+    entries, cur = {}, None
+    for line in m.group(1).split("\n"):
+        e = re.match(r"^  ([A-Za-z0-9][A-Za-z0-9_.-]*):\s*$", line)
+        if e:
+            cur = e.group(1); entries[cur] = {}
+            continue
+        pr = re.match(r"^    ([A-Za-z0-9][A-Za-z0-9_.-]*):\s*(.*)$", line)
+        if pr and cur:
+            entries[cur][pr.group(1)] = clean_value(pr.group(2))
+    return entries
+
+
+def parse_components(text):
+    return parse_nested(text, "components")
+
+
+def find_role(colors, patterns):
+    """First pattern wins, so the representative token is the canonical one."""
+    for pat in patterns:
+        for key in colors:
+            if re.match(pat, key):
+                return key
+    return None
+
+
+# Which components count as a ground for the surface role: a card or band is
+# one, a hero or masthead is a statement surface rather than the raised neutral.
+CONTAINERISH = re.compile(r"(card|panel|band|tile|well|surface|sheet|"
+                          r"modal|drawer|section|container|tier|block)")
+NOT_A_SURFACE = re.compile(r"(hero|masthead|display|title|banner|jumbo|"
+                           r"splash|cover)")
+
+
+def saturation(hexstr):
+    h = hexstr.lstrip("#")
+    h = "".join(c * 2 for c in h) if len(h) == 3 else h[:6]
+    rgb = [int(h[i:i + 2], 16) for i in (0, 2, 4)]
+    return (max(rgb) - min(rgb)) / 255
+
+
+def theme_hint(key):
+    if re.search(r"(^|[-_])on-dark($|[-_])|dark($|[-_])|[-_]dark", key):
+        return "dark"
+    if re.search(r"(^|[-_])on-light($|[-_])|light($|[-_])|[-_]light", key):
+        return "light"
+    return None
+
+
+def find_role_strongest(colors, patterns, against):
+    """Pick the matching key with the highest contrast against `against`.
+
+    Used for roles whose threshold is about visibility rather than identity: a
+    file that defines hairline, hairline-soft and border-strong should be judged
+    on border-strong, since that is the one drawn where a boundary must be seen.
+    """
+    matches = [k for pat in patterns for k in colors if re.match(pat, k)]
+    if not matches or against not in colors:
+        return find_role(colors, patterns)
+    # Only tones belonging to the same theme as the ground: a dark-canvas file
+    # must not have its boundary role resolve to a light-theme hairline, which
+    # the theme filter would then skip entirely.
+    same = [k for k in matches if theme_hint(k) == theme_hint(against)]
+    if same:
+        matches = same
+    return max(dict.fromkeys(matches), key=lambda k: contrast(colors[k], colors[against]))
+
+
+def audit(path):
+    site = os.path.basename(os.path.dirname(path))
+    text = open(path).read()
+    groups, body = parse_frontmatter(text)
+    raw_colors = groups.get("colors", {})
+    colors = {k: v.lower() for k, v in raw_colors.items()
+              if re.fullmatch(r"#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}", v)}
+
+    # Composite any rgba()/rgb() tokens over the canvas, so an opacity ladder is
+    # measured as it renders rather than skipped.
+    def _canvas_hex():
+        for pat in REQUIRED_COLOR_ROLES["canvas"]:
+            for k in colors:
+                if re.match(pat, k):
+                    return colors[k]
+        return "#ffffff"
+
+    composited = []
+    rgba_sources = {}
+    base = _canvas_hex()
+    bh = base.lstrip("#")
+    bh = "".join(c * 2 for c in bh) if len(bh) == 3 else bh[:6]
+    br, bg_, bb = (int(bh[i:i + 2], 16) for i in (0, 2, 4))
+    for k, v in raw_colors.items():
+        if k in colors:
+            continue
+        m = re.fullmatch(r"rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)", v or "")
+        if not m:
+            continue
+        r_, g_, b_ = (int(m.group(i)) for i in (1, 2, 3))
+        a = float(m.group(4)) if m.group(4) else 1.0
+        # A token that names its ground (border-on-ink, overlay-on-dark) is
+        # drawn there, not on the canvas.
+        gr, gg, gb = br, bg_, bb
+        named = re.search(r"-on-([a-z0-9]+)", k)
+        if named:
+            for cand in colors:
+                if re.match(rf"^{named.group(1)}($|[-_])", cand):
+                    gh = colors[cand].lstrip("#")
+                    gh = "".join(c * 2 for c in gh) if len(gh) == 3 else gh[:6]
+                    gr, gg, gb = (int(gh[i:i + 2], 16) for i in (0, 2, 4))
+                    break
+        colors[k] = composite((r_, g_, b_, a), "#%02x%02x%02x" % (gr, gg, gb))
+        rgba_sources[k] = (r_, g_, b_, a)
+        composited.append(k)
+    r = {"site": site, "has_frontmatter": bool(groups), "color_count": len(colors),
+         "composited_tokens": composited}
+
+    # --- sections -------------------------------------------------------
+    present = {s for s in SECTIONS
+               if re.search(rf"^## {re.escape(s)}\s*$", text, re.M)}
+    r["sections_present"] = sorted(present)
+    r["sections_missing"] = [s for s in REQUIRED_SECTIONS if s not in present]
+    r["optional_sections_missing"] = [s for s in OPTIONAL_SECTIONS if s not in present]
+
+    # --- required token roles -------------------------------------------
+    roles = {role: find_role(colors, cands) for role, cands in REQUIRED_COLOR_ROLES.items()}
+    if not roles.get("surface"):
+        canvas_hex = colors.get(roles.get("canvas") or "", None)
+        candidates = []
+        for cname, props in parse_components(text).items():
+            if not CONTAINERISH.search(cname) or NOT_A_SURFACE.search(cname):
+                continue
+            m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("backgroundColor") or "")
+            if not m or m.group(1) not in colors:
+                continue
+            if canvas_hex and colors[m.group(1)] == canvas_hex:
+                continue            # the page floor, not a raised surface
+            candidates.append(m.group(1))
+        if candidates and canvas_hex:
+            # Nearest the canvas: a raised surface is a step off the page, not
+            # a saturated field.
+            best = min(candidates, key=lambda k: contrast(colors[k], canvas_hex))
+            roles["surface"] = best
+            r.setdefault("roles_from_bindings", []).append("surface=" + best)
+        elif candidates:
+            roles["surface"] = candidates[0]
+            r.setdefault("roles_from_bindings", []).append("surface=" + candidates[0])
+
+    # A role no pattern can guess by name is still resolvable from what the
+    # components bind. Mercury's boundaries are `fog` and `slate`; both are
+    # declared as borderColor, which is better evidence than any regex.
+    if not roles.get("border"):
+        for props in parse_components(text).values():
+            ref = props.get("borderColor") or props.get("border") or ""
+            m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", ref)
+            if m and m.group(1) in colors:
+                roles["border"] = m.group(1)
+                r.setdefault("roles_from_bindings", []).append("border=" + m.group(1))
+                break
+
+    # Boundary and focus tokens are judged on the strongest variant the file owns.
+    canvas_key = roles.get("canvas")
+    if canvas_key and roles.get("surface"):
+        # Candidates include canvas-prefixed raised tones: superhuman's real
+        # raised neutral is `canvas-soft`, which the canvas patterns claim,
+        # leaving a violet pill fill as the only surface-pattern match.
+        cand = [k for k in colors
+                if (any(re.match(pat, k) for pat in REQUIRED_COLOR_ROLES["surface"])
+                    or re.match(r"^(canvas|page|paper)[-_]", k))
+                and colors[k] != colors[canvas_key]
+                and not re.search(r"(hero|pill|badge|chip|masthead|banner)", k)]
+        neutral_cand = [k for k in cand if saturation(colors[k]) <= 0.12]
+        if neutral_cand:
+            cand = neutral_cand
+        bound_surfaces = set()
+        for cname, props in parse_components(text).items():
+            if not CONTAINERISH.search(cname) or NOT_A_SURFACE.search(cname):
+                continue
+            if cname.startswith("ex-"):
+                continue      # auto-derived demo block, not evidence of brand
+            bm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                              props.get("backgroundColor") or "")
+            if bm and bm.group(1) in colors and bm.group(1) != roles.get("text"):
+                bound_surfaces.add(bm.group(1))
+        # What containers are actually painted with beats a wash nothing binds.
+        # Prefer a bound tone DISTINCT from the page; fall back to a bound tone
+        # equal to it only when the brand genuinely paints cards the page colour
+        # (slack, starbucks), which is still better than a tinted wash.
+        distinct_bound = [k for k in bound_surfaces
+                          if colors[k] != colors[canvas_key]]
+        # Neutrals only, where the file has any: a story tile or a gold wash is
+        # an accent ground, not the raised surface the role means.
+        neutral_bound = [k for k in distinct_bound if saturation(colors[k]) <= 0.12]
+        if neutral_bound:
+            distinct_bound = neutral_bound
+        elif distinct_bound and neutral_cand:
+            # No neutral ground is bound, but the palette names one: prefer it
+            # over a saturated fill a container happens to use.
+            distinct_bound = []
+        elif distinct_bound and bound_surfaces - set(distinct_bound):
+            # Every distinct bound ground is saturated, but a container binds
+            # the page colour: this brand paints cards the same tone as the page
+            # (starbucks, agent A68). That beats electing a gold wash.
+            distinct_bound = []
+        if distinct_bound:
+            roles["surface"] = min(distinct_bound,
+                                   key=lambda k: contrast(colors[k], colors[canvas_key]))
+        elif cand:
+            roles["surface"] = min(cand,
+                                   key=lambda k: contrast(colors[k], colors[canvas_key]))
+        elif bound_surfaces:
+            roles["surface"] = sorted(bound_surfaces)[0]
+        else:
+            # No distinct raised tone: this brand's cards are the same colour as
+            # its page, separated by a hairline. Keep the surface it names.
+            same = [k for pat in REQUIRED_COLOR_ROLES["surface"] for k in colors
+                    if re.match(pat, k)]
+            if same:
+                roles["surface"] = same[0]
+
+    if canvas_key:
+        for role in ("border", "focus", "text-dim"):
+            if not roles.get(role):
+                continue
+            # Never let the strongest-variant pick erase a role: a
+            # binding-derived token like `fog` matches no pattern, so this
+            # returned None and the role read as missing (agent A35, A51).
+            strongest = find_role_strongest(colors, REQUIRED_COLOR_ROLES[role],
+                                            canvas_key)
+            if strongest:
+                roles[role] = strongest
+    def _report_roles():
+        r["roles_resolved"] = {k: v for k, v in roles.items() if v}
+        r["roles_missing"] = sorted(k for k, v in roles.items() if not v)
+
+    _report_roles()
+
+    # --- dangling {group.token} references ------------------------------
+    dangling = set()
+    for grp, key in set(re.findall(r"\{([a-zA-Z]+)\.([A-Za-z0-9_.-]+)\}", text)):
+        target = grp + "s" if grp == "component" else grp
+        if target in groups:
+            if key not in groups[target]:
+                dangling.add(f"{grp}.{key}")
+        elif grp not in ("token",):
+            dangling.add(f"{grp}.{key} [no group]")
+    r["dangling_refs"] = sorted(dangling)
+
+    # --- contrast -------------------------------------------------------
+    canvas_tok = roles.get("canvas")
+    if canvas_tok and roles.get("text") and \
+            contrast(colors[roles["text"]], colors[canvas_tok]) < 3.0:
+        alts = [k for pat in REQUIRED_COLOR_ROLES["text"] for k in colors
+                if re.match(pat, k)]
+        if alts:
+            best = max(alts, key=lambda k: contrast(colors[k], colors[canvas_tok]))
+            if contrast(colors[best], colors[canvas_tok]) >= 3.0:
+                roles["text"] = best
+                r.setdefault("roles_from_bindings", []).append("text=" + best)
+            else:
+                r["text_role_mismatch"] = (
+                    f"no tone in the text role reaches 3:1 on {canvas_tok}; "
+                    f"this file's ink for that ground is named outside the role")
+                roles["text"] = None
+
+    if not roles.get("text-dim"):
+        for k in ("body", "body-soft", "secondary"):
+            if k in colors and roles.get("text") != k:
+                roles["text-dim"] = k
+                r.setdefault("roles_from_bindings", []).append("text-dim=" + k)
+                break
+
+    if roles.get("surface") and saturation(colors[roles["surface"]]) > 0.3:
+        r["surface_role_mismatch"] = (
+            f"only candidate for surface was the saturated {roles['surface']}; "
+            f"this file names no raised neutral")
+        roles["surface"] = None
+
+    _report_roles()      # again, after every fallback has had its say
+    fails = []
+
+    # Only treat a light/dark marker as a THEME when the file actually has an
+    # alternate-theme surface. In 36 of 84 files it is just a tone suffix
+    # (border-light, m-blue-dark), and reading those as a separate theme
+    # silenced real failures — reported by agent A14.
+    def _pol(hexstr):
+        return "dark" if luminance(hexstr) < 0.2 else "light"
+
+    _ground_keys = [k for k in colors
+                    if re.search(r"(canvas|background|base|surface|card|panel)", k)
+                    and not re.search(r"^(ink|text|body|muted|hairline|border|focus)", k)]
+    _cv = next((colors[k] for pat in REQUIRED_COLOR_ROLES["canvas"]
+                for k in colors if re.match(pat, k)), None)
+    # Either naming or measured polarity: a palette with a white body and an
+    # indigo surface is dual-theme whether or not it says so in its token names.
+    dual_theme = any(re.search(r"(canvas|background|bg|base|surface)", k)
+                     and re.search(r"(light|dark)", k) for k in colors) or (
+        _cv is not None and any(_pol(colors[k]) != _pol(_cv) for k in _ground_keys))
+
+    canvas_polarity = None
+    for pat in REQUIRED_COLOR_ROLES["canvas"]:
+        for k in colors:
+            if re.match(pat, k):
+                canvas_polarity = "dark" if luminance(colors[k]) < 0.2 else "light"
+                break
+        if canvas_polarity:
+            break
+
+    # Polarity evidence from bindings: a token drawn as textColor on grounds of
+    # one polarity belongs to that polarity, whatever its name says.
+    bound_polarity, bound_count = {}, {}
+    for props in parse_components(text).values():
+        bgm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                           props.get("backgroundColor") or "")
+        fgm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                           props.get("textColor") or "")
+        if not bgm or not fgm:
+            continue
+        if bgm.group(1) not in colors or fgm.group(1) not in colors:
+            continue
+        pol = "dark" if luminance(colors[bgm.group(1)]) < 0.2 else "light"
+        bound_polarity.setdefault(fgm.group(1), set()).add(pol)
+        bound_count[fgm.group(1)] = bound_count.get(fgm.group(1), 0) + 1
+
+    def theme_of(key):
+        """Which theme a token belongs to. None means the file's default."""
+        pols = bound_polarity.get(key)
+        # Two or more components must agree: one binding let a file suppress a
+        # required canvas pair just by declaring a ground (agent A75).
+        if pols and len(pols) == 1 and bound_count.get(key, 0) >= 2:
+            only = next(iter(pols))
+            if only != canvas_polarity:
+                return only
+            return None
+        # An on-dark / on-light ink declares its own target surface, so it is
+        # theme-scoped whether or not the file has a second theme.
+        if re.search(r"(^|[-_])on-dark($|[-_])", key):
+            return "dark"
+        if re.search(r"(^|[-_])on-light($|[-_])", key):
+            return "light"
+        if not dual_theme:
+            return None
+        marker = None
+        if re.search(r"(dark|night|midnight|noir|black)($|[-_])"
+                     r"|[-_](dark|night|midnight|noir|black)", key):
+            marker = "dark"
+        elif re.search(r"(light|day|paper|snow|white|cream)($|[-_])"
+                       r"|[-_](light|day|paper|snow|white|cream)", key):
+            marker = "light"
+        # A marker matching the file's own canvas polarity is a tone name, not a
+        # second theme: ink-dark in a dark-canvas file belongs to the default.
+        if marker and marker == canvas_polarity:
+            return None
+        return marker
+
+    def same_theme(fg_key, bg_key):
+        """A light-mode ink is never drawn on a dark-mode surface.
+
+        Without this, the harness manufactured failures that cannot render —
+        `ink on surface-card-dark` at 1.10:1, `on-dark-soft on canvas` at
+        1.92:1 — and agents then documented problems that do not exist.
+        """
+        return (theme_of(fg_key) or "default") == (theme_of(bg_key) or "default")
+
+    def effective(fg_key, bg_hex):
+        """The rendered colour of fg_key when drawn on bg_hex."""
+        if fg_key in rgba_sources:
+            return composite(rgba_sources[fg_key], bg_hex)
+        return colors[fg_key]
+
+    def check(fg_role, bg_role, minimum, label):
+        fg, bg = roles.get(fg_role), roles.get(bg_role)
+        if not fg or not bg or not same_theme(fg, bg):
+            return
+        fg_hex = effective(fg, colors[bg])
+        ratio = round(contrast(fg_hex, colors[bg]), 2)
+        rec = {"pair": f"{fg} on {bg}", "fg": fg_hex, "bg": colors[bg],
+               "ratio": ratio, "required": minimum, "role": label}
+        if ratio < minimum:
+            fails.append(rec)
+    def check_all(role, bg_role, minimum, label):
+        """Every token in a role, not just its representative."""
+        bg = roles.get(bg_role)
+        if not bg:
+            return
+        for pat in REQUIRED_COLOR_ROLES[role]:
+            for key in colors:
+                if not re.match(pat, key) or "disabled" in key:
+                    continue
+                if not same_theme(key, bg):
+                    continue
+                named = re.match(r"^on-([a-z]+)", key)
+                if named and named.group(1) not in ("primary", "accent", "brand"):
+                    word = named.group(1)
+                    if word not in bg and theme_of(key) != theme_of(bg):
+                        continue      # the token names its ground; this is not it
+                fg_hex = effective(key, colors[bg])
+                ratio = round(contrast(fg_hex, colors[bg]), 2)
+                if ratio < minimum:
+                    fails.append({"pair": f"{key} on {bg}", "fg": fg_hex,
+                                  "bg": colors[bg], "ratio": ratio,
+                                  "required": minimum, "role": label})
+
+    check("text", "canvas", 4.5, "body text")
+    check("text", "surface", 4.5, "body text on surface")
+    check("text-dim", "canvas", 4.5, "secondary text")
+    check("text-dim", "surface", 4.5, "secondary text on surface")
+    check("on-accent", "accent", 4.5, "text on the accent")
+    check_all("text-dim", "canvas", 4.5, "secondary text, all tones")
+    if not r.get("text_role_mismatch"):
+        check_all("text", "canvas", 4.5, "body text, all tones")
+        check_all("text", "surface", 4.5, "body text on surface, all tones")
+    check_all("text-dim", "surface", 4.5, "secondary text on surface, all tones")
+    check_all("border", "surface", 3.0, "boundary on surface, all tones")
+
+    # Every token a component actually binds as a boundary, whatever its name
+    # and whether or not a pattern already satisfied the role.
+    bound_borders = {}
+    for props in parse_components(text).values():
+        own_bg = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                              props.get("backgroundColor") or "")
+        ground = own_bg.group(1) if own_bg and own_bg.group(1) in colors else None
+        for prop in ("borderColor", "border", "outlineColor"):
+            m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get(prop) or "")
+            if not m or m.group(1) not in colors:
+                continue
+            if ground and colors[m.group(1)] == colors[ground]:
+                continue    # self-coloured edge: no boundary against its own fill
+            bound_borders.setdefault(m.group(1), set()).add(ground)
+    for key, grounds in bound_borders.items():
+        # The component's own ground where it declares one; the page only for
+        # components that declare none.
+        targets = [g for g in grounds if g] or \
+                  [roles[rl] for rl in ("canvas", "surface") if roles.get(rl)]
+        for bg in dict.fromkeys(targets):
+            if not same_theme(key, bg):
+                continue
+            fg_hex = effective(key, colors[bg])
+            ratio = round(contrast(fg_hex, colors[bg]), 2)
+            if ratio < 3.0:
+                fails.append({"pair": f"{key} on {bg}", "fg": fg_hex,
+                              "bg": colors[bg], "ratio": ratio, "required": 3.0,
+                              "role": "bound boundary"})
+
+    # Each theme's own ground, so a dark-mode boundary is measured against the
+    # dark canvas rather than silently skipped for belonging to another theme.
+    alt_grounds = {}
+    for k in colors:
+        if not re.search(r"(canvas|background|base|surface)", k):
+            continue
+        th = theme_of(k)
+        if th and th not in alt_grounds:
+            alt_grounds[th] = k
+    for th, ground in alt_grounds.items():
+        for role, minimum, label in (("border", 3.0, "boundary"),
+                                     ("text-dim", 4.5, "secondary text"),
+                                     ("text", 4.5, "body text")):
+            for pat in REQUIRED_COLOR_ROLES[role]:
+                for key in colors:
+                    if not re.match(pat, key) or "disabled" in key:
+                        continue
+                    if theme_of(key) != th:
+                        continue
+                    ratio = round(contrast(colors[key], colors[ground]), 2)
+                    if ratio < minimum:
+                        fails.append({"pair": f"{key} on {ground}",
+                                      "fg": colors[key], "bg": colors[ground],
+                                      "ratio": ratio, "required": minimum,
+                                      "role": f"{label}, {th} theme"})
+    check_all("border", "canvas", 3.0, "boundary, all tones")
+
+    # Semantic tones, measured as text on the canvas. Many are used as fills,
+    # where 1.4.3 does not apply, so a failure here is a prompt for a usage
+    # note rather than proof of a defect — but it must be visible either way.
+    SEMANTIC = (r"^success", r"^warning", r"^error", r"^danger", r"^info",
+                r"^semantic-", r"^positive", r"^negative",
+                r"^link($|[-_])", r"^text-link", r"^[a-z]+-link$")
+    for canvas_key in dict.fromkeys(
+            k for k in (roles.get("canvas"), roles.get("surface")) if k):
+        FILL_MARKER = re.compile(r"(subtle|soft|pale|faint|bg|background|fill|tint|"
+                                 r"wash|surface|band|chip|badge|pill)")
+        for pat in SEMANTIC:
+            for key in colors:
+                if not re.match(pat, key) or "disabled" in key:
+                    continue
+                if FILL_MARKER.search(key):
+                    continue   # a fill tone, never the label drawn on it
+                if not same_theme(key, canvas_key):
+                    continue
+                ratio = round(contrast(colors[key], colors[canvas_key]), 2)
+                if ratio < 4.5:
+                    fails.append({"pair": f"{key} on {canvas_key}",
+                                  "fg": colors[key], "bg": colors[canvas_key],
+                                  "ratio": ratio, "required": 4.5,
+                                  "role": "semantic tone as text"})
+    check("border", "canvas", 3.0, "component boundary")
+    RINGISH = re.compile(r"(^|[-_])(focus|ring)($|[-_])")
+    focus_tokens = [k for k in colors if RINGISH.search(k)
+                    and not re.search(r"(inner|inset|halo)", k)]
+    focus_bands = [k for k in colors if RINGISH.search(k)
+                   and re.search(r"(inner|inset|halo)", k)]
+    for props in parse_components(text).values():
+        for prop in ("ringColor", "outlineColor", "focusRing", "focusColor"):
+            m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get(prop) or "")
+            if m and m.group(1) in colors and m.group(1) not in focus_tokens:
+                focus_tokens.append(m.group(1))
+    # Not anchored: an inverse-canvas or hero-surface band is a surface a ring
+    # can land on, and anchoring hid every one of them.
+    surface_keys = [k for k in colors
+                    if re.search(r"(canvas|background|base|surface|card|panel|tile|band)", k)
+                    and not re.search(r"^(ink|text|body|muted|hairline|border|focus)", k)]
+    # A token a component declares as a backgroundColor is a surface whatever it
+    # is called: meta paints white type on `ink-deep`, which the name filter
+    # above would drop, hiding every dark ground a ring lands on.
+    ACCENTISH = re.compile(r"^(primary|accent|brand|cta|secondary|success|warning|"
+                           r"error|danger|info|semantic|positive|negative|trading|"
+                           r"badge|price|commerce|buy|sale)")
+    CONTAINER = re.compile(r"(card|panel|band|hero|section|footer|header|modal|"
+                           r"drawer|sheet|nav|sidebar|surface|page|canvas|well|"
+                           r"tile|strip|rail|table|form)")
+    for name, props in parse_components(text).items():
+        m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("backgroundColor") or "")
+        if not m or m.group(1) not in colors or m.group(1) in surface_keys:
+            continue
+        # A ring must clear the grounds it is drawn ON, not the fills of the
+        # controls it surrounds — requiring both is arithmetically impossible
+        # (see 34a4499). Decided by what the COMPONENT is, since a signal fill
+        # can be named anything: amber, nav-gold, commerce.
+        if not CONTAINER.search(name):
+            continue
+        surface_keys.append(m.group(1))
+    accent_key = roles.get("accent")
+
+    # A file's rings are a system, not independent claims. A surface is covered
+    # when ANY ring clears 3:1 on it, so a ring named for one context
+    # (focus-on-gradient, focus-ink) is not charged for surfaces another ring
+    # serves. A failure means no ring in the file covers that surface at all.
+    for s in dict.fromkeys(surface_keys):   # every surface, theme-independent
+        if not focus_tokens:
+            break
+        best_ring, best = None, -1.0
+        for ring in focus_tokens:
+            ratio = round(contrast(colors[ring], colors[s]), 2)
+            if ratio > best:
+                best_ring, best = ring, ratio
+        if best < 3.0:
+            fails.append({"pair": f"no ring covers {s} (best: {best_ring})",
+                          "fg": colors[best_ring], "bg": colors[s],
+                          "ratio": best, "required": 3.0,
+                          "role": "focus indicator coverage"})
+
+    # Composite ring: the two bands must separate from each other by 3:1.
+    for band in focus_bands:
+        best = max((round(contrast(colors[band], colors[r]), 2)
+                    for r in focus_tokens), default=None)
+        if best is not None and best < 3.0:
+            fails.append({"pair": f"{band} against its outer ring",
+                          "fg": colors[band], "bg": colors[focus_tokens[0]],
+                          "ratio": best, "required": 3.0,
+                          "role": "composite ring band separation"})
+
+    # Every background/text pair the components block actually asserts — 1808
+    # of them across the repo, and the name-matching check saw none.
+    def deref(v):
+        m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", v or "")
+        if m:
+            return colors.get(m.group(1))
+        # An inline rgba() fill states no ground; compositing it over the canvas
+        # manufactured failures for elements drawn on something else entirely.
+        if re.match(r"\s*rgba?\(", v or ""):
+            return None
+        return v if re.fullmatch(r"#[0-9a-fA-F]{3,8}", v or "") else None
+
+    typo = parse_nested(text, "typography")
+
+    def threshold_for(props):
+        """4.5:1 normally, 3:1 where the component's own type is large text."""
+        ref = props.get("typography", "")
+        m = re.fullmatch(r"\{typography\.([A-Za-z0-9_.-]+)\}", ref or "")
+        entry = typo.get(m.group(1), {}) if m else {}
+        size = re.match(r"([\d.]+)", entry.get("fontSize", "") or "")
+        weight = re.match(r"(\d+)", entry.get("fontWeight", "") or "")
+        px = float(size.group(1)) if size else None
+        wt = int(weight.group(1)) if weight else 400
+        if px is not None and (px >= 24 or (px >= 18.66 and wt >= 700)):
+            return 3.0
+        return 4.5
+
+    comp_fails = []
+    for name, props in parse_components(text).items():
+        if "disabled" in name:          # WCAG sets no requirement on disabled
+            continue
+        bg, fg = deref(props.get("backgroundColor")), deref(props.get("textColor"))
+        declared_bg = (props.get("backgroundColor") or "").strip().lower()
+        if declared_bg and not bg:
+            # Stated but unresolvable — transparent, a gradient, a photograph.
+            # The ground is not a colour we can measure, so measure nothing
+            # rather than substituting the page and inventing a failure.
+            continue
+        if fg and not bg and roles.get("canvas"):
+            fg_key = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                                  props.get("textColor") or "")
+            if fg_key and theme_of(fg_key.group(1)) not in (None, canvas_polarity):
+                continue    # an ink for the other polarity; its ground is unstated
+            bg = colors[roles["canvas"]]        # no ground stated: the page floor
+        if not bg or not fg:
+            continue
+        need = threshold_for(props)
+        ratio = round(contrast(fg, bg), 2)
+        if ratio < need:
+            comp_fails.append({"component": name, "fg": fg, "bg": bg,
+                               "ratio": ratio, "required": need})
+    # Disclosure: a failure named in the Accessibility section, by token or by
+    # hex, is documented rather than hidden. SPEC section 2 asks for exactly
+    # that where the value is extracted and frozen.
+    m_acc = re.search(r"^## Accessibility\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
+    acc = (m_acc.group(1) if m_acc else "").lower()
+
+    acc_lines = [l for l in acc.split("\n") if re.search(r"\d+(\.\d+)?\s*:\s*1", l)]
+
+    def disclosed(f):
+        """Named on a line that states this pair's own measured ratio."""
+        if not acc_lines:
+            return False
+        fg_name = (f["pair"].split(" on ")[0] if "pair" in f
+                   else f.get("component", "")).lower()
+        target = f["fg"].lower()
+        for line in acc_lines:
+            if not ((fg_name and fg_name in line) or target in line):
+                continue
+            for stated in re.findall(r"(\d+(?:\.\d+)?)\s*:\s*1", line):
+                if abs(float(stated) - f["required"]) < 1e-9:
+                    continue        # the Required column, not a measurement
+                if round(abs(float(stated) - f["ratio"]), 2) <= 0.06:
+                    return True
+        return False
+
+    seen, deduped = set(), []
+    for f in fails:
+        k = (f["fg"], f["bg"], f["required"])
+        if k not in seen:
+            seen.add(k); deduped.append(f)
+    fails[:] = sorted(deduped, key=lambda f: f["ratio"])
+    for f in fails:
+        f["disclosed"] = disclosed(f)
+    for f in comp_fails:
+        f["disclosed"] = disclosed(f)
+    r["component_contrast_failures"] = comp_fails
+    r["contrast_unresolved"] = [f for f in fails if not f["disclosed"]] + \
+                               [f for f in comp_fails if not f["disclosed"]]
+    r["contrast_disclosed"] = [f for f in fails if f["disclosed"]] + \
+                              [f for f in comp_fails if f["disclosed"]]
+    r["contrast_failures"] = fails
+
+    # --- motion ---------------------------------------------------------
+    motion = groups.get("motion", {})
+    r["motion_group"] = sorted(motion.keys())
+    r["motion_keys_missing"] = sorted(MOTION_KEYS_MIN - set(motion))
+    r["has_motion_section"] = "## Motion & Animation" in text
+    r["has_reduced_motion"] = bool(re.search(r"prefers-reduced-motion", text))
+    r["durations_found"] = sorted(
+        set(re.findall(r"(?<![\d.])(\d{2,4})\s?ms\b", text)), key=int)
+    r["easings_found"] = len(re.findall(r"cubic-bezier\([^)]*\)", text))
+    # motion rule violations: animating layout-triggering properties
+    NEGATED = re.compile(r"\b(don't|do not|never|avoid|no|rather than|instead of|not)\b", re.I)
+    bad = set()
+    # Join hard-wrapped prose so a prohibition split across two lines is still
+    # read as one clause.
+    unwrapped = re.sub(r"\n(?=[a-z`(])", " ", text)
+    for line in unwrapped.split("\n"):
+        for m in re.finditer(r"animat\w*[^.\n]{0,60}?\b(width|height|top|left|margin)\b",
+                             line, re.I):
+            # Look at the clause leading up to the match; a prohibition is fine.
+            # Scan the whole clause, both sides: a prohibition can put its
+            # negation after the verb just as easily as before it.
+            start = line.rfind(".", 0, m.start()) + 1
+            end = line.find(".", m.end())
+            clause = line[start:end if end != -1 else len(line)]
+            if not NEGATED.search(clause):
+                bad.add(m.group(1).lower())
+    for m in re.finditer(r"transition:[^;`\n]*?\b(width|height|top|left|margin)\b",
+                         text, re.I):
+        lead = text[max(0, m.start() - 80):m.start()]
+        if not NEGATED.search(lead):
+            bad.add(m.group(1).lower())
+    r["layout_animation_mentions"] = sorted(bad)
+
+    # --- states ---------------------------------------------------------
+    # Only the Components section counts, and only structured lines within it:
+    # a bare mention elsewhere (a Known Gaps line saying loading is undocumented,
+    # for instance) is not documentation of that state.
+    comp = ""
+    m = re.search(r"^## Components\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
+    if m:
+        comp = m.group(1)
+    NOT_DOCUMENTED = re.compile(
+        r"not (captured|documented|extracted|observed|specified|stated|available)"
+        r"|undocumented|unknown|n/?a\b", re.I)
+    def keep_cells(line):
+        """Drop only the cells that disclaim a state, not the whole row."""
+        if "|" in line:
+            cells = [c for c in line.split("|") if not NOT_DOCUMENTED.search(c)]
+            return "|".join(cells)
+        return "" if NOT_DOCUMENTED.search(line) else line
+
+    structured = "\n".join(
+        keep_cells(line) for line in comp.split("\n")
+        if (line.lstrip().startswith(("|", "-", "*"))
+            or re.match(r"\s*\*\*[^*]+\*\*\s*[:—-]", line)))
+    hay = structured.lower()
+    def documents(word):
+        for m in re.finditer(rf"(?<![a-z]){re.escape(word)}(?![a-z])", hay):
+            lead = hay[max(0, m.start() - 24):m.start()]
+            # `lazy loading` and `loading="lazy"` describe image fetching, not
+            # an interaction state (agent A73).
+            if word == "loading" and ("lazy" in lead or 'loading="' in
+                                      hay[m.start():m.start() + 12]):
+                continue
+            return True
+        return False
+
+    r["states_documented"] = [w for w in STATE_WORDS if documents(w)]
+    r["states_missing"] = [w for w in STATE_WORDS if not documents(w)]
+
+    # --- score ----------------------------------------------------------
+    r["score"] = {
+        "tokens":   5 if not r["roles_missing"] else max(1, 5 - len(r["roles_missing"])),
+        # Floored at 1 with no frontmatter: nothing was measured, so a 5 would
+        # mean "nothing to find" rather than "nothing wrong".
+        "refs":     (5 if not r["dangling_refs"] else 2) if groups else 1,
+        # Scored on undisclosed failures only: documenting a frozen brand
+        # failure is the required outcome, not a deduction.
+        "contrast": (5 if not r["contrast_unresolved"]
+                     else max(1, 5 - len(r["contrast_unresolved"]))) if groups else 1,
+        "sections": max(1, 5 - len(r["sections_missing"])),
+        "motion":   5 if (r["has_motion_section"] and not r["motion_keys_missing"]
+                          and r["has_reduced_motion"]) else
+                    (3 if r["durations_found"] else 1),
+        "states":   max(1, 5 - len(r["states_missing"])),
+    }
+    return r
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--site")
+    ap.add_argument("--out")
+    a = ap.parse_args()
+
+    paths = sorted(glob.glob(os.path.join(ROOT, "design-md/*/DESIGN.md")))
+    if a.site:
+        paths = [p for p in paths if os.path.basename(os.path.dirname(p)) == a.site]
+        if not paths:
+            sys.exit(f"no such site: {a.site}")
+    results = [audit(p) for p in paths]
+
+    if a.out:
+        os.makedirs(a.out, exist_ok=True)
+        for r in results:
+            with open(os.path.join(a.out, r["site"] + ".json"), "w") as f:
+                json.dump(r, f, indent=2)
+    if a.json:
+        print(json.dumps(results, indent=2))
+        return
+
+    hdr = f"{'site':16} {'tok':>4} {'ref':>4} {'con':>4} {'sec':>4} {'mot':>4} {'sta':>4}  issues"
+    print(hdr); print("-" * len(hdr))
+    for r in results:
+        s = r["score"]
+        issues = []
+        if r["roles_missing"]:      issues.append(f"roles:{','.join(r['roles_missing'])}")
+        if r["dangling_refs"]:      issues.append(f"dangling:{len(r['dangling_refs'])}")
+        if r["contrast_unresolved"]:
+            issues.append(f"contrast-undisclosed:{len(r['contrast_unresolved'])}")
+        if r["contrast_disclosed"]:
+            issues.append(f"(disclosed:{len(r['contrast_disclosed'])})")
+        if not r["has_motion_section"]: issues.append("no-motion-section")
+        if r["layout_animation_mentions"]: issues.append("animates-layout-props")
+        print(f"{r['site']:16} {s['tokens']:>4} {s['refs']:>4} {s['contrast']:>4} "
+              f"{s['sections']:>4} {s['motion']:>4} {s['states']:>4}  {'; '.join(issues)}")
+
+    n = len(results)
+    def avg(k): return round(sum(r["score"][k] for r in results) / n, 2)
+    print("-" * len(hdr))
+    print(f"{'MEAN ('+str(n)+' sites)':16} {avg('tokens'):>4} {avg('refs'):>4} "
+          f"{avg('contrast'):>4} {avg('sections'):>4} {avg('motion'):>4} {avg('states'):>4}")
+
+
+if __name__ == "__main__":
+    main()

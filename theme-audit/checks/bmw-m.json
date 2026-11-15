@@ -1,0 +1,85 @@
+{
+  "site": "bmw-m",
+  "has_frontmatter": true,
+  "color_count": 21,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Known Gaps",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility"
+  ],
+  "optional_sections_missing": [],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface-card",
+    "text": "ink",
+    "text-dim": "muted",
+    "border": "hairline",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus"
+  ],
+  "dangling_refs": [],
+  "contrast_failures": [
+    {
+      "pair": "muted on surface-card",
+      "fg": "#7e7e7e",
+      "bg": "#1a1a1a",
+      "ratio": 4.29,
+      "required": 4.5,
+      "role": "secondary text on surface"
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#3c3c3c",
+      "bg": "#000000",
+      "ratio": 1.9,
+      "required": 3.0,
+      "role": "component boundary"
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_documented": [
+    "hover",
+    "active"
+  ],
+  "states_missing": [
+    "focus-visible",
+    "pressed",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 4,
+    "refs": 5,
+    "contrast": 3,
+    "sections": 3,
+    "motion": 1,
+    "states": 1
+  }
+}

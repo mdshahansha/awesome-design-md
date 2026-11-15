@@ -32,6 +32,11 @@ colors:
   success-text: "#1ba673"
   on-dark: "#ffffff"
   footer-bg: "#0a0a0a"
+  hairline-strong: "#767a85"
+  muted-strong: "#6f717a"
+  success-text-strong: "#0f7a50"
+  focus: "#1456f0"
+  focus-on-dark: "#ffffff"
 
 typography:
   hero-display:
@@ -139,6 +144,25 @@ spacing:
   section-lg: 80px
   hero: 96px
 
+shadow:
+  subtle: "rgba(0, 0, 0, 0.04) 0px 1px 2px 0px"
+  card: "rgba(0, 0, 0, 0.08) 0px 4px 6px 0px"
+  atmospheric: "rgba(0, 0, 0, 0.08) 0px 0px 22px 0px"
+  modal: "rgba(36, 36, 36, 0.08) 0px 12px 16px -4px"
+  purple-ambient: "rgba(44, 30, 116, 0.16) 0px 0px 15px 0px"
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
+
 components:
   button-primary:
     backgroundColor: "{colors.primary}"
@@ -148,6 +172,17 @@ components:
     padding: "11px 24px"
   button-primary-pressed:
     backgroundColor: "{colors.charcoal}"
+    textColor: "{colors.on-primary}"
+  button-primary-hover:
+    backgroundColor: "{colors.charcoal}"
+    textColor: "{colors.on-primary}"
+  button-primary-focus-visible:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    outline: "2px solid {colors.focus}"
+    outlineOffset: "2px"
+  button-primary-loading:
+    backgroundColor: "{colors.primary}"
     textColor: "{colors.on-primary}"
   button-primary-disabled:
     backgroundColor: "{colors.hairline}"
@@ -180,26 +215,31 @@ components:
   product-card-coral:
     backgroundColor: "{colors.brand-coral}"
     textColor: "{colors.on-dark}"
+    typography: "{typography.display-lg}"
     rounded: "{rounded.hero}"
     padding: "{spacing.xxl}"
   product-card-magenta:
     backgroundColor: "{colors.brand-magenta}"
     textColor: "{colors.on-dark}"
+    typography: "{typography.heading-lg}"
     rounded: "{rounded.hero}"
     padding: "{spacing.xxl}"
   product-card-blue:
     backgroundColor: "{colors.brand-blue}"
     textColor: "{colors.on-dark}"
+    typography: "{typography.heading-lg}"
     rounded: "{rounded.hero}"
     padding: "{spacing.xxl}"
   product-card-purple:
     backgroundColor: "{colors.brand-purple}"
     textColor: "{colors.on-dark}"
+    typography: "{typography.heading-lg}"
     rounded: "{rounded.hero}"
     padding: "{spacing.xxl}"
   product-card-photo:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.on-dark}"
+    typography: "{typography.display-lg}"
     rounded: "{rounded.hero}"
     padding: "{spacing.xxl}"
   card-base:
@@ -227,12 +267,18 @@ components:
     typography: "{typography.body-md}"
     rounded: "{rounded.md}"
     padding: "{spacing.sm} {spacing.md}"
-    border: "1px solid {colors.hairline}"
+    border: "1px solid {colors.hairline-strong}"
     height: 40px
   text-input-focused:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
     border: "2px solid {colors.brand-blue-deep}"
+    outline: "2px solid {colors.focus}"
+    outlineOffset: "2px"
+  text-input-disabled:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.muted}"
+    border: "1px solid {colors.hairline}"
   text-input-error:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
@@ -244,7 +290,7 @@ components:
     rounded: "{rounded.md}"
     padding: "{spacing.xs} {spacing.md}"
     height: 36px
-    border: "1px solid {colors.hairline}"
+    border: "1px solid {colors.hairline-strong}"
   segmented-tab:
     backgroundColor: "transparent"
     textColor: "{colors.steel}"
@@ -272,6 +318,12 @@ components:
   badge-success:
     backgroundColor: "{colors.success-bg}"
     textColor: "{colors.success-text}"
+    typography: "{typography.caption-bold}"
+    rounded: "{rounded.full}"
+    padding: "4px 10px"
+  badge-success-accessible:
+    backgroundColor: "{colors.success-bg}"
+    textColor: "{colors.success-text-strong}"
     typography: "{typography.caption-bold}"
     rounded: "{rounded.full}"
     padding: "4px 10px"
@@ -341,7 +393,7 @@ components:
     typography: "{typography.body-sm}"
     padding: "{spacing.section} {spacing.xxl}"
   footer-link:
-    backgroundColor: "transparent"
+    backgroundColor: "{colors.footer-bg}"
     textColor: "{colors.muted}"
     typography: "{typography.body-sm}"
     padding: "{spacing.xxs} 0"
@@ -413,6 +465,11 @@ DM Sans anchors every surface from oversized 80px hero displays down to 12px mic
 - **Surface Soft** ({colors.surface-soft}): Quieter section divisions.
 - **Hairline** ({colors.hairline}): 1px input border and primary divider.
 - **Hairline Soft** ({colors.hairline-soft}): Quieter table-row divider and secondary section break.
+- **Hairline Strong** ({colors.hairline-strong}) — **prescribed, not extracted**: Parallel accessible boundary for controls whose border is their only edge (text inputs, search pill). The extracted `{colors.hairline}` and `{colors.hairline-soft}` are scoped to decoration from here on — section breaks, table-row rules, card edges that sit beside other cues. Measures 4.29:1 on `{colors.canvas}` and 4.04:1 on `{colors.surface}`.
+
+### Focus
+- **Focus** ({colors.focus}) — **prescribed, not extracted**: The brand's own `{colors.brand-blue}` reused as the focus ring for every light surface — canvas, surface, surface-soft. Drawn as a 2px ring with a 2px offset outside the control, so WCAG 2.2 Focus Appearance measures it against the surface behind the control, not against the control's own fill. Measures 5.80:1 on `{colors.canvas}`, 5.46:1 on `{colors.surface}`, 5.23:1 on `{colors.surface-soft}`. A single ring cannot serve this file, because MiniMax ships both a white marketing canvas and black/saturated signature surfaces — hence the pair below.
+- **Focus On Dark** ({colors.focus-on-dark}) — **prescribed, not extracted**: White ring, 2px with a 2px offset, for the black footer, the black promo banner and the vibrant product cards. Measures 19.80:1 on `{colors.footer-bg}`, 5.80:1 on `{colors.brand-blue}`, 3.96:1 on `{colors.brand-purple}`, 3.18:1 on `{colors.brand-coral}`, 3.06:1 on `{colors.brand-magenta}` — clearing 3:1 on every surface it can land on. Over `product-card-photo`, where the ground is photography and has no measurable colour, the ring is two-tone: `{colors.focus-on-dark}` with a 1px outer edge in `{colors.ink-strong}` (the two bands separate at 21.0:1).
 
 ### Text
 - **Ink** ({colors.ink}): Primary headline and CTA text — the brand's near-black anchor.
@@ -421,11 +478,13 @@ DM Sans anchors every surface from oversized 80px hero displays down to 12px mic
 - **Slate** ({colors.slate}): Secondary text, metadata.
 - **Steel** ({colors.steel}): Tertiary text, table headers, sidebar inactive items.
 - **Stone** ({colors.stone}): Muted captions and tab inactive labels.
-- **Muted** ({colors.muted}): Footer link text and de-emphasized labels.
+- **Muted** ({colors.muted}): Footer link text and de-emphasized labels. On the black footer it is the right tone (8.54:1); on white it is decoration only — see Accessibility.
+- **Muted Strong** ({colors.muted-strong}) — **prescribed, not extracted**: Parallel accessible tone for de-emphasized text that has to sit on a light surface, where `{colors.muted}` fails AA. Measures 4.86:1 on `{colors.canvas}` and 4.58:1 on `{colors.surface}`.
 
 ### Semantic
 - **Success Background** ({colors.success-bg}): Pale-green wash for success badges and confirmations.
-- **Success Text** ({colors.success-text}): Deep-green ink for success badge labels.
+- **Success Text** ({colors.success-text}): Deep-green ink for success badge labels. The extracted pairing fails AA at 13px — see Accessibility.
+- **Success Text Strong** ({colors.success-text-strong}) — **prescribed, not extracted**: Parallel accessible green for the same badge label, 5.08:1 on `{colors.success-bg}` and 5.36:1 on `{colors.canvas}`. Used by `badge-success-accessible`.
 - Error tones derive from a `#d45656` red used in input border error states (not extracted as a top-level system token).
 
 ## Typography
@@ -485,15 +544,30 @@ The system runs predominantly flat. Elevation is reserved for sticky panels, dro
 
 | Level | Treatment | Use |
 |---|---|---|
-| 0 (flat) | No shadow; `{colors.hairline}` border | Default cards, table rows, form inputs |
-| 1 (subtle) | `rgba(0, 0, 0, 0.04) 0px 1px 2px 0px` | Card-recommendation, hover-elevated tiles |
-| 2 (card) | `rgba(0, 0, 0, 0.08) 0px 4px 6px 0px` | Standard feature cards, dropdowns |
-| 3 (atmospheric) | `rgba(0, 0, 0, 0.08) 0px 0px 22px 0px` | Diffuse glow on featured product cards |
-| 4 (modal) | `rgba(36, 36, 36, 0.08) 0px 12px 16px -4px` | Modals, confirmation dialogs, sticky panels |
+| 0 (flat) | No shadow; `{colors.hairline}` border on containers, `{colors.hairline-strong}` on controls | Default cards, table rows, form inputs |
+| 1 (subtle) | `{shadow.subtle}` — `rgba(0, 0, 0, 0.04) 0px 1px 2px 0px` | Card-recommendation, hover-elevated tiles |
+| 2 (card) | `{shadow.card}` — `rgba(0, 0, 0, 0.08) 0px 4px 6px 0px` | Standard feature cards, dropdowns |
+| 3 (atmospheric) | `{shadow.atmospheric}` — `rgba(0, 0, 0, 0.08) 0px 0px 22px 0px` | Diffuse glow on featured product cards |
+| 4 (modal) | `{shadow.modal}` — `rgba(36, 36, 36, 0.08) 0px 12px 16px -4px` | Modals, confirmation dialogs, sticky panels |
+
+Elevation is expressed one way per layer: level 0 is border-only, levels 1–4 are
+shadow-only. No component carries both a visible border and a shadow.
+
+### Layer separation, measured
+
+The three light grounds sit almost on top of each other: `{colors.canvas}` to
+`{colors.surface}` is 1.06:1, `{colors.canvas}` to `{colors.surface-soft}` is
+1.11:1, and `{colors.surface}` to `{colors.surface-soft}` is 1.04:1. That is the
+brand's choice — the system is deliberately flat and reads as one white page — but
+it means tone alone does not separate a panel from the page. `card-feature`, which
+is the one component relying on a bare `{colors.surface}` fill with no border,
+carries the weakest edge in the system. Where a panel has to be legible as a
+distinct surface, give it the level-0 border or a level-1 shadow rather than the
+tonal step.
 
 ### Decorative Depth
 - The vibrant gradient product cards carry their own atmospheric depth via internal radial gradients and silhouette imagery — no shadow needed; the color does the work.
-- Brand-tinted shadows (`rgba(44, 30, 116, 0.16) 0px 0px 15px`) appear under purple-themed cards for subtle ambient lift.
+- Brand-tinted shadows (`{shadow.purple-ambient}` — `rgba(44, 30, 116, 0.16) 0px 0px 15px 0px`) appear under purple-themed cards for subtle ambient lift.
 - Dotted/grain textures occasionally appear inside product cards as photographic-content decoration; these are not formalized as system tokens.
 
 ## Shapes
@@ -519,7 +593,30 @@ The system runs predominantly flat. Elevation is reserved for sticky panels, dro
 
 ## Components
 
-> Per the no-hover policy, hover states are NOT documented. Default and pressed/active states only.
+> Default, pressed/active, disabled and error states below are extracted from the
+> four source pages. Hover, focus-visible, loading and selected were not observable
+> in a static capture, so the entries marked **prescribed** below are prescribed to
+> match the brand's visual identity, not measured from the live site.
+
+### State coverage
+
+| Component family | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | extracted | prescribed `{colors.charcoal}` fill | prescribed 2px `{colors.focus}` ring, 2px offset | extracted `{colors.charcoal}` | extracted `{colors.hairline}` / `{colors.muted}` | prescribed — label swaps for an inline spinner, pill width frozen | n/a | n/a |
+| `button-secondary` · `button-tertiary` | extracted | prescribed — border steps to `{colors.ink}` | prescribed 2px `{colors.focus}` ring, 2px offset | prescribed — fill steps to `{colors.surface}` | prescribed `{colors.muted}` label | prescribed inline spinner | n/a | n/a |
+| `button-icon-circular` | extracted | prescribed `{colors.surface}` fill | prescribed 2px `{colors.focus}` ring, 2px offset | prescribed `{colors.surface-soft}` fill | prescribed `{colors.muted}` glyph | n/a | n/a | n/a |
+| `text-input` | extracted | prescribed — border steps to `{colors.ink}` | extracted `text-input-focused` border + prescribed `{colors.focus}` ring | n/a | prescribed `text-input-disabled` | n/a | n/a | extracted `text-input-error` |
+| `search-pill` | extracted | prescribed `{colors.surface-soft}` fill | prescribed 2px `{colors.focus}` ring, 2px offset | n/a | n/a | prescribed — results area shows a skeleton row | n/a | n/a |
+| `segmented-tab` · `pill-tab` | extracted | prescribed — label steps to `{colors.ink}` | prescribed 2px `{colors.focus}` ring, 2px offset | extracted `-active` | prescribed `{colors.muted}` label | n/a | extracted `-active` is the selected state | n/a |
+| `sidebar-nav-item` · `doc-toc-item` | extracted | prescribed `{colors.surface}` fill | prescribed 2px `{colors.focus}` ring, 2px offset | prescribed — label steps to `{colors.ink}` | n/a | n/a | extracted `sidebar-nav-item-active` is the selected state | n/a |
+| `product-card-*` | extracted | prescribed — card lifts `scale(1.01)` | prescribed 2px `{colors.focus-on-dark}` ring, 2px offset | prescribed `scale(0.99)` | n/a | prescribed — image area fades in at `{motion.duration-base}` | n/a | n/a |
+| `card-base` · `card-recommendation` · `ai-product-tile` | extracted | prescribed `{shadow.subtle}` lift | prescribed 2px `{colors.focus}` ring, 2px offset | prescribed — no press treatment on non-interactive cards | n/a | prescribed skeleton block | n/a | n/a |
+| `badge-success` · `badge-new` · `badge-beta` · `badge-code` | extracted | n/a — badges are not interactive | n/a | n/a | n/a | n/a | n/a | n/a |
+| `data-table-row` | extracted | prescribed `{colors.surface}` fill | prescribed 2px `{colors.focus}` ring, 2px offset | n/a | n/a | prescribed — three skeleton rows while fetching | prescribed `{colors.surface}` fill with `{colors.ink}` label | n/a |
+| `promo-banner` | extracted | n/a | prescribed 2px `{colors.focus-on-dark}` ring on its inline link | n/a | n/a | n/a | n/a | n/a |
+| `footer-link` | extracted | prescribed — opacity step, colour frozen | prescribed 2px `{colors.focus-on-dark}` ring, 2px offset | extracted — opacity shift only | n/a | n/a | n/a | n/a |
+
+Badges carry genuinely one state: they are static labels, never interactive.
 
 ### Buttons
 
@@ -527,6 +624,7 @@ The system runs predominantly flat. Elevation is reserved for sticky panels, dro
 - Background `{colors.primary}`, text `{colors.on-primary}`, typography `{typography.button-md}`, padding `11px 24px`, rounded `{rounded.full}`.
 - Pressed state `button-primary-pressed` lifts to `{colors.charcoal}`.
 - Disabled state `button-primary-disabled` uses `{colors.hairline}` background and `{colors.muted}` text.
+- Prescribed: `button-primary-hover` shares the `{colors.charcoal}` fill; `button-primary-focus-visible` adds a 2px `{colors.focus}` ring at 2px offset; `button-primary-loading` keeps the pill at its rest width and swaps the label for an inline spinner.
 
 **`button-secondary`** — Outlined pill secondary action, paired with primary in dual-CTA hero patterns.
 - Background transparent, text `{colors.ink}`, border `1px solid {colors.ink}`, typography `{typography.button-md}`, padding `11px 24px`, rounded `{rounded.full}`.
@@ -578,16 +676,19 @@ The system runs predominantly flat. Elevation is reserved for sticky panels, dro
 ### Inputs & Forms
 
 **`text-input`** — Standard text field.
-- Background `{colors.canvas}`, text `{colors.ink}`, border `1px solid {colors.hairline}`, rounded `{rounded.md}`, padding `{spacing.sm} {spacing.md}`, height 40px.
+- Background `{colors.canvas}`, text `{colors.ink}`, border `1px solid {colors.hairline-strong}`, rounded `{rounded.md}`, padding `{spacing.sm} {spacing.md}`, height 40px. The extracted border is `{colors.hairline}` at 1.24:1 on canvas; since this border is the field's only boundary, the prescribed `{colors.hairline-strong}` replaces it here and `{colors.hairline}` stays on decorative edges.
 
-**`text-input-focused`** — Activated state.
-- Border switches to `2px solid {colors.brand-blue-deep}`.
+**`text-input-focused`** — Activated state (focus-visible).
+- Border switches to `2px solid {colors.brand-blue-deep}`, plus a prescribed 2px `{colors.focus}` ring at 2px offset outside the field.
+
+**`text-input-disabled`** — Prescribed disabled state.
+- Background `{colors.surface}`, text `{colors.muted}`, border `1px solid {colors.hairline}`.
 
 **`text-input-error`** — Validation error state.
 - Border switches to `1px solid #d45656`; error label below in matching red `{typography.body-sm}`.
 
 **`search-pill`** — Documentation top-bar search field.
-- Background `{colors.surface}`, text `{colors.steel}`, typography `{typography.body-sm}`, rounded `{rounded.md}`, height 36px, border `1px solid {colors.hairline}`.
+- Background `{colors.surface}`, text `{colors.steel}`, typography `{typography.body-sm}`, rounded `{rounded.md}`, height 36px, border `1px solid {colors.hairline-strong}` (same substitution as `text-input`: this border is the control's only edge).
 
 ### Tabs
 
@@ -601,7 +702,8 @@ The system runs predominantly flat. Elevation is reserved for sticky panels, dro
 ### Badges & Status
 
 **`badge-success`** — Pale-green confirmation badge ("Available", "Active").
-- Background `{colors.success-bg}`, text `{colors.success-text}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
+- Background `{colors.success-bg}`, text `{colors.success-text}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`. The extracted pairing measures 2.95:1 — a real AA failure at 13px, kept here because it is what the brand ships.
+- `badge-success-accessible` is the prescribed parallel: same fill, label in `{colors.success-text-strong}` at 5.08:1. Use it wherever the badge carries information not available elsewhere.
 
 **`badge-new`** — Coral "NEW" / "Live" pill for fresh releases.
 - Background `{colors.brand-coral}`, text `{colors.on-dark}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
@@ -679,6 +781,166 @@ The system runs predominantly flat. Elevation is reserved for sticky panels, dro
 **`footer-link`** — Individual link entry inside the footer column.
 - Background transparent, text `{colors.muted}`, typography `{typography.body-sm}`, padding `{spacing.xxs} 0`. Active/visited states do not change color — only opacity shifts on activation.
 
+## Motion & Animation
+
+This motion system is **prescribed** to match the brand's visual identity and was
+not measured from the live site — no timing function or duration below was
+extracted from minimax.io. MiniMax carries the **Crisp** profile: a developer
+platform whose documentation, API surfaces and platform console make state change
+read as instant, with no entrance choreography. The vibrant product cards are the
+one place the brand invites a little travel, and even there it stays under 220ms.
+
+### Tokens
+
+| Token | Value |
+|---|---|
+| `{motion.duration-instant}` | 60ms |
+| `{motion.duration-fast}` | 100ms |
+| `{motion.duration-base}` | 150ms |
+| `{motion.duration-slow}` | 220ms |
+| `{motion.duration-emphasis}` | 300ms |
+| `{motion.ease-standard}` | `cubic-bezier(0.2, 0, 0.2, 1)` |
+| `{motion.ease-enter}` | `cubic-bezier(0, 0, 0.2, 1)` |
+| `{motion.ease-exit}` | `cubic-bezier(0.4, 0, 1, 1)` |
+| `{motion.stagger-step}` | 20ms |
+| `{motion.duration-reduced}` | 100ms |
+
+### Interaction inventory
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (pill button, nav link, table row) | `{motion.duration-instant}` | `{motion.ease-standard}` | `background-color`, `opacity` | Unchanged — colour and opacity only, no travel to remove |
+| Press (pill button, product card) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.99)` | Scale removed; the fill step alone marks the press |
+| Focus-visible ring | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the ring | Ring appears instantly at full opacity, never animated |
+| Page / route transition (docs navigation) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` only | Opacity cross-fade at `{motion.duration-reduced}` |
+| Modal / drawer (mobile nav drawer, dialogs) | `{motion.duration-slow}` in, `{motion.duration-base}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `transform: translateX/translateY`, `opacity` | Travel removed; opacity fade at `{motion.duration-reduced}` |
+| Dropdown (account menu, version picker) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`, `transform: scale(0.98 → 1)` | Scale removed; opacity fade at `{motion.duration-reduced}` |
+| Toast (copy-to-clipboard, API-key confirmations) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`, `transform: translateY(8px → 0)` | Travel removed; opacity fade at `{motion.duration-reduced}` |
+| List enter (product matrix tiles, docs search results) | `{motion.duration-base}`, `{motion.stagger-step}` between items | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px → 0)` | Stagger and travel removed; a single opacity fade at `{motion.duration-reduced}` |
+| List exit | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity`, `transform: translateY(0 → 4px)` | Travel removed; opacity fade at `{motion.duration-reduced}` |
+| Loading (spinner in `button-primary-loading`, skeleton rows) | 800ms spinner rotation, 1200ms skeleton sweep, both infinite while pending | linear spinner, `{motion.ease-standard}` sweep | `transform: rotate`, `opacity` | Both frozen; a static spinner glyph and a flat skeleton fill remain |
+
+### Rules
+
+- Animate `transform` and `opacity` only. Never `width`, `height`, `top`, `left`
+  or `margin` — the 4-column product matrix and the 3-column docs grid both
+  reflow on resize, and animating layout properties there would cost frames.
+- Every exit is shorter than its matching entrance: 100ms against 150ms for
+  dropdowns, toasts and route changes, 150ms against 220ms for the drawer.
+- Nothing animates on first paint. The 80px hero display and the product matrix
+  render at full opacity immediately; no reveal delays content.
+- The only infinite animations are the loading spinner and the skeleton sweep.
+  MiniMax ships no brand ambience, so none is specified here.
+- The focus ring never animates in. It is drawn at full opacity on the frame the
+  control takes focus.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate, all scale, the 20ms list stagger. */
+  /* Frozen: the loading spinner's rotation and the skeleton sweep. */
+  /* Kept: opacity fades, capped at {motion.duration-reduced} (100ms). */
+  *, *::before, *::after {
+    animation-duration: 100ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 100ms !important;
+    transition-property: opacity, background-color, border-color, color !important;
+  }
+}
+```
+
+Hover and press keep their colour steps, since those are not motion. The
+focus-visible ring is unaffected: it never animated in the first place.
+
+## Accessibility
+
+Contrast measured with the WCAG 2.1 relative-luminance formula. Every ratio below
+was computed from this file's own hexes, not estimated.
+
+### Measured key pairs — passing
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 19.80:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface}` | 18.63:1 | 4.5:1 | Pass |
+| `{colors.charcoal}` on `{colors.canvas}` | 15.91:1 | 4.5:1 | Pass |
+| `{colors.slate}` on `{colors.canvas}` | 8.10:1 | 4.5:1 | Pass |
+| `{colors.steel}` on `{colors.canvas}` | 6.39:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.primary}` | 19.80:1 | 4.5:1 | Pass |
+| `{colors.muted}` on `{colors.footer-bg}` (`footer-link`) | 8.54:1 | 4.5:1 | Pass |
+| `{colors.muted-strong}` on `{colors.canvas}` | 4.86:1 | 4.5:1 | Pass (prescribed) |
+| `{colors.hairline-strong}` on `{colors.canvas}` | 4.29:1 | 3.0:1 | Pass (prescribed) |
+| `{colors.hairline-strong}` on `{colors.surface}` | 4.04:1 | 3.0:1 | Pass (prescribed) |
+| `{colors.success-text-strong}` on `{colors.success-bg}` | 5.08:1 | 4.5:1 | Pass (prescribed) |
+| `{colors.brand-blue-deep}` on `{colors.brand-blue-200}` (`badge-beta`, `badge-code`) | 4.72:1 | 4.5:1 | Pass |
+
+### Where the real brand fails AA — disclosed, not fixed
+
+These are extracted values. They are frozen because falsifying a brand hex would
+make the document wrong; each one is stated here with its measured ratio so that
+anyone building on this file knows what they are inheriting.
+
+| Foreground / Background | Ratio | Required | Note |
+|---|---|---|---|
+| `hairline` `#e5e7eb` on `{colors.canvas}` | 1.24:1 | 3.0:1 | Fails. Decorative only from here on — section breaks and card edges that sit beside other cues. Controls use `{colors.hairline-strong}`. |
+| `hairline-soft` `#eaecf0` on `{colors.canvas}` | 1.18:1 | 3.0:1 | Fails. Table-row rule and nav underline; decorative. |
+| `hairline` on `{colors.surface}` | 1.17:1 | 3.0:1 | Fails. Same scope. |
+| `hairline-soft` on `{colors.surface}` | 1.11:1 | 3.0:1 | Fails. Same scope. |
+| `muted` `#a8aab2` on `{colors.canvas}` | 2.32:1 | 4.5:1 | Fails on light. This tone is built for the black footer, where it measures 8.54:1. On a light surface use `{colors.muted-strong}` (4.86:1). |
+| `muted` on `{colors.surface}` | 2.18:1 | 4.5:1 | Fails. Same substitution. |
+| `success-text` `#1ba673` on `{colors.canvas}` | 3.11:1 | 4.5:1 | Fails as body ink. It is a badge label on `{colors.success-bg}`, never body text on canvas. |
+| `badge-success` — `success-text` on `success-bg` | 2.95:1 | 4.5:1 | Fails at 13px. The brand's real pairing. `badge-success-accessible` is the prescribed alternative at 5.08:1. |
+| `success-bg` `#e8ffea` on `{colors.canvas}` | 1.05:1 | 4.5:1 | Not a real failure: `success-bg` is a fill, never an ink. Recorded here only because the harness measures every `success*` token as text on canvas — see the report's Shared issues. |
+| `badge-new` — `{colors.on-dark}` on `{colors.brand-coral}` | 3.18:1 | 4.5:1 | Fails at 13px. Coral is the brand's signature signal colour and is not changed; see Needs approval in the audit report. |
+| `promo-cta-card` — `{colors.on-dark}` on `{colors.brand-coral}` | 3.18:1 | 4.5:1 | Passes 3:1 for its own headline, which is 24px+; the embedded `button-tertiary` carries the accessible label. Any body copy added to this card at under 24px fails. |
+| `product-card-coral` tagline — `{colors.on-dark}` at 80% opacity on `{colors.brand-coral}` | below 3.18:1 | 4.5:1 | Fails. The 14px tagline on the vibrant cards is the weakest text in the system; set it at full opacity and 18px+ bold, or move it off the coral card. |
+| `product-card-magenta` wordmark — `{colors.on-dark}` on `{colors.brand-magenta}` | 3.06:1 | 3.0:1 large text | Passes only because the wordmark is 40px+. It has no margin: any 14–16px white text on magenta fails. |
+
+### Focus ring visibility, surface by surface
+
+Two rings, because the brand ships both a white canvas and black/saturated
+signature surfaces. Both are drawn **outside** the control at a 2px offset with a
+2px stroke, so each is measured against the surface behind the control rather than
+against the control's own fill — which is what WCAG 2.2 Focus Appearance asks for.
+
+| Ring | Drawn on | Ratio | Required |
+|---|---|---|---|
+| `{colors.focus}` | `{colors.canvas}` | 5.80:1 | 3.0:1 |
+| `{colors.focus}` | `{colors.surface}` | 5.46:1 | 3.0:1 |
+| `{colors.focus}` | `{colors.surface-soft}` | 5.23:1 | 3.0:1 |
+| `{colors.focus-on-dark}` | `{colors.footer-bg}` / `{colors.primary}` | 19.80:1 | 3.0:1 |
+| `{colors.focus-on-dark}` | `{colors.brand-blue}` | 5.80:1 | 3.0:1 |
+| `{colors.focus-on-dark}` | `{colors.brand-purple}` | 3.96:1 | 3.0:1 |
+| `{colors.focus-on-dark}` | `{colors.brand-coral}` | 3.18:1 | 3.0:1 |
+| `{colors.focus-on-dark}` | `{colors.brand-magenta}` | 3.06:1 | 3.0:1 |
+| `{colors.focus-on-dark}` + 1px `{colors.ink-strong}` outer edge | `product-card-photo` (photography, no measurable ground) | bands separate at 21.0:1 | 3.0:1 |
+
+The ring radius follows its control: `{rounded.full}` on pills and badges,
+`{rounded.md}` on inputs, `{rounded.hero}` on product cards.
+
+### Minimum tap target
+
+- Pill buttons: 38–40px effective height on desktop, raised to 44px on mobile by
+  padding override. The 38px desktop value is below the 44×44px that WCAG 2.5.5
+  AAA asks for; it clears the 24×24px of 2.5.8 AA.
+- Circular icon buttons: 36×36px desktop, 44×44px mobile.
+- Form inputs and the search pill: 40px and 36px desktop, both 44px mobile.
+- Sidebar nav items: ~32px desktop, 44px in the mobile drawer.
+- Badges are not interactive, so no target applies.
+
+### Reduced motion
+
+Every travel and scale listed in Motion & Animation is removed under
+`@media (prefers-reduced-motion: reduce)`; opacity fades remain, capped at
+`{motion.duration-reduced}` (100ms); the loading spinner and skeleton sweep
+freeze. MiniMax ships no brand ambience, so there is none to freeze.
+
+### Not measurable from this document
+
+Overlap, horizontal overflow, clipping, rendered tap-target size, frame rate and
+layout shift need a running page. Nothing above claims them.
+
 ## Do's and Don'ts
 
 ### Do
@@ -696,6 +958,10 @@ The system runs predominantly flat. Elevation is reserved for sticky panels, dro
 - Don't reduce hero leading below 1.10 — the brand needs that breathing room on the 80px display.
 - Don't apply heavy shadows on white cards; flat-with-borders is the documentation default.
 - Don't put gradient backgrounds on standard buttons; gradients are reserved for product-card identity moments.
+- Don't set 14px white text on `{colors.brand-coral}` or `{colors.brand-magenta}`; white clears only 3.18:1 and 3.06:1 there, so it is for 24px+ type only.
+- Don't use `{colors.hairline}` as a control's only boundary; that job belongs to `{colors.hairline-strong}`.
+- Don't animate `width`, `height`, `top`, `left` or `margin` — never on the product matrix or the docs grid. `transform` and `opacity` only.
+- Don't let any entrance run longer than `{motion.duration-slow}` (220ms); MiniMax is a Crisp brand and a slow reveal reads as a different company.
 
 ## Responsive Behavior
 
@@ -737,10 +1003,16 @@ The system runs predominantly flat. Elevation is reserved for sticky panels, dro
 5. Default to `{typography.body-md}` for body and `{typography.subtitle}` for emphasis. Headlines step down `hero-display → display-lg → heading-lg → heading-md → heading-sm`.
 6. Keep brand colors (coral, magenta, blue, purple) confined to product-card identity. If a brand color appears on a standard button or generic surface, ask whether it earned that surface.
 7. Pill-shaped buttons (`{rounded.full}`) always; squared buttons signal "third-party widget" in this language.
+8. Motion stays Crisp: reach for `{motion.duration-instant}` on hover and press, `{motion.duration-base}` for anything that enters, and `{motion.duration-fast}` for the matching exit. If an interaction needs more than `{motion.duration-slow}`, it is the wrong interaction for this brand.
+9. Focus rings are not optional. Light surfaces take `{colors.focus}`, black and vibrant surfaces take `{colors.focus-on-dark}`, both at 2px with a 2px offset.
 
 ## Known Gaps
 
 - Specific dark-mode token values (canvas, surface, ink, hairline) are not surfaced on these pages; the brand has not yet shipped a published dark-mode palette.
-- Animation/transition timings are not extracted; recommend 150–200ms ease for hover/focus state transitions.
+- Animation/transition timings are **not extracted**. The whole `motion:` group and the Motion & Animation section are prescribed from the Crisp profile to match the brand's tool-like identity; no duration or easing in this file was measured from minimax.io.
+- Hover, focus-visible, loading and selected states were not observable in the static capture of the four source pages. Every entry marked "prescribed" in the State coverage table is an inference from the extracted default/pressed pair, not an extracted fact.
+- The focus ring is prescribed. MiniMax publishes no focus treatment on these pages; `{colors.focus}` reuses the brand's own `{colors.brand-blue}` and `{colors.focus-on-dark}` is plain white, chosen to clear 3:1 on every surface this file defines rather than extracted from the site.
+- `{colors.hairline-strong}`, `{colors.muted-strong}` and `{colors.success-text-strong}` are prescribed accessible parallels, not brand values. The extracted tones they sit beside are frozen and disclosed in Accessibility.
+- `{rounded.xxl}` (20px) is defined in the extracted scale but no component in this file binds it; its "larger feature panels" use was observed without a specific component.
 - Form validation success state is not explicitly captured beyond defaults — implement following standard green-border + success badge patterns.
 - Code syntax highlighting palette inside docs is not formalized; documentation samples appear with system-default monospace and minimal coloring.

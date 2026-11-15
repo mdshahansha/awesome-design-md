@@ -29,6 +29,7 @@ colors:
   surface-dark: "#262622"
   focus-outer: "#435ee5"
   focus-inner: "#ffffff"
+  focus-on-dark: "#617bff"
   accent-pressed-blue: "#617bff"
   accent-purple: "#7e238b"
   accent-purple-deep: "#6845ab"
@@ -279,6 +280,18 @@ components:
   link-inline:
     textColor: "{colors.ink-soft}"
     typography: "{typography.link-md}"
+
+motion:
+  duration-instant: 70ms
+  duration-fast: 130ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 450ms
+  ease-standard: cubic-bezier(0.3, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 60ms
+  duration-reduced: 130ms
 ---
 
 ## Overview
@@ -313,8 +326,9 @@ The system's signature gesture is **shape geometry**: 16px radius (`{rounded.md}
 - **Secondary BG** (`{colors.secondary-bg}` — `#e5e5e0`): the gray-cream used for `{component.button-secondary}` ("I already have an account") fill — a notch deeper than `{colors.surface-card}`.
 - **Secondary Pressed** (`{colors.secondary-pressed}` — `#c8c8c1`): pressed state for the secondary button.
 - **Surface Dark** (`{colors.surface-dark}` — `#262622`): warm near-black used in the rare dark CTA strip on `create.pinterest.com`.
-- **Hairline** (`{colors.hairline}` — `#dadad3`): 1px row dividers, footer column rules.
-- **Hairline Soft** (`{colors.hairline-soft}` — `#e5e5e0`): lighter inline divider; doubles as the secondary-button background.
+- **Hairline** (`{colors.hairline}` — `#dadad3`): 1px row dividers, footer column rules. **Decorative only** — it is far below 3:1 on every surface in this file (see Accessibility) and must never be the sole boundary of a control.
+- **Hairline Soft** (`{colors.hairline-soft}` — `#e5e5e0`): lighter inline divider; doubles as the secondary-button background. **Decorative only**, same caveat.
+- **Control boundary:** where a boundary has to be perceivable — the `{component.text-input}` outline, the focused `{component.search-bar}` border — the system already uses `{colors.ash}` (`#91918c`), which reaches 3.17:1 on `{colors.canvas}`. No new boundary token is needed, and none was added.
 
 ### Text
 - **Ink** (`{colors.ink}` — `#000000`): primary headlines, button text, primary nav links.
@@ -333,6 +347,7 @@ The system's signature gesture is **shape geometry**: 16px radius (`{rounded.md}
 - **Success Pale** (`{colors.success-pale}` — `#c7f0da`): pale success-pill background.
 - **Focus Outer** (`{colors.focus-outer}` — `#435ee5`): the system's focus-ring blue — appears as a 2px outer outline around focused inputs and buttons.
 - **Focus Inner** (`{colors.focus-inner}` — `#ffffff`): white inner gap inside the focus-ring stack.
+- **Focus On Dark** (`{colors.focus-on-dark}` — `#617bff`): *prescribed role, extracted hex.* `{colors.focus-outer}` reaches only 2.87:1 on `{colors.surface-dark}`, so it cannot be the ring on the dark CTA strip. This is the lighter blue the brand already uses for pressed blue chips (the same hex as `{colors.accent-pressed-blue}`), reassigned as the ring for dark grounds at 4.18:1. The pairing is the light-default / dark-counterpart ring pair; which ring is drawn where is stated in Accessibility.
 
 ### Editorial Accents (used sparingly inside content imagery and category badges)
 - **Accent Pressed Blue** (`{colors.accent-pressed-blue}` — `#617bff`): pressed state for blue informational badges and editorial pin chips.
@@ -525,6 +540,111 @@ The radius vocabulary is essentially three values: 16px for most things, 32px fo
 **`link-inline`** — body-prose anchor link
 - `{colors.ink-soft}` text with no underline by default. Pinterest's only "color" beyond brand red on chrome — a near-black warm tint used inline to differentiate links from body without color contrast.
 
+### Interaction States
+
+Extracted (E) = a state the captured pages document with its own component entry or value. Prescribed (P) = not captured; specified here to match the system's existing vocabulary and flagged as prescribed. No hover or validation value in this table was extracted — the captured surfaces contain none.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | E | P — scale 1.02, no fill change | E — ring per Accessibility | E `{colors.primary-pressed}` | E `{component.button-disabled}` | P — label swaps to 16px spinner, width held | n/a | n/a |
+| `button-secondary` | E | P — scale 1.02 | E — ring | E `{colors.secondary-pressed}` | E `{colors.ash}` text | P — spinner | n/a | n/a |
+| `button-tertiary` | E | P — underline only | E — ring | P — `{colors.mute}` text | P — `{colors.ash}` text | n/a | n/a | n/a |
+| `button-icon-circular` | E | P — scale 1.04 | E — ring | P — scale 0.96 | P | n/a | n/a | n/a |
+| `text-input` | E | P — no change | E `{component.text-input-focused}` | n/a | P — `{colors.surface-card}` fill, `{colors.ash}` text | n/a | n/a | P — 1px `{colors.error}` border + message in `{colors.error}` / `{typography.body-sm}` |
+| `search-bar` | E | P — fill lifts to `{colors.canvas}` | E `{component.search-bar-focused}` | n/a | n/a | P — inline spinner right of the glyph | n/a | n/a |
+| `filter-chip` | E | P — scale 1.02 | E — ring | P — scale 0.96 | n/a | n/a | E `{component.filter-chip-active}` (full inversion) | n/a |
+| `pin-card` / `pin-card-large` | E | P — scale 1.02 on the image only | E — ring, offset outside the 16px radius | P — scale 0.98 | n/a | P — `{colors.surface-card}` block at the pin's aspect ratio | P — 2px `{colors.ink}` outline when saved-to-board | n/a |
+| `modal-card` | E | n/a | E — focus moves to the first field | n/a | n/a | P — fields disabled, CTA spinner | n/a | P — per-field error row above the CTA |
+| `primary-nav`, `footer-section`, `hero-cta-strip` | E | n/a | n/a | n/a | n/a | n/a | n/a | n/a — **structural surfaces: default only, genuinely one state each** |
+| `pin-overlay-pill`, `category-tile`, `feature-card` | E | P — parent card's hover carries them | E — via parent | P — via parent | n/a | n/a | n/a | n/a |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** Nobody timed Pinterest's real transitions; no duration or easing below is an extracted fact. The values are the shared **Playful** profile block in `motion:`, used verbatim so this file stays comparable with its siblings. The profile fits: a saturated red CTA on interactive elements, friendly Pin Sans at 400–700, pill geometry and an image-led grid that rewards a small scale pop.
+
+Only `transform` and `opacity` animate. This system does not animate `width`, `height`, `top`, `left` or `margin` — the masonry grid would reflow and the pin's aspect ratio is load-bearing.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, chip, pin tile) | `{motion.duration-fast}` | `{motion.ease-standard}` | `transform: scale(1.02)` + `opacity` | No scale. Fill/opacity change only, `{motion.duration-reduced}` |
+| Press | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.96)` | No scale. Pressed fill (`{colors.primary-pressed}` / `{colors.secondary-pressed}`) applied instantly |
+| Focus ring appears | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` of the ring stack | Ring appears instantly, no fade |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px)` | Opacity only, `{motion.duration-reduced}`, no travel |
+| Modal / drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` + `transform: scale(0.96 → 1)`; scrim fades `opacity` to 0.5 | Opacity only, `{motion.duration-reduced}`, no scale |
+| Modal / drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform: scale(1 → 0.98)` | Opacity only, `{motion.duration-reduced}` |
+| Dropdown / nav drawer enter | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity` + `transform: scale(0.98 → 1)` from the trigger edge | Opacity only, `{motion.duration-reduced}` |
+| Dropdown exit | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity` | Unchanged — already opacity-only |
+| Toast enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(12px)` | Opacity only, `{motion.duration-reduced}`, no travel |
+| Toast exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform: translateY(8px)` | Opacity only, `{motion.duration-reduced}` |
+| List / pin-grid enter | `{motion.duration-slow}`, `{motion.stagger-step}` per tile | `{motion.ease-enter}` | `opacity` + `transform: translateY(12px)` | Opacity only, `{motion.duration-reduced}`, stagger dropped to 0 so a full row lands at once |
+| List / pin-grid exit (filter change) | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform: scale(0.98)` | Opacity only, `{motion.duration-reduced}` |
+| Loading (pin skeleton, CTA spinner) | `{motion.duration-emphasis}` loop | `{motion.ease-standard}` | `opacity` 0.6 ↔ 1 on a `{colors.surface-card}` block; spinner `transform: rotate` | Loop frozen. Static `{colors.surface-card}` block at 0.6 opacity; spinner replaced by static label |
+
+Exit is shorter than its matching entrance in every pair above. Nothing animates on first paint: pin tiles fade in as they are lazy-loaded into the viewport, never as a blocking entrance on the first row. The loading loop is the only infinite animation in the system — there is no brand ambience.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+- **Removed:** every `transform` — all scale pops (hover, press, modal, pin tile), all `translateY` travel (page transition, toast, list enter), the spinner's rotation, and the pin-grid stagger.
+- **Kept:** `opacity` fades only, each capped at `{motion.duration-reduced}` (130ms), and every non-motion state signal — pressed fill, the focus ring, the inverted `{component.filter-chip-active}`.
+- **Frozen:** the loading skeleton holds a static `{colors.surface-card}` block instead of pulsing; the spinner becomes a static label.
+- State must never be communicated by motion alone; every state above also changes colour, fill or ring.
+
+## Accessibility
+
+### Measured contrast (WCAG 2.1 relative luminance)
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` `#000000` on `{colors.canvas}` | 21.0:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.surface-card}` | 19.4:1 | 4.5:1 | pass |
+| `{colors.body}` on `{colors.canvas}` | 12.7:1 | 4.5:1 | pass |
+| `{colors.ink-soft}` on `{colors.canvas}` | 17.12:1 | 4.5:1 | pass |
+| `{colors.mute}` on `{colors.canvas}` | 6.14:1 | 4.5:1 | pass |
+| `{colors.mute}` on `{colors.surface-card}` | 5.68:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.primary}` | 4.78:1 | 4.5:1 | pass — with no headroom; never tint either value |
+| `{colors.on-dark}` on `{colors.surface-dark}` | 15.19:1 | 4.5:1 | pass |
+| `{colors.error}` on `{colors.canvas}` | 8.39:1 | 4.5:1 | pass |
+| `{colors.ash}` on `{colors.canvas}` | 3.17:1 | 3.0:1 (boundary) | pass as a boundary; **fails as text** at 4.5:1 — it is placeholder and disabled ink only |
+| `{colors.ash}` on `{colors.surface-card}` | 2.92:1 | 3.0:1 | fail — do not use `{colors.ash}` as a boundary on the cream card surface |
+
+### Real brand failures, stated plainly
+
+These are extracted, frozen values. Pinterest genuinely fails AA at each of these points; the hexes are not corrected here.
+
+| Pair | Ratio | Required | Why it is tolerated |
+|---|---|---|---|
+| `{colors.hairline}` `#dadad3` on `{colors.canvas}` | 1.4:1 | 3.0:1 | fail — decorative divider; structure is carried by spacing, not by the rule |
+| `{colors.hairline}` on `{colors.surface-soft}` | 1.36:1 | 3.0:1 | fail — same, and weaker still on the cream wash |
+| `{colors.hairline-soft}` `#e5e5e0` on `{colors.canvas}` | 1.26:1 | 3.0:1 | fail — the lightest inline rule in the system |
+| `{colors.hairline-soft}` on `{colors.surface-soft}` | 1.22:1 | 3.0:1 | fail — effectively invisible; it doubles as `{colors.secondary-bg}`, where it is a fill, not a line |
+| `{colors.success-pale}` `#c7f0da` on `{colors.canvas}` | 1.24:1 | 4.5:1 | fail as text, and it is never text — it is the success pill's **fill**. Ink on that pill is `{colors.success-deep}` at 9.97:1 |
+
+No boundary that a user must perceive depends on any of the five rows above. `{colors.ash}` (3.17:1 on canvas) carries every control boundary.
+
+### Focus ring
+
+Two rings, because one cannot serve both polarities: `{colors.focus-outer}` is 5.29:1 on white and only 2.87:1 on `{colors.surface-dark}`.
+
+| Surface | Ring drawn | Ratio | Required |
+|---|---|---|---|
+| `{colors.canvas}` `#ffffff` and `{colors.surface-elevated}` | `{colors.focus-outer}` | 5.29:1 | 3.0:1 |
+| `{colors.surface-soft}` | `{colors.focus-outer}` | 5.1:1 | 3.0:1 |
+| `{colors.surface-card}` | `{colors.focus-outer}` | 4.88:1 | 3.0:1 |
+| `{colors.surface-dark}` `#262622` (`{component.hero-cta-strip}`) | `{colors.focus-on-dark}` | 4.18:1 | 3.0:1 |
+| `{colors.ink}` `#000000` (`{component.filter-chip-active}` fill) | `{colors.focus-on-dark}` | 5.79:1 | 3.0:1 |
+
+**Geometry and offset.** The ring is drawn **outside** the control, at a 2px offset, so it is judged against the surface behind the control and not against the control's own fill — which is what WCAG 2.2 Focus Appearance asks for. The stack is 2px `{colors.focus-inner}` (`#ffffff`) gap, then a 2px coloured ring. On `{colors.canvas}` the two bands separate at 5.29:1, and on dark grounds at 3.63:1 against `{colors.focus-on-dark}`.
+
+**What the composite ring does and does not buy.** The white inner gap is what makes the ring legible against a saturated fill — `{colors.focus-outer}` on `{colors.primary}` is 1.11:1, so a ring touching the red CTA would vanish into it. That is why the ring sits outside the control. But band separation is not standing in for surface contrast anywhere in this file: both rings clear 3:1 against every surface they are drawn on, measured above. The dark CTA strip was a genuine gap, not a measurement artefact, and `{colors.focus-on-dark}` closes it rather than the inner band excusing it.
+
+### Tap targets
+
+Not measurable from a document — the figures below are the sizes the file documents, not a rendered measurement. `{component.search-bar}` 48px, `{component.text-input}` 44px, `{component.button-primary}` and `{component.button-secondary}` ~40px high, `{component.button-icon-circular}` 40×40 with padding extending the hit target to 48×48, `{component.filter-chip}` ~36–40px extended by inline padding. The two ~40px controls are below the 44×44 minimum on their own height and depend on parent padding to reach it; that cannot be confirmed without a rendered page and is listed in Known Gaps.
+
+### Reduced motion and non-colour signals
+
+The `@media (prefers-reduced-motion: reduce)` contract above is normative: travel and scale removed, opacity fades capped at `{motion.duration-reduced}` (130ms), the loading loop frozen. Selection is never signalled by colour alone — `{component.filter-chip-active}` inverts fill *and* ink, and the prescribed saved-pin state adds a 2px `{colors.ink}` outline.
+
 ## Do's and Don'ts
 
 ### Do
@@ -595,3 +715,7 @@ All interactive elements meet WCAG AA (≥ 44×44px). `{component.button-primary
 - **Authenticated chrome** (logged-in home feed, board pages, profile pages) not in the captured pages — the captured surfaces are the logged-out marketing and search experience.
 - **Pinterest mobile app screens** not in the system documented here — this is the web-only chrome.
 - **Form validation states** (success / error inline messages) not documented; only the focused-state field is captured.
+- **All motion is prescribed, not measured.** Every duration and easing in `motion:` and in Motion & Animation is the shared Playful profile, chosen to match the identity. No timing on the live site was observed.
+- **Hover, loading, and error states are prescribed**, marked P in the Components states table. The captured pages document no hover treatment and no validation state.
+- **`{colors.focus-on-dark}` is a prescribed role on an extracted hex** (`#617bff`, the brand's pressed-blue). The live site's ring on the dark CTA strip was not captured; what is measured is that `{colors.focus-outer}` fails there at 2.87:1.
+- **Tap targets are unverified.** Sizes quoted in Accessibility are the document's own values; the ~40px controls reach 44×44 only via parent padding, which needs a rendered page to confirm.

@@ -1,0 +1,112 @@
+{
+  "site": "spacex",
+  "has_frontmatter": true,
+  "color_count": 13,
+  "composited_tokens": [],
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Known Gaps"
+  ],
+  "optional_sections_missing": [],
+  "roles_from_bindings": [
+    "surface=canvas-light"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas-night",
+    "surface": "canvas-light",
+    "text": "ink",
+    "border": "hairline-on-light",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#000000",
+      "bg": "#000000",
+      "ratio": 1.0,
+      "required": 4.5,
+      "role": "body text",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-on-light on canvas-light",
+      "fg": "#e0e0e8",
+      "bg": "#ffffff",
+      "ratio": 1.31,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#000000",
+      "bg": "#000000",
+      "ratio": 1.0,
+      "required": 4.5,
+      "role": "body text",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-on-light on canvas-light",
+      "fg": "#e0e0e8",
+      "bg": "#ffffff",
+      "ratio": 1.31,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_documented": [],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "active",
+    "pressed",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 3,
+    "refs": 5,
+    "contrast": 3,
+    "sections": 2,
+    "motion": 1,
+    "states": 1
+  }
+}

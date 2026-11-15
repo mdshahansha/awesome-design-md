@@ -14,6 +14,7 @@ colors:
   mute: "#c5c0b1"
   canvas: "#fffefb"
   canvas-soft: "#f8f4f0"
+  focus: "#ff4f00"
 
 typography:
   display-xl:
@@ -120,6 +121,18 @@ spacing:
   2xl: 32px
   3xl: 48px
   4xl: 64px
+
+motion:
+  duration-instant: 70ms
+  duration-fast: 130ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 450ms
+  ease-standard: cubic-bezier(0.3, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 60ms
+  duration-reduced: 130ms
 
 components:
   nav-bar:
@@ -323,7 +336,10 @@ Cards are universally `{rounded.md}` 12 px. Buttons share the same 12 px radius 
 - **Ink Mid** (`{colors.ink-mid}` — `#36342e`): Mid-emphasis text.
 - **Body** (`{colors.body}` — `#605d52`): Default body text color.
 - **Body Mid** (`{colors.body-mid}` — `#939084`): Secondary body / metadata.
-- **Mute** (`{colors.mute}` — `#c5c0b1`): Lowest-priority text — fine print, low-emphasis captions.
+- **Mute** (`{colors.mute}` — `#c5c0b1`): Decorative only. At 1.8:1 on `{colors.canvas}` and 1.66:1 on `{colors.canvas-soft}` this tone fails AA for text and fails the 3:1 non-text threshold for any boundary that must be seen. It is the brand's extracted lightest neutral and is kept as extracted; use it for ornament, never for fine print, captions or a divider that carries meaning. Boundaries that must be seen use `{colors.ink}` (17.65:1 on canvas), which is what the brand already draws for pricing-card chrome and outline buttons.
+
+### Focus
+- **Focus Ring** (`{colors.focus}` — `#ff4f00`): The ring reuses the brand's existing orange `{colors.primary}`; it is the same hex, not a new brand colour. One ring serves both polarities because it clears 3:1 on every surface this file defines — see **Accessibility**.
 
 ### Semantic
 The brand doesn't surface a separate semantic palette on its marketing pages. Status / validation cues borrow from the ink + orange hierarchy.
@@ -378,22 +394,6 @@ Degular Display is proprietary. Open-source substitutes:
 - Marketing container ~1280 px wide; centred with gutters.
 - Hero: split at desktop (headline left, illustration right); stacked at mobile.
 - Pricing tier grid: 3 / 4-up at desktop.
-
-### Responsive Strategy
-
-#### Breakpoints
-
-| Name | Width | Key Changes |
-|---|---|---|
-| Mobile | < 768px | Hero stacks; grids 1-up; hamburger nav. |
-| Tablet | 768–1023px | 2-up grids. |
-| Desktop | ≥ 1024px | Full grids; hero split. |
-
-#### Touch Targets
-Buttons render ~48 px tall (12 vertical padding + 27 line). WCAG AAA met.
-
-#### Image Behavior
-The brand uses illustrative SVGs of zaps / workflows + product screenshots inside `{rounded.md}` framed cards. Photography is rare.
 
 ## Elevation & Depth
 
@@ -518,6 +518,131 @@ The brand uses illustrative SVGs of zaps / workflows + product screenshots insid
 **`ex-toast`** — Toast notification surface — feature-card shape + medium shadow.
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
+### Interaction States
+
+Which states each entry above supports. The state *set* is prescribed, not extracted: the source records only the default appearance of each component, plus the `{colors.primary}` active indicator on `ex-app-shell-row`. Exact hover and pressed hexes were not extracted — see **Known Gaps**. Where a state is listed, it is paint-only (`background-color`, `color`, `border-color`) unless the row says otherwise; a paint-only change is the whole state on a near-monochrome warm palette, and the ring is `{colors.focus}`.
+
+| Component | States |
+|---|---|
+| `button-primary` | default · hover (fill darkens) · focus-visible (`{colors.focus}` ring) · pressed (scale 0.98) · disabled · loading |
+| `button-secondary` | default · hover (fill lightens toward `{colors.ink-mid}`) · focus-visible · pressed (scale 0.98) · disabled · loading |
+| `button-tertiary` | default · hover (fill to `{colors.canvas-soft}`) · focus-visible · pressed (scale 0.98) · disabled |
+| `button-text` | default · hover (text to `{colors.primary}`) · focus-visible · pressed · disabled |
+| `text-input` | default · hover (border to `{colors.ink}` at full weight) · focus-visible (`{colors.focus}` ring, 2 px, 2 px offset) · disabled · error (border and message in `{colors.primary}`, the only signal colour the brand owns) |
+| `card-content` | default and hover only — a static content surface, no pressed, selected or error state. |
+| `card-feature-cream` | default and hover only — static content surface. |
+| `card-feature-dark` | default and hover only — static content surface. |
+| `pricing-card` | default · hover (border weight unchanged, fill to `{colors.canvas-soft}`) · focus-visible · selected (promotes to `pricing-card-featured` chrome) |
+| `pricing-card-featured` | default · hover · focus-visible · selected (its resting state in the tier grid) |
+| `nav-bar` | default only — a container, not an interactive target. |
+| `nav-link` | default · hover (text to `{colors.primary}`) · focus-visible · pressed · selected (current page) |
+| `footer` | default only — a container. |
+| `hero-band` / `hero-band-dark` | default only — bands, not interactive targets. |
+| `content-band-cream` / `content-band-light` | default only — bands. |
+| `eyebrow-uppercase` | default only — a label. |
+| `badge-pill` | default · selected (fill to `{colors.ink}`, text to `{colors.on-primary}`) · disabled. No hover: badges are not targets unless used as a filter chip. |
+| `ex-pricing-tier` / `ex-pricing-tier-featured` | default · hover · focus-visible · selected |
+| `ex-product-selector` | default · hover · focus-visible · selected |
+| `ex-cart-drawer` | default · loading (summary rows skeleton) · error (totals unavailable) |
+| `ex-app-shell-row` | default · hover · focus-visible · pressed · selected (`{colors.primary}` indicator) · disabled |
+| `ex-data-table-cell` | default · hover (row) · selected (row) · loading (skeleton rows) |
+| `ex-auth-form-card` | default · loading (submit in flight) · error (field-level and form-level) |
+| `ex-modal-card` | default · loading · error |
+| `ex-empty-state-card` | default · loading (before first fetch resolves) |
+| `ex-toast` | default · error (variant) · hover (pauses auto-dismiss) |
+
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No duration, easing curve or stagger below is an extracted fact: the source for this file records colour, type, spacing, radius and component chrome only. Treat every value as a starting point that fits the brand, not as documentation of what zapier.com actually does.
+
+The profile is **Playful** — responsive and friendly, with overshoot on entrance and a small scale pop on press. The warrant is in the brand itself: a single saturated `{colors.primary}` orange carried on every interactive CTA, an illustration-led surface of zap and workflow SVGs with photography rare, a 12 px middle radius and pill badges. The warm-cream temperature keeps it friendly rather than loud, so travel distances stay small — the pop is 2% of scale, not a bounce.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, card, nav link) | `{motion.duration-fast}` 130ms | `{motion.ease-standard}` | `background-color`, `color`, `border-color` — paint only, no travel | Unchanged. Paint-only state changes are not motion; they stay at `{motion.duration-reduced}` 130ms. |
+| Press / active | `{motion.duration-instant}` 70ms | `{motion.ease-standard}` | `transform: scale(0.98)` | Scale removed. The press reads through its paint change alone. |
+| Focus (ring appears) | `{motion.duration-instant}` 70ms | `{motion.ease-standard}` | `opacity` on the `{colors.focus}` ring | Unchanged — already opacity-only at 70ms. |
+| Page / route transition | enter `{motion.duration-base}` 200ms, exit `{motion.duration-fast}` 130ms | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity` + `transform: translateY(8px)` | Travel removed. Opacity cross-fade at `{motion.duration-reduced}` 130ms. Nothing animates on first paint; the initial route renders at rest. |
+| Modal / drawer | enter `{motion.duration-base}` 200ms, exit `{motion.duration-fast}` 130ms | enter `{motion.ease-enter}` (overshoot), exit `{motion.ease-exit}` | `opacity` + `transform: scale(0.98→1)`; drawer `transform: translateX(100%→0)` | Scale and translate removed. Opacity fade at `{motion.duration-reduced}` 130ms. Backdrop fades, never slides. |
+| Dropdown / menu | enter `{motion.duration-fast}` 130ms, exit `{motion.duration-instant}` 70ms | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity` + `transform: translateY(-4px→0)` | Travel removed. Opacity fade at `{motion.duration-reduced}` 130ms. |
+| Toast | enter `{motion.duration-base}` 200ms, exit `{motion.duration-fast}` 130ms | enter `{motion.ease-enter}`, exit `{motion.ease-exit}` | `opacity` + `transform: translateY(12px→0)` | Travel removed. Opacity fade at `{motion.duration-reduced}` 130ms. Auto-dismiss timing is unchanged. |
+| List enter (tier grid, table rows, app cards) | `{motion.duration-base}` 200ms per item, `{motion.stagger-step}` 60ms between items | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px)` | Stagger and travel removed. All items fade together at `{motion.duration-reduced}` 130ms. |
+| List exit | `{motion.duration-fast}` 130ms, no stagger | `{motion.ease-exit}` | `opacity` + `transform: scale(0.98)` | Scale removed. Opacity fade at `{motion.duration-reduced}` 130ms. |
+| Loading (skeleton, button spinner) | `{motion.duration-emphasis}` 450ms loop | `{motion.ease-standard}` | `opacity` pulse on skeleton blocks; `transform: rotate()` on the spinner | Loop frozen. Skeletons hold one static opacity and the spinner becomes a static indicator; the loading state is still announced in text. |
+
+Rules this file follows:
+- Animate `transform` and `opacity` only. Never animate `width`, `height`, `top`, `left` or `margin` — they trigger layout. Paint-only changes (`background-color`, `color`, `border-color`) are permitted and use the same duration token as any other state change.
+- Every exit is shorter than its matching entrance.
+- Nothing animates on first paint in a way that delays content.
+- No infinite animation except the loading indicators above. The brand ships no ambient motion.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate, scale and rotate; every stagger; the loader loop. */
+  /* Kept: opacity fades, capped at {motion.duration-reduced} 130ms, and all
+     paint-only state changes (background-color, color, border-color). */
+  *, *::before, *::after {
+    animation-duration: 130ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 130ms !important;
+    transform: none !important;
+  }
+}
+```
+
+Removed under reduce: the press scale pop, the modal and drawer scale and slide, every `translateY` on page transitions, dropdowns, toasts and list enter, the `{motion.stagger-step}` cascade, and the loader's loop. Kept: opacity fades at `{motion.duration-reduced}` 130ms, the focus ring (already opacity-only), and every paint-only hover and selected state.
+
+## Accessibility
+
+### Measured contrast
+
+WCAG 2.1 relative luminance, computed from this file's own hexes.
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` `#201515` on `{colors.canvas}` `#fffefb` | 17.65:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.canvas-soft}` `#f8f4f0` | 16.27:1 | 4.5:1 | Pass |
+| `{colors.ink-soft}` `#2f2a26` on `{colors.canvas}` | 14.07:1 | 4.5:1 | Pass |
+| `{colors.ink-mid}` `#36342e` on `{colors.canvas}` | 12.34:1 | 4.5:1 | Pass |
+| `{colors.body}` `#605d52` on `{colors.canvas}` | 6.54:1 | 4.5:1 | Pass |
+| `{colors.body}` on `{colors.canvas-soft}` | 6.03:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` `#fffefb` on `{colors.ink}` | 17.65:1 | 4.5:1 | Pass |
+| `{colors.canvas-soft}` on `{colors.ink}` (footer text) | 16.27:1 | 4.5:1 | Pass |
+| `{colors.ink}` border on `{colors.canvas}` | 17.65:1 | 3:1 | Pass |
+| `{colors.focus}` `#ff4f00` on `{colors.canvas}` | 3.27:1 | 3:1 | Pass |
+| `{colors.focus}` on `{colors.canvas-soft}` | 3.01:1 | 3:1 | Pass, with no margin |
+| `{colors.focus}` on `{colors.ink}` | 5.40:1 | 3:1 | Pass |
+| `{colors.on-primary}` on `{colors.primary}` `#ff4f00` | 3.27:1 | 4.5:1 | **Fail** |
+| `button-primary` label on its orange fill | 3.27:1 | 4.5:1 | **Fail** |
+| `{colors.body-mid}` `#939084` on `{colors.canvas}` | 3.17:1 | 4.5:1 | **Fail** |
+| `{colors.body-mid}` on `{colors.canvas-soft}` | 2.92:1 | 4.5:1 | **Fail** |
+| `{colors.mute}` `#c5c0b1` on `{colors.canvas}` | 1.8:1 | 4.5:1 | **Fail** |
+| `{colors.mute}` on `{colors.canvas-soft}` | 1.66:1 | 4.5:1 and 3:1 as a boundary | **Fail** |
+
+### Where the real brand fails AA, plainly
+
+- **Warm white on Zapier orange is 3.27:1.** The brand's signature CTA — `{colors.on-primary}` `#fffefb` on `{colors.primary}` `#ff4f00` — does not reach the 4.5:1 that normal-size text needs. It clears the 3:1 large-text threshold, and `{typography.button-md}` is 18 px at weight 600, which is *below* the 18.66 px / 700 that WCAG counts as large text. So as specified, `button-primary` fails AA. Both hexes are extracted brand identity and are not changed here. The defensible fixes are: set the label at `{typography.display-xs}` 20 px / 700 or larger, where 3:1 applies; or ink the label in `{colors.ink}` (5.40:1 on the orange) and keep warm white only for display-scale CTAs. Both are decisions for the brand owner, not this audit.
+- **`{colors.body-mid}` `#939084` is 3.17:1 on canvas and 2.92:1 on canvas-soft.** The file documents it as "secondary body / metadata", which is normal-size text: it fails AA at both. Use `{colors.body}` `#605d52` (6.54:1 / 6.03:1) for any metadata a reader must read, and keep `body-mid` for 24 px+ or 18.66 px/700+ text, where 3:1 applies — a threshold it still misses on `{colors.canvas-soft}`.
+- **`{colors.mute}` `#c5c0b1` is 1.8:1 on canvas and 1.66:1 on canvas-soft.** It fails AA as text by a wide margin and fails the 3:1 non-text threshold as a boundary. It is extracted and kept as extracted, scoped to decoration. Nothing in the palette between `mute` and `{colors.body}` passes, and no parallel accessible neutral is invented here, because the brand already owns a boundary tone that passes: `{colors.ink}` at 17.65:1, which the Elevation ladder already uses for card chrome and outline buttons.
+- The `ex-*` illustrative entries still bind `{colors.mute}` as `borderColor`, `item-divider` and `rowBorder`. Those bindings are left exactly as generated; re-pointing them at `{colors.ink}` is a brand-owner decision and is logged for approval rather than made here. Any divider that carries meaning should use `{colors.ink}`.
+
+### Focus ring
+
+- `{colors.focus}` is `#ff4f00` — the same hex as `{colors.primary}`, reused, not a new brand colour.
+- **One ring serves both polarities.** This file documents light cream surfaces (`{colors.canvas}`, `{colors.canvas-soft}`) and dark coffee surfaces (`{colors.ink}` behind `card-feature-dark`, `hero-band-dark`, `pricing-card-featured`, `footer`). The orange is mid-luminance, so it clears 3:1 against all three: 3.27:1, 3.01:1 and 5.40:1. A light/dark ring pair would add a token without adding coverage.
+- **Geometry and offset:** 2 px ring, 2 px offset, drawn *outside* the control, so it is judged against the surface behind the control rather than the control's own fill. This matters on `button-primary`, whose fill is the ring's own colour: against that orange fill the ring would be 1:1, and the 2 px offset of bare canvas is what separates them. On `{colors.canvas-soft}` the margin is 0.01 over threshold, so the offset is not optional — do not drop it to save space.
+- The ring is visible on every surface this file defines. It never relies on colour alone: it is a ring, a shape change, and `text-input` pairs it with its error message in text.
+
+### Minimum tap target
+
+Computed from this file's tokens, not measured on a rendered page: `button-primary` is `{spacing.md}` 12 px padding top and bottom plus `{typography.button-md}`'s 27 px line box — 51 px tall, clearing both the 44 px of WCAG 2.5.5 and the 24 px of 2.5.8. `button-text` is `{spacing.sm}` 8 px plus a 14.4 px line box — 30.4 px, which clears 2.5.8 but **not** the 44 px of 2.5.5; give it 44 px of hit area where it stands alone rather than inline in a sentence. Actual rendered sizes are untested here — see **Known Gaps**.
+
+### Reduced motion
+
+Honoured as specified in **Motion & Animation**: all travel, scale and stagger removed, opacity fades capped at `{motion.duration-reduced}` 130ms, loader loops frozen. No content depends on motion to be understood.
 
 ## Do's and Don'ts
 
@@ -535,3 +660,34 @@ The brand uses illustrative SVGs of zaps / workflows + product screenshots insid
 - Don't render CTAs as pills. The brand's button is 12 px rounded rectangle.
 - Don't introduce a second chromatic accent. Orange + cream + coffee is the entire palette.
 - Don't substitute Degular Display with a cool geometric sans (e.g., generic Helvetica) — the brand's display face has warm proportions that the substitute doesn't capture.
+- Don't set normal-size text in `{colors.body-mid}` or `{colors.mute}`. Both fail AA on both cream surfaces — see **Accessibility**.
+- Don't drop the focus ring's 2 px offset. On `{colors.canvas-soft}` the ring passes by 0.01, and on `button-primary` the offset is the only thing separating the ring from the fill it surrounds.
+
+## Responsive Behavior
+
+Moved verbatim from the Layout section, where this file originally carried it as a subsection.
+
+### Breakpoints
+
+| Name | Width | Key Changes |
+|---|---|---|
+| Mobile | < 768px | Hero stacks; grids 1-up; hamburger nav. |
+| Tablet | 768–1023px | 2-up grids. |
+| Desktop | ≥ 1024px | Full grids; hero split. |
+
+### Touch Targets
+Buttons render ~48 px tall (12 vertical padding + 27 line). WCAG AAA met.
+
+### Image Behavior
+The brand uses illustrative SVGs of zaps / workflows + product screenshots inside `{rounded.md}` framed cards. Photography is rare.
+
+## Known Gaps
+
+- **No motion value in this file is extracted.** The whole `motion:` group and the whole Motion & Animation section are the prescribed **Playful** profile from the audit spec. Nobody measured zapier.com's real durations, easing curves or stagger. If a real timing is ever extracted, it displaces the profile value and should be labelled extracted at that point.
+- **No shadow values.** The Elevation ladder is flat / hairline / cream-fill only, so no `shadow:` group is defined — correctly, since the file documents no real shadow value. Two `ex-*` descriptions nonetheless mention an "elevated shadow" (`ex-modal-card`) and a "medium shadow" (`ex-toast`) with no token behind either. Those phrases come from the auto-derived examples generator, not from the brand; the modal and toast surfaces as specified here carry no shadow.
+- **Hover and pressed hexes are not extracted.** The Interaction States table names which property each state changes and in which direction, but the exact hover fill for `button-primary` and `button-secondary` is unknown. No hex was invented for it.
+- **No semantic palette.** The brand surfaces no success / warning / info colours on its marketing pages, so the error state borrows `{colors.primary}`. That is a documented borrow, not an extracted semantic token, and it means error and primary-action share one colour — a real limitation of the palette.
+- **No dark theme.** The file has dark *surfaces* (`{colors.ink}` cards, bands and footer) but no dark canvas, so no second polarity of neutrals exists. The single focus ring is sized for that fact.
+- **Tap targets are computed, never rendered.** This repo has no dev server, DOM or screenshot, so overlap, overflow, clipping, real tap-target size, frame rate and layout shift are all untested. The Responsive Behavior section's "~48 px" is the file's original figure; the token arithmetic in **Accessibility** gives 51 px (12 + 12 + 27). Both are arithmetic, neither is measured.
+- **Degular Display is proprietary.** Weights beyond 500 are not documented, and the substitute ladder in Typography is a recommendation, not an extracted equivalence.
+- **`{colors.focus}` is prescribed, not extracted.** No focus ring was observed on the live site; the role is bound to the brand's existing orange so the ring is addressable and measurable. Its hex is a brand fact; its *use as a ring* is this audit's prescription.

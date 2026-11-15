@@ -11,6 +11,8 @@ colors:
   muted: "#7e7e7e"
   hairline: "#3c3c3c"
   hairline-strong: "#262626"
+  hairline-control: "#767676"
+  focus: "#2b7de9"
   canvas: "#000000"
   surface-card: "#1a1a1a"
   surface-elevated: "#262626"
@@ -122,6 +124,17 @@ spacing:
   xl: 40px
   xxl: 64px
   section: 96px
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-enter: cubic-bezier(0.05, 0.7, 0.1, 1)
+  ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15)
+  stagger-step: 80ms
 
 components:
   button-primary:
@@ -278,12 +291,18 @@ Type voice runs **BMW Type Next Latin** in two cuts: regular for display + nav l
 ### Hairlines & Borders
 - **Hairline** (`{colors.hairline}` — #3c3c3c): The 1px divider tone on dark surfaces. Used between body sections, between table rows, around card outlines.
 - **Hairline Strong** (`{colors.hairline-strong}` — #262626): Same hex as `{colors.surface-elevated}` — borders feel like one-step elevations rather than ink lines.
+- **Hairline Control** (`{colors.hairline-control}` — #767676) — **prescribed, not extracted**: The boundary tone for anything a user has to find and operate — `{component.text-input}` outlines, `{component.category-tab}` underline rails, checkbox and radio strokes. The real BMW M hairline is decorative only (see below).
+
+**Measured boundary contrast — the real hairline fails WCAG 1.4.11.** `{colors.hairline}` (#3c3c3c) is 1.9:1 on `{colors.canvas}` and 1.58:1 on `{colors.surface-card}`, both under the 3.0:1 non-text minimum. On the real site that is defensible: the hairline separates editorial bands and table rows, where losing the line costs nothing but rhythm. It is **not** defensible as the only edge of a control. So `{colors.hairline}` and `{colors.hairline-strong}` are scoped to decoration in this document, and the prescribed `{colors.hairline-control}` (#767676 — 4.62:1 on canvas, 3.83:1 on `{colors.surface-card}`, 3.12:1 on `{colors.carbon-gray}`) carries every boundary that must be seen.
+
+### Focus
+- **Focus** (`{colors.focus}` — #2b7de9) — **prescribed, not extracted**: BMW M publishes no focus ring and none was observable in the captured screenshots. This is `{colors.m-blue-dark}` / `{colors.bmw-blue}` (#1c69d4) lifted in luminance until it clears 3:1 on every surface this file defines. The heritage hex itself cannot serve: #1c69d4 measures 2.90:1 on `{colors.surface-elevated}` and 2.71:1 on `{colors.carbon-gray}`. Measured: 5.21:1 on `{colors.canvas}`, 4.82:1 on `{colors.surface-soft}`, 4.32:1 on `{colors.surface-card}`, 3.76:1 on `{colors.surface-elevated}`, 3.51:1 on `{colors.carbon-gray}`, and 4.03:1 on white — so one ring covers the dark marketing surface and the rare light configurator dialogs alike, and no `focus-on-dark` counterpart is needed. Drawn as a 2px ring at 2px offset, square (`{rounded.none}`) on every rectangular element and `{rounded.full}` on `{component.button-icon}` / `{component.carousel-arrow}`. The M tricolor is never used as a focus ring — it is a brand mark, not a state.
 
 ### Text
 - **Ink / On Dark** (`{colors.on-dark}` — #ffffff): All headline and primary text on dark canvas.
 - **Body** (`{colors.body}` — #bbbbbb): Default running-text color (slightly cooler than pure white). Used for body paragraphs and secondary metadata.
 - **Body Strong** (`{colors.body-strong}` — #e6e6e6): Emphasized body / lead paragraph.
-- **Muted** (`{colors.muted}` — #7e7e7e): Footer links, breadcrumbs, captions.
+- **Muted** (`{colors.muted}` — #7e7e7e): Footer links, breadcrumbs, captions. **This tone fails AA on card surfaces.** Measured 5.17:1 on `{colors.canvas}` (passes) but 4.29:1 on `{colors.surface-card}` and 3.73:1 on `{colors.surface-elevated}` — both under 4.5:1 for normal-size text. The hex is an extracted brand fact and is not altered here. Use it for 12–14px captions only on `{colors.canvas}` or `{colors.surface-soft}`; on `{colors.surface-card}` and above, step up to `{colors.body}` (#bbbbbb — 9.07:1 on `{colors.surface-card}`) or keep the text at 18px+/14px-bold, where the 3:1 large-text threshold applies and 4.29:1 clears it.
 
 ### Semantic
 - **Warning** (`{colors.warning}` — #f4b400): Used very sparingly on technical-warning callouts.
@@ -354,7 +373,13 @@ BMW M trusts photography to do the visual work. Whitespace around photography is
 | Card surface | `{colors.surface-card}` background over canvas — no shadow | Feature photo cards, magazine cards, chatbot launcher |
 | Photographic depth | Full-bleed photography with edge-to-edge crop | Hero bands, motorsport features — depth via subject matter, not chrome |
 
-The system uses no drop shadows and no layered chrome. Depth comes entirely from photography (subject + lens + lighting) and the contrast between black canvas and slightly-elevated `{colors.surface-card}`.
+The system uses no drop shadows and no layered chrome. Depth comes entirely from photography (subject + lens + lighting) and the contrast between black canvas and slightly-elevated `{colors.surface-card}`. There is no `shadow:` token group because the file documents no shadow value anywhere.
+
+**Measured layer separation.** The tint ladder is deliberately almost invisible: `{colors.canvas}` → `{colors.surface-soft}` is 1.08:1, `{colors.canvas}` → `{colors.surface-card}` is 1.21:1, `{colors.surface-card}` → `{colors.surface-elevated}` is 1.15:1, and `{colors.canvas}` → `{colors.surface-elevated}` is 1.39:1. None of those reach the 3:1 a boundary needs, so **tint alone never defines an interactive edge in this system** — it reads as atmosphere, not structure. That is on-brand for a black motorsport canvas, but it means elevation must be expressed one way per element type and not mixed at whim:
+
+- Editorial and photographic bands: flat, no border, no tint. Separation comes from `{spacing.section}` (96px) and from the photography itself.
+- Content cards (`{component.feature-photo-card}`, `{component.chatbot-launcher}`): tint only (`{colors.surface-card}`), no border. Decorative depth; nothing inside them depends on the edge being perceptible.
+- Controls and anything with a hit target (`{component.text-input}`, `{component.cookie-consent-card}`, checkboxes): 1px `{colors.hairline-control}` border, no tint change on the boundary. The border is the edge, because the tint cannot be.
 
 ### Decorative Depth
 - **M Stripe Divider** (`{component.m-stripe-divider}`): A 4px-tall horizontal divider carrying the M tricolor (`{colors.m-blue-light}` → `{colors.m-blue-dark}` → `{colors.m-red}`). Used on motorsport chrome, model-detail headers, and brand-identity moments. The stripe is the system's only true "decorative" element — used sparingly to mark significance.
@@ -418,7 +443,7 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 
 ### Inputs & Forms
 
-**`text-input`** — Standard text input on dark surfaces. Background `{colors.surface-card}`, text `{colors.on-dark}`, type `{typography.body-md}`, rounded `{rounded.none}` (0px), padding 12px × 16px, height 48px. 1px hairline border. Focus state thickens the border to white.
+**`text-input`** — Standard text input on dark surfaces. Background `{colors.surface-card}`, text `{colors.on-dark}`, type `{typography.body-md}`, rounded `{rounded.none}` (0px), padding 12px × 16px, height 48px. 1px `{colors.hairline-control}` border — the input's only edge, so it uses the accessible boundary tone rather than decorative `{colors.hairline}`. On `focus-visible` the border goes white and a 2px `{colors.focus}` ring is drawn at 2px offset; on `error` the border and message take `{colors.m-red}`.
 
 **`cookie-consent-card`** — A right-side cookie-banner card visible on the homepage. Background `{colors.canvas}` with 1px hairline, rounded `{rounded.none}`, padding `{spacing.lg}` (24px). Body text in `{typography.body-sm}` (14px / 300) — Light weight even for legal text. Two buttons stacked at bottom: primary outline + text-link.
 
@@ -431,6 +456,157 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 ### Footer
 
 **`footer`** — Black footer that closes every page. Background `{colors.canvas}`, text `{colors.body}`. 4-column link list at desktop covering BMW M Models / BMW M Lifestyle / Owners / Company. Vertical padding 64px. Bottom row carries the BMW corporate disclaimer in `{typography.caption}` and language selector. The footer never inverts — it stays black even when the body might transition.
+
+### Component States
+
+Hover and active were the only states the screenshot pass could observe. The remaining
+states below are **prescribed** — derived from the tokens this file already defines, not
+measured from the live site. Where a component genuinely has two states, the row says so.
+
+| Component | States | Treatment |
+|---|---|---|
+| `{component.button-primary}` | default · hover · focus-visible · pressed · disabled · loading | hover fills white with `{colors.on-primary}` label; pressed drops to 0.85 opacity, no scale (rectangles do not squash); focus-visible draws the 2px `{colors.focus}` ring at 2px offset; disabled is 40% opacity, label stays `{colors.muted}`, no border change; loading swaps the label for a 16px uppercase "…" tick marquee at `{motion.duration-slow}` and keeps the button width fixed |
+| `{component.button-primary-outline}` | default · hover · focus-visible · pressed · disabled · loading | same ladder as `{component.button-primary}`; hover fills the outline white instead of inverting |
+| `{component.button-on-light}` | default · hover · focus-visible · pressed · disabled | hover lifts to `{colors.surface-card}`; the ring is the same `{colors.focus}` (4.03:1 on white) |
+| `{component.button-icon}` / `{component.carousel-arrow}` | default · hover · focus-visible · pressed · disabled | hover raises the plate from `{colors.surface-card}` to `{colors.surface-elevated}`; focus-visible ring follows `{rounded.full}`; disabled (carousel at either end) is 30% opacity and non-focusable |
+| `{component.text-link}` | default · hover · focus-visible · pressed | hover slides the chevron 4px right and reveals a 1px white underline; **no disabled state** — a link that cannot be followed is removed, not greyed |
+| `{component.top-nav}` | default · hover · focus-visible · selected | selected (current section) keeps the white label plus a 2px white underline; hover reveals the underline at 50% opacity |
+| `{component.category-tab}` / `{component.category-tab-active}` | default · hover · focus-visible · selected | selected is the `-active` entry: label `{colors.on-dark}` plus a 2px white underline; hover previews the `{component.m-stripe-divider}` tricolor rail under the label; the rail is 2px and never the focus indicator |
+| `{component.text-input}` | default · hover · focus-visible · disabled · error | hover brightens the border one step; focus-visible as described above; disabled is 40% opacity with `{colors.hairline}`; error takes a `{colors.m-red}` border and a 12px `{typography.caption}` message below |
+| `{component.feature-photo-card}` / `{component.model-card}` / `{component.magazine-article-card}` / `{component.motorsport-photo-card}` | default · hover · focus-visible · pressed · loading | the whole card is one link: hover scales the photo inside its fixed crop to 1.04 and the card itself does not move; focus-visible rings the card, not the photo; pressed settles the photo back to 1.0; loading is a flat `{colors.surface-card}` block with no shimmer |
+| `{component.spec-cell}` | default · loading | **two states only** — spec cells are not interactive. Loading shows the label with the value suppressed |
+| `{component.chatbot-launcher}` | default · hover · focus-visible · pressed · loading | loading is the chatbot's own thinking indicator (see Motion & Animation) |
+| `{component.cookie-consent-card}` | default · focus-visible | **two states only** — a container; its buttons carry the rest. Focus is trapped inside it while it is open |
+| `{component.hero-photo-band}` / `{component.cta-band-photo}` / `{component.m-stripe-divider}` / `{component.footer}` | default | **single state** — presentational bands and dividers. The footer's links are `{component.text-link}` and carry that ladder |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or curve in this section was extracted from BMW M; nothing was instrumented and no frame was captured. Treat every value as a defensible starting point, not an observed fact.
+
+Profile: **Cinematic** — slow, deliberate, premium. The assignment follows from the file's own content: a true-black canvas, an automotive-luxury identity, full-bleed photography as the primary content, and an explicit instruction that chrome backs off. Base duration sits at `{motion.duration-base}` (400ms) and rises to `{motion.duration-slow}` (600ms) for anything full-bleed; stagger is `{motion.stagger-step}` (80ms) so type arrives after the image has begun to settle.
+
+What Cinematic means in a system with zero decoration: the brand has no springs, no bounce and no colour transitions to animate, so the whole motion budget goes into **photography scale** and **late type**. Everything else is a long decelerate on opacity.
+
+### Motion Inventory
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, links, tabs) | `{motion.duration-fast}` (240ms) | `{motion.ease-standard}` | `opacity`, `transform: translateX` (4px chevron only) | Opacity only, clamped to `{motion.duration-instant}` (120ms); chevron travel removed |
+| Hover (photo cards) | `{motion.duration-slow}` (600ms) | `{motion.ease-standard}` | `transform: scale` 1 → 1.04 inside a fixed crop | Scale removed; the card border brightens instead, no animation |
+| Press | `{motion.duration-instant}` (120ms) | `{motion.ease-exit}` | `opacity` 1 → 0.85 | Unchanged — already opacity-only and ≤150ms |
+| Focus ring | `{motion.duration-instant}` (120ms) | `{motion.ease-standard}` | `opacity` | Unchanged. The ring never animates its size and never fades out slowly |
+| Page / route transition | `{motion.duration-slow}` (600ms) out-in | `{motion.ease-enter}` in, `{motion.ease-exit}` out (exit 240ms) | `opacity`, `transform: scale` 1.02 → 1 on the incoming hero image | Cross-fade at `{motion.duration-instant}` (120ms); no scale, no hold |
+| Modal / drawer (mobile nav sheet) | `{motion.duration-base}` (400ms) in, `{motion.duration-fast}` (240ms) out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY` (sheet) or `translateX` (drawer) | Opacity only at `{motion.duration-instant}` (120ms); the sheet appears in place. The M-stripe rail at the top of the sheet appears with it, un-animated |
+| Dropdown (language, search, nav flyout) | `{motion.duration-fast}` (240ms) in, `{motion.duration-instant}` (120ms) out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY` −8px → 0 | Opacity only at 120ms; no travel |
+| Toast | `{motion.duration-base}` (400ms) in, `{motion.duration-fast}` (240ms) out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY` 12px → 0 | Opacity only at 120ms; no travel. Auto-dismiss timing is unchanged |
+| List enter (3-up card grids, spec tables) | `{motion.duration-base}` (400ms) per item, `{motion.stagger-step}` (80ms) apart, 5 items maximum then the rest appear together | `{motion.ease-enter}` | `opacity`, `transform: translateY` 16px → 0 | Stagger and travel removed; the whole list fades in once at 120ms |
+| List exit (filtering a magazine grid) | `{motion.duration-fast}` (240ms), no stagger | `{motion.ease-exit}` | `opacity`, `transform: scale` 1 → 0.98 | Opacity only at 120ms; no scale |
+| Loading (page, card, chatbot) | `{motion.duration-emphasis}` (900ms) per cycle, infinite while pending | `{motion.ease-standard}` | `opacity` 1 → 0.4 → 1 on a flat `{colors.surface-card}` block | Loader keeps running — a loader that stops lies about state — but at a fixed 0.7 opacity with no pulse; the text status message carries the information instead |
+
+### Rules
+
+- Animate `transform` and `opacity` only. Never animate `width`, `height`, `top`, `left` or `margin` — photo cards scale inside a fixed crop precisely so the grid never reflows.
+- Every exit is shorter than its matching entrance: 240ms out against 400–600ms in.
+- Nothing animates on first paint in a way that delays content. The hero image and its headline are painted, then the 1.02 → 1 settle runs on top of already-visible pixels.
+- The only infinite animation is the loader above. There is **no brand ambience** in this system — no drifting photography, no looping M-stripe wipe. The brand's stillness is the point.
+- The M tricolor never animates as a gradient sweep. It is a mark; marks do not move.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all transform travel and all scale — photo-card zoom, hero settle,
+     sheet/drawer/dropdown/toast slide, list stagger. No element changes position
+     or size in response to an interaction. */
+  /* Kept: opacity fades, clamped to {motion.duration-instant} (120ms), under the
+     150ms ceiling. Focus rings, press feedback and error messaging appear
+     instantly and are never animated away. */
+  /* Frozen: the loader holds at a fixed 0.4 opacity instead of pulsing; its
+     status text continues to report progress. */
+}
+```
+
+## Accessibility
+
+### Measured contrast
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` #ffffff on `{colors.canvas}` | 21.0:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-card}` | 17.4:1 | 4.5:1 | Pass |
+| `{colors.body}` #bbbbbb on `{colors.canvas}` | 10.94:1 | 4.5:1 | Pass |
+| `{colors.body}` on `{colors.surface-card}` | 9.07:1 | 4.5:1 | Pass |
+| `{colors.muted}` #7e7e7e on `{colors.canvas}` | 5.17:1 | 4.5:1 | Pass |
+| `{colors.muted}` on `{colors.surface-card}` | 4.29:1 | 4.5:1 | **Fail** — real brand tone; see Colors → Muted |
+| `{colors.muted}` on `{colors.surface-elevated}` | 3.73:1 | 4.5:1 | **Fail** — large text only |
+| `{colors.on-primary}` #000000 on `{colors.primary}` #ffffff | 21.0:1 | 4.5:1 | Pass |
+| `{colors.hairline}` #3c3c3c on `{colors.canvas}` | 1.9:1 | 3.0:1 | **Fail** — scoped to decoration |
+| `{colors.hairline-control}` #767676 on `{colors.canvas}` | 4.62:1 | 3.0:1 | Pass |
+| `{colors.hairline-control}` on `{colors.carbon-gray}` | 3.12:1 | 3.0:1 | Pass |
+| `{colors.focus}` #2b7de9 on `{colors.canvas}` | 5.21:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.surface-card}` | 4.32:1 | 3.0:1 | Pass |
+| `{colors.m-red}` #e22718 on `{colors.canvas}` | 4.54:1 | 4.5:1 | Pass (just) |
+| `{colors.m-blue-light}` #0066b1 on `{colors.canvas}` | 3.54:1 | 4.5:1 | **Fail as text** — tricolor stripe only, never type |
+| `{colors.electric-blue}` #0653b6 on `{colors.canvas}` | 2.92:1 | 4.5:1 | **Fail as text** — fill only, never type |
+| `{colors.success}` #0fa336 on `{colors.canvas}` | 6.31:1 | 4.5:1 | Pass |
+| `{colors.warning}` #f4b400 on `{colors.canvas}` | 11.38:1 | 4.5:1 | Pass |
+
+Honest summary: the headline palette is excellent — a true-black canvas buys enormous
+headroom. The failures are all at the quiet end. `{colors.muted}` fails on every surface
+above `{colors.surface-soft}`, and `{colors.m-blue-light}` and `{colors.electric-blue}` fail
+as text at any size on black. Those are facts about BMW M, not errors in this document.
+White type on `{colors.warning}` (1.85:1) and on `{colors.success}` (3.33:1) also fails —
+semantic chips take `{colors.on-primary}` (black) ink, never white.
+
+### Focus ring visibility, per surface this file defines
+
+`{colors.focus}` (#2b7de9) clears 3:1 on all of them: `{colors.canvas}` 5.21:1,
+`{colors.surface-soft}` 4.82:1, `{colors.surface-card}` 4.32:1, `{colors.surface-elevated}`
+3.76:1, `{colors.carbon-gray}` 3.51:1, and white 4.03:1. One ring is therefore sufficient and
+no `focus-on-dark` variant is defined. Over full-bleed photography — where no measurement is
+possible, because the backdrop is an arbitrary image — the ring is drawn as 2px `{colors.focus}`
+inside a 1px `{colors.on-dark}` outer edge, so one of the two always separates from the photo.
+Never suppress the ring with `outline: none`; the brand's answer to an unwanted ring is
+`:focus-visible`, not removal.
+
+### Touch targets
+
+`{component.button-primary}`, `{component.button-icon}`, `{component.carousel-arrow}` and
+`{component.text-input}` are all specified at 48px, above the 44 × 44 minimum.
+`{component.category-tab}` is text with 12px vertical padding, which reaches 44px only with
+the row's surrounding spacing. **Tap-target size cannot be verified from this document** —
+it needs a rendered page — so treat the tab figure as a specification, not a measurement.
+
+### Reduced motion
+
+Honoured as written in Motion & Animation: all travel and scale removed, opacity fades
+clamped to 120ms, loader frozen with its status text intact.
+
+### Known accessibility limits of this document
+
+Overlap, clipping, horizontal overflow, real tap-target geometry, screen-reader
+announcement order and keyboard tab order cannot be checked without a running page. No claim
+about them is made here.
+
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-strong}` (`#262626`) on `{colors.surface-card}` (`#1a1a1a`) | 1.15:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline-strong}` (`#262626`) on `{colors.canvas}` (`#000000`) | 1.39:1 | 3.0:1 | Fail — boundary, all tones |
+| `{colors.hairline}` (`#3c3c3c`) on `{colors.surface-card}` (`#1a1a1a`) | 1.58:1 | 3.0:1 | Fail — boundary on surface, all tones |
 
 ## Do's and Don'ts
 
@@ -449,7 +625,10 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 - Don't use rounded buttons. The rectangular silhouette IS the brand. Rounded corners read as consumer-tech, not motorsport.
 - Don't put gradient backdrops behind hero type. The hero IS the photography — the page floor stays pure black, and the photo provides the depth.
 - Don't repeat the same surface mode in two consecutive bands. Rhythm: photo band → spec table → photo band → magazine grid → photo band. Two text-only bands in a row read as a corporate site.
-- Don't use the M stripe as a button fill. The stripe is a divider / accent — never an action surface.
+- Don't use the M stripe as a button fill. The stripe is a divider / accent — never an action surface. Nor as a focus ring: that is `{colors.focus}`.
+- Don't let `{colors.hairline}` be the only edge of a control — it measures 1.9:1 on black. Controls take `{colors.hairline-control}`.
+- Don't animate `width`, `height`, `top`, `left` or `margin`. Photo cards scale inside a fixed crop so the grid never reflows.
+- Don't speed the system up to feel "sporty." Cinematic timing (`{motion.duration-base}` 400ms and up) is what makes the photography read as cinema rather than as a carousel.
 - Don't bold uppercase tracking under 1.5px on button labels — the spacing is what makes them feel "machined."
 
 ## Responsive Behavior
@@ -487,7 +666,7 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 2. New components default to `{rounded.none}` (0px). Only use `{rounded.full}` if it's a circular icon button.
 3. Variants (`-active`, `-disabled`) live as separate entries in `components:`.
 4. Use `{token.refs}` everywhere — never inline hex.
-5. Never document hover states. Default and Active/Pressed only.
+5. Document the full state ladder for anything interactive — default, hover, focus-visible, pressed, disabled, loading, selected, error — and say plainly when a component genuinely has fewer. See Components → Component States.
 6. Display headlines stay UPPERCASE 700; body stays sentence-case 300. Never blur the contrast.
 7. The M tricolor is brand-identity-only — never extend it to system tokens for "primary action."
 8. When in doubt about emphasis: bigger photography before bigger type.
@@ -497,7 +676,9 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 - The dembrandt frequency analyzer captured the white text (count 955) as the highest-frequency token. The black canvas was inferred from screenshot — dembrandt's body-background sampling didn't surface it as a top palette entry, but the page is unambiguously black-on-white-text.
 - The exact M tricolor stops are documented from public BMW brand guidelines; the screenshots show the stripe as a small element but pixel-sampling at this resolution doesn't reliably distinguish #0066b1 from #1c69d4. Treat the documented stops as canonical based on BMW Design Works' published brand spec.
 - BMW Type Next Latin weight axis values beyond Light (300) and regular (700) are not documented — only the static weights observed in screenshots.
-- Animation and transition timings (photo carousel transitions, hover-reveal effects, configurator interactions) are not in scope.
+- Animation and transition timings (photo carousel transitions, hover-reveal effects, configurator interactions) were never measured. The Motion & Animation section is **prescribed** from the Cinematic profile and the brand's visual identity; it is a specification to build against, not an extracted fact.
+- `{colors.focus}` and `{colors.hairline-control}` are **prescribed**, not extracted. BMW M publishes no focus ring, and the real hairline is too faint to bound a control. Both were derived from tokens already in this file and their contrast is measured and recorded in Accessibility.
+- Component states beyond hover and active are prescribed, not observed. Form `error` and `loading` treatments in particular would need the configurator or order flow to confirm.
 - Form validation states beyond `{component.text-input}` defaults are not extracted — error / success input variants would need a configurator or order flow to confirm.
 - The configurator surface (vehicle build pages with color / wheel / interior pickers) was not in the analyzed URL set; its swatch grid, comparison panels, and price-summary card are not documented here.
 - The cookie consent overlay obscured part of the homepage hero in the captured screenshot; secondary hero treatments (different car models cycling through the hero band) may carry variations not captured.

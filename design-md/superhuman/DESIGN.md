@@ -19,6 +19,8 @@ colors:
   hairline-dark: "#3f3a52"
   on-dark-mute: "#bcbac9"
   on-dark-faint: "#5a5772"
+  focus: "#1b1938"
+  focus-on-dark: "#c9b4fa"
 
 typography:
   display-xxl:
@@ -111,6 +113,18 @@ spacing:
   xl: 24px
   xxl: 32px
   huge: 64px
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
 
 components:
   button-primary-dark:
@@ -334,55 +348,69 @@ The hero uses **half-bleed portrait subjects** — a person photographed at twil
 
 ## Components
 
+Only the pressed state is extracted (`button-primary-dark-pressed`). The **States** row under each entry is **prescribed** from this file's own tokens to complete the state contract; it was not measured from the live site. The focus ring in every state row is `{colors.focus}` on light grounds and `{colors.focus-on-dark}` on the indigo and teal grounds, drawn 2px outside the control with a 2px offset.
+
 ### Buttons
 
 **`button-primary-dark`** — the dominant rounded-rectangle CTA on white surfaces.
 - Background `{colors.primary}`, text `{colors.on-primary}`, type `{typography.button-md}`, padding `{spacing.md} {spacing.xl}` (12px 20px), rounded `{rounded.md}` 8px.
 - Pressed state `button-primary-dark-pressed` shifts to `{colors.primary-deep}`.
+- States: default · hover (lift to `{colors.primary-deep}`, `{motion.duration-fast}`) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (`button-primary-dark-pressed`) · disabled (fill `{colors.hairline}`, label `{colors.ink-faint}`) · loading (label holds, 1.5s indeterminate opacity pulse on a `{colors.on-primary}` dot row) · error (inherits the form's error message; the button itself keeps default fill).
 
 **`button-on-dark-pill`** — the hero CTA in pale violet pill shape.
 - Background `{colors.surface-violet-soft}`, text `{colors.primary}`, same typography, padding 12px 20px, rounded `{rounded.full}`. The pill shape only appears on the hero — body CTAs use the rounded rectangle.
+- States: default · hover (opacity 0.92) · focus-visible (2px `{colors.focus-on-dark}` ring on the indigo ground, 2px offset) · active/pressed (opacity 0.85) · disabled (opacity 0.4, no pointer) · loading (indeterminate opacity pulse on the label) · error (not applicable — the hero CTA carries no validation).
 
 **`button-secondary-outline`** — outline alternative on white.
-- Background `{colors.canvas}`, text `{colors.ink}`, 1px solid `{colors.hairline-dark}` border, same shape as `button-primary-dark`.
+- Background `{colors.canvas}`, text `{colors.ink}`, 1px solid `{colors.hairline-dark}` border, same shape as `button-primary-dark`. The border measures 10.83:1 on `{colors.canvas}` — this is the one boundary tone in the palette that clears the 3:1 minimum on white.
+- States: default · hover (border `{colors.primary}`) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (background `{colors.canvas-soft}`) · disabled (border `{colors.hairline}`, label `{colors.ink-faint}`) · loading (label swaps to a pulsing dot row) · selected (border `{colors.primary}` 2px, used where the outline button acts as a segmented choice).
 
 **`button-on-teal`** — CTA inside the closing teal band.
 - Background `{colors.canvas}`, text `{colors.surface-teal-deep}`, rounded-rectangle, same typography.
+- States: default · hover (opacity 0.92) · focus-visible (2px `{colors.focus-on-dark}` ring on the teal ground, 2px offset) · active/pressed (opacity 0.85) · disabled (opacity 0.4) · loading (indeterminate opacity pulse) · error (not applicable).
 
 ### Cards & Containers
 
 **`card-feature-light`** — feature card on white.
-- Background `{colors.canvas}`, padding `{spacing.xxl}`, rounded `{rounded.lg}`, 1px `{colors.hairline}` border.
+- Background `{colors.canvas}`, padding `{spacing.xxl}`, rounded `{rounded.lg}`, 1px `{colors.hairline}` border (extracted; 1.27:1 on `{colors.canvas}`, so the border reads as decoration rather than a perceivable boundary — see Accessibility).
+- States: default · hover (no fill change; the card is static copy) · focus-visible (2px `{colors.focus}` ring where the whole card is a link target). Genuinely a two-to-three-state element: no pressed, disabled, loading, selected or error state exists for it.
 
 **`card-pricing`** — standard pricing tier card.
-- Background `{colors.canvas}`, padding `{spacing.xxl}`, rounded `{rounded.lg}`, 1px `{colors.hairline}` border.
+- Background `{colors.canvas}`, padding `{spacing.xxl}`, rounded `{rounded.lg}`, 1px `{colors.hairline}` border (extracted; 1.27:1 on white — decorative, see Accessibility).
+- States: default · hover (elevation 0 → 1) · focus-visible (2px `{colors.focus}` ring on the tier's CTA, not the card) · selected (the chosen billing tier takes a 2px `{colors.primary}` border) · loading (price row shows a pulsing placeholder block while plan data resolves) · disabled (a tier unavailable on the current region drops to opacity 0.5 with `{colors.ink-faint}` copy) · error (plan fetch failure replaces the price row with a `{colors.ink}` retry line).
 
 **`card-pricing-featured`** — inverted indigo featured tier.
 - Background `{colors.primary}`, text `{colors.on-primary}`, otherwise identical to `card-pricing`.
+- States: inherits every `card-pricing` state, with the focus ring swapped to `{colors.focus-on-dark}` and the selected border to `{colors.surface-violet-soft}`.
 
 **`card-teal-band`** — the closing CTA band on every page.
 - Background `{colors.surface-teal-deep}`, text `{colors.on-primary}`, padding `{spacing.huge}` 64px, rounded `{rounded.lg}` 12px (often radius-less in practice when full-bleed). Holds a single closing headline in `{typography.display-lg}` and a `button-on-teal`.
 
 **`card-feature-row`** — alternating feature-row card on the body.
 - Background `{colors.canvas-soft}`, text `{colors.ink}`, padding `{spacing.xl}` 24px, rounded `{rounded.md}` 8px. Used in pairs/triplets to explain features below the hero.
+- States: default · hover (background holds; the inner thumbnail scales to 1.01) · focus-visible (2px `{colors.focus}` ring where the row links out) · selected (row tied to the active `pill-tab-light` carries a 2px `{colors.primary}` left rule). No pressed, disabled, loading or error state.
 
 ### Inputs & Forms
 
 **`text-input`** — standard form input.
-- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body-md}`, padding `{spacing.sm}+ {spacing.md}` (10px 12px), rounded `{rounded.sm}` 6px, 1px `{colors.hairline}` border.
+- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body-md}`, padding `{spacing.sm}+ {spacing.md}` (10px 12px), rounded `{rounded.sm}` 6px, 1px `{colors.hairline}` border (extracted). At 1.27:1 on `{colors.canvas}` that border is the input's only boundary and it does not meet the 3:1 non-text minimum — the real brand fails AA here. Where a perceivable boundary is required, use `{colors.hairline-dark}` (10.83:1 on white); re-binding the extracted value is held under Needs approval in the audit report.
+- States: default · hover (border `{colors.ink-faint}`) · focus-visible (2px `{colors.focus}` ring, 2px offset, border `{colors.primary}`) · active (caret visible, border holds) · disabled (background `{colors.canvas-soft}`, label `{colors.ink-faint}`, no caret) · loading (field locks and shows a pulsing right-aligned dot row during async validation) · error (border and helper text `{colors.ink}` with a prescribed `{colors.primary}` 2px border — the brand defines no red, see Known Gaps) · selected (text selection uses `{colors.surface-violet-soft}` as the highlight fill, `{colors.ink}` ink, 7.98:1).
 
 ### Navigation
 
 **`nav-bar-dark`** — top nav over the indigo hero.
 - Background `{colors.primary}`, text `{colors.on-primary}`, padding `{spacing.lg} {spacing.xl}`. Logo on the left, nav center, "Get Started" `button-on-dark-pill` on the right.
+- States per nav item: default · hover (opacity 0.8) · focus-visible (2px `{colors.focus-on-dark}` ring) · active/pressed (opacity 0.7) · selected (current page keeps full opacity with a 1px `{colors.on-primary}` underline). No disabled, loading or error state.
 
 **`nav-bar-light`** — top nav on body / pricing pages.
 - Background `{colors.canvas}`, text `{colors.ink}`, otherwise same structure with `button-primary-dark` on the right.
+- States per nav item: default · hover (`{colors.ink-mute}`) · focus-visible (2px `{colors.focus}` ring) · active/pressed (`{colors.ink}`) · selected (1px `{colors.primary}` underline). No disabled, loading or error state.
 
 ### Pills, Tags, and Chips
 
 **`pill-tab-light`** — feature-row tab selector.
 - Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.button-cap}`, padding `{spacing.sm} {spacing.lg}`, rounded `{rounded.full}`. Used in the feature category picker (Mail / Channels / Code / AI / Calendar etc.) below the hero.
+- States: default · hover (background `{colors.canvas-soft}`) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (background `{colors.hairline}`) · selected (fill `{colors.primary}`, label `{colors.on-primary}`, 16.9:1) · disabled (label `{colors.ink-faint}`) · loading (tab row shows pulsing placeholder pills while its panel resolves). No error state.
 
 ### Signature Components
 
@@ -392,9 +420,131 @@ The hero uses **half-bleed portrait subjects** — a person photographed at twil
 
 **`link-on-light`** — inline links on body.
 - Text `{colors.ink}` rendered in `{typography.body-md}` with persistent underline.
+- States: default · hover (`{colors.ink-mute}`, underline holds) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (`{colors.primary}`) · visited (no distinct tone; the brand does not differentiate). No disabled, loading, selected or error state.
 
 **`footer-light`** — site-wide footer.
 - Background `{colors.canvas}`, text `{colors.ink-mute}`, type `{typography.caption}`, padding `{spacing.huge} {spacing.xl}` (64px 24px). Holds 4 columns of link groups, social icons, and a small legal/copyright row.
+- States per footer link: default (`{colors.ink-mute}`, 4.92:1 on white) · hover (`{colors.ink}`) · focus-visible (2px `{colors.focus}` ring, 2px offset) · active/pressed (`{colors.primary}`). No disabled, loading, selected or error state.
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or choreography here was extracted; the values are the shared **Crisp** profile, chosen because the product is a keyboard-driven email client whose entire promise is speed — a state change must read as already finished. The marketing pages' editorial whitespace argues for a slower register, but the product it sells does not; see the audit report for the argument.
+
+All values resolve to the `motion:` group: `{motion.duration-instant}` 60ms · `{motion.duration-fast}` 100ms · `{motion.duration-base}` 150ms · `{motion.duration-slow}` 220ms · `{motion.duration-emphasis}` 300ms · `{motion.ease-standard}` · `{motion.ease-enter}` · `{motion.ease-exit}` · `{motion.stagger-step}` 20ms · `{motion.duration-reduced}` 100ms.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, nav item, link) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`, `background-color` | Unchanged — no travel to remove |
+| Press / active | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` (no scale — the brand's buttons do not squash) | Unchanged |
+| Focus ring appear | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` | Ring appears with no transition |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` only; no cross-fade travel | Opacity fade at `{motion.duration-reduced}` |
+| Modal / drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px → 0)` | Travel removed; opacity only at `{motion.duration-reduced}` |
+| Modal / drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform` | Travel removed; opacity only at `{motion.duration-reduced}` |
+| Dropdown / menu | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: scaleY(0.98 → 1)` from the top edge | Scale removed; opacity only at `{motion.duration-reduced}` |
+| Toast | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: translateY(6px → 0)` | Travel removed; opacity only at `{motion.duration-reduced}` |
+| List enter (pricing tiers, feature rows) | `{motion.duration-base}`, `{motion.stagger-step}` 20ms per item | `{motion.ease-enter}` | `opacity` + `transform: translateY(6px → 0)` | Stagger and travel removed; one opacity fade at `{motion.duration-reduced}` |
+| List exit | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` | Opacity at `{motion.duration-reduced}` |
+| Loading (button, price row, tab panel) | 1.5s indeterminate loop | `{motion.ease-standard}` | `opacity` pulse 1 → 0.4 → 1 on a dot row or placeholder block | Loop frozen; a static placeholder at 0.6 opacity remains |
+| Hero atmospheric backdrop | brand ambience, 20s loop, stated as ambience | linear | `opacity` and `transform: scale(1 → 1.02)` on the violet-sky wash | Frozen at its first frame |
+
+### Motion Rules
+- Animate `transform` and `opacity` only. Never animate `width`, `height`, `top`, `left` or `margin`.
+- Every exit is shorter than its matching entrance (`{motion.duration-fast}` out against `{motion.duration-base}` in).
+- Nothing animates on first paint in a way that delays content: the hero headline and CTA render at full opacity, and the list-enter stagger applies only to below-fold bands as they scroll into view.
+- The only infinite animations are the loading pulse and the hero's atmospheric backdrop, which is deliberate brand ambience and is declared as such above.
+- Travel distances stay at 6–8px. The brand's register is editorial stillness; large slides would read as a different product.
+
+### Reduced Motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translate), all scale, the list stagger,
+     and the hero's ambient wash, which freezes at its first frame. */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 100ms !important;  /* {motion.duration-reduced} */
+    transition-property: opacity, background-color, border-color, color !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+What remains: opacity fades and colour changes at `{motion.duration-reduced}` 100ms, the focus ring, and a static loading placeholder. What is removed: every `translate` and `scale`, the `{motion.stagger-step}` sequencing, and the hero ambience.
+
+## Accessibility
+
+### Measured contrast (WCAG 2.1 relative luminance)
+
+| Foreground / Background | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` #292827 on `{colors.canvas}` #ffffff | 14.72:1 | 4.5 | Pass |
+| `{colors.ink}` on `{colors.canvas-soft}` #fafaf8 | 14.08:1 | 4.5 | Pass |
+| `{colors.ink}` on `{colors.surface-violet-soft}` #c9b4fa | 7.98:1 | 4.5 | Pass |
+| `{colors.ink-mute}` #73706d on `{colors.canvas}` | 4.92:1 | 4.5 | Pass |
+| `{colors.ink-mute}` on `{colors.canvas-soft}` | 4.71:1 | 4.5 | Pass |
+| `{colors.on-primary}` #ffffff on `{colors.primary}` #1b1938 | 16.9:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.surface-teal-deep}` #0e3030 | 14.15:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.surface-teal-mid}` #155555 | 8.53:1 | 4.5 | Pass |
+| `{colors.on-dark-mute}` #bcbac9 on `{colors.primary}` | 8.86:1 | 4.5 | Pass |
+| `{colors.primary}` on `{colors.surface-violet-soft}` (hero pill label) | 9.17:1 | 4.5 | Pass |
+| `{colors.hairline-dark}` #3f3a52 on `{colors.canvas}` | 10.83:1 | 3.0 | Pass |
+| `{colors.focus}` #1b1938 on `{colors.canvas}` | 16.9:1 | 3.0 | Pass |
+| `{colors.focus-on-dark}` #c9b4fa on `{colors.primary}` | 9.17:1 | 3.0 | Pass |
+
+### Known contrast failures — the real brand does not pass AA at these points
+
+These are extracted values, frozen as facts about the brand. They are stated here rather than corrected.
+
+- `{colors.hairline}` #e8e4dd on `{colors.canvas}` #ffffff measures **1.27:1**, far below the 3:1 non-text minimum. This is the brand's only light-ground hairline, and it is the sole boundary of `text-input`, `card-pricing` and `card-feature-light`. On the real site those boundaries are decorative, not perceivable: **the brand fails WCAG 1.4.11 here.** Where a boundary must be seen, `{colors.hairline-dark}` (10.83:1) is the palette's own passing tone and needs no new token.
+- `{colors.hairline}` on `{colors.canvas-soft}` #fafaf8 measures **1.21:1** — the alternating feature-row band and its hairline are effectively one surface.
+- `{colors.hairline}` on `{colors.surface-violet-soft}` #c9b4fa measures **1.45:1**. This pair is a harness artefact rather than a real rendering: the violet is the hero pill-button fill and the atmospheric wash, and no hairline is ever drawn on it. Recorded for completeness.
+- `{colors.hairline-dark}` #3f3a52 on `{colors.primary}` #1b1938 measures **1.56:1**. The token is documented as the dark-surface border, so the brand's dark-ground dividers are below the 3:1 minimum too.
+- `{colors.ink-faint}` #9a9794 on `{colors.canvas}` measures **2.91:1**, below 4.5:1. Defensible only as disabled-control text (WCAG sets no minimum on disabled) or at 24px+ where 3:1 applies; it fails as tertiary body copy at 14–16px, which is how the Colors section describes it.
+- `{colors.on-dark-faint}` #5a5772 on `{colors.primary}` measures **2.45:1**, below 4.5:1. Same scope: disabled or decorative on dark, never running text.
+- `{colors.canvas-soft}` #fafaf8 against `{colors.canvas}` #ffffff measures **1.05:1**. The two page layers are not distinguishable by luminance alone; the band change reads only through position and padding.
+- `{colors.surface-teal-mid}` #155555 against `{colors.surface-teal-deep}` #0e3030 measures **1.66:1** — nested teal chrome is a decorative step, not a perceivable boundary.
+
+### Focus ring
+
+The brand ships no focus ring, so both rings here are **prescribed** — each reuses a tone the palette already owns rather than introducing a new brand colour.
+
+- `{colors.focus}` reuses the indigo navy `{colors.primary}` #1b1938. Drawn on all light grounds: `{colors.canvas}` 16.9:1, `{colors.canvas-soft}` 16.17:1, `{colors.surface-violet-soft}` 9.17:1.
+- `{colors.focus-on-dark}` reuses the pale violet `{colors.surface-violet-soft}` #c9b4fa. Drawn on the dark grounds: `{colors.primary}` 9.17:1, `{colors.surface-teal-deep}` 7.68:1, `{colors.surface-teal-mid}` 4.63:1.
+- Geometry: 2px ring, 2px offset, drawn **outside** the control so it is judged against the surface behind it, as WCAG 2.2 Focus Appearance asks. Two rings are needed because this file documents both a light default body and dark indigo/teal signature surfaces; no single tone clears 3:1 on #ffffff and #0e3030 at once.
+- Over the half-bleed hero portrait, which has no measurable colour, the ring is two-tone: 2px `{colors.focus-on-dark}` with a 1px `{colors.primary}` outer edge.
+
+### Tap targets
+
+Buttons and form fields are specified at ≥ 44×44px (12px vertical padding on a 16px line-height label; fields hold a 44px minimum height) — see Responsive Behavior. This is a specification, not a measurement: no page was rendered for this audit, so actual tap-target size is unverified.
+
+### Reduced motion
+
+Every entrance and exit respects `@media (prefers-reduced-motion: reduce)` as defined in Motion & Animation: travel, scale, stagger and the hero ambience are removed, and opacity fades are capped at `{motion.duration-reduced}` 100ms.
+
+### Other
+
+- Body copy never falls below 14px (`{typography.caption}`); `{typography.micro}` 12px is reserved for pill labels and fine print.
+- Type at weight 460 on a 0.96 line-height display size is a tight stack; the brand accepts it as editorial density. No line-height below 0.96 anywhere.
+- The brand defines no error, success or warning colour. Validation state is carried by copy and by a `{colors.primary}` 2px border, which means error state is signalled by shape and text rather than hue — acceptable for 1.4.1 but it gives the user no colour signal at all.
+
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.ink-faint}` (`#9a9794`) on `{colors.canvas-soft}` (`#fafaf8`) | 2.78:1 | 4.5:1 | Fail — secondary text on surface, all tones |
 
 ## Do's and Don'ts
 
@@ -446,3 +596,15 @@ Hero portrait uses `srcset` with desktop / mobile crops — desktop favors the f
 4. Default body to `{typography.body-md}`; reserve `{typography.body-lg}` for marketing leads.
 5. Keep the three-canvas rhythm (indigo / white / teal) — adding a fourth canvas color breaks the system.
 6. The closing teal band is non-negotiable — every marketing page resolves there.
+
+## Known Gaps
+
+- **Motion is entirely prescribed.** No duration, easing or choreography in this file was extracted from the live site. The `motion:` group is the shared **Crisp** profile; the interaction table is a reasoned fit to the brand, not an observation.
+- **State coverage is prescribed.** Only `button-primary-dark-pressed` is an extracted state. Every other state row in Components was derived from this file's own tokens.
+- **No focus ring exists in the brand.** `{colors.focus}` and `{colors.focus-on-dark}` reuse `{colors.primary}` and `{colors.surface-violet-soft}`; the real site's focus treatment is unverified.
+- **No semantic palette.** The brand defines no error, success, warning or info colour, and the Don'ts forbid adding accents. The error states above therefore borrow `{colors.primary}`. A real product would need a semantic tone, and that is a brand decision, not an audit one.
+- **`{colors.on-dark-mute}` and `{colors.on-dark-faint}` are described in the Colors section as "translucent white" but carry flat hexes** (#bcbac9, #5a5772). The hexes are what is measurable; the underlying alpha values were not captured.
+- **Shadow values have no tokens.** Elevation & Depth states `rgba(0,0,0,0.08)` and `rgba(0,0,0,0.12)` in prose, so no `{shadow.*}` reference can be made. Adding a `shadow:` group would be the fix, but the values would still be the extracted ones.
+- **Elevation is expressed two ways** — box-shadow at levels 1–2 and a 1px hairline border on cards — with no rule for which applies where. The extracted evidence does not settle it.
+- **Nothing rendered.** Overlap, horizontal overflow, clipping, real tap-target size, frame rate and layout shift are all unverified; this audit read a document, not a page.
+- **Brand name.** The file documents "Superhumon", which appears to be an inspired interpretation rather than a 1:1 record of a shipping site. Treated as the brand of record throughout.

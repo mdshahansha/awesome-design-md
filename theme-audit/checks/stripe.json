@@ -1,0 +1,166 @@
+{
+  "site": "stripe",
+  "has_frontmatter": true,
+  "color_count": 20,
+  "composited_tokens": [],
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Known Gaps"
+  ],
+  "optional_sections_missing": [],
+  "roles_from_bindings": [
+    "surface=canvas-cream"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "canvas-cream",
+    "text": "ink",
+    "text-dim": "ink-secondary",
+    "border": "hairline-input",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus"
+  ],
+  "dangling_refs": [],
+  "component_contrast_failures": [
+    {
+      "component": "pill-tag-soft",
+      "fg": "#4434d4",
+      "bg": "#b9b9f9",
+      "ratio": 4.23,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline on canvas-cream",
+      "fg": "#e3e8ee",
+      "bg": "#f5e9d4",
+      "ratio": 1.03,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e3e8ee",
+      "bg": "#ffffff",
+      "ratio": 1.23,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-input on canvas-cream",
+      "fg": "#a8c3de",
+      "bg": "#f5e9d4",
+      "ratio": 1.52,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-input on canvas",
+      "fg": "#a8c3de",
+      "bg": "#ffffff",
+      "ratio": 1.82,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "pill-tag-soft",
+      "fg": "#4434d4",
+      "bg": "#b9b9f9",
+      "ratio": 4.23,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline on canvas-cream",
+      "fg": "#e3e8ee",
+      "bg": "#f5e9d4",
+      "ratio": 1.03,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e3e8ee",
+      "bg": "#ffffff",
+      "ratio": 1.23,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-input on canvas-cream",
+      "fg": "#a8c3de",
+      "bg": "#f5e9d4",
+      "ratio": 1.52,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-input on canvas",
+      "fg": "#a8c3de",
+      "bg": "#ffffff",
+      "ratio": 1.82,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_documented": [
+    "hover",
+    "pressed"
+  ],
+  "states_missing": [
+    "focus-visible",
+    "active",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 4,
+    "refs": 5,
+    "contrast": 1,
+    "sections": 2,
+    "motion": 1,
+    "states": 1
+  }
+}

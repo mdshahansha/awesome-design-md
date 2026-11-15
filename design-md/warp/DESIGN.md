@@ -13,6 +13,19 @@ colors:
   canvas: "#2b2622"
   canvas-soft: "#383330"
   hairline: "#3f3a36"
+  focus: "#f7f5f0"
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
 
 typography:
   display-xl:
@@ -299,7 +312,10 @@ Type is the second decisive voice. Hero display sits at 64 px Inter weight 400 w
 ### Surface
 - **Canvas** (`{colors.canvas}` — `#2b2622`): The warm dark page background. Resolved from `oklch(22.0% 0.004 84.6)`. Slightly browner than pure black, slightly warmer than a neutral gray — the warmth IS the brand's identity.
 - **Canvas Soft** (`{colors.canvas-soft}` — `#383330`): A lighter warm-dark fill used for cards, mockup chrome, and partner-logo tiles.
-- **Hairline** (`{colors.hairline}` — `#3f3a36`): 1 px solid divider on dark surfaces.
+- **Hairline** (`{colors.hairline}` — `#3f3a36`): 1 px solid divider on dark surfaces. **Extracted and frozen, and it fails WCAG as a boundary:** 1.33:1 on `{colors.canvas}` and 1.11:1 on `{colors.canvas-soft}`, both below the 3:1 a component boundary needs. This is a real property of the brand, not a documentation error. Scope it to *decoration* — card chrome, band separators, list rules, anywhere the boundary is redundant with a fill change. Where a 1 px line is the **only** boundary of an interactive control, draw it in `{colors.mute}` (5.19:1 on `{colors.canvas-soft}`, 6.23:1 on `{colors.canvas}`), which the palette already owns; no new token is needed.
+
+### Focus
+- **Focus** (`{colors.focus}` — `#f7f5f0`): the focus ring. This is `{colors.primary}` / `{colors.ink}` under a role name, not a new brand colour — the brand is monochrome and its accent *is* its paper, so the ring is drawn in that paper with a mandatory 2 px `{colors.canvas}` offset. It measures 13.74:1 on `{colors.canvas}` and 11.44:1 on `{colors.canvas-soft}`. Every surface this file defines is warm-dark, so one ring serves the whole system; no `focus-on-light` counterpart is needed.
 
 ### Text
 - **Ink** (`{colors.ink}` — `#f7f5f0`): Default text on canvas — same off-white as the primary, intentionally unified.
@@ -362,29 +378,6 @@ All three faces are open or freely-loadable:
 - Partner logos: 5-up wrapping flex row.
 - Download tiles: 3-up at desktop (Mac / Linux / Windows), 1-up at mobile.
 
-### Responsive Strategy
-
-#### Breakpoints
-
-| Name | Width | Key Changes |
-|---|---|---|
-| Mobile | < 768px | Hero stacks; 1-up grids; nav hamburger. |
-| Tablet | 768–1023px | 2-up grids. |
-| Desktop | ≥ 1024px | Full hero split; 3-up download tiles. |
-
-#### Touch Targets
-Buttons render at ~36 px tall (8 px vertical padding + 20 px line-height). Mobile inflates touch area through additional padding to meet WCAG 44 × 44 px floor.
-
-#### Collapsing Strategy
-- Nav: full link row + Sign in / Download right cluster at desktop. Hamburger at mobile.
-- Hero terminal-mockup split: stacks vertically at mobile.
-- Press / job rows: full-width single column; stay legible at all widths.
-
-#### Image Behavior
-- **Terminal mockups**: rendered as dark cards with the actual terminal UI inside (warm canvas + colored syntax). Aspect ratio ~3:2.
-- **Partner logos**: monochrome SVGs on dark tile cards.
-- **Testimonial portraits**: 1:1 square crop inside `{rounded.md}` card chrome.
-
 ## Elevation & Depth
 
 | Level | Treatment | Use |
@@ -407,7 +400,8 @@ The brand uses surface-contrast and hairline borders for elevation; soft drop-sh
 | `{rounded.sm}` | 3px | Default button radius — extremely tight. |
 | `{rounded.md}` | 4px | Card chrome (the brand's `--radius` base). |
 | `{rounded.lg}` | 6px | Slightly larger cards. |
-| `{rounded.pill}` | 9999px | Icon containers, status pills. |
+| `{rounded.pill}` | 9999px | Status pills. |
+| `{rounded.full}` | 9999px | Circular icon containers (`button-icon-circular`). Same value as `{rounded.pill}`; the two names are kept because the extracted source uses both. |
 
 ### Photography Geometry
 - Terminal mockups: ~3:2 inside `{rounded.md}` card chrome.
@@ -420,59 +414,76 @@ The brand uses surface-contrast and hairline borders for elevation; soft drop-sh
 
 **`button-primary`** — the off-white CTA on dark canvas.
 - Background `{colors.primary}` (off-white), text `{colors.on-primary}` (warm dark), label `{typography.button-md}`, padding `{spacing.sm} {spacing.lg}`, shape `{rounded.sm}` 3 px. Tight.
+- States: default · hover (fill lifts to `{colors.body-strong}`, `{motion.duration-fast}`) · focus-visible (2 px `{colors.focus}` ring, 2 px `{colors.canvas}` offset) · pressed (fill `{colors.mute}`, `{motion.duration-instant}`) · disabled (fill `{colors.hairline}`, label `{colors.mute}`, no pointer) · loading (label swapped for a mono caret spinner, control width frozen) · error (not applicable — form-level errors are surfaced on `text-input`).
 
 **`button-secondary-ghost`** — the ghost-style secondary used for nav and tertiary actions.
 - Background `{colors.canvas}`, text `{colors.ink}`, no border, same typography / shape.
+- States: default · hover (fill `{colors.canvas-soft}`, paint-only) · focus-visible (`{colors.focus}` ring) · pressed (fill `{colors.hairline}`) · disabled (label `{colors.mute}`) · loading (inherits `button-primary` behaviour).
 
 **`button-icon-circular`** — the circular icon container.
 - Background `{colors.canvas}`, ink icon, shape `{rounded.full}`. Used for nav controls (search, theme).
+- States: default · hover (fill `{colors.canvas-soft}`) · focus-visible (`{colors.focus}` ring) · pressed (fill `{colors.hairline}`) · selected (theme toggle only — fill `{colors.canvas-soft}`, icon `{colors.primary}`) · disabled (icon `{colors.mute}`).
 
 ### Cards & Containers
 
 **`card-content`** — the default content card on canvas-soft.
 - Background `{colors.canvas-soft}`, text `{colors.ink}`, 1 px solid `{colors.hairline}`, padding `{spacing.xl}`, shape `{rounded.md}`.
+- States: default and hover only when the card is a link (border to `{colors.mute}`, paint-only). A non-interactive `card-content` genuinely has one state: default.
 
 **`card-mockup`** — the terminal-screenshot mockup card.
 - Same chrome as `card-content` but body in `{typography.code}` (DM Mono) when text appears inside.
+- States: default only. The mockup card is decorative and carries no interaction.
 
 **`download-tile`** — the Mac / Linux / Windows download tile.
 - Background `{colors.canvas-soft}`, text `{colors.ink}`, hairline border, padding `{spacing.xl}`, shape `{rounded.md}`. Hosts a platform icon + label + download CTA.
+- States: default · hover (border `{colors.mute}`) · focus-visible (`{colors.focus}` ring on the whole tile) · pressed (fill `{colors.hairline}`) · selected (the tile matching the visitor's detected platform — border `{colors.primary}`) · loading (download handshake: caret spinner in the CTA slot) · disabled (unsupported platform — label `{colors.mute}`).
 
 **`partner-logo-tile`** — the canvas-soft tile hosting a partner logo.
 - Background `{colors.canvas-soft}`, monochrome logo SVG inside, padding `{spacing.lg}`, shape `{rounded.md}`.
+- States: default only. The logo tile is non-interactive.
 
 **`testimonial-card`** — the single quote-style card with a portrait.
 - Background `{colors.canvas-soft}`, text `{colors.ink}`, padding `{spacing.xl}`, shape `{rounded.md}`. Portrait 1:1 + body in `{typography.body-md}`.
+- States: default only — a single static quote card.
 
 **`press-row`** — the press-coverage list item.
 - Background `{colors.canvas}` (no fill — sits on the canvas band), 1 px solid bottom border `{colors.hairline}`, body in `{typography.body-md}`, padding `{spacing.lg}` 0.
+- States: default · hover (title to `{colors.ink}`, paint-only) · focus-visible (`{colors.focus}` ring inset to the row box) · pressed (title `{colors.body}`).
 
 **`job-row`** — the "Join our team" list item (single row per open role).
 - Background `{colors.canvas}`, 1 px solid bottom border, body in `{typography.body-md-strong}`, padding `{spacing.lg}` 0.
+- States: default · hover (bottom border to `{colors.mute}`) · focus-visible (`{colors.focus}` ring) · pressed (fill `{colors.canvas-soft}`).
 
 ### Inputs & Forms
 
 **`text-input`** — the dark-canvas text input.
 - Background `{colors.canvas-soft}`, text `{colors.ink}`, 1 px solid `{colors.hairline}`, body in `{typography.body-sm}`, padding `{spacing.sm} {spacing.md}`, shape `{rounded.sm}`.
+- States: default · hover (border `{colors.mute}`) · focus-visible (border `{colors.focus}` plus a 2 px `{colors.focus}` ring at 2 px offset; the ring, not the border, is the conformant indicator) · disabled (fill `{colors.canvas}`, text `{colors.mute}`) · loading (async validation — caret spinner in the trailing slot) · error (border and helper text `{colors.body-strong}` plus a mono `!` glyph; the brand surfaces no red, so the error cue is weight and glyph, not hue) · selected (text selection only, no control-level selected state).
+- Accessibility note: the extracted `{colors.hairline}` border measures 1.11:1 against `{colors.canvas-soft}` and is not a conformant boundary on its own. The focus ring and the fill/canvas luminance step carry the affordance. See Accessibility.
 
 ### Navigation
 
 **`nav-bar`** — the sticky top nav.
 - Background `{colors.canvas}`, text `{colors.ink}`, padding `{spacing.md} {spacing.xl}`.
+- States: default and a scrolled state only (hairline bottom border appears once the page scrolls past the hero). No hover or focus of its own; its children carry those.
 
 **`nav-link`** — link items in nav.
 - Background `{colors.canvas}`, text `{colors.ink}`, body in `{typography.body-sm-strong}`, padding `{spacing.xs} {spacing.md}`, shape `{rounded.sm}`.
+- States: default · hover (fill `{colors.canvas-soft}`, paint-only) · focus-visible (`{colors.focus}` ring, 2 px offset) · pressed (fill `{colors.hairline}`) · selected (current route — text `{colors.primary}`, 1 px `{colors.primary}` underline) · disabled (text `{colors.mute}`).
 
 **`footer`** — the footer band.
 - Background `{colors.canvas}`, text `{colors.body}`, padding `{spacing.3xl} {spacing.xl}`. Body in `{typography.body-sm}`.
+- States: container is default-only; footer links inherit `nav-link` hover, focus-visible, pressed and selected.
 
 ### Signature Components
 
 **`hero-band`** — the dark hero band hosting the 64-px Inter headline.
 - Background `{colors.canvas}`, text `{colors.ink}`, padding `{spacing.5xl} {spacing.xl}`. Headline `{typography.display-xl}` (64 px / 400 / `-1.6 px`). Below: a 2-column terminal-mockup split.
+- States: default only — a static band. Its CTA cluster uses `button-primary` and `button-secondary-ghost` states.
 
 **`content-band`** — the standard content band.
 - Background `{colors.canvas}`, text `{colors.ink}`, padding `{spacing.5xl} {spacing.xl}`. Section headline `{typography.display-md}`.
+- States: default only.
 
 ### Examples (illustrative)
 
@@ -509,6 +520,96 @@ The brand uses surface-contrast and hairline borders for elevation; soft drop-sh
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No duration, easing curve or transition was extracted from Warp's marketing surface; the file records none. The values below are the shared **Crisp** profile from `theme-audit/SPEC.md` section 5, assigned because the brand's identity is a terminal and development environment — state change should read as instant, with no entrance choreography. Every value is referenced as a `{motion.*}` token so files sharing the profile stay comparable.
+
+The brand is near-monochrome and flat: it has no shadow system, no gradient and no chromatic accent, so most of its state feedback is a **paint-only** change — `background-color`, `border-color`, `color`. That is permitted and is deliberately not dressed up with a scale pop, which would contradict a brand whose own Don'ts forbid generous shapes and heavy weights. Where something does move, only `transform` and `opacity` animate; never `width`, `height`, `top`, `left` or `margin`.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, nav-link, tile, row) | `{motion.duration-fast}` 100ms | `{motion.ease-standard}` | `background-color`, `border-color`, `color` — paint only, no travel | Unchanged; the change is paint, not motion. |
+| Press / active | `{motion.duration-instant}` 60ms | `{motion.ease-standard}` | `background-color` — paint only. No scale: the brand's shapes are 3–4 px and a pop reads wrong on them. | Unchanged. |
+| Focus-visible | `{motion.duration-instant}` 60ms | `{motion.ease-standard}` | `opacity` of the `{colors.focus}` ring, 0 → 1 | Ring appears at full opacity with no transition. |
+| Page / route transition | `{motion.duration-base}` 150ms in, `{motion.duration-fast}` 100ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` only. No cross-fade travel; the canvas is one continuous band and must not appear to slide. | `opacity` fade at `{motion.duration-reduced}` 100ms. |
+| Modal / drawer | `{motion.duration-base}` 150ms in, `{motion.duration-fast}` 100ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(4px → 0)` (drawer: `translateX`) | Travel removed; `opacity` only at `{motion.duration-reduced}` 100ms. Scrim fades at the same duration. |
+| Dropdown / nav menu | `{motion.duration-fast}` 100ms in, `{motion.duration-instant}` 60ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(2px → 0)` | Travel removed; `opacity` only at `{motion.duration-reduced}` 100ms. |
+| Toast (`ex-toast`) | `{motion.duration-base}` 150ms in, `{motion.duration-fast}` 100ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(6px → 0)` | Travel removed; `opacity` only at `{motion.duration-reduced}` 100ms. Auto-dismiss timing is unchanged. |
+| List enter (download tiles, press rows, job rows) | `{motion.duration-fast}` 100ms per item, `{motion.stagger-step}` 20ms between items | `{motion.ease-enter}` | `opacity` + `transform: translateY(4px → 0)` | Travel and stagger removed; all items fade together at `{motion.duration-reduced}` 100ms. |
+| List exit (filtered / removed rows) | `{motion.duration-instant}` 60ms, no stagger | `{motion.ease-exit}` | `opacity` + `transform: translateY(0 → 2px)` | Travel removed; `opacity` only at `{motion.duration-reduced}` 100ms. |
+| Loading | `{motion.duration-emphasis}` 300ms per cycle, infinite while pending | linear (`steps()` for the caret) | `opacity` of a DM Mono block caret `▌`, blinking in place. The only infinite animation in the system, and the only one that is brand ambience as well as a loader — a blinking terminal caret *is* the identity. | Blink frozen; the caret stays at full opacity and the control's `aria-busy` state carries the information. |
+
+Rules this system observes:
+- Every exit is shorter than its matching entrance (150→100, 100→60, 150→100).
+- Nothing animates on first paint in a way that delays content: the hero band, its headline and the two terminal mockups render at final position and full opacity. Only post-load, user-initiated changes animate.
+- The blinking caret is the sole infinite animation, and it is declared above as both loader and deliberate brand ambience.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel and all scale. Every translateY / translateX
+     above collapses to its end position. The stagger on list enter
+     collapses to 0ms. The loading caret's blink is frozen at opacity 1
+     (brand ambience frozen, per SPEC section 6). */
+  *, *::before, *::after {
+    transition-duration: var(--motion-duration-reduced); /* 100ms */
+    animation: none;
+  }
+  /* Kept: opacity fades, at {motion.duration-reduced} 100ms and never
+     longer; and every paint-only change (background-color, border-color,
+     color), which is not motion and is left exactly as specified. */
+}
+```
+
+What is removed: all `transform` travel, all scale, the `{motion.stagger-step}` sequencing, and the caret blink. What remains: `opacity` fades capped at `{motion.duration-reduced}` 100ms, and all paint-only hover, press and selected feedback, which is how a monochrome brand communicates state and is not motion.
+
+## Accessibility
+
+### Measured contrast
+
+All ratios computed with WCAG 2.1 relative luminance from the hexes in this file's frontmatter.
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` `#f7f5f0` on `{colors.canvas}` `#2b2622` | 13.74:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.canvas-soft}` `#383330` | 11.44:1 | 4.5:1 | Pass |
+| `{colors.body-strong}` `#dad2c1` on `{colors.canvas}` | 9.96:1 | 4.5:1 | Pass |
+| `{colors.body}` `#c9c0ad` on `{colors.canvas}` | 8.29:1 | 4.5:1 | Pass |
+| `{colors.body}` on `{colors.canvas-soft}` | 6.90:1 | 4.5:1 | Pass |
+| `{colors.mute}` `#aea69c` on `{colors.canvas}` | 6.23:1 | 4.5:1 | Pass |
+| `{colors.mute}` on `{colors.canvas-soft}` | 5.19:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` `#2b2622` on `{colors.primary}` `#f7f5f0` | 13.74:1 | 4.5:1 | Pass |
+| `{colors.focus}` `#f7f5f0` on `{colors.canvas}` | 13.74:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.canvas-soft}` | 11.44:1 | 3.0:1 | Pass |
+| **`{colors.hairline}` `#3f3a36` on `{colors.canvas}`** | **1.33:1** | 3.0:1 | **Fail — disclosed** |
+| **`{colors.hairline}` on `{colors.canvas-soft}`** | **1.11:1** | 3.0:1 | **Fail — disclosed** |
+| `{colors.canvas-soft}` on `{colors.canvas}` (layer step, not a text pair) | 1.20:1 | — | Informational |
+
+**The real brand fails WCAG at its hairline.** `{colors.hairline}` is an extracted value and is left exactly as extracted, including its existing `components:` bindings. It is not a conformant component boundary anywhere in this system. Two consequences, and both are honest statements about the brand rather than fixes:
+
+1. Treat the hairline as decoration. Card chrome, band separators and list rules keep it, because in each of those places the boundary is redundant with a fill change or with spacing.
+2. Where a 1 px line is the *only* boundary of an interactive control — `text-input` is the clear case — the conformant indicator is the `{colors.focus}` ring plus the `{colors.canvas-soft}`/`{colors.canvas}` fill step, and the line itself should be drawn in `{colors.mute}` (5.19:1 / 6.23:1). Re-pointing `text-input.borderColor` in the token block would change a documented fact about the real site, so it has not been done here; it is raised for a brand owner to answer.
+
+The 1.20:1 step between `{colors.canvas}` and `{colors.canvas-soft}` is also worth stating plainly: the brand's two surfaces are nearly the same luminance, so surface contrast alone does not separate a card from the page. That is the brand's chosen flatness, and it is the reason the hairline — weak as it is — is load-bearing visually even though it is not load-bearing for conformance.
+
+The brand surfaces no error, warning or success hue, so `text-input`'s error state cannot be signalled by colour. It is signalled by a mono `!` glyph plus `{colors.body-strong}` helper text — which also satisfies the rule that colour is never the sole carrier of meaning, by default rather than by design.
+
+### Focus ring
+
+- Token: `{colors.focus}` `#f7f5f0` — the brand's own paper (`{colors.primary}` / `{colors.ink}`), reused under a role name. The brand is monochrome and declares that it has no chromatic accent, so inventing a coloured ring would contradict its first rule.
+- Geometry: 2 px ring, drawn **outside** the control with a mandatory 2 px `{colors.canvas}` offset. The offset is what makes it work on `button-primary`, whose fill is the same off-white: against that fill the ring measures 1.00:1, so without the dark offset it would be invisible. With the offset, the ring is judged against the surface behind it — the canvas — as WCAG 2.2 Focus Appearance asks.
+- Visibility on every surface this file defines: `{colors.canvas}` 13.74:1, `{colors.canvas-soft}` 11.44:1. Both clear 3:1. There is no light surface in this system, so no second ring is required.
+- The ring is never suppressed. `:focus-visible` is used so pointer users do not see it, but keyboard focus is always drawn.
+
+### Tap targets
+
+`button-primary` computes to ~36 px tall (8 px padding × 2 + 20 px line-height), below the 44 × 44 px floor. Mobile must inflate the hit area with additional padding or a pseudo-element, keeping the 3 px radius visually unchanged. **Not verifiable from this document** — tap-target size needs a rendered page, so this is a specification, not a measurement.
+
+### Reduced motion
+
+See the `@media (prefers-reduced-motion: reduce)` rule above: all travel, scale, stagger and the caret blink are removed; opacity fades remain, capped at `{motion.duration-reduced}` 100ms; paint-only feedback is untouched.
+
 ## Do's and Don'ts
 
 ### Do
@@ -524,3 +625,38 @@ The brand uses surface-contrast and hairline borders for elevation; soft drop-sh
 - Don't use generous pill CTAs. The brand's button radius is 3-4 px, almost rectangular.
 - Don't replace the warm dark canvas with neutral gray or pure black. The warmth IS the brand.
 - Don't drop a soft drop-shadow on cards. Hairlines + surface contrast carry elevation.
+
+## Responsive Behavior
+
+### Breakpoints
+
+| Name | Width | Key Changes |
+|---|---|---|
+| Mobile | < 768px | Hero stacks; 1-up grids; nav hamburger. |
+| Tablet | 768–1023px | 2-up grids. |
+| Desktop | ≥ 1024px | Full hero split; 3-up download tiles. |
+
+### Touch Targets
+Buttons render at ~36 px tall (8 px vertical padding + 20 px line-height). Mobile inflates touch area through additional padding to meet WCAG 44 × 44 px floor.
+
+### Collapsing Strategy
+- Nav: full link row + Sign in / Download right cluster at desktop. Hamburger at mobile.
+- Hero terminal-mockup split: stacks vertically at mobile.
+- Press / job rows: full-width single column; stay legible at all widths.
+
+### Image Behavior
+- **Terminal mockups**: rendered as dark cards with the actual terminal UI inside (warm canvas + colored syntax). Aspect ratio ~3:2.
+- **Partner logos**: monochrome SVGs on dark tile cards.
+- **Testimonial portraits**: 1:1 square crop inside `{rounded.md}` card chrome.
+
+## Known Gaps
+
+- **Motion is prescribed, not extracted.** Nothing in the source records a duration, an easing curve or a transition for this brand. The whole `motion:` group and the Motion & Animation section are the shared **Crisp** profile, stated as prescribed in that section's first line. The one piece of it that is argued from the brand rather than from the profile table is the blinking DM Mono caret as the loading indicator, and that is an interpretation of the brand's terminal identity, not an extracted asset.
+- **No semantic palette.** The brand surfaces no error, warning or success colour on its marketing pages. Error states are therefore specified with a glyph and type weight rather than hue. In-product semantic colours live in the terminal application proper and were not extracted.
+- **The hairline fails WCAG and stays as extracted.** 1.33:1 on `{colors.canvas}`, 1.11:1 on `{colors.canvas-soft}`. Disclosed in Accessibility; the `components:` bindings are unchanged. Whether `text-input.borderColor` should be re-pointed to `{colors.mute}` is a brand-owner decision.
+- **Tap targets, overflow and layout behaviour are unverified.** This is a document, not a running UI. The ~36 px button height is arithmetic from the padding and line-height tokens; the 44 px mobile inflation is a specification. Nothing here was rendered or measured on screen.
+- **`{rounded.pill}` and `{rounded.full}` are the same value** (9999px). Both names are extracted and both are referenced, so neither was removed, but a consumer should treat them as one step in the radius ladder.
+- **`{spacing.md}` 10 px sits off the 4 px base**, as does the 6 px button padding mentioned in Layout. Extracted as such; not normalised.
+- **The `ex-*` examples describe shadows the brand does not have.** `ex-modal-card` says "elevated shadow" and `ex-toast` says "medium shadow", but Elevation & Depth records no shadow in the brand and there is no `shadow:` token group. Those two descriptions are auto-derived boilerplate and contradict the brand; a modal or toast in this system should be separated by the `{colors.canvas-soft}` fill step and a `{colors.mute}` boundary, not by a shadow. The descriptions were left verbatim because they are generated text, not an editorial claim.
+- **No light polarity.** The file documents one canvas polarity only. `ex-pricing-tier-featured` refers to "light mode" behaviour that this token set does not define.
+- **Focus ring geometry is prescribed.** The 2 px ring and 2 px offset are specified here, not extracted; the source file defined no focus ring at all.

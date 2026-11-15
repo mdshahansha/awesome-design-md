@@ -24,7 +24,27 @@ colors:
   ink-press: "#1a1a1a"
   on-dark-muted: "#bdb8c0"
   on-dark-faint: "#3f3849"
-  ring-focus: "#9dc1f5"
+  focus: "#9dc1f5"
+  focus-on-light: "#422082"
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
+
+shadow:
+  level-1: "rgba(0,0,0,0.08) 0 2px 8px 0"
+  level-2: "rgba(0,0,0,0.1) 0 10px 15px -3px, rgba(0,0,0,0.1) 0 4px 6px -4px"
+  level-3-glow: "rgb(21,15,35) 0 0 8px 6px"
+  level-4-pressed: "rgba(0,0,0,0.18) 0 0.5rem 1.5rem"
+  input-focus-inset: "rgba(0,0,0,0.15) 0 2px 10px inset"
 
 typography:
   display-hero:
@@ -307,19 +327,22 @@ Typography splits cleanly between three families: a custom display sans for hero
 - **Night** (`{colors.surface-night}` — `#150f23`): Cards on dark canvas, code blocks, and the "featured" pricing tier.
 - **Light Canvas** (`{colors.surface-canvas-light}` — `#ffffff`): Pricing, contact, and dense-reference page background.
 - **Surface Press Light** (`{colors.surface-press-light}` — `#f0f0f0`) and **Press Stronger** (`{colors.surface-press-stronger}` — `#efefef`): The pressed/active fill of inverted buttons on dark surfaces.
-- **Hairline Violet** (`{colors.hairline-violet}` — `#362d59`): 1px borders on dark cards.
-- **Hairline Cool** (`{colors.hairline-cool}` — `#cfcfdb`): 1px borders on text inputs and form fields.
-- **Hairline Cloud** (`{colors.hairline-cloud}` — `#e5e7eb`): Pricing-table dividers and pricing-card borders on light canvas.
+- **Hairline Violet** (`{colors.hairline-violet}` — `#362d59`): 1px borders on dark cards. **Decorative only** — 1.37:1 on `{colors.surface-canvas-dark}`, far below the 3:1 a component boundary needs.
+- **Hairline Cool** (`{colors.hairline-cool}` — `#cfcfdb`): 1px borders on text inputs and form fields as extracted. **Decorative only** — 1.54:1 on `{colors.surface-canvas-light}`.
+- **Hairline Cloud** (`{colors.hairline-cloud}` — `#e5e7eb`): Pricing-table dividers and pricing-card borders on light canvas. **Decorative only** — 1.24:1 on `{colors.surface-canvas-light}`.
+
+All three extracted hairlines are frozen facts about the real site and all three fail the 3:1 boundary threshold. Where a boundary must actually be seen — the only edge of a text input, the edge of an interactive card — the system already owns a tone that passes and needs no new token: **`{colors.accent-violet-mid}`** (`#79628c`) measures 5.33:1 on `{colors.surface-canvas-light}` and 3.23:1 on `{colors.surface-canvas-dark}`, so one tone carries the accessible boundary on both polarities. Use it for control boundaries; keep the hairlines for dividers and card chrome that carry no meaning. Re-binding the extracted `text-input` border is a brand-owner decision and is not done here.
 
 ### Text
 - **On Primary** (`{colors.on-primary}` — `#ffffff`): All text on dark canvas, all CTA labels on filled dark buttons.
 - **Ink** (`{colors.ink}` — `#1f1633`): Body text on light canvas; identical hex to the dark canvas, repurposed as type.
 - **Ink Press** (`{colors.ink-press}` — `#1a1a1a`): Reserved for the pressed/active state of inverted buttons.
-- **On Dark Muted** (`{colors.on-dark-muted}` — `rgba(255,255,255,0.72)`): Secondary text, captions, and table cell values on dark canvas.
+- **On Dark Muted** (`{colors.on-dark-muted}` — `#bdb8c0`, originally documented as `rgba(255,255,255,0.72)` over the dark canvas): Secondary text, captions, and table cell values on dark canvas. **This is the system's muted/secondary ink** — the `text-dim` role — and it is the only one; the light canvas has no muted ink at all (see Known Gaps). It measures 8.83:1 on `{colors.surface-canvas-dark}` and 9.59:1 on `{colors.surface-night}`, so the role passes AA on every surface it is actually drawn on.
 - **On Dark Faint** (`{colors.on-dark-faint}` — `rgba(255,255,255,0.18)`): Translucent surface-on-dark — used for ghost button fills and dimmed nav items.
 
 ### Semantic
-- **Focus Ring** (`{colors.ring-focus}` — `rgba(59,130,246,0.5)`): Translucent blue focus ring — the only blue in the system, reserved for keyboard focus on form fields.
+- **Focus Ring, dark grounds** (`{colors.focus}` — `#9dc1f5`): The extracted pale blue (originally documented as `rgba(59,130,246,0.5)` and flattened to this hex in the token block) — the only blue in the system, reserved for keyboard focus. It is the ring for every dark ground: `{colors.surface-canvas-dark}`, `{colors.surface-night}`, and `{colors.accent-violet-deep}` spotlight cards. The token was renamed from `ring-focus` to `focus` so the ring is addressable as the system's focus role; the hex is unchanged.
+- **Focus Ring, light grounds** (`{colors.focus-on-light}` — `#422082`): The pale blue sits at 1.85:1 on `{colors.surface-canvas-light}` and cannot serve the light polarity, so the light canvas uses the brand's existing Deep Violet at 11.93:1. No new brand colour is introduced — this is the same tone as `{colors.accent-violet-deep}`, re-stated as the light-polarity ring so the two rings can be referenced independently. Both rings are drawn **outside** the control with a 2px offset, so each is measured against the surface behind it rather than the control fill.
 
 ## Typography
 
@@ -383,10 +406,13 @@ The dark canvas absorbs whitespace differently from light. On dark surfaces the 
 | Level | Treatment | Use |
 |---|---|---|
 | 0 | Flat on canvas, no shadow | Default surface, dark or light |
-| 1 | `box-shadow: rgba(0,0,0,0.08) 0 2px 8px 0` | Inverted buttons on dark canvas (light fill lifting off dark surface) |
-| 2 | `box-shadow: rgba(0,0,0,0.1) 0 10px 15px -3px, rgba(0,0,0,0.1) 0 4px 6px -4px` | Floating cards on light canvas, modals |
-| 3 | `box-shadow: rgb(21,15,35) 0 0 8px 6px` | Glow halo around primary CTA on dark hero — the dark color itself becomes the shadow, creating a vignette of canvas around the button |
-| 4 | `box-shadow: rgba(0,0,0,0.18) 0 0.5rem 1.5rem` | Pressed inverted button on dark canvas |
+| 1 | `box-shadow: {shadow.level-1}` (`rgba(0,0,0,0.08) 0 2px 8px 0`) | Inverted buttons on dark canvas (light fill lifting off dark surface) |
+| 2 | `box-shadow: {shadow.level-2}` (`rgba(0,0,0,0.1) 0 10px 15px -3px, rgba(0,0,0,0.1) 0 4px 6px -4px`) | Floating cards on light canvas, modals |
+| 3 | `box-shadow: {shadow.level-3-glow}` (`rgb(21,15,35) 0 0 8px 6px`) | Glow halo around primary CTA on dark hero — the dark color itself becomes the shadow, creating a vignette of canvas around the button |
+| 4 | `box-shadow: {shadow.level-4-pressed}` (`rgba(0,0,0,0.18) 0 0.5rem 1.5rem`) | Pressed inverted button on dark canvas |
+
+### How elevation is expressed
+The system uses **two** elevation languages and splits them by polarity, deliberately rather than at random: on **light** surfaces depth is a shadow from the ladder above (levels 1, 2, 4); on **dark** surfaces depth is a **1px hairline plus a deeper fill** (`{colors.hairline-violet}` on `{colors.surface-night}`), never a shadow — a black shadow on a violet canvas muddies the hue, which is why the Don'ts forbid it. Level 3 is the one exception on dark: it is not a shadow in the lighting sense but a canvas-coloured vignette. Do not mix the two on one surface.
 
 ### Decorative Depth
 Sentri's depth doesn't come from drop shadows — it comes from the **starfield texture** on the hero canvas (subtle white-on-violet pinpricks at low opacity), the **floating sticker mascots** (drawn with hand-rendered outlines and saturated fills, layered above the canvas with no shadow), and the **lime squiggly divider** above the footer. These illustrative elements do the work that shadow stacks do in flatter design systems — they tell the eye where one section ends and another begins.
@@ -410,7 +436,26 @@ The site doesn't use traditional photography — it uses **illustrated stickers 
 
 ## Components
 
-> **No hover states documented.** Every spec below shows only Default and Pressed/Active states. Variants are formal entries in the front-matter `components:` block.
+> **Only default and pressed states were extracted.** The extraction captured Default plus Pressed/Active and Disabled; every other state in the matrix below is **prescribed** to match the brand, not measured from the live site. Extracted variants are formal entries in the front-matter `components:` block; prescribed states are described in prose and must not be read as observed facts.
+
+### State matrix
+
+Legend: **E** = extracted from the live site · **P** = prescribed here · **–** = the control genuinely does not have this state.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | E | P: fill lightens toward `{colors.ink-deep}`, no travel | P: 2px `{colors.focus-on-light}` ring, 2px offset | E `button-primary-pressed` | E `button-disabled` | P: label holds, inline spinner in `{colors.on-primary}` | – | – |
+| `button-inverted` | E | P: fill drops to `{colors.surface-press-light}` | P: 2px `{colors.focus}` ring, 2px offset | E `button-inverted-pressed` | E `button-disabled` | P: inline spinner in `{colors.ink-deep}` | – | – |
+| `button-ghost-on-dark` | E | P: fill rises from `{colors.on-dark-faint}` toward 0.28 alpha | P: 2px `{colors.focus}` ring, 2px offset | P: fill rises one more step, no scale | P `button-disabled` fill | P: inline spinner | – | – |
+| `button-violet-token` | E | P: border deepens one violet step | P: 2px `{colors.focus}` ring on dark, `{colors.focus-on-light}` on light | P: fill deepens to `{colors.accent-violet-deep}` | P | – | P: fill locks to `{colors.accent-violet-deep}` while its filter is applied | – |
+| `text-input` | E | P: boundary strengthens to `{colors.accent-violet-mid}` | E `text-input-focused` (`{shadow.input-focus-inset}`), **plus** a prescribed 2px `{colors.focus-on-light}` ring at 2px offset, because an inset shadow alone is not a visible focus indicator | – | P: fill `{colors.hairline-cloud}`, ink `{colors.on-dark-muted}` | P: boundary pulses opacity only | – | P: boundary and helper text in a true error red, which the brand does not own — see Known Gaps |
+| `select-violet` | E | P: fill lightens toward `{colors.accent-violet}` | P: 2px `{colors.focus}` ring, 2px offset | P: fill returns to `{colors.accent-violet-deep}` | P | – | P: chosen option row carries a `{colors.accent-lime}` 2px leading bar | P: as `text-input` |
+| `card-pricing` / `card-pricing-featured` | E | P: no fill change; boundary strengthens to `{colors.accent-violet-mid}` | P: ring per polarity when the whole card is a link | – | – | P: skeleton blocks fade in opacity only | P: the featured tier is permanently selected by inversion, not by a state | – |
+| `nav-bar-light` item | E | P: underline grows in opacity, no travel | P: 2px `{colors.focus-on-light}` ring | P: ink drops to `{colors.primary}` | – | – | P: current page carries a 2px `{colors.accent-lime}` underline | – |
+| `link-on-dark` / `link-on-light` | E (persistent underline) | P: underline thickens 1px → 2px | P: ring per polarity, 2px offset | P: ink dims one step | – | – | – | – |
+| `pill-neutral-dark` / `chip-lime-keyword` | E | – | – | – | – | – | – | – |
+
+`pill-neutral-dark` and `chip-lime-keyword` are **genuinely single-state**: both are non-interactive typographic decoration (a status label and an inline headline highlight), so default is the only state either one has.
 
 ### Buttons
 
@@ -452,7 +497,7 @@ The site doesn't use traditional photography — it uses **illustrated stickers 
 
 **`text-input`** — the contact-form first/last/email/etc. fields.
 - Background `{colors.surface-canvas-light}`, text `{colors.ink-deep}`, type `{typography.body-md}`, padding `{spacing.sm} {spacing.md}` (8px 12px), rounded `{rounded.sm}` 6px, 1px `{colors.hairline-cool}` border.
-- Focus state in `text-input-focused`: same fill, but adds an inset shadow `rgba(0,0,0,0.15) 0 2px 10px inset` to suggest depth pressed inward.
+- Focus state in `text-input-focused`: same fill, but adds an inset shadow `{shadow.input-focus-inset}` (`rgba(0,0,0,0.15) 0 2px 10px inset`) to suggest depth pressed inward. The inset shadow is the extracted treatment and is **not** a sufficient focus indicator on its own; pair it with the prescribed 2px `{colors.focus-on-light}` ring at 2px offset (11.93:1 on `{colors.surface-canvas-light}`).
 
 **`select-violet`** — the dropdown variant used inside dark contact panels.
 - Background `{colors.accent-violet-deep}`, text `{colors.on-primary}`, type `{typography.body-md}`, padding `{spacing.sm} {spacing.lg}`, rounded `{rounded.md}`. Distinctive because it doesn't mimic a plain text input — it reads as a deliberate brand surface.
@@ -469,7 +514,7 @@ The site doesn't use traditional photography — it uses **illustrated stickers 
 ### Pills, Badges, and Highlight Chips
 
 **`pill-neutral-dark`** — small status / category pill on dark surfaces.
-- Background `{colors.surface-night}`, text `{colors.on-primary}`, type `{typography.caption}` 12px, padding `{spacing.xs} {spacing.sm}` (4px 8px), rounded `{rounded.xs}` 4px.
+- Background `{colors.surface-night}`, text `{colors.on-primary}`, type `{typography.caption}` 14px, padding `{spacing.xs} {spacing.sm}` (4px 8px), rounded `{rounded.xs}` 4px.
 
 **`chip-lime-keyword`** — the signature inline highlight wrapping single words inside the hero display headline.
 - Background `{colors.accent-lime}`, text `{colors.ink-deep}`, type matches the surrounding `{typography.display-hero}`, rounded `{rounded.xs}` 4px, padding `0 {spacing.md}` (12px horizontal, 0 vertical so the chip hugs the cap-height).
@@ -490,6 +535,105 @@ The site doesn't use traditional photography — it uses **illustrated stickers 
 
 **`footer-light`** — site-wide footer on the light-canvas template (pricing, contact, docs).
 - Background `{colors.surface-canvas-light}`, text `{colors.ink-deep}`, type `{typography.caption}`, padding `{spacing.xxl} {spacing.xl}` (32px 24px). Topped by the lime squiggly divider — see Signature Components. Holds three to four columns of link groups, social icons in a horizontal strip at the bottom right, and a small legal/copyright row at the very bottom in `{typography.caption}`.
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or transition in this section was extracted; nothing here should be read as an observed fact about Sentri. The profile is **Crisp** — immediate and tool-like, state change reading as instant with no entrance choreography — which is what an observability product's own console cadence demands: the uppercase button caps and the "reads like a log" body leading are the same argument expressed in type.
+
+All values come from the `motion:` token group. Only `transform` and `opacity` are animated; `width`, `height`, `top`, `left` and `margin` are never animated, because they force layout. Every exit is shorter than its matching entrance. The sticker mascots and the starfield texture are **static** — they are illustration, not ambience, and nothing in this system animates them on load.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, links, cards) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` of an overlay layer; link underline thickness swaps without transition | Fade at `{motion.duration-reduced}` |
+| Press / active | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` only — the polarity flip of `button-primary-pressed` is a fill swap, and Crisp adds no scale pop | Instant swap, no transition |
+| Focus (`focus-visible` ring) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` of the ring | Ring appears with no transition — it is never animated away from the user |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` of the content band; no travel, so the dark canvas never appears to slide | `opacity` at `{motion.duration-reduced}` |
+| Modal / drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px → 0)` | `opacity` only at `{motion.duration-reduced}`, no travel |
+| Modal / drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform: translateY(0 → 4px)` | `opacity` only at `{motion.duration-reduced}`, no travel |
+| Dropdown (nav caret, `select-violet`) | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: translateY(4px → 0)` | `opacity` only at `{motion.duration-reduced}`, no travel |
+| Toast enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px → 0)` | `opacity` only at `{motion.duration-reduced}` |
+| Toast exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform: translateY(0 → 4px)` | `opacity` only at `{motion.duration-reduced}` |
+| List enter (pricing tiers, feature cards, table rows) | `{motion.duration-fast}` per item, `{motion.stagger-step}` between items | `{motion.ease-enter}` | `opacity` + `transform: translateY(4px → 0)` | `opacity` at `{motion.duration-reduced}`, stagger dropped to 0, no travel |
+| List exit | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity` | `opacity` at `{motion.duration-reduced}`, no stagger |
+| Loading (spinner) | `{motion.duration-emphasis}` per revolution, infinite | linear | `transform: rotate()` | Replaced by a static indicator; the text label carries the state |
+| Loading (skeleton) | `{motion.duration-slow}` per cycle, infinite | `{motion.ease-standard}` | `opacity` 1 → 0.5 → 1 | Frozen at a single mid opacity, no pulse |
+
+Nothing animates on first paint in a way that delays content: the hero headline, the lime keyword chip and the hero copy render immediately, and only the loaders above run infinitely.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate and scale; every stagger; the spinner revolution
+     and the skeleton pulse are frozen. */
+  /* Kept: opacity fades only, clamped to {motion.duration-reduced} (100ms),
+     and the focus ring, which is never suppressed. */
+}
+```
+
+Removed under reduced motion: every `transform` (all travel and all scale), every stagger, and both infinite loaders — the spinner becomes a static indicator and the skeleton holds one opacity. Kept: opacity fades at `{motion.duration-reduced}` (100ms, which is already under the 150ms ceiling), the focus ring, and all instant state swaps, which never moved to begin with.
+
+## Accessibility
+
+### Measured contrast — key pairs
+
+Ratios computed with WCAG 2.1 relative luminance from this file's own hexes. The file documents two canvases, so each ink is measured on the ground it is actually drawn on.
+
+| Pair | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.surface-canvas-light}` | 17.2:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.surface-canvas-dark}` | 17.2:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.surface-night}` | 18.68:1 | 4.5:1 | Pass |
+| `{colors.on-dark-muted}` on `{colors.surface-canvas-dark}` | 8.83:1 | 4.5:1 | Pass |
+| `{colors.on-dark-muted}` on `{colors.surface-night}` | 9.59:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.primary}` (accent / CTA) | 18.68:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.accent-violet-deep}` | 11.93:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` on `{colors.accent-violet-mid}` | 5.33:1 | 4.5:1 | Pass |
+| `{colors.ink-deep}` on `{colors.accent-lime}` (keyword chip) | 12.9:1 | 3:1 (88px display) | Pass |
+| `{colors.ink-press}` on `{colors.surface-press-stronger}` | 15.14:1 | 4.5:1 | Pass |
+| `{colors.accent-violet}` on `{colors.surface-canvas-light}` (inline link) | 5.22:1 | 4.5:1 | Pass |
+| `{colors.focus}` on `{colors.surface-canvas-dark}` | 9.32:1 | 3:1 | Pass |
+| `{colors.focus}` on `{colors.surface-night}` | 10.12:1 | 3:1 | Pass |
+| `{colors.focus}` on `{colors.accent-violet-deep}` | 6.46:1 | 3:1 | Pass |
+| `{colors.focus-on-light}` on `{colors.surface-canvas-light}` | 11.93:1 | 3:1 | Pass |
+| `{colors.focus-on-light}` on `{colors.surface-press-light}` | 10.47:1 | 3:1 | Pass |
+| `{colors.accent-violet-mid}` on `{colors.surface-canvas-light}` (accessible boundary) | 5.33:1 | 3:1 | Pass |
+| `{colors.accent-violet-mid}` on `{colors.surface-canvas-dark}` (accessible boundary) | 3.23:1 | 3:1 | Pass |
+
+### Where the real brand fails AA
+
+These are extracted values and they are frozen. They are stated here rather than corrected, because the document's job is to describe the real site.
+
+- `{colors.hairline-cloud}` on `{colors.surface-canvas-light}` is **1.24:1** against a 3:1 requirement. It is the border of `card-pricing` and the pricing-table divider on the live site. Acceptable as pure decoration; it must not be the only boundary of a control.
+- `{colors.hairline-cool}` on `{colors.surface-canvas-light}` is **1.54:1** against 3:1. On the real site this is the **only** boundary of `text-input`, which is a genuine WCAG 1.4.11 failure for form fields.
+- `{colors.hairline-violet}` on `{colors.surface-canvas-dark}` is **1.37:1**, and **1.49:1** on `{colors.surface-night}`, against 3:1. It is the boundary of the dark cards.
+- `{colors.on-dark-faint}` on `{colors.surface-canvas-dark}` is **1.53:1**. It is the fill of `button-ghost-on-dark`, not a boundary or an ink, so 1.4.11 does not apply to the fill itself — but it means the ghost button has no perceivable edge, and its label (`{colors.on-primary}`, 17.2:1 on the composited fill) is the only thing that marks it as a control.
+- `{colors.accent-pink}` on `{colors.surface-canvas-light}` is **2.42:1** and `{colors.accent-lime}` is **1.33:1**. Both are decoration only — sticker outlines, chart points, chip fills — and the Don'ts already forbid either as a type colour on light. Neither is used as text, so no text threshold applies; as a non-text chart point, pink falls below the 3:1 of 1.4.11.
+- The pale-blue ring `{colors.focus}` is **1.85:1** on `{colors.surface-canvas-light}` and **1.62:1** on `{colors.surface-press-light}`. This is why the light polarity uses `{colors.focus-on-light}` instead; the pale blue must never be drawn on a light ground.
+
+The accessible replacement for every failing boundary above is `{colors.accent-violet-mid}`, which the palette already owns and which passes on both canvases. The extracted `components:` bindings are left exactly as extracted; re-pointing `text-input`'s border is a brand-owner decision.
+
+### Focus ring visibility, surface by surface
+
+The ring is 2px, drawn **outside** the control with a 2px offset, so it is judged against the surface behind the control rather than the control's fill.
+
+| Surface | Ring | Ratio |
+|---|---|---|
+| `{colors.surface-canvas-dark}` | `{colors.focus}` | 9.32:1 |
+| `{colors.surface-night}` | `{colors.focus}` | 10.12:1 |
+| `{colors.accent-violet-deep}` (spotlight card) | `{colors.focus}` | 6.46:1 |
+| `{colors.surface-canvas-light}` | `{colors.focus-on-light}` | 11.93:1 |
+| `{colors.surface-press-light}` / `{colors.surface-press-stronger}` | `{colors.focus-on-light}` | 10.47:1 / 10.37:1 |
+
+`{colors.focus}` reuses the file's own extracted pale blue (formerly the `ring-focus` token); `{colors.focus-on-light}` reuses the brand's existing Deep Violet tone. No new brand colour was introduced for either ring. Over the starfield hero texture and over full-bleed product mocks, which have no single measurable ground, draw `{colors.focus}` with a 1px `{colors.primary}` outer edge so the ring keeps a dark boundary whatever it crosses.
+
+### Minimum tap target
+
+`button-primary` as specified is 12px + 12px padding around a 14px / 1.14 label = **40px tall**, which is below the 44px the Responsive Behavior section claims. Specify an explicit `min-height: 44px` on all primary, inverted and ghost buttons, and on form fields, rather than relying on padding arithmetic. Rendered target size cannot be verified from this document — see Known Gaps.
+
+### Reduced motion
+
+See the Motion & Animation section: under `prefers-reduced-motion: reduce` all travel, scale and stagger are removed, both loaders freeze, opacity fades are clamped to `{motion.duration-reduced}` (100ms), and the focus ring is never suppressed.
 
 ## Do's and Don'ts
 
@@ -524,7 +668,7 @@ The site doesn't use traditional photography — it uses **illustrated stickers 
 | Small Mobile | 1–575px | Compact mode; sticker mascots drop in size or hide entirely to preserve content priority |
 
 ### Touch Targets
-- Primary buttons hit a minimum 44×44px on mobile (12px vertical padding × 16px font + line-height = ~44px). Maintains WCAG AAA touch-target spec.
+- Primary buttons must hit a minimum 44×44px on mobile, per WCAG 2.1 AAA 2.5.5. Note that the padding alone does not get there: 12px + 12px around a 14px / 1.14 label is 40px, so an explicit `min-height: 44px` is required rather than inferred from padding.
 - Pill tags and badges in nav and feature surfaces stay above 32×32px even at small mobile breakpoints; they enlarge if necessary rather than shrink.
 - Form fields stay at the 44px minimum height on mobile contact pages.
 
@@ -549,3 +693,15 @@ The site doesn't use traditional photography — it uses **illustrated stickers 
 5. Default to `{typography.body-md}` for product UI body and `{typography.body-lg}` for marketing prose — the leading difference is intentional and load-bearing.
 6. Keep `{colors.accent-lime}` scarce — one lime element per viewport. The signature only works because it's rare.
 7. When polarizing a new surface, choose one canvas (`{colors.surface-canvas-dark}` or `{colors.surface-canvas-light}`) and commit to it; don't blend the two on a single page band.
+
+## Known Gaps
+
+- **No muted ink on the light canvas.** `{colors.on-dark-muted}` is the system's only secondary/muted tone and it is scoped to dark grounds by its own name. The extraction found no muted grey for light surfaces: pricing and contact pages use full-strength `{colors.ink}` for every text weight. Rather than invent a muted grey — which would falsify the palette — the light polarity is documented as having one ink. If a secondary light-canvas ink is ever needed, derive it and record it as prescribed.
+- **No error, success, warning or info colour.** The brand owns no semantic status palette. The prescribed `error` states in the state matrix therefore name no hex; a true error red would be a new brand colour and is out of scope for this document.
+- **No hover, focus, loading or selected state was extracted.** Everything marked **P** in the state matrix is prescribed. The live site's real hover and focus treatments are unknown to this document.
+- **All motion is prescribed.** No duration, easing or transition in this file was measured from Sentri. The Crisp profile was assigned from the brand's developer-tool identity, not from observed timing.
+- **The focus ring's original form is partly lost.** The Colors prose documented the ring as `rgba(59,130,246,0.5)` while the token block carried the flattened `#9dc1f5`; the same mismatch exists for `{colors.on-dark-muted}` (`rgba(255,255,255,0.72)` vs `#bdb8c0`) and `{colors.on-dark-faint}` (`rgba(255,255,255,0.18)` vs `#3f3849`). The hexes do not composite exactly to the stated alphas, so which of the two forms is the extracted truth cannot be settled from this file. The hexes are treated as authoritative and left frozen.
+- **Rendered behaviour is unverifiable here.** Tap-target size, overlap, clipping, horizontal overflow, layout shift and frame rate need a running page. The 44×44px claim in Responsive Behavior is a specification, not a measurement — and the padding arithmetic behind it yields 40px (see Accessibility).
+- **Unmapped spacing value.** Layout states mobile section padding as "32px–48px"; 48px is not in the `spacing:` ladder and no token was extracted for it. The gap is recorded rather than filled with an invented token.
+- **The display face is proprietary and unnamed.** "Sentri Display" is a placeholder for a face the extraction could not identify; substitutes are listed in Typography.
+- **Starfield texture has no measurable value.** Its opacity and pinprick density are described qualitatively only; no extracted number exists.

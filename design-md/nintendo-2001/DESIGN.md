@@ -23,6 +23,8 @@ colors:
   ink: "#21242e"              # primary text on light
   ink-soft: "#3d4f97"         # secondary text / chrome labels
   on-primary: "#ffffff"       # text on dark/red/orange chrome
+  focus: "#13275e"            # Bevel Indigo — focus ring on periwinkle/white chrome (prescribed)
+  focus-on-dark: "#ecab37"    # Amber ring for controls on the carbon command layer (reuses the extracted amber)
   systems-teal: "#206479"     # Systems hero circuit-board cyan
   games-red: "#a7282b"        # Games F-1 racing hero
   error: "#e60012"            # validation / destructive (shares brand red)
@@ -88,6 +90,18 @@ spacing:
   xl: 24px
   xxl: 32px
   section: 48px
+
+motion:
+  duration-instant: 70ms
+  duration-fast: 130ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 450ms
+  ease-standard: cubic-bezier(0.3, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 60ms
+  duration-reduced: 130ms
 
 components:
   nav-bar:
@@ -178,8 +192,8 @@ components:
     rounded: "{rounded.md}"
     padding: "{spacing.lg}"
   dotted-divider:
-    backgroundColor: "{colors.muted-indigo}"
-    textColor: "{colors.muted-indigo}"
+    borderColor: "{colors.muted-indigo}"
+    borderStyle: dotted
     rounded: "{rounded.none}"
     height: 1px
   hero-panel:
@@ -386,6 +400,15 @@ The palette is a **cool metallic chassis with rationed warm signal**. Read it as
 - **Chrome Indigo** (`{colors.ink-soft}` — #3d4f97): Secondary text and small-caps chrome labels.
 - **White** (`{colors.on-primary}` — #ffffff): Text on carbon, red, and orange chrome.
 
+### Focus
+No focus ring was extracted — the 2001 original relied on the browser's own
+default dotted outline. Both rings below are **prescribed**, and one ring cannot
+serve this file because it documents two surface polarities: the light periwinkle
+chrome and the `{colors.carbon}` command layer.
+- **Bevel Indigo** (`{colors.focus}` — #13275e): the ring for controls on every light surface — a deeper step of the same indigo ladder as `{colors.chrome-indigo}`, so it reads as the bevel line drawn one shade harder. Measures **4.17:1 on `{colors.canvas}`**, 14.19:1 on `{colors.surface}`, 10.55:1 on `{colors.platinum}`, 7.43:1 on `{colors.canvas-soft}`, 6.63:1 on `{colors.lavender}`, 5.51:1 on `{colors.periwinkle}`.
+- **Amber on dark** (`{colors.focus-on-dark}` — #ecab37): the ring for controls on the `{colors.carbon}` slabs (nav words, right-rail buttons, left-rail tabs, footer links), where Bevel Indigo would sit at 1.09:1. It reuses the extracted amber hex on purpose — amber is already this system's utility-energy colour — and measures **7.7:1 on `{colors.carbon}`**.
+- Both are drawn as a 2px ring **outside** the control with a 1px offset, so the ratio that matters is against the surface behind the control, not against the control's own fill. The two rings separate from each other at 7.06:1.
+
 ### Semantic
 - **Error / Alert** (`{colors.error}` — #e60012): Validation and destructive states reuse the brand red.
 - **Systems Teal** (`{colors.systems-teal}` — #206479): Page-accent tint — the Systems hero's circuit-board cyan field.
@@ -435,25 +458,6 @@ Arial is freely available system-wide and needs no substitute. To recreate the p
 ### Whitespace Philosophy
 Empty space is **engineered seam**, not breathing room. Modules butt against each other separated by thin `{colors.chrome-indigo}` bevel lines and a few pixels of canvas, so the eye reads grouped plates. The density is intentional: it makes the page feel like a packed control panel where everything is one click away.
 
-### Responsive Strategy
-
-#### Breakpoints
-| Name | Width | Key Changes |
-|---|---|---|
-| Desktop (only) | ~780–830px fixed | The native, sole target — a fixed-width application-style layout |
-| Narrow window | < 780px | Horizontal scroll (no reflow); the table layout does not collapse |
-
-This is a **pre-responsive, fixed-canvas** design. It was authored for a single desktop window size and does not reflow. A faithful *modern* re-implementation would preserve the fixed chrome metaphor on desktop and, below ~720px, stack the right action rail beneath the content column and collapse the dual nav bars into a single carbon bar with a disclosure toggle.
-
-#### Touch Targets
-Not a consideration in the original (mouse-only era); buttons and chips are 18–28px tall. A modern port must enlarge the `{components.button-primary}`, `{components.button-icon-arrow}`, and `{components.radio-option}` hit areas to a 44×44px minimum.
-
-#### Collapsing Strategy
-On a modern narrow viewport: dual nav bars → single carbon bar + menu disclosure; two-column body → single stacked column with the right rail moving below content; the left rotated-tab strip → a horizontal scroll chip row or removed; fixed hero → fluid full-bleed hero retaining the outlined wordmark.
-
-#### Image Behavior
-Hero fields are **full-bleed photographic plates** clipped to the panel's beveled rectangle; featured-site and game tiles are fixed-pixel thumbnails (~95×60px) in a tight grid. No lazy loading (era predates it). Product renders sit on textured backdrops rather than transparent cutouts.
-
 ## Elevation & Depth
 
 Depth in this system is **physical bevel simulation**, not soft shadow. There is no blurred drop-shadow vocabulary; instead every plate is given the illusion of being a raised piece of molded plastic.
@@ -488,7 +492,7 @@ Hero photography fills beveled rectangles at roughly 4:1 (banner) and 16:9 propo
 
 ## Components
 
-> No hover states are documented. Each spec below covers Default and (where extracted) Pressed/Active. Variants live as separate `components:` entries.
+> Each spec below covers Default and, where extracted, Pressed/Active. Variants live as separate `components:` entries. **No hover, focus, disabled, loading, selected or error state was extracted from the 2001 site** — the only state change the original encoded was the depressed-bevel swap on a utility chip. The ladder in *Interaction States* below is therefore **prescribed** for a modern reproduction, not extracted.
 
 ### Navigation
 
@@ -548,12 +552,15 @@ Hero photography fills beveled rectangles at roughly 4:1 (banner) and 16:9 propo
 - A `{colors.platinum}` light-gray `{rounded.md}` panel holding a form, capped by a `{components.section-label-bar}` header (≡ LOG IN / ≡ REGISTER). `{spacing.lg}` interior. The Login page pairs two side by side.
 
 **`dotted-divider`** — Dotted hairline rule
-- A 1px dotted `{colors.muted-indigo}` separator rule used between form sub-sections (the "Note:" line, "Forgot Your Password?"). A recurring Y2K-chrome detail — dotted rather than solid.
+- A 1px dotted `{colors.muted-indigo}` separator rule used between form sub-sections (the "Note:" line, "Forgot Your Password?"). A recurring Y2K-chrome detail — dotted rather than solid. The token is the rule's **stroke**, declared as `borderColor`: this component has no fill and no text of its own, and it is drawn inside `{components.form-panel}`, where muted indigo on `{colors.platinum}` measures 4.23:1 — above the 3:1 a boundary needs.
+- States: default only. A static rule genuinely has one state.
 
 ### Cards & Panels
 
 **`hero-panel`** — Photographic hero plate
 - A `{rounded.md}` beveled rectangle filled with full-bleed product photography over a page-tinted field (`{colors.lavender}` / `{colors.systems-teal}` / `{colors.games-red}`), topped with an outlined `{typography.display}` wordmark and a `{components.button-icon-arrow}` call-to-action. `{spacing.lg}` interior.
+- **This pairing fails AA and the failure is real, not a binding artefact.** `{colors.lavender}` is a genuine painted field, and the white `{typography.display}` wordmark is genuinely drawn on it: white on #acace7 measures **2.14:1**, under the 3:1 that 44px/900 large text needs. The wordmark's carbon outline and hard offset shadow are what made it legible in 2001, and WCAG gives no credit for either. On the other two hero tints the same white type passes — 6.64:1 on `{colors.systems-teal}` and 7.04:1 on `{colors.games-red}` — so the lavender Home field is the single failing case. See Accessibility.
+- States: default, hover, focus-visible (on its `{components.button-icon-arrow}`), loading (photographic field absent). No pressed, disabled, selected or error state — the panel is not itself a control.
 
 **`section-label-bar`** — Panel header
 - A `{colors.canvas}` header strip with a small grid/list glyph and an uppercase `{typography.ui-label}` title ("Official News", "Featured Sites", "Player's Poll"). Sharp corners, `{spacing.sm}` padding. Caps every content module.
@@ -628,6 +635,217 @@ Hero photography fills beveled rectangles at roughly 4:1 (banner) and 16:9 propo
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+### Interaction States
+
+> **Prescribed, not extracted.** The 2001 original documents one state change:
+> the beveled utility chip deepening to `{colors.nav-gold}` when depressed
+> (`{components.button-primary-pressed}`). Everything else below is the state
+> ladder a faithful modern reproduction needs, expressed in this file's own
+> chrome vocabulary — bevel polarity, warm signal, and the two prescribed focus
+> rings — rather than borrowed from a modern card system.
+
+| Component | default | hover | focus-visible | active / pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | `{colors.amber}` fill, top bevel highlight | fill lightens one step, bevel unchanged | 2px `{colors.focus}` ring, 1px offset | fill deepens to `{colors.nav-gold}`, bevel inverts to inset | fill desaturates to `{colors.platinum}`, `{colors.muted-indigo}` text, bevel flat | caption swaps to "…" ellipsis in `{typography.ui-label}`, chip non-interactive | n/a | n/a |
+| `button-submit` | `{colors.signal}` fill, white label | fill lightens one step | 2px `{colors.focus}` ring | bevel inverts to inset | `{colors.platinum}` fill, `{colors.muted-indigo}` label | label replaced by a 3-dot progress glyph; chip stays sized | n/a | ring in `{colors.error}` when the form it submits failed validation |
+| `button-secondary` | `{colors.carbon}` slab, white label | halftone texture brightens | 2px `{colors.focus-on-dark}` ring (it sits on carbon) | inset bevel | 50% opacity slab, `{colors.muted-indigo}` label | 3-dot glyph replaces the leading icon | n/a | n/a |
+| `button-icon-arrow` / `button-arrow-chip` | `{colors.signal}` disc/chip, white chevron | disc lightens one step | 2px `{colors.focus}` ring | inset bevel | `{colors.platinum}` disc | n/a | n/a | n/a |
+| `nav-bar` link | `{colors.nav-gold}` word on carbon | word brightens to `{colors.amber}` | 2px `{colors.focus-on-dark}` ring | word flattens to `{colors.canvas-soft}` | n/a | n/a | current section's word is underlined (selected) | n/a |
+| `left-rail-tab` | `{colors.carbon}` tab, `{colors.canvas-soft}` rotated label | label brightens to white | 2px `{colors.focus-on-dark}` ring | tab tucks 1px further behind the chrome | n/a | n/a | selected tab's label is `{colors.amber}` | n/a |
+| `text-input` / `search-field` | white fill, 1px `{colors.hairline}` border | border darkens to `{colors.chrome-indigo}` | 2px `{colors.focus}` ring, border unchanged | n/a (focus is the pressed equivalent) | `{colors.platinum}` fill, `{colors.muted-indigo}` text | n/a | n/a | 1px border swaps to `{colors.error}` with the message in `{typography.micro}` beneath |
+| `select-dropdown` | white fill, 1px `{colors.carbon}` border | chevron button brightens | 2px `{colors.focus}` ring | chevron button shows inset bevel | `{colors.platinum}` fill | n/a | chosen option carries a `{colors.chrome-indigo}` check mark (selected) | border in `{colors.error}` |
+| `radio-option` | 12px white dot, `{colors.hairline}` ring | ring darkens to `{colors.chrome-indigo}` | 2px `{colors.focus}` ring outside the dot | dot compresses | `{colors.platinum}` dot | n/a | selected shows a `{colors.primary}` centre fill | option row label turns `{colors.error}` when the poll was submitted empty |
+| `news-row` | `{colors.platinum}` row, `{colors.ink-soft}` headline | row lifts to `{colors.surface}` (the documented list-row highlight) | 2px `{colors.focus}` ring on the whole row | row shows inset bevel | n/a | skeleton row keeps the platinum fill with no headline text | n/a | n/a |
+| `info-box`, `poll-panel`, `promo-card`, `system-tile`, `link-row-card`, `calendar-widget`, `featured-tile`, `form-panel`, `section-label-bar`, `subnav-strip`, `footer-bar`, `logo-pill`, `mascot-bubble`, `esrb-badge`, `esrb-rating-square`, `hero-panel` | static surfaces | — | ring belongs to the control inside, not the plate | — | — | panels may show a skeleton fill; badges do not | `system-tile` and `featured-tile` take the selected ring when used as a chooser | — |
+
+Components with genuinely two states: `button-primary` and `button-primary-pressed` are the only extracted pair. `dotted-divider`, `footer-bar`, `section-label-bar` and both ESRB marks have **one** state — they are decoration or legend, never controls.
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was
+not measured from the live site.** It could not have been: in 2001 CSS
+transitions and keyframe animations did not exist, so the real page's entire
+motion vocabulary was the instantaneous JavaScript image-swap rollover, the
+animated GIF, the full page reload between routes, and — in the heroes — a
+pre-rendered motion blur baked into a JPEG. Nothing on the 2001 Nintendo.com
+moved under a timing function. The table below is a **target** for a modern
+reproduction of this identity, not a reconstruction of a lost behaviour, and it
+is deliberately read against what the era's own design language implies rather
+than against modern choreography:
+
+- The era's state change was **binary** — one image replaced by another in a
+  single frame. So the short end of the Playful scale carries the ordinary
+  interactions: hover and press at `{motion.duration-instant}` and
+  `{motion.duration-fast}`, close enough to the original swap that the chrome
+  still feels like hardware rather than like a web page easing.
+- The one thing the 2001 page genuinely implies in motion is the **beveled
+  physical control**. Every chip and button is drawn as a depressible plate with
+  a top highlight and a bottom shadow line; a small scale pop on press, which is
+  exactly the Playful signature, is the honest animation of that drawing. This
+  is why the overshoot easing is used on *enter* only and never on a hero.
+- Page transitions get **no choreography at all**, because the era's route
+  change was a white flash and a fresh reload. Reproducing that as a slow
+  cross-fade would be a modern import; a `{motion.duration-fast}` opacity
+  settle is as far as this file goes.
+
+Per SPEC section 6, only `transform` and `opacity` animate here.
+No rule in this file animates `width`, `height`, `top`, `left` or `margin` — the fixed-canvas chrome never changes its own box.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (chip, nav word, news row) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the bevel highlight layer | colour/opacity change only, `{motion.duration-reduced}`; no travel |
+| Press (button, chip, radio) | `{motion.duration-fast}` | `{motion.ease-standard}` | `transform: scale(0.97)` | scale removed; the pressed fill swaps instantly |
+| Focus (ring appears) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` of the ring | ring appears instantly, no fade |
+| Page / route transition | `{motion.duration-fast}` | `{motion.ease-exit}` out, `{motion.ease-standard}` in | `opacity` only | opacity settle at `{motion.duration-reduced}`; no travel |
+| Modal / drawer open | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` + `transform: scale(0.96 → 1)` | opacity only at `{motion.duration-reduced}`; no scale |
+| Modal / drawer close | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` + `transform: scale(1 → 0.98)` | opacity only at `{motion.duration-reduced}` |
+| Dropdown open (`select-dropdown`, nav disclosure) | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(-4px → 0)` | opacity only at `{motion.duration-reduced}` |
+| Dropdown close | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity` | unchanged (already opacity only), capped at `{motion.duration-reduced}` |
+| Toast enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px → 0)` | opacity only at `{motion.duration-reduced}`; no travel |
+| Toast exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` | unchanged, capped at `{motion.duration-reduced}` |
+| List enter (news rows, featured tiles, system tiles) | `{motion.duration-base}`, staggered `{motion.stagger-step}` | `{motion.ease-enter}` | `opacity` + `transform: translateY(6px → 0)` | stagger and travel removed; one shared opacity fade at `{motion.duration-reduced}` |
+| List exit | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` | unchanged, capped at `{motion.duration-reduced}` |
+| Loading (submit chip, skeleton row) | `{motion.duration-emphasis}`, looping | `{motion.ease-standard}` | `opacity` pulse on the 3-dot glyph / skeleton fill | loop frozen; a static "Loading…" label in `{typography.ui-label}` replaces the pulse |
+| Hero field (brand ambience) | — | — | — | — |
+
+Exit is shorter than its matching entrance in every row. Nothing animates on
+first paint: the hero plate and its wordmark are painted, not revealed, which is
+also the era-true behaviour. **There is no ambient loop in this system** — the
+heroes' motion blur is baked into the photograph, so the only infinite animation
+anywhere is the loader.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+- **Removed:** every `transform` — the press scale, the modal and toast scale,
+  the dropdown and list travel, and the `{motion.stagger-step}` sequencing
+  (lists appear together).
+- **Removed:** the looping loader pulse, replaced by a static "Loading…" label.
+- **Kept:** opacity fades only, every one clamped to `{motion.duration-reduced}`
+  (130ms) and never above 150ms.
+- **Kept unchanged:** the instant fills and bevel swaps, which were never
+  animated — the reduced-motion rendering of this file is very close to what the
+  2001 page actually did.
+
+## Accessibility
+
+Contrast below is measured with WCAG 2.1 relative luminance from this file's own
+hexes. The extracted brand values are frozen; where a real pair fails, it is
+named here rather than corrected.
+
+### Measured contrast — key pairs
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` #21242e on `{colors.canvas}` #7a8aba | 4.55:1 | 4.5 | Pass (by 0.05 — see Known Gaps) |
+| `{colors.ink}` on `{colors.surface}` #ffffff | 15.48:1 | 4.5 | Pass |
+| `{colors.ink}` on `{colors.platinum}` #dedede | 11.51:1 | 4.5 | Pass |
+| `{colors.ink}` on `{colors.periwinkle}` #8ba1d4 | 6.01:1 | 4.5 | Pass |
+| `{colors.ink}` on `{colors.lavender}` #acace7 | 7.23:1 | 4.5 | Pass |
+| `{colors.ink-soft}` on `{colors.surface}` | 7.6:1 | 4.5 | Pass |
+| `{colors.ink-soft}` on `{colors.platinum}` | 5.65:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.carbon}` | 15.48:1 | 4.5 | Pass |
+| `{colors.nav-gold}` on `{colors.carbon}` | 5.68:1 | 4.5 | Pass |
+| `{colors.canvas-soft}` on `{colors.carbon}` (footer, rail tabs) | 8.1:1 | 4.5 | Pass |
+| `{colors.carbon}` on `{colors.amber}` | 7.7:1 | 4.5 | Pass |
+| `{colors.carbon}` on `{colors.signal}` | 6.45:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.primary}` #e60012 | 4.8:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.systems-teal}` | 6.64:1 | 4.5 | Pass |
+| `{colors.on-primary}` on `{colors.games-red}` | 7.04:1 | 4.5 | Pass |
+| `{colors.hairline}` on `{colors.surface}` (input border) | 6.09:1 | 3.0 | Pass |
+| `{colors.hairline}` on `{colors.platinum}` | 4.52:1 | 3.0 | Pass |
+| `{colors.muted-indigo}` on `{colors.platinum}` (`dotted-divider`'s real ground) | 4.23:1 | 3.0 | Pass |
+
+### Real failures, stated plainly
+
+The 2001 interface puts cool indigo ink and cool indigo hairlines on a
+mid-luminance periwinkle body. That combination cannot reach AA, and these hexes
+are extracted facts, so they are reported, not repaired:
+
+| Foreground / Background | Ratio | Required | Note |
+|---|---|---|---|
+| `ink-soft` #3d4f97 on `canvas` #7a8aba | **2.23:1** | 4.5 | Chrome Indigo as secondary text directly on the periwinkle body fails AA. In the real layout this ink appears on `{colors.platinum}` (5.65:1) and `{colors.surface}` (7.6:1), where it passes; on bare canvas it does not. |
+| `muted-indigo` #60619c on `canvas` #7a8aba | **1.67:1** | 4.5 | Muted Indigo is recessed/inactive chrome, not a text tone. As text on canvas it fails badly; it is scoped in this file to the `dotted-divider` stroke and inactive tab fills. |
+| `hairline` #5a5f8c on `canvas` #7a8aba | **1.79:1** | 3.0 | The blended bevel divider fails the 3:1 boundary minimum against the periwinkle body. It is decoration there — the seam between plates, legible only as a tonal shift. Where the hairline does real boundary work, it is on white or platinum (6.09:1 and 4.52:1), which pass; so no parallel accessible border token is added, because the palette already owns a passing tone for that job. |
+| `error` #e60012 on `canvas` #7a8aba | **1.41:1** | 4.5 | Nintendo Red as *text* on the periwinkle body fails AA. The brand red is a fill and a logo colour, not an ink; validation messages must be set on `{colors.surface}` (4.8:1) or in `{colors.ink}` with a red border. |
+| `button-submit` white on `{colors.signal}` #f68d1f | **2.4:1** | 4.5 | Signal Orange with a white label is the brand's commit button and fails AA. `{colors.carbon}` on the same orange measures 6.45:1 and would pass, but the white label is the extracted fact. |
+| `button-icon-arrow` white chevron on `{colors.signal}` | **2.4:1** | 4.5 (3.0 as a non-text glyph) | Fails either threshold. The round orange "go" disc is the signature forward affordance; its white chevron is genuinely low-contrast. |
+| `button-arrow-chip` white chevron on `{colors.signal}` | **2.4:1** | 4.5 (3.0 as a non-text glyph) | Same pair as above, in the 18px headline chip. |
+| `hero-panel` white `{typography.display}` on `{colors.lavender}` #acace7 | **2.14:1** | 3.0 (44px/900 large text) | A genuine failure, not a binding error: lavender is a real painted field and the wordmark is really white on it. The carbon outline and hard drop shadow carried legibility in 2001 and earn no WCAG credit. The other two hero tints pass (6.64:1 and 7.04:1). |
+
+### Focus ring visibility, per surface
+
+Both rings are prescribed; neither existed in 2001. Each is drawn **2px outside
+the control with a 1px offset**, so it is judged against the surface behind the
+control.
+
+| Surface | Ring drawn | Ratio | Required |
+|---|---|---|---|
+| `{colors.canvas}` #7a8aba | `{colors.focus}` | 4.17:1 | 3.0 |
+| `{colors.canvas-soft}` #9fbee7 | `{colors.focus}` | 7.43:1 | 3.0 |
+| `{colors.surface}` #ffffff | `{colors.focus}` | 14.19:1 | 3.0 |
+| `{colors.platinum}` #dedede | `{colors.focus}` | 10.55:1 | 3.0 |
+| `{colors.periwinkle}` #8ba1d4 | `{colors.focus}` | 5.51:1 | 3.0 |
+| `{colors.lavender}` #acace7 | `{colors.focus}` | 6.63:1 | 3.0 |
+| `{colors.ice}` #c0d5e6 | `{colors.focus}` | 9.4:1 | 3.0 |
+| `{colors.amber}` #ecab37 chip fill behind a ring | `{colors.focus}` | 7.06:1 | 3.0 |
+| `{colors.signal}` #f68d1f | `{colors.focus}` | 5.91:1 | 3.0 |
+| `{colors.nav-gold}` #e48600 | `{colors.focus}` | 5.21:1 | 3.0 |
+| `{colors.carbon}` #21242e command layer | `{colors.focus-on-dark}` | 7.7:1 | 3.0 |
+
+`{colors.focus}` on `{colors.carbon}` measures only 1.09:1, which is exactly why
+the second ring exists; `{colors.focus-on-dark}` on the light chrome measures
+1.05–2.01:1 and must never be used there. The two rings separate from each other
+at 7.06:1, so a composite ring is unnecessary. Over a full-bleed hero
+photograph, which has no measurable colour, draw `{colors.focus}` with a 1px
+`{colors.on-primary}` outer edge.
+
+### Minimum tap target
+
+The original is mouse-only and its controls are 18–28px tall
+(`{components.button-primary}` ~22px, `{components.button-icon-arrow}` 22px,
+`{components.button-arrow-chip}` 18px, `{components.radio-option}` 12px,
+`{components.nav-bar}` 28px) — every one below the 44×44px minimum. A modern
+reproduction must grow the hit area with transparent padding rather than the
+painted chip, so the dense chrome proportions survive. **No tap target was
+measured on a rendered page**; these are the declared sizes in this file's own
+`components:` block.
+
+### Reduced motion
+
+Covered in full under *Motion & Animation*: all travel and scale removed, all
+stagger removed, the loader loop frozen, opacity fades kept at
+`{motion.duration-reduced}` (130ms).
+
+### Other accessibility facts
+
+- Colour alone carries wayfinding in this system: warm = act, cool = chrome.
+  Arrow glyphs and uppercase labels back it up, so meaning does not depend on
+  hue alone — but `{colors.signal}` and `{colors.amber}` are distinguished from
+  each other **only** by hue, which no one with a warm-hue deficiency will see.
+- The `{typography.micro}` role is 10px and `{typography.ui-label}` is 11px.
+  Both are below the 12px floor most guidance asks for, and both are used for
+  real content (footer, calendar cells, button labels), not decoration.
+- `{typography.body}` at 12px/1.4 on `{colors.platinum}` and `{colors.surface}`
+  is the file's own reading surface and measures 11.51:1 and 15.48:1.
+
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.error}` (`#e60012`) on `{colors.platinum}` (`#dedede`) | 3.57:1 | 4.5:1 | Fail — semantic tone as text |
+
 ## Do's and Don'ts
 
 ### Do
@@ -647,3 +865,62 @@ Hero photography fills beveled rectangles at roughly 4:1 (banner) and 16:9 propo
 - Don't widen body copy or whitespace into an airy modern layout; the packed, fixed-canvas density is the brand.
 - Don't flatten the dual-nav structure (gold primary words over the pale secondary strip) into one bar — the layered command hierarchy is signature.
 - Don't render hero or system wordmarks as flat text; without the outline + shadow they lose the box-art reference entirely.
+
+## Responsive Behavior
+
+### Breakpoints
+| Name | Width | Key Changes |
+|---|---|---|
+| Desktop (only) | ~780–830px fixed | The native, sole target — a fixed-width application-style layout |
+| Narrow window | < 780px | Horizontal scroll (no reflow); the table layout does not collapse |
+
+This is a **pre-responsive, fixed-canvas** design. It was authored for a single desktop window size and does not reflow. A faithful *modern* re-implementation would preserve the fixed chrome metaphor on desktop and, below ~720px, stack the right action rail beneath the content column and collapse the dual nav bars into a single carbon bar with a disclosure toggle.
+
+### Touch Targets
+Not a consideration in the original (mouse-only era); buttons and chips are 18–28px tall. A modern port must enlarge the `{components.button-primary}`, `{components.button-icon-arrow}`, and `{components.radio-option}` hit areas to a 44×44px minimum.
+
+### Collapsing Strategy
+On a modern narrow viewport: dual nav bars → single carbon bar + menu disclosure; two-column body → single stacked column with the right rail moving below content; the left rotated-tab strip → a horizontal scroll chip row or removed; fixed hero → fluid full-bleed hero retaining the outlined wordmark.
+
+### Image Behavior
+Hero fields are **full-bleed photographic plates** clipped to the panel's beveled rectangle; featured-site and game tiles are fixed-pixel thumbnails (~95×60px) in a tight grid. No lazy loading (era predates it). Product renders sit on textured backdrops rather than transparent cutouts.
+
+## Known Gaps
+
+- **No motion was extracted.** The entire *Motion & Animation* section is
+  prescribed. CSS transitions and keyframes did not exist in 2001, so the real
+  page's only motion was instant image-swap rollovers, animated GIFs and full
+  page reloads. Treat every duration and easing in this file as a target for a
+  modern reproduction, never as a recovered value.
+- **No focus ring was extracted.** `{colors.focus}` #13275e and
+  `{colors.focus-on-dark}` are both prescribed. The original relied on the
+  browser's default dotted outline, which it never styled.
+- **No state ladder was extracted** beyond the depressed-bevel chip
+  (`{components.button-primary-pressed}`). The *Interaction States* table is
+  prescribed, as its own note says. Whether the 2001 site used JavaScript
+  rollover swaps on the nav words is not recoverable from this document.
+- **`{colors.ink}` on `{colors.canvas}` passes at 4.55:1 — by 0.05.** Any
+  rendering that lightens the ink, applies opacity, or antialiases 12px body
+  copy on the periwinkle body will drop it below AA in practice. Body copy
+  belongs on `{colors.platinum}` or `{colors.surface}`, which is what the
+  original does.
+- **`{colors.sky}` and `{colors.canvas-soft}` are the same hex** (#9fbee7), kept
+  as a documented alias pair from the extraction. Not de-duplicated here, since
+  both names appear in the prose.
+- **`{colors.carbon}` and `{colors.ink}` are the same hex** (#21242e) with two
+  jobs — command-layer fill and primary ink. Intentional, and both names are
+  load-bearing in the prose.
+- **No shadow group.** Correct for this file: elevation is bevel simulation and
+  the prose states no `rgba(...)` blur values, so there is nothing for a
+  `shadow:` token to carry.
+- **Not measurable from a document:** tap-target size on a rendered page,
+  horizontal overflow at the ~780px fixed width, clipping of the rotated
+  left-rail tabs, the halftone texture's actual dot pitch, and the real
+  letter-spacing of the display wordmarks (they are bespoke logotypes, not set
+  type).
+- **Hero photography has no measurable colour.** The three page tints are
+  documented, but the photographs sitting on them are not, so no contrast
+  statement about type over the imagery is possible.
+- **Chamfer geometry is described, not specified.** The prose says the largest
+  panels are cut at 45°, but no chamfer size token exists; the `rounded:` ladder
+  cannot express it.

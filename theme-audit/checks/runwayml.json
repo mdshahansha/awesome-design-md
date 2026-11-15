@@ -1,0 +1,269 @@
+{
+  "site": "runwayml",
+  "has_frontmatter": true,
+  "color_count": 18,
+  "composited_tokens": [],
+  "sections_present": [
+    "Accessibility",
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Known Gaps",
+    "Layout",
+    "Motion & Animation",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [],
+  "optional_sections_missing": [],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface-dark",
+    "text": "ink",
+    "text-dim": "muted",
+    "border": "border-light-silver",
+    "focus": "focus"
+  },
+  "roles_missing": [
+    "accent",
+    "on-accent"
+  ],
+  "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [],
+  "contrast_disclosed": [
+    {
+      "pair": "border-dark on surface-dark",
+      "fg": "#27272a",
+      "bg": "#1a1a1a",
+      "ratio": 1.17,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "border-light-cool on surface-light-cool",
+      "fg": "#c9ccd1",
+      "bg": "#e9ecf2",
+      "ratio": 1.36,
+      "required": 3.0,
+      "role": "bound boundary",
+      "disclosed": true
+    },
+    {
+      "pair": "border-dark on canvas",
+      "fg": "#27272a",
+      "bg": "#000000",
+      "ratio": 1.41,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "border-light-silver on surface-light",
+      "fg": "#d0d4d4",
+      "bg": "#fefefe",
+      "ratio": 1.48,
+      "required": 3.0,
+      "role": "boundary, light theme",
+      "disclosed": true
+    },
+    {
+      "pair": "border-light-cool on surface-light",
+      "fg": "#c9ccd1",
+      "bg": "#fefefe",
+      "ratio": 1.6,
+      "required": 3.0,
+      "role": "boundary, light theme",
+      "disclosed": true
+    },
+    {
+      "pair": "ink-secondary-alt on surface-dark",
+      "fg": "#3f3f3f",
+      "bg": "#1a1a1a",
+      "ratio": 1.65,
+      "required": 4.5,
+      "role": "secondary text on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "ink-secondary-alt on canvas",
+      "fg": "#3f3f3f",
+      "bg": "#000000",
+      "ratio": 1.99,
+      "required": 4.5,
+      "role": "secondary text, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "text-soft on surface-dark",
+      "fg": "#6b7280",
+      "bg": "#1a1a1a",
+      "ratio": 3.6,
+      "required": 4.5,
+      "role": "secondary text on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "text-secondary on surface-dark",
+      "fg": "#767d88",
+      "bg": "#1a1a1a",
+      "ratio": 4.19,
+      "required": 4.5,
+      "role": "secondary text on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "text-soft on canvas",
+      "fg": "#6b7280",
+      "bg": "#000000",
+      "ratio": 4.34,
+      "required": 4.5,
+      "role": "secondary text, all tones",
+      "disclosed": true
+    }
+  ],
+  "contrast_failures": [
+    {
+      "pair": "border-dark on surface-dark",
+      "fg": "#27272a",
+      "bg": "#1a1a1a",
+      "ratio": 1.17,
+      "required": 3.0,
+      "role": "boundary on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "border-light-cool on surface-light-cool",
+      "fg": "#c9ccd1",
+      "bg": "#e9ecf2",
+      "ratio": 1.36,
+      "required": 3.0,
+      "role": "bound boundary",
+      "disclosed": true
+    },
+    {
+      "pair": "border-dark on canvas",
+      "fg": "#27272a",
+      "bg": "#000000",
+      "ratio": 1.41,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "border-light-silver on surface-light",
+      "fg": "#d0d4d4",
+      "bg": "#fefefe",
+      "ratio": 1.48,
+      "required": 3.0,
+      "role": "boundary, light theme",
+      "disclosed": true
+    },
+    {
+      "pair": "border-light-cool on surface-light",
+      "fg": "#c9ccd1",
+      "bg": "#fefefe",
+      "ratio": 1.6,
+      "required": 3.0,
+      "role": "boundary, light theme",
+      "disclosed": true
+    },
+    {
+      "pair": "ink-secondary-alt on surface-dark",
+      "fg": "#3f3f3f",
+      "bg": "#1a1a1a",
+      "ratio": 1.65,
+      "required": 4.5,
+      "role": "secondary text on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "ink-secondary-alt on canvas",
+      "fg": "#3f3f3f",
+      "bg": "#000000",
+      "ratio": 1.99,
+      "required": 4.5,
+      "role": "secondary text, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "text-soft on surface-dark",
+      "fg": "#6b7280",
+      "bg": "#1a1a1a",
+      "ratio": 3.6,
+      "required": 4.5,
+      "role": "secondary text on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "text-secondary on surface-dark",
+      "fg": "#767d88",
+      "bg": "#1a1a1a",
+      "ratio": 4.19,
+      "required": 4.5,
+      "role": "secondary text on surface, all tones",
+      "disclosed": true
+    },
+    {
+      "pair": "text-soft on canvas",
+      "fg": "#6b7280",
+      "bg": "#000000",
+      "ratio": 4.34,
+      "required": 4.5,
+      "role": "secondary text, all tones",
+      "disclosed": true
+    }
+  ],
+  "motion_group": [
+    "duration-base",
+    "duration-emphasis",
+    "duration-fast",
+    "duration-instant",
+    "duration-reduced",
+    "duration-slow",
+    "ease-enter",
+    "ease-exit",
+    "ease-standard",
+    "stagger-step"
+  ],
+  "motion_keys_missing": [],
+  "has_motion_section": true,
+  "has_reduced_motion": true,
+  "durations_found": [
+    "80",
+    "120",
+    "150",
+    "240",
+    "400",
+    "600",
+    "900",
+    "1600"
+  ],
+  "easings_found": 3,
+  "layout_animation_mentions": [],
+  "states_documented": [
+    "hover",
+    "focus-visible",
+    "active"
+  ],
+  "states_missing": [
+    "pressed",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 3,
+    "refs": 5,
+    "contrast": 5,
+    "sections": 5,
+    "motion": 5,
+    "states": 1
+  }
+}

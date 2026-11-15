@@ -13,9 +13,11 @@ colors:
   body-strong: "#171717"
   muted: "#999999"
   muted-soft: "#cccccc"
+  muted-strong: "#6b6f76"
   hairline: "#f0f0f3"
   hairline-soft: "#f5f5f7"
   hairline-strong: "#dcdee0"
+  border-control: "#86888f"
   canvas: "#ffffff"
   canvas-soft: "#fafafa"
   surface-card: "#ffffff"
@@ -31,7 +33,10 @@ colors:
   accent-preview: "#8145b5"
   accent-link-bright: "#47c2ff"
   semantic-error: "#eb8e90"
+  semantic-error-text: "#b3261e"
   semantic-success: "#16a34a"
+  focus: "#0d74ce"
+  focus-on-dark: "#47c2ff"
 
 typography:
   display-mega:
@@ -141,6 +146,18 @@ spacing:
   xl: 32px
   xxl: 48px
   section: 96px
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
 
 components:
   top-nav:
@@ -303,16 +320,23 @@ The brand's strongest visual signature is the **device-mockup hero** — a cente
 - **Sky Light** (`{colors.gradient-sky-light}` — #cfe7ff) + **Sky Mid** (`{colors.gradient-sky-mid}` — #a8c8e8): The soft sky-blue gradient wash behind the homepage hero only. Not a brand action color.
 
 ### Hairlines
-- **Hairline** (`{colors.hairline}` — #f0f0f3): Default 1px divider.
-- **Hairline Soft** (`{colors.hairline-soft}` — #f5f5f7): Lighter divider.
-- **Hairline Strong** (`{colors.hairline-strong}` — #dcdee0): Stronger panel outline.
+All three extracted hairlines are **decorative only** — none reaches the 3:1 a
+component boundary needs against the white canvas (measured in Accessibility
+below). Where a boundary carries meaning — a form control, a focusable card edge
+— use `{colors.border-control}`, which is **prescribed, not extracted**.
+
+- **Hairline** (`{colors.hairline}` — #f0f0f3): Decorative 1px divider between content rows.
+- **Hairline Soft** (`{colors.hairline-soft}` — #f5f5f7): Decorative lighter divider.
+- **Hairline Strong** (`{colors.hairline-strong}` — #dcdee0): Decorative panel outline.
+- **Border Control** (`{colors.border-control}` — #86888f, *prescribed*): The accessible boundary for text inputs, selects and any outline that is the only thing defining a control. 3.54:1 on `{colors.canvas}`.
 
 ### Text
 - **Ink** (`{colors.ink}` — #171717): Display, body emphasis.
 - **Body** (`{colors.body}` — #60646c): Default running-text — slightly cool gray.
 - **Body Strong** (`{colors.body-strong}` — #171717): Same as ink.
-- **Muted** (`{colors.muted}` — #999999): Sub-titles.
-- **Muted Soft** (`{colors.muted-soft}` — #cccccc): Disabled text.
+- **Muted** (`{colors.muted}` — #999999): Sub-titles. Extracted; fails AA for body-size text (2.85:1 on white) — decorative or 24px+ only.
+- **Muted Soft** (`{colors.muted-soft}` — #cccccc): Disabled text only. WCAG sets no contrast requirement on disabled controls; never use it for live text.
+- **Muted Strong** (`{colors.muted-strong}` — #6b6f76, *prescribed*): The accessible secondary-text tone. Use wherever `{colors.muted}` would carry readable copy at under 24px. 5.05:1 on `{colors.canvas}`.
 - **On Primary** (`{colors.on-primary}` — #ffffff): White text on black CTA.
 - **On Dark** (`{colors.on-dark}` — #ffffff): White text on dark cards.
 - **On Dark Soft** (`{colors.on-dark-soft}` — #b0b4ba): Muted off-white on dark.
@@ -320,8 +344,13 @@ The brand's strongest visual signature is the **device-mockup hero** — a cente
 ### Semantic
 - **Warning** (`{colors.accent-warning}` — #ab6400): Warning text inside docs callouts.
 - **Preview** (`{colors.accent-preview}` — #8145b5): "Preview" tag color.
-- **Success** (`{colors.semantic-success}` — #16a34a): Confirmation.
-- **Error** (`{colors.semantic-error}` — #eb8e90): Validation errors.
+- **Success** (`{colors.semantic-success}` — #16a34a): Confirmation. 3.30:1 on white — icon and 24px+ text only, not body copy.
+- **Error** (`{colors.semantic-error}` — #eb8e90): Extracted error tone. 2.39:1 on white — it fails AA at any text size; treat it as a tint for borders and backgrounds.
+- **Error Text** (`{colors.semantic-error-text}` — #b3261e, *prescribed*): The accessible error-message ink. 6.54:1 on `{colors.canvas}`.
+
+### Focus
+- **Focus** (`{colors.focus}` — #0d74ce, *prescribed*): The focus ring on every light surface. It reuses the brand's own text-link blue rather than introducing a colour Expo does not own. 4.77:1 on `{colors.canvas}`.
+- **Focus On Dark** (`{colors.focus-on-dark}` — #47c2ff, *prescribed*): The ring on `{colors.surface-dark}` code blocks, dark feature cards and the featured pricing tier. 8.90:1 on #171717. One ring cannot serve both polarities here — brand blue sits at only 3.76:1 on #171717, and bright cyan collapses to 2.01:1 on white.
 
 ## Typography
 
@@ -457,7 +486,7 @@ Compact developer-ergonomic radii — 8px CTAs, 12px cards. Pill geometry is res
 
 ### Forms & Tags
 
-**`text-input`** — Background `{colors.surface-card}`, text `{colors.ink}`, rounded `{rounded.md}` (8px), padding 12px × 16px, height 44px, 1px `{colors.hairline-strong}` border. Focus thickens border to 2px ink.
+**`text-input`** — Background `{colors.surface-card}`, text `{colors.ink}`, rounded `{rounded.md}` (8px), padding 12px × 16px, height 44px, 1px `{colors.border-control}` border (the extracted `{colors.hairline-strong}` outline measures 1.35:1 and cannot be the only thing defining a control). Focus-visible adds a 2px `{colors.focus}` ring with a 2px `{colors.canvas}` offset; error state swaps the border to `{colors.semantic-error-text}` with the message in the same ink.
 
 **`badge-pill`** — Small uppercase pill. Background `{colors.surface-strong}`, text `{colors.ink}`, type `{typography.caption-uppercase}`, rounded `{rounded.pill}`, padding 4px × 10px.
 
@@ -468,6 +497,169 @@ Compact developer-ergonomic radii — 8px CTAs, 12px cards. Pill geometry is res
 **`footer-light`** — Closing white footer. Background `{colors.canvas}`, text `{colors.body}`. 5-column link list. 64×48px padding.
 
 **`footer-link`** — Background transparent, text `{colors.body}`, type `{typography.body-sm}`.
+
+### Interaction States
+
+Only `button-primary-active` was captured on the live site; every other state
+below is **prescribed** to match the brand's own dialect (opacity and tone
+shifts, no colour invention). A component that genuinely has two states says so.
+
+| Component | States | Notes |
+|---|---|---|
+| `top-nav` | default, hover, focus-visible, selected | Hover darkens link to `{colors.ink}`; selected marks the current section; the bar itself does not press. |
+| `button-primary` | default, hover, active (pressed), focus-visible, disabled, loading | Hover → `{colors.primary-active}`; pressed → same fill at 0.98 scale; disabled → `{colors.muted-soft}` fill with `{colors.canvas}` label; loading → label holds width, inline spinner. |
+| `button-primary-active` | pressed only | The captured press state of `button-primary`, not a component of its own. |
+| `button-secondary` | default, hover, active (pressed), focus-visible, disabled, loading | Hover fills `{colors.surface-strong}`; border stays `{colors.border-control}`. |
+| `button-tertiary-text` | default, hover, active (pressed), focus-visible, disabled | Hover underlines; colour stays `{colors.text-link}`. |
+| `hero-band` | default only | Static band — two states would be an invention. |
+| `device-mockup-card` | default only | Page chrome, not interactive. |
+| `feature-card` | default, hover, focus-visible, selected | Hover raises the soft drop shadow; selected outlines in `{colors.focus}`. |
+| `feature-card-dark` | default, hover, focus-visible, selected | Same, with `{colors.focus-on-dark}` for the ring and outline. |
+| `workflow-step-card` | default, hover, selected | Selected marks the active step in the workflow row. |
+| `workflow-step-icon` | default, selected | Plate fills `{colors.ink}` when its step is selected; no hover of its own. |
+| `code-block` | default, hover, focus-visible, loading | Hover reveals the copy button; focus-visible rings it in `{colors.focus-on-dark}`; loading covers streamed output. |
+| `ide-mockup-card` | default only | Static mockup. |
+| `pricing-tier-card` | default, hover, focus-visible, selected | Selected is the tier the user is on. |
+| `pricing-tier-featured` | default, hover, focus-visible, selected | Dark inversion of the above. |
+| `text-input` | default, hover, focus-visible, disabled, error, loading | Error → `{colors.semantic-error-text}` border and message; disabled → `{colors.muted-soft}` text on `{colors.surface-strong}`; loading → inline validation spinner. |
+| `badge-pill` | default only | A label, never interactive. |
+| `ecosystem-tile` | default, hover, focus-visible | Hover lifts the tile; most tiles are links. |
+| `cta-band` | default only | Static band; the CTA inside it carries the states. |
+| `testimonial-card` | default only | Static quote. |
+| `footer-light` | default only | Static region. |
+| `footer-link` | default, hover, focus-visible | Hover darkens to `{colors.ink}`. |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was
+not measured from the live site.** Nobody timed Expo's real transitions; what
+follows is the **Crisp** profile from `theme-audit/SPEC.md`, chosen because this
+is a developer-tool identity — a monochrome CTA, JetBrains Mono on every code
+surface, and a hero that shows product dashboards rather than choreography. The
+one place the brand would earn travel is the device-mockup composite, and even
+there a tool brand should let the screenshots arrive, not perform.
+
+Rules this section obeys: **`transform` and `opacity` only** — never `width`,
+`height`, `top`, `left` or `margin`. Every exit is shorter than its entrance.
+Nothing animates on first paint in a way that delays content. The only infinite
+animation is the loading spinner.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, card, tile) | `{motion.duration-fast}` (100ms) | `{motion.ease-standard}` | `opacity`, `transform: translateY(-1px)` | Travel removed; opacity only at `{motion.duration-reduced}` |
+| Press | `{motion.duration-instant}` (60ms) | `{motion.ease-standard}` | `transform: scale(0.98)` | Scale removed; state change is instant |
+| Focus ring appears | `{motion.duration-instant}` (60ms) | `{motion.ease-standard}` | `opacity` | Unchanged — already opacity-only and under 150ms |
+| Page / route transition | `{motion.duration-base}` (150ms) | `{motion.ease-enter}` in, `{motion.ease-exit}` out at `{motion.duration-fast}` | `opacity` | Cross-fade at `{motion.duration-reduced}`; no travel |
+| Modal / drawer open | `{motion.duration-base}` (150ms) | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px) → 0` | Travel removed; opacity fade at `{motion.duration-reduced}` |
+| Modal / drawer close | `{motion.duration-fast}` (100ms) | `{motion.ease-exit}` | `opacity`, `transform` | Travel removed; opacity fade at `{motion.duration-reduced}` |
+| Dropdown / nav menu | `{motion.duration-fast}` (100ms) in, `{motion.duration-instant}` (60ms) out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: scaleY(0.98) → 1` | Scale removed; opacity only at `{motion.duration-reduced}` |
+| Toast | `{motion.duration-base}` (150ms) in, `{motion.duration-fast}` (100ms) out | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY(8px)` | Travel removed; opacity only at `{motion.duration-reduced}` |
+| List enter (feature grid, ecosystem tiles) | `{motion.duration-base}` (150ms), `{motion.stagger-step}` (20ms) per item | `{motion.ease-enter}` | `opacity`, `transform: translateY(6px)` | Stagger and travel removed; all items fade together at `{motion.duration-reduced}` |
+| List exit | `{motion.duration-fast}` (100ms), no stagger | `{motion.ease-exit}` | `opacity`, `transform: translateY(4px)` | Travel removed; opacity only at `{motion.duration-reduced}` |
+| Loading (spinner, EAS build status) | 800ms linear loop | linear | `transform: rotate` | Rotation frozen; replaced by a static indicator with a text label |
+| Hero device-mockup entrance | `{motion.duration-emphasis}` (300ms) | `{motion.ease-enter}` | `opacity`, `transform: translateY(12px)` | Travel removed; opacity only at `{motion.duration-reduced}`. Runs after first paint; the headline never waits on it |
+
+### `@media (prefers-reduced-motion: reduce)`
+
+**Removed:** every `translate`, every `scale`, the `{motion.stagger-step}` on
+list entrances, and the device-mockup entrance travel. The spinner's rotation is
+frozen and replaced with a static indicator plus its text label.
+
+**Kept:** opacity fades, capped at `{motion.duration-reduced}` (100ms) —
+never more than 150ms, whatever the profile. Focus rings, hover tone changes and
+every colour transition remain, because none of them moves anything.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 100ms !important;   /* {motion.duration-reduced} */
+    animation-iteration-count: 1 !important;
+    transition-duration: 100ms !important;  /* {motion.duration-reduced} */
+    transition-property: opacity, color, background-color, border-color !important;
+  }
+}
+```
+
+## Accessibility
+
+Ratios below are WCAG 2.1 relative luminance, computed from this file's own
+hexes. Extracted brand values are **not** altered to pass; where the real brand
+fails, it is named here.
+
+### Measured contrast — passing
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` #171717 on `{colors.canvas}` #ffffff | 17.93:1 | 4.5 | Pass |
+| `{colors.ink}` on `{colors.surface-card}` #ffffff | 17.93:1 | 4.5 | Pass |
+| `{colors.body}` #60646c on `{colors.canvas}` | 5.94:1 | 4.5 | Pass |
+| `{colors.on-primary}` #ffffff on `{colors.primary}` #000000 | 21.00:1 | 4.5 | Pass |
+| `{colors.on-dark}` #ffffff on `{colors.surface-dark}` #171717 | 17.93:1 | 4.5 | Pass |
+| `{colors.on-dark-soft}` #b0b4ba on `{colors.surface-dark}` | 8.61:1 | 4.5 | Pass |
+| `{colors.text-link}` #0d74ce on `{colors.canvas}` | 4.77:1 | 4.5 | Pass |
+| `{colors.muted-strong}` #6b6f76 on `{colors.canvas}` | 5.05:1 | 4.5 | Pass (prescribed) |
+| `{colors.border-control}` #86888f on `{colors.canvas}` | 3.54:1 | 3.0 | Pass (prescribed) |
+| `{colors.semantic-error-text}` #b3261e on `{colors.canvas}` | 6.54:1 | 4.5 | Pass (prescribed) |
+| `{colors.accent-warning}` #ab6400 on `{colors.canvas}` | 4.61:1 | 4.5 | Pass |
+| `{colors.accent-preview}` #8145b5 on `{colors.canvas}` | 6.08:1 | 4.5 | Pass |
+
+### Measured contrast — real brand failures, disclosed
+
+These are extracted values. They are frozen, not corrected.
+
+| Pair | Ratio | Required | Honest reading |
+|---|---|---|---|
+| `{colors.hairline-soft}` #f5f5f7 on `{colors.canvas}` #ffffff | 1.09:1 | 3.0 | Fails. Decorative divider only — never the sole boundary of a control. |
+| `{colors.hairline}` #f0f0f3 on `{colors.canvas}` | 1.14:1 | 3.0 | Fails. Decorative only. Use `{colors.border-control}` where a boundary must be seen. |
+| `{colors.hairline-strong}` #dcdee0 on `{colors.canvas}` | 1.35:1 | 3.0 | Fails. Expo's strongest real hairline still does not reach 3:1; the card and input outlines drawn with it are invisible to low-vision users. |
+| `{colors.muted}` #999999 on `{colors.canvas}` | 2.85:1 | 4.5 | Fails for body text. Defensible only at 24px+ (or 18.66px bold), where 3:1 applies — and it clears that. Below that size use `{colors.muted-strong}`. |
+| `{colors.muted}` #999999 on `{colors.surface-card}` #ffffff | 2.85:1 | 4.5 | Same failure; the card surface is also pure white, so there is no safer surface for it. |
+| `{colors.muted-soft}` #cccccc on `{colors.canvas}` | 1.61:1 | 4.5 | Fails. Disabled text only — WCAG sets no requirement on disabled controls. Never live copy. |
+| `{colors.muted-soft}` #cccccc on `{colors.surface-card}` | 1.61:1 | 4.5 | Same, same reason. |
+| `{colors.semantic-error}` #eb8e90 on `{colors.canvas}` | 2.39:1 | 4.5 | Fails at every text size. Use it as a border or background tint; error copy is `{colors.semantic-error-text}`. |
+| `{colors.semantic-success}` #16a34a on `{colors.canvas}` | 3.30:1 | 4.5 | Fails for body text; clears 3:1, so icon and 24px+ text only. |
+| `{colors.text-link-secondary}` #476cff on `{colors.canvas}` | 4.32:1 | 4.5 | Marginal fail — the legal-footer link blue is 0.18 short of AA. |
+| `{colors.accent-link-bright}` #47c2ff on `{colors.canvas}` | 2.01:1 | 4.5 | Fails on light. It is a dark-surface tone only: 8.90:1 on `{colors.surface-dark}`. |
+
+Plainly: **the hairline ladder fails AA as a boundary across the board, and the
+muted text ramp fails AA below 24px.** That is a property of the real brand, not
+of this document.
+
+### Focus ring visibility, per surface this file defines
+
+`{colors.focus}` (#0d74ce) is a 2px ring with a 2px `{colors.canvas}` offset.
+`{colors.focus-on-dark}` (#47c2ff) is the same geometry with a `{colors.surface-dark}` offset.
+
+| Surface | Ring | Ratio | Verdict |
+|---|---|---|---|
+| `{colors.canvas}` #ffffff | `{colors.focus}` | 4.77:1 | Pass |
+| `{colors.canvas-soft}` #fafafa | `{colors.focus}` | 4.57:1 | Pass |
+| `{colors.surface-card}` #ffffff | `{colors.focus}` | 4.77:1 | Pass |
+| `{colors.surface-strong}` #f0f0f3 | `{colors.focus}` | 4.19:1 | Pass |
+| `{colors.surface-dark}` #171717 | `{colors.focus-on-dark}` | 8.90:1 | Pass |
+| `{colors.surface-dark-elevated}` #1a1a1a | `{colors.focus-on-dark}` | 8.64:1 | Pass |
+| `{colors.gradient-sky-light}` #cfe7ff | `{colors.focus}` | 3.75:1 | Pass |
+| `{colors.gradient-sky-mid}` #a8c8e8 | `{colors.focus}` | 2.74:1 | **Fail** — the darkest end of the hero gradient. The mandatory 2px white offset supplies the boundary there, giving the ring a 3.75:1 outer edge against #a8c8e8; without the offset the ring is not visible on the hero wash. |
+
+Over the device-mockup composite, which is photography and has no measurable
+colour, use the two-tone ring: `{colors.focus}` with a 1px `{colors.canvas}`
+outer edge.
+
+Secondary note: `{colors.muted-strong}` measures 4.44:1 on `{colors.surface-strong}`
+(#f0f0f3), just under AA. Small copy on badges and icon plates uses `{colors.ink}`.
+
+### Minimum tap target
+
+Not computable from a document — there is no rendered page here, so these are
+declared sizes, not measured ones. `button-primary` and `button-secondary` are
+40px tall, below the 44px WCAG 2.5.5 AAA target; `text-input` is 44px and clears
+it. Nav links and footer links carry no declared height and are an unknown.
+
+### Reduced motion
+
+Honoured as specified in Motion & Animation: all travel and scale removed,
+opacity fades capped at `{motion.duration-reduced}` (100ms), the loading
+rotation frozen. There is no brand ambience animation to freeze.
 
 ## Do's and Don'ts
 
@@ -514,13 +706,16 @@ Compact developer-ergonomic radii — 8px CTAs, 12px cards. Pill geometry is res
 2. CTAs default to `{rounded.md}` (8px). Cards use `{rounded.lg}` (12px).
 3. Variants live as separate entries.
 4. Use `{token.refs}` everywhere — never inline hex.
-5. Hover state never documented.
+5. States live in the Components states table; motion values come from `{motion.*}` — never a hardcoded ms.
 6. Inter 600 for display, Inter 400 for body. JetBrains Mono on code.
 7. Black stays the only CTA color; text-link blue stays inline-only.
 
 ## Known Gaps
 
 - Inter and JetBrains Mono are freely available — no licensing concerns.
-- Animation timings (device mockup parallax, hero entrance) out of scope.
+- No motion was measured from the live site. Every value in Motion & Animation is the prescribed **Crisp** profile, including the device-mockup entrance; real Expo timings remain unknown.
+- Focus ring, `{colors.border-control}`, `{colors.muted-strong}` and `{colors.semantic-error-text}` are prescribed, not extracted. No focus treatment was captured on the live surfaces.
+- Every component state except `button-primary-active` is prescribed.
+- Tap-target sizes are declared, not measured; no page was rendered.
 - In-app surfaces (EAS dashboard interactive, Expo Go simulator) only partially captured via marketing mockups.
 - Form validation states beyond focus not visible on captured surfaces.

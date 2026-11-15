@@ -1,6 +1,245 @@
+---
+version: alpha
+name: Mastercard-design-analysis
+description: A warm editorial-magazine payments identity built on putty-cream paper rather than white. The canvas is Canvas Cream (#F3F0EE) and the single ink is a warm near-black (#141413) that doubles as the primary CTA fill and the footer surface; the brand's red and yellow (#EB001B / #F79E1B) appear only inside the logo mark and never as UI colour. Signal Orange (#CF4500) is reserved for consent and compliance actions, and its lighter sibling (#F37338) only draws the hand-traced orbital arcs between circular service portraits. Type is MarkForMC throughout at an unusual 450 body weight with -2% display tracking. Shape is the loudest gesture: 20px button pills, 40px stadium media frames, perfect circles for portraits and full 999px pills for navigation, with the conventional 8-12px middle ground deliberately absent.
+
+colors:
+  brand-red: "#EB001B"
+  brand-yellow: "#F79E1B"
+  ink: "#141413"
+  ink-charcoal: "#262627"
+  ink-muted: "#696969"
+  ink-granite: "#555555"
+  ink-graphite: "#565656"
+  ink-whisper: "#D1CDC7"
+  canvas-cream: "#F3F0EE"
+  surface-lifted: "#FCFBFA"
+  surface-white: "#FFFFFF"
+  surface-bone: "#F4F4F4"
+  surface-ink-footer: "#141413"
+  on-ink: "#FFFFFF"
+  accent-signal: "#CF4500"
+  accent-signal-light: "#F37338"
+  accent-clay: "#9A3A0A"
+  on-accent: "#FFFFFF"
+  link-blue: "#3860BE"
+  watermark-ghost: "#E8E2DA"
+  media-black: "#000000"
+  media-slate: "#2B2B2B"
+  border-ink: "#141413"
+  hairline-ink-50: "rgba(20, 20, 19, 0.5)"
+  border-on-ink: "rgba(255, 255, 255, 0.4)"
+  focus: "#141413"
+  focus-on-ink: "#F3F0EE"
+
+typography:
+  display-hero:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 64px
+    fontWeight: 500
+    lineHeight: 64px
+    letterSpacing: -1.28px
+  display-section:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 36px
+    fontWeight: 500
+    lineHeight: 44px
+    letterSpacing: -0.72px
+  title-card:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 24px
+    fontWeight: 500
+    lineHeight: 28.8px
+    letterSpacing: -0.48px
+  subhead:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 14px
+    fontWeight: 700
+    lineHeight: 18.2px
+    letterSpacing: normal
+  eyebrow:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 14px
+    fontWeight: 700
+    lineHeight: 14px
+    letterSpacing: 0.56px
+    textTransform: uppercase
+  body:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 16px
+    fontWeight: 450
+    lineHeight: 22.4px
+    letterSpacing: normal
+  nav-link:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 16px
+    fontWeight: 500
+    lineHeight: 16px
+    letterSpacing: -0.48px
+  button-primary-label:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 16px
+    fontWeight: 500
+    letterSpacing: -0.32px
+  button-secondary-label:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 16px
+    fontWeight: 450
+    lineHeight: 20.8px
+  button-consent-label:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 13px
+    fontWeight: 400
+    letterSpacing: 0.13px
+  footer-link:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 14px
+    fontWeight: 450
+    lineHeight: 20px
+    letterSpacing: normal
+  footer-column-header:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 14px
+    fontWeight: 700
+    lineHeight: 14px
+    letterSpacing: 0.56px
+    textTransform: uppercase
+  ghost-watermark:
+    fontFamily: "MarkForMC, SofiaSans, Arial, sans-serif"
+    fontSize: 72px
+    fontWeight: 500
+    letterSpacing: -2%
+
+spacing:
+  base: 8px
+  sm: 16px
+  md: 24px
+  lg: 32px
+  xl: 48px
+  xxl: 64px
+  section: 96px
+  section-lg: 128px
+
+rounded:
+  xs: 3px
+  sm: 6px
+  md: 20px
+  lg: 24px
+  xl: 40px
+  circle: 50%
+  full: 999px
+
+shadow:
+  none: none
+  level-1: "rgba(0, 0, 0, 0.04) 0px 4px 24px 0px"
+  level-2: "rgba(0, 0, 0, 0.08) 0px 24px 48px 0px"
+  level-3: "rgba(0, 0, 0, 0.25) 0px 70px 110px 0px"
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 500ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
+  duration-reduced: 150ms
+
+components:
+  button-primary:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.canvas-cream}"
+    typography: "{typography.button-primary-label}"
+    rounded: "{rounded.md}"
+    padding: 6px 24px
+    border: 1.5px solid {colors.border-ink}
+  button-primary-disabled:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.ink-muted}"
+    rounded: "{rounded.md}"
+  button-secondary:
+    backgroundColor: "{colors.surface-white}"
+    textColor: "{colors.ink}"
+    typography: "{typography.button-secondary-label}"
+    rounded: "{rounded.md}"
+    padding: 6px 24px
+    border: 1.5px solid {colors.border-ink}
+  button-consent:
+    backgroundColor: "{colors.accent-signal}"
+    textColor: "{colors.on-accent}"
+    typography: "{typography.button-consent-label}"
+    rounded: "{rounded.lg}"
+    padding: 1px 30px
+  button-consent-secondary:
+    textColor: "{colors.accent-clay}"
+    typography: "{typography.button-secondary-label}"
+  satellite-cta:
+    backgroundColor: "{colors.surface-white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.circle}"
+    height: 56px
+  icon-button-circle:
+    textColor: "{colors.ink}"
+    rounded: "{rounded.circle}"
+    height: 40px
+    border: 1px solid {colors.border-ink}
+  hero-media-frame:
+    backgroundColor: "{colors.media-black}"
+    rounded: "{rounded.xl}"
+    shadow: "{shadow.none}"
+  portrait-card:
+    rounded: "{rounded.circle}"
+  carousel-pill-card:
+    rounded: "{rounded.full}"
+    shadow: "{shadow.level-2}"
+  chip-category:
+    backgroundColor: "{colors.surface-white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.full}"
+    padding: 8px 20px
+  ghost-watermark-text:
+    textColor: "{colors.watermark-ghost}"
+    typography: "{typography.ghost-watermark}"
+  eyebrow-label:
+    textColor: "{colors.ink}"
+    typography: "{typography.eyebrow}"
+  nav-pill:
+    backgroundColor: "{colors.surface-white}"
+    textColor: "{colors.ink}"
+    typography: "{typography.nav-link}"
+    rounded: "{rounded.full}"
+    padding: 16px 40px
+    shadow: "{shadow.level-1}"
+  search-input-expanded:
+    backgroundColor: "{colors.surface-white}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body}"
+    rounded: "{rounded.full}"
+    padding: 12px 24px
+    border: 1px solid {colors.hairline-ink-50}
+  link-inline:
+    textColor: "{colors.link-blue}"
+    typography: "{typography.body}"
+  footer:
+    backgroundColor: "{colors.surface-ink-footer}"
+    textColor: "{colors.on-ink}"
+    padding: 100px 48px 148px
+  footer-link-row:
+    backgroundColor: "{colors.surface-ink-footer}"
+    textColor: "{colors.on-ink}"
+    typography: "{typography.footer-link}"
+  country-selector:
+    backgroundColor: "{colors.surface-ink-footer}"
+    textColor: "{colors.on-ink}"
+    rounded: "{rounded.full}"
+    border: 1px solid {colors.border-on-ink}
+---
+
 # Design System Inspired by Mastercard
 
-## 1. Visual Theme & Atmosphere
+## Overview
 
 Mastercard's experience reads like a warm, editorial magazine built from soft stone and signal orange. The canvas is a muted putty-cream (`#F3F0EE`) — not white, not gray, but a color that feels like the paper of a premium annual report. On top of that canvas, everything that matters is shaped like a stadium, a pill, or a perfect circle. The dominant visual gesture is the **oversized radius**: heroes carry 40-point corners, cards go fully pill-shaped, service images are cropped into circular orbits, and buttons either complete the pill or fit snugly at 20 points. There are almost no sharp corners anywhere on the page.
 
@@ -18,7 +257,7 @@ Typography is rendered entirely in **MarkForMC**, Mastercard's proprietary geome
 - Eyebrow labels with a tiny accent dot + uppercase bold tracking — used as the section-category signal
 - Dark warm-black footer (`#141413`) with four-column link layout and large conversational headline
 
-## 2. Color Palette & Roles
+## Colors
 
 ### Primary
 - **Mastercard Red** (`#EB001B`): The left circle of the Mastercard mark — used only in the brand logo, never as a UI color.
@@ -52,7 +291,7 @@ Mastercard uses no programmatic gradients in the core UI. The visual impression 
 - **Circular image portraits** where a warm-orange photo subject (a card, a sunflower, a beverage) fades to the cream canvas at its edge
 - **Deep card shadows** on elevated content (`rgba(0,0,0,0.08) 0px 24px 48px`) that create a soft halo beneath pill-shaped media
 
-## 3. Typography Rules
+## Typography
 
 ### Font Family
 - **Primary**: `MarkForMC` — Mastercard's proprietary geometric sans. Every headline, body paragraph, button, nav link, and footer link on the page.
@@ -87,7 +326,36 @@ MarkForMC is proprietary and licensed. When rebuilding a matching aesthetic with
 - **Neue Haas Grotesk** or **Geist** can approximate the geometric feel for commercial projects.
 - Whichever substitute is used, preserve the **-2% letter-spacing on headlines** and the **450 body weight** (use `font-weight: 450` with variable fonts, or substitute `font-weight: 400` and tighten the letter-spacing by ~-0.5% to compensate).
 
-## 4. Component Stylings
+## Components
+
+### Component States
+
+Default and active/pressed are extracted from the live page. Every other column
+is **prescribed** to suit this identity — Mastercard's marketing surfaces expose
+no hover, loading or error styling that could be captured, so those cells are a
+recommendation, not an observation. A dash means the component genuinely does
+not have that state.
+
+| Component | Default | Hover | Focus-visible | Active / pressed | Disabled | Loading | Selected | Error |
+|---|---|---|---|---|---|---|---|---|
+| `{components.button-primary}` | Ink pill, cream label | ink lightens toward `{colors.ink-charcoal}` | 2px `{colors.focus}` ring, 2px offset | subtle inward-shrink or 2px offset (extracted) | `{colors.ink-muted}` label on ink, no pointer | label swaps for a 16px spinner, width held | — | — |
+| `{components.button-secondary}` | White pill, ink outline | fill shifts to `{colors.surface-bone}` | 2px `{colors.focus}` ring, 2px offset | subtle compression (extracted) | outline drops to `{colors.hairline-ink-50}` | spinner replaces label | — | — |
+| `{components.button-consent}` | Signal Orange pill, white label | orange deepens toward `{colors.accent-clay}` | 2px `{colors.focus}` ring, 2px offset | 0.98 scale | not offered | spinner replaces label | — | inline message in `{colors.accent-clay}` below the pill |
+| `{components.satellite-cta}` | White circle, ink arrow | arrow travels 2px along its own axis | 2px `{colors.focus}` ring, 2px offset | 0.96 scale | — | — | — | — |
+| `{components.icon-button-circle}` | Transparent or white circle, ink outline | outline thickens to 1.5px | 2px `{colors.focus}` ring (`{colors.focus-on-ink}` over media) | 0.96 scale | outline at `{colors.hairline-ink-50}` | spinner in place of the icon | carousel dot fills with `{colors.accent-signal-light}` | — |
+| `{components.nav-pill}` | White floating pill | link gains a faint `{colors.surface-bone}` pill surround | 2px `{colors.focus}` ring, 2px offset | link compresses 1px | — | — | current section link holds the pill surround | — |
+| `{components.search-input-expanded}` | White field, 50% ink hairline | hairline goes solid `{colors.border-ink}` | 2px `{colors.focus}` ring, 2px offset | caret active | field greys to `{colors.surface-bone}` | spinner at the trailing edge | — | hairline and helper text in `{colors.accent-clay}` |
+| `{components.country-selector}` | Ink pill, 40% white hairline | hairline rises to 70% white | 2px `{colors.focus-on-ink}` ring, 2px offset | chevron rotates 180 degrees | — | — | chosen locale shown in the closed pill | — |
+| `{components.portrait-card}` | Circular photo, orbit arc | photo scales to 1.02 inside its mask | ring is carried by the satellite CTA | 0.99 scale | — | cream-tinted blur-up placeholder (extracted) | — | — |
+| `{components.carousel-pill-card}` | Pill-cropped photography | — | 2px `{colors.focus}` ring, 2px offset | 0.99 scale on drag | — | cream-tinted blur-up placeholder (extracted) | active slide marked by an `{colors.accent-signal-light}` dot | — |
+| `{components.chip-category}` | White pill, ink label | — | — | — | — | — | — | — |
+| `{components.ghost-watermark-text}` | Cream-on-cream display text, decorative only | — | — | — | — | — | — | — |
+| `{components.link-inline}` | `{colors.link-blue}`, no underline | underline appears | 2px `{colors.focus}` ring, 2px offset | colour deepens | `{colors.ink-muted}`, no pointer | — | — | — |
+| `{components.footer-link-row}` | White label on ink | underline appears | 2px `{colors.focus-on-ink}` ring, 2px offset | 1px downward nudge | — | — | — | — |
+
+`{components.chip-category}` and `{components.ghost-watermark-text}` are static —
+a chip is a label, and the watermark is a decorative background layer. Both
+genuinely have one state each.
 
 ### Buttons
 
@@ -227,7 +495,56 @@ A signature motif: thin (~1–1.5px) single-weight curved lines in Light Signal 
 - External link marker: a small upper-right arrow (`↗`) after link text
 - Bottom row (below a 1px white-at-opacity divider): copyright + privacy small-print + country-language pill dropdown + four social icons (LinkedIn, Facebook, X, YouTube)
 
-## 5. Layout Principles
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was
+not measured from the live site.** Nobody timed Mastercard's real transitions;
+what follows is the **Calm** profile, chosen because the file's own description
+is editorial, the display weight is 500 rather than a heavy 700+, gradients are
+absent from the core UI, and whitespace is used to slow the reader down. Travel
+is small and opacity leads, so the constellation of circles keeps its stillness.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, link, nav) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`, `transform: translateY(-1px)` | travel removed; opacity only at `{motion.duration-reduced}` |
+| Press / active | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.98)` | no scale; no substitute |
+| Focus ring appears | `{motion.duration-instant}` | `{motion.ease-enter}` | `opacity` | unchanged — the ring must never be delayed or faded out |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` | opacity only at `{motion.duration-reduced}` |
+| Modal or drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(12px)` | travel removed; opacity only at `{motion.duration-reduced}` |
+| Modal or drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform: translateY(8px)` | travel removed; opacity only at `{motion.duration-reduced}` |
+| Dropdown (country selector, nav menu) | `{motion.duration-fast}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(-4px)` | travel removed; opacity only at `{motion.duration-reduced}` |
+| Toast | in `{motion.duration-base}`, out `{motion.duration-fast}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY(8px)` | travel removed; opacity only at `{motion.duration-reduced}` |
+| List enter (service portraits, footer columns) | `{motion.duration-base}`, staggered `{motion.stagger-step}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px)` | stagger and travel removed; one opacity fade at `{motion.duration-reduced}` |
+| List exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` | opacity only at `{motion.duration-reduced}` |
+| Loading (spinner, blur-up placeholder) | 1200ms loop | linear | `transform: rotate()`, `opacity` | spinner frozen; a static cream-tinted placeholder remains |
+
+Rules this table obeys:
+
+- Animate `transform` and `opacity` only — never `width`, `height`, `top`,
+  `left` or `margin`. The "inward-shrink" on a pressed pill is a `scale`, not a
+  size change.
+- Every exit is shorter than its matching entrance.
+- Nothing animates on first paint in a way that delays content; the hero media
+  frame is painted, not revealed.
+- The spinner is the only infinite animation. The orbital arcs are drawn once
+  and then still — they are decorative geometry, not brand ambience, so there is
+  no looping motion anywhere else in the system.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate, all scale, the list stagger, the spinner's rotation. */
+  /* Kept: opacity fades, capped at {motion.duration-reduced} (150ms), and the
+     focus ring, which is never animated away. */
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    transition-property: opacity !important;
+  }
+}
+```
+
+## Layout
 
 ### Spacing System
 - **Base unit**: 8px (confirmed by dembrandt extraction and computed styles)
@@ -248,7 +565,8 @@ Mastercard treats whitespace as structure, not absence. A typical service sectio
 - ~300–500px of blank canvas between the portrait and the next section
 This deliberate emptiness tells the eye "slow down, read one thing at a time" — the opposite of dense dashboard UIs.
 
-### Border Radius Scale
+
+## Shapes
 
 | Radius | Use |
 |--------|-----|
@@ -261,7 +579,7 @@ This deliberate emptiness tells the eye "slow down, read one thing at a time" �
 
 The scale is unusual: most systems use 4/8/12/16. Mastercard skips those and commits to **either small (≤6), medium-large (20–40), or full-pill (99+)**. The middle ground of 8–12 is absent, which is why the UI feels either "precise and utility" or "soft and editorial" with no in-between.
 
-## 6. Depth & Elevation
+## Elevation & Depth
 
 | Level | Treatment | Use |
 |-------|-----------|-----|
@@ -273,12 +591,123 @@ The scale is unusual: most systems use 4/8/12/16. Mastercard skips those and com
 ### Shadow Philosophy
 Mastercard uses shadows as **atmospheric cushioning**, not directional light. The Level 2 shadow has a 48px spread and only 8% opacity — it barely exists as dark pixels but creates a "the card is breathing above the canvas" feel. There are almost no hard-edged, tight shadows anywhere in the system. Border lines are preferred over shadows for functional delineation (form inputs, footer divider).
 
+Shadow is doing all of the work here, because the surface tones carry almost no
+luminance separation: `surface-lifted` sits at 1.10:1 against `canvas-cream`,
+`surface-white` at 1.13:1 and `surface-bone` at 1.03:1. None of those layers is
+distinguishable from the canvas by colour alone, which is deliberate — the three
+cream tones exist to warm a surface, not to rank it. Depth therefore has exactly
+two legitimate expressions in this system, and they are not interchangeable:
+`{shadow.level-1}` to `{shadow.level-3}` for floating or elevated content, and a
+1px rule (`{colors.hairline-ink-50}` on cream, `{colors.border-on-ink}` on the
+ink footer) for functional delineation. Do not substitute a slightly different
+cream for either one; at ~1.1:1 it will not read as a layer.
+
 ### Decorative Depth
 - **Orbital arcs** (Light Signal Orange, ~1px): trace connective paths across sections
 - **Ghost watermark headlines**: cream-on-cream text gives sections an almost-pressed-paper quality
 - **Circle-image fade**: warm-toned photography at the edge of circular portraits dissolves into the canvas, implying soft atmospheric depth
 
-## 7. Do's and Don'ts
+## Accessibility
+
+Every ratio below is computed with WCAG 2.1 relative luminance from the hexes in
+this file's own `colors:` block. Extracted brand values are frozen: where one
+fails, it is named here rather than quietly corrected.
+
+### Measured contrast
+
+| Pair | Measured | Required | Verdict |
+|---|---|---|---|
+| `ink` on `canvas-cream` | 16.25:1 | 4.5:1 | pass |
+| `ink` on `surface-lifted` | 17.84:1 | 4.5:1 | pass |
+| `ink` on `surface-white` | 18.43:1 | 4.5:1 | pass |
+| `ink` on `surface-bone` | 16.76:1 | 4.5:1 | pass |
+| `ink-charcoal` on `canvas-cream` | 13.33:1 | 4.5:1 | pass |
+| `ink-muted` on `canvas-cream` | 4.84:1 | 4.5:1 | pass |
+| `ink-granite` on `canvas-cream` | 6.57:1 | 4.5:1 | pass |
+| `ink-graphite` on `canvas-cream` | 6.47:1 | 4.5:1 | pass |
+| `link-blue` on `canvas-cream` | 5.16:1 | 4.5:1 | pass |
+| `accent-clay` on `canvas-cream` | 6.20:1 | 4.5:1 | pass |
+| `on-accent` on `accent-signal` | 4.66:1 | 4.5:1 | pass |
+| `on-ink` on `surface-ink-footer` | 18.43:1 | 4.5:1 | pass |
+| `border-ink` on `canvas-cream` | 16.25:1 | 3.0:1 | pass |
+| `hairline-ink-50` composited on `canvas-cream` | 3.37:1 | 3.0:1 | pass |
+| `focus` on `canvas-cream` | 16.25:1 | 3.0:1 | pass |
+| `focus` on `surface-white` | 18.43:1 | 3.0:1 | pass |
+| `focus` on `surface-bone` | 16.76:1 | 3.0:1 | pass |
+| `focus-on-ink` on `surface-ink-footer` | 16.25:1 | 3.0:1 | pass |
+| `accent-signal` as text on `canvas-cream` | 4.11:1 | 4.5:1 | **fail** — fill-only colour, see below |
+| `accent-signal-light` as text on `canvas-cream` | 2.53:1 | 4.5:1 | **fail** — decorative only, see below |
+| `ink-whisper` as text on `canvas-cream` | 1.40:1 | 4.5:1 | **fail** — real brand failure, see below |
+| `ghost-watermark-text` (`watermark-ghost` on `canvas-cream`) | 1.13:1 | 3.0:1 | **fail** — deliberate, see below |
+| `brand-red` on `canvas-cream` | 4.07:1 | 4.5:1 | **fail** — logo mark only, never text |
+| `brand-yellow` on `canvas-cream` | 1.88:1 | 4.5:1 | **fail** — logo mark only, never text |
+| `border-on-ink` composited on `canvas-cream` | 1.05:1 | 3.0:1 | **fail** — harness artifact, see below |
+| `border-on-ink` composited on `surface-lifted` | 1.04:1 | 3.0:1 | **fail** — harness artifact, see below |
+| `ink-muted` on `surface-ink-footer` | 3.36:1 | 4.5:1 | **fail** — do not place muted grey on the ink footer |
+
+### Where this brand genuinely fails AA
+
+- **Ghost watermark headlines fail by design.** `watermark-ghost` (`#E8E2DA`) on
+  `canvas-cream` is 1.13:1. Cream-on-cream is the point of the treatment, so the
+  honest answer is not to darken it but to treat it as decoration: the watermark
+  must never carry information that is not also present in real foreground copy,
+  and it must be `aria-hidden`. Anyone who needs the section theme reads it from
+  the eyebrow label and the H2.
+- **Dust Taupe is not a text colour.** `ink-whisper` (`#D1CDC7`) measures 1.40:1
+  on the canvas. The file describes it as "whisper" and placeholder-like text;
+  at that ratio it is invisible to a large share of readers. Use
+  `ink-muted` (4.84:1) for any placeholder or empty-state label that has to be
+  read, and keep `ink-whisper` for hairline-weight decoration.
+- **Signal Orange cannot be body text.** `accent-signal` (`#CF4500`) is 4.11:1
+  on the canvas. It passes as a *fill* behind white text (4.66:1), which is the
+  only way the file uses it, but it must not be set as text or as an icon that
+  conveys meaning on cream.
+- **The orbital arc colour is decorative and nothing else.**
+  `accent-signal-light` (`#F37338`) is 2.53:1 on the canvas — below even the
+  3:1 non-text threshold. The arcs carry no information, so this is acceptable,
+  but the same colour must not be reused for a carousel dot that is the *only*
+  indicator of position. Pair the dot with a size or shape change as well.
+- **The logo mark is exempt.** `brand-red` and `brand-yellow` fail as text and
+  are never used as text; WCAG 1.4.3 does not apply to a logotype.
+
+### Focus ring
+
+No file in this collection defined a focus ring, so one is prescribed here.
+It is drawn **outside** the control, so it is judged against the surface behind
+it rather than the control fill, which is what WCAG 2.2 Focus Appearance asks
+for.
+
+- `focus` = `{colors.focus}` (`#141413`, the brand ink), 2px wide, 2px offset.
+  Used on `canvas-cream` (16.25:1), `surface-lifted` (17.84:1), `surface-white`
+  (18.43:1) and `surface-bone` (16.76:1).
+- `focus-on-ink` = `{colors.focus-on-ink}` (`#F3F0EE`, the canvas cream), 2px
+  wide, 2px offset. Used on `surface-ink-footer` (16.25:1) — the ink ring would
+  sit at 1:1 there, which is why a second token exists rather than one
+  compromise value.
+- Over hero video and full-bleed photography, which has no measurable colour,
+  the ring is two-tone: 2px `focus-on-ink` with a 1px `focus` outer edge, so one
+  band always separates from the imagery.
+- The ring is the brand's own ink and paper rather than a new chromatic colour,
+  because Signal Orange is reserved for consent and compliance signalling and a
+  focus ring in that colour would dilute the legal signal this file is explicit
+  about protecting.
+
+### Tap targets
+
+The file states that every interactive element exceeds 44x44px — satellite CTAs
+at 50-60px, nav pill controls at ~48px, mobile hamburger and search at 48x48px.
+That is a claim copied from the source document, not a measurement: tap-target
+size cannot be verified from a document, so treat it as the design intent to
+hold rather than as a confirmed fact.
+
+### Reduced motion
+
+`@media (prefers-reduced-motion: reduce)` removes all translate and scale,
+removes the list stagger, freezes the loading spinner, and keeps opacity fades
+capped at `{motion.duration-reduced}` (150ms). The focus ring is never animated
+away under any preference.
+
+## Do's and Don'ts
 
 ### Do
 - Use Canvas Cream (`#F3F0EE`) as the default body background — never pure white
@@ -303,7 +732,7 @@ Mastercard uses shadows as **atmospheric cushioning**, not directional light. Th
 - Don't omit the tiny accent dot before eyebrow labels — it's the identity
 - Don't place circular portraits on a grid — their magic comes from asymmetric placement
 
-## 8. Responsive Behavior
+## Responsive Behavior
 
 ### Breakpoints
 
@@ -327,7 +756,63 @@ All interactive elements comfortably exceed 44×44px. The satellite CTA (circle 
 ### Image Behavior
 Circular portraits scale proportionally (maintaining the perfect circle at every size). Hero video frames maintain their 40px radius at every breakpoint, but the frame itself shrinks with the viewport. Lazy loading is standard with a cream-tinted blur-up placeholder, preserving the palette during load.
 
-## 9. Agent Prompt Guide
+## Iteration Guide
+When refining existing screens generated with this design system:
+1. Focus on ONE component at a time — don't redesign multiple surfaces in parallel
+2. Reference specific color names AND hex codes from this document
+3. Use natural language ("warm putty cream", "stadium pill", "circular portrait with satellite CTA") alongside technical values
+4. Describe the desired "feel" (editorial, soft, institutional) alongside specific measurements
+5. When in doubt, reach for one of three radii: 20px (buttons), 40px (hero/stadium), or 999px (pill/nav)
+6. Default backgrounds to Canvas Cream (`#F3F0EE`), not white — this single change shifts the entire mood toward Mastercard
+
+
+## Known Gaps
+- The live page uses MarkForMC, a proprietary licensed typeface. Sofia Sans is the closest open-source substitute and is listed in Mastercard's own fallback stack.
+- Tablet breakpoint specifics (768–1023px) were inferred from desktop and mobile captures; intermediate layouts may vary per section.
+- The exact "whisper" cream tone used for ghost-watermark headlines behind circular portraits reads between `#E8E2DA` and `#D1CDC7` in captures; the precise value varies per section.
+- Third-party consent orange (`#CF4500`) is Mastercard's documented consent signal and should not be confused with any marketing CTA color.
+- The Mastercard logo mark (red `#EB001B` + yellow `#F79E1B`) is a brand asset, not a UI palette entry.
+- No frontmatter token block existed before this revision. Every token now in
+  `colors:`, `typography:`, `spacing:`, `rounded:` and `shadow:` was read out of
+  this file's own prose; nothing was measured afresh and nothing was invented.
+- Line height is not stated anywhere in the source for the primary button label,
+  the consent button label, or the ghost-watermark display role. Those three
+  `typography:` entries carry size, weight and tracking but no `lineHeight`.
+- The source gives the tiny decorative radius as a "3-6px" range and the pill
+  radius as "99px / 999px / 1000px". `{rounded.xs}` and `{rounded.sm}` take the
+  two ends of the first range and `{rounded.full}` takes 999px; the exact value
+  per element is unknown.
+- The footer column headers are described only as "uppercase, muted, weight
+  700". No hex is given for that grey, so no `footer-column-header` entry
+  exists in `components:` and no contrast pair could be declared for it. Note that
+  `ink-muted` on the ink footer is 3.36:1, so the obvious guess would fail.
+- The source gives the footer column-header size as a "12-14px" range;
+  `{typography.footer-column-header}` takes 14px, the value the Do's and Don'ts
+  and the Agent Prompt Guide both repeat.
+- Chip labels, the "Story" category tag and the oversized inline carousel CTA
+  have stated padding and radius but no stated type size, so no typography role
+  was created for them.
+- The whole Motion & Animation section is prescribed, not extracted. No timing
+  function, duration or easing curve in this file was measured from the live
+  site.
+- Hover, focus-visible, loading, selected and error styling is prescribed for
+  every component. The source documents only default and active/pressed, and
+  only for the two body buttons.
+- `{colors.border-on-ink}` is stated in the source as `rgba(255,255,255,0.4)`
+  and is only ever drawn on the ink footer, where it measures 3.83:1. It has no
+  opaque equivalent in the source.
+- The source disagrees with itself on the footer divider's opacity: the Footer
+  description gives `rgba(255,255,255,0.4)` for the country-selector border
+  while the Agent Prompt Guide asks for a "1px white-at-30%-opacity horizontal
+  divider". `{colors.border-on-ink}` takes the 40% figure, since that is the one
+  attached to a named component. Whether the divider and the selector border are
+  the same value is unresolved.
+- The three cream surfaces are separated by 1.03:1 to 1.13:1, so elevation in
+  this system is legible only through shadow or a rule, never through surface
+  tone. That is recorded as the intent in Elevation & Depth rather than as a
+  defect, but it does mean a layer ladder cannot be built from these tokens.
+
+## Agent Prompt Guide
 
 ### Quick Color Reference
 - Primary CTA: "Ink Black (`#141413`) — the warm near-black used for primary pill buttons and footer"
@@ -348,18 +833,3 @@ Circular portraits scale proportionally (maintaining the perfect circle at every
 - "Create a hero media frame: 40px border-radius on all corners, full viewport width minus 48px gutters, ~60% viewport height, dark background for video content. Place it directly on the cream canvas with no shadow."
 - "Design a footer: Ink Black (`#141413`) background, white text, 4-column link grid with uppercase muted column headers at 14px weight 700 +4% tracking. Include a large conversational H2 above the grid, a 1px white-at-30%-opacity horizontal divider below, and a bottom row with copyright, legal small-print links, a pill-shaped country selector, and four social icons."
 
-### Iteration Guide
-When refining existing screens generated with this design system:
-1. Focus on ONE component at a time — don't redesign multiple surfaces in parallel
-2. Reference specific color names AND hex codes from this document
-3. Use natural language ("warm putty cream", "stadium pill", "circular portrait with satellite CTA") alongside technical values
-4. Describe the desired "feel" (editorial, soft, institutional) alongside specific measurements
-5. When in doubt, reach for one of three radii: 20px (buttons), 40px (hero/stadium), or 999px (pill/nav)
-6. Default backgrounds to Canvas Cream (`#F3F0EE`), not white — this single change shifts the entire mood toward Mastercard
-
-### Known Gaps
-- The live page uses MarkForMC, a proprietary licensed typeface. Sofia Sans is the closest open-source substitute and is listed in Mastercard's own fallback stack.
-- Tablet breakpoint specifics (768–1023px) were inferred from desktop and mobile captures; intermediate layouts may vary per section.
-- The exact "whisper" cream tone used for ghost-watermark headlines behind circular portraits reads between `#E8E2DA` and `#D1CDC7` in captures; the precise value varies per section.
-- Third-party consent orange (`#CF4500`) is Mastercard's documented consent signal and should not be confused with any marketing CTA color.
-- The Mastercard logo mark (red `#EB001B` + yellow `#F79E1B`) is a brand asset, not a UI palette entry.

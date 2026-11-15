@@ -1,0 +1,198 @@
+{
+  "site": "mongodb",
+  "has_frontmatter": true,
+  "color_count": 34,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Known Gaps",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility"
+  ],
+  "optional_sections_missing": [],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface",
+    "text": "ink",
+    "text-dim": "muted",
+    "border": "hairline-dark",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus"
+  ],
+  "dangling_refs": [],
+  "component_contrast_failures": [
+    {
+      "component": "button-primary-pressed",
+      "fg": "#001e2b",
+      "bg": "#008c34",
+      "ratio": 3.93,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-orange",
+      "fg": "#ffffff",
+      "bg": "#fa6e39",
+      "ratio": 2.86,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#eceff1",
+      "bg": "#ffffff",
+      "ratio": 1.15,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e1e5e8",
+      "bg": "#ffffff",
+      "ratio": 1.27,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#c1ccd6",
+      "bg": "#ffffff",
+      "ratio": 1.63,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on surface",
+      "fg": "#a8b3bc",
+      "bg": "#f9fbfa",
+      "ratio": 2.05,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on canvas",
+      "fg": "#a8b3bc",
+      "bg": "#ffffff",
+      "ratio": 2.13,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": false
+    },
+    {
+      "component": "button-primary-pressed",
+      "fg": "#001e2b",
+      "bg": "#008c34",
+      "ratio": 3.93,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-orange",
+      "fg": "#ffffff",
+      "bg": "#fa6e39",
+      "ratio": 2.86,
+      "required": 4.5,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#eceff1",
+      "bg": "#ffffff",
+      "ratio": 1.15,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#e1e5e8",
+      "bg": "#ffffff",
+      "ratio": 1.27,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#c1ccd6",
+      "bg": "#ffffff",
+      "ratio": 1.63,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on surface",
+      "fg": "#a8b3bc",
+      "bg": "#f9fbfa",
+      "ratio": 2.05,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "muted on canvas",
+      "fg": "#a8b3bc",
+      "bg": "#ffffff",
+      "ratio": 2.13,
+      "required": 4.5,
+      "role": "secondary text",
+      "disclosed": false
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [
+    "200"
+  ],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "disabled"
+  ],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 4,
+    "refs": 5,
+    "contrast": 1,
+    "sections": 3,
+    "motion": 3,
+    "states": 1
+  }
+}

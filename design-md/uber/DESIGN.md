@@ -17,6 +17,13 @@ colors:
   link: "#0000ee"
   on-dark: "#ffffff"
   black-elevated: "#282828"
+  focus: "#000000"
+  focus-on-dark: "#ffffff"
+
+shadow:
+  level-1: "rgba(0, 0, 0, 0.12) 0px 4px 16px 0px"
+  level-2: "rgba(0, 0, 0, 0.16) 0px 4px 16px 0px"
+  level-3: "rgba(0, 0, 0, 0.16) 0px 2px 8px 0px"
 
 typography:
   display-xxl:
@@ -104,6 +111,18 @@ spacing:
   2xl: 24px
   3xl: 32px
 
+motion:
+  duration-instant: 70ms
+  duration-fast: 130ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 450ms
+  ease-standard: cubic-bezier(0.3, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 60ms
+  duration-reduced: 130ms
+
 components:
   nav-bar:
     backgroundColor: "{colors.canvas}"
@@ -137,6 +156,7 @@ components:
     typography: "{typography.button-md}"
     rounded: "{rounded.pill}"
     padding: "{spacing.md}"
+    shadow: "{shadow.level-3}"
   button-large-rounded:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.on-primary}"
@@ -172,6 +192,7 @@ components:
     typography: "{typography.body-md}"
     rounded: "{rounded.xl}"
     padding: "{spacing.2xl}"
+    shadow: "{shadow.level-1}"
   card-soft-tinted:
     backgroundColor: "{colors.canvas-soft}"
     textColor: "{colors.ink}"
@@ -196,6 +217,7 @@ components:
     typography: "{typography.body-md}"
     rounded: "{rounded.xl}"
     padding: "{spacing.lg}"
+    shadow: "{shadow.level-2}"
   request-form-input-row:
     backgroundColor: "{colors.canvas-soft}"
     textColor: "{colors.ink}"
@@ -239,12 +261,14 @@ components:
     textColor: "{colors.link}"
     typography: "{typography.body-md}"
   link-on-dark:
+    backgroundColor: "{colors.ink}"
     textColor: "{colors.on-dark}"
     typography: "{typography.body-md}"
   link-mute:
     textColor: "{colors.hairline-mid}"
     typography: "{typography.body-md}"
   link-mute-soft:
+    backgroundColor: "{colors.ink}"
     textColor: "{colors.mute}"
     typography: "{typography.body-md}"
   icon-button-circular:
@@ -259,10 +283,10 @@ components:
 
   # ─── Examples (illustrative) — auto-derived; resolve any TO_FILL markers below ───
   ex-pricing-tier:
-    description: "Default tier card. Mirrors card-content chrome with canvas-soft surface and a faint border."
+    description: "Default tier card. Mirrors card-content chrome with canvas-soft surface and a hairline-mid boundary."
     backgroundColor: "{colors.canvas-soft}"
     textColor: "{colors.ink}"
-    borderColor: "{colors.surface-pressed}"
+    borderColor: "{colors.hairline-mid}"
     rounded: "{rounded.xl}"
     padding: "{spacing.2xl}"
   ex-pricing-tier-featured:
@@ -281,7 +305,7 @@ components:
     backgroundColor: "{colors.canvas}"
     rounded: "{rounded.xl}"
     padding: "{spacing.2xl}"
-    item-divider: "{colors.surface-pressed}"
+    item-divider: "{colors.hairline-mid}"
   ex-app-shell-row:
     description: "Sidebar nav row. Active state uses brand primary as a left-edge indicator bar."
     backgroundColor: "{colors.canvas}"
@@ -294,7 +318,7 @@ components:
     headerTypography: "{typography.body-sm-strong}"
     bodyTypography: "{typography.body-sm}"
     cellPadding: "{spacing.md} {spacing.lg}"
-    rowBorder: "{colors.surface-pressed}"
+    rowBorder: "{colors.hairline-mid}"
   ex-auth-form-card:
     description: "Sign-in / sign-up card. Mirrors card-content chrome with text-input primitives inside."
     backgroundColor: "{colors.canvas-soft}"
@@ -341,7 +365,7 @@ The single shape signature is the pill. Every interactive element rounds to `{ro
 
 ### Brand & Accent
 - **Ink Black** (`{colors.primary}` — `#000000`): The brand's only conversion colour. Every primary CTA pill, the footer fill, every dark promo band, every nav login button. The system has no secondary accent.
-- **Surface Pressed** (`{colors.surface-pressed}` — `#e2e2e2`): The pressed-state fill for white pills — a soft grey that's used only in active / pressed states.
+- **Surface Pressed** (`{colors.surface-pressed}` — `#e2e2e2`): The pressed-state fill for white pills — a soft grey that's used only in active / pressed states. It is a **fill tone, not a boundary tone**: at 1.13:1 against `{colors.canvas-soft}` and 1.30:1 against `{colors.canvas}` it is invisible as a hairline, so any boundary that must be seen uses `{colors.hairline-mid}` (7.59:1 on `{colors.canvas-soft}`) instead.
 - **Black Elevated** (`{colors.black-elevated}` — `#282828`): A near-black used on hover for the translucent white tab-toggle pill. Documented as a system colour because it appears on a recurring brand control.
 
 ### Surface
@@ -353,8 +377,13 @@ The single shape signature is the pill. Every interactive element rounds to `{ro
 - **Ink** (`{colors.ink}` — `#000000`): Every heading and body paragraph on light surfaces.
 - **Body** (`{colors.body}` — `#5e5e5e`): Secondary text — captions, sub-headings, supporting copy.
 - **Hairline Mid** (`{colors.hairline-mid}` — `#4b4b4b`): A mid-gray used for muted link text inside footer columns and breadcrumb-style nav.
-- **Mute** (`{colors.mute}` — `#afafaf`): The lightest text role — placeholder text, fine print, low-priority metadata.
+- **Mute** (`{colors.mute}` — `#afafaf`): The lightest text role — placeholder text, fine print, low-priority metadata. **This extracted tone fails WCAG AA on every light surface the brand owns** — 2.19:1 on `{colors.canvas}`, 1.91:1 on `{colors.canvas-soft}`, 1.98:1 on `{colors.canvas-softer}` — and it fails the 3:1 large-text allowance too, so no type size rescues it. It passes only on ink (9.57:1 on `{colors.ink}`), which is the one place `link-mute-soft` uses it. For light-surface secondary text use `{colors.body}` (6.48:1 on canvas) or `{colors.hairline-mid}` (8.72:1).
 - **On Dark** (`{colors.on-dark}` — `#ffffff`): All text on `{colors.ink}` surfaces (footer, dark promo bands).
+
+### Focus
+- **Focus** (`{colors.focus}` — `#000000`): The focus ring on every light surface. It is **the brand's own ink, not a new colour** — this is a monochrome system whose first rule is "no third colour", so a chromatic ring would falsify it. Drawn as a 2 px ring with a 2 px `{colors.canvas}` offset outside the control, which is what makes it readable against a black CTA pill it surrounds. Measured 21.0:1 on `{colors.canvas}`, 18.26:1 on `{colors.canvas-soft}`, 18.93:1 on `{colors.canvas-softer}`, 16.21:1 on `{colors.surface-pressed}`.
+- **Focus On Dark** (`{colors.focus-on-dark}` — `#ffffff`): The counterpart ring for the brand's black bands, footer and dark promo cards, where the ink ring would vanish. Same 2 px ring, offset 2 px in `{colors.ink}`. Measured 21.0:1 on `{colors.ink}` / `{colors.primary}`, 14.74:1 on `{colors.black-elevated}`. Over full-bleed hero photography, which has no measurable colour, use the two-tone form: 2 px `{colors.focus-on-dark}` with a 1 px `{colors.focus}` outer edge.
+- Both rings reuse hexes the palette already owns; neither adds a brand colour.
 
 ### Semantic
 The brand does not maintain a separate error / success / warning palette in its public marketing surface. Validation cues come from the primary black or from the brand's editorial illustrations. The `#0000ee` link colour is the system's only chromatic — it's the browser-default link blue, appearing in body-copy inline links inside legal / footer text.
@@ -418,41 +447,14 @@ The two faces are proprietary. Open-source substitutes:
 ### Whitespace Philosophy
 Card-to-card spacing carries the rhythm — between two stacked promo cards there's roughly a full `{spacing.3xl}` 32 px gutter; inside a card the headline / paragraph / CTA stack is tight (`{spacing.sm}` 8 px between siblings). The black promo bands and the footer have no internal hairlines — content sits on flat ink with white text.
 
-### Responsive Strategy
-
-#### Breakpoints
-
-| Name | Width | Key Changes |
-|---|---|---|
-| Mobile | < 600px | Nav collapses to hamburger; promo cards stack; ride-request form becomes full-width. |
-| Mobile-Large | 600–767px | Same as Mobile; chip rows enable horizontal scroll. |
-| Tablet | 768–1119px | 2-up promo grid at upper widths; nav stays horizontal until ≥ 1120 px. |
-| Desktop | 1120–1135px | Full nav row visible; promo cards 2-up. |
-| Desktop-Large | ≥ 1136px | Container caps at ~1200 px; bands stay edge-to-edge while content centres. |
-
-#### Touch Targets
-The pill `button-primary` renders at ~44 px tall (10 px vertical padding + 24 px label line-height); the larger `button-large-rounded` at ~56 px. Both meet WCAG AAA at all breakpoints. Category chips inflate to ≥ 44 px tall through extra padding on touch viewports.
-
-#### Collapsing Strategy
-- **Nav**: full link row + Help / Log in / Sign up pills at desktop. Collapses to logo + hamburger at mobile; menu overlays full-screen with the same link list stacked.
-- **Ride-request form card**: at desktop, the form sits inside a max-490-px `{rounded.xl}` card with shadow. At mobile, full-width with edge-to-edge.
-- **Promo cards**: at desktop, image-left + content-right (or alternating). At mobile, image always above content.
-- **Annual showcase card**: scales from a 2:3 desktop frame to a 4:3 mobile frame; date text resizes proportionally.
-
-#### Image Behavior
-- **Editorial illustrations**: 4:3 or 16:9 hard-edge rectangles; never cropped to a circle, never tilted. Aspect preserved.
-- **Photography**: same — square or landscape; framed inside `{rounded.xl}` card chrome.
-- **Maps in ride-request flow**: full-bleed inside a card; rounded corners follow the parent card.
-- **Logo bar**: SVG vector, monochrome, consistent height.
-
 ## Elevation & Depth
 
 | Level | Treatment | Use |
 |---|---|---|
 | Level 0 — Flat | No shadow, no border. | Default — most cards and surfaces lean on hairline-of-canvas contrast. |
-| Level 1 — Subtle Drop | `rgba(0, 0, 0, 0.12) 0px 4px 16px 0px` | Card-elevated frames around promo cards on light bands. |
-| Level 2 — Card Drop | `rgba(0, 0, 0, 0.16) 0px 4px 16px 0px` | The ride-request form card on the hero; large content cards with embedded forms. |
-| Level 3 — Pill Float | `rgba(0, 0, 0, 0.16) 0px 2px 8px 0px` | The floating white pill button (the one that floats over hero photography). |
+| Level 1 — Subtle Drop | `{shadow.level-1}` — `rgba(0, 0, 0, 0.12) 0px 4px 16px 0px` | Card-elevated frames around promo cards on light bands. |
+| Level 2 — Card Drop | `{shadow.level-2}` — `rgba(0, 0, 0, 0.16) 0px 4px 16px 0px` | The ride-request form card on the hero; large content cards with embedded forms. |
+| Level 3 — Pill Float | `{shadow.level-3}` — `rgba(0, 0, 0, 0.16) 0px 2px 8px 0px` | The floating white pill button (the one that floats over hero photography). |
 
 ### Decorative Depth
 - **Black bands as polarity-flip depth**: the brand uses pure black `{colors.primary}` mid-page bands to break the white-on-white rhythm. The polarity shift IS the depth cue.
@@ -616,6 +618,147 @@ The pill `button-primary` renders at ~44 px tall (10 px vertical padding + 24 px
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+### Component States
+
+Every component's supported states. `focus-visible` always draws `{colors.focus}` on light
+surfaces and `{colors.focus-on-dark}` on ink surfaces, 2 px with a 2 px offset. Hover and
+pressed fills are extracted (`{colors.black-elevated}`, `{colors.surface-pressed}`); every
+other state in this table is prescribed, not extracted.
+
+| Component | States | Notes |
+|---|---|---|
+| `button-primary` | default · hover · focus-visible · pressed · disabled · loading | hover fills `{colors.black-elevated}`; pressed adds `scale(0.98)`; disabled drops fill + label to 38% opacity; loading swaps the label for a spinner at a frozen pill width. No selected, no error. |
+| `button-secondary` | default · hover · focus-visible · pressed · disabled · loading | hover fills `{colors.canvas-soft}`; pressed fills `{colors.surface-pressed}`. |
+| `button-subtle` | default · hover · focus-visible · pressed · disabled | hover fills `{colors.surface-pressed}`; pressed holds it with `scale(0.98)`. |
+| `button-floating` | default · hover · focus-visible · pressed · disabled | shadow steps `{shadow.level-3}` → `{shadow.level-1}` on hover; focus ring uses the two-tone form over photography. |
+| `button-large-rounded` | default · hover · focus-visible · pressed · disabled · loading | same ladder as `button-primary` at `{rounded.xl}`. |
+| `button-tab-translucent` | default · hover · focus-visible · pressed · selected | selected is the active Ride / Drive tab: `{colors.ink}` fill, `{colors.on-dark}` label; hover on the unselected tab fills `{colors.black-elevated}`. |
+| `category-button` | default · hover · focus-visible · pressed · selected · disabled | selected inverts to `{colors.ink}` fill with `{colors.on-dark}` label. |
+| `text-input` | default · hover · focus-visible · disabled · error | focus draws the ring outside the field, keeping `{rounded.md}`; error adds a 2 px `{colors.ink}` boundary plus a `{typography.caption}` message — the brand owns no chromatic error tone (see Known Gaps). No hover fill change beyond `{colors.canvas-softer}`. |
+| `text-input-on-soft` | default · hover · focus-visible · disabled · error | identical ladder to `text-input`. |
+| `request-form-input-row` | default · hover · focus-visible · selected · error | selected is the row whose picker is open; hover fills `{colors.surface-pressed}`. |
+| `request-form-card` | default · loading | two states only: static chrome, plus a loading state while prices resolve. No hover, no pressed — it is a container. |
+| `card-content` · `card-soft-tinted` | default | one state only: a static container with no interactive affordance. |
+| `card-elevated` | default · hover | hover steps `{shadow.level-1}` → `{shadow.level-2}` where the whole card is a link; otherwise default only. |
+| `promo-card-illustrated` · `promo-card-on-dark` | default · hover · focus-visible | the card is a link target: hover lifts the shadow one level, focus-visible rings the whole card. |
+| `showcase-image-card` | default · hover · focus-visible | hover scales the image `1.02`; the frame does not move. |
+| `nav-bar` | default · loading | two states: resting, and a route-change loading bar. |
+| `nav-link` | default · hover · focus-visible · selected | hover underlines in `{colors.ink}`; selected is the current section. |
+| `faq-row` | default · hover · focus-visible · pressed · selected | selected is the expanded row; the chevron rotates, the panel fades. |
+| `app-download-pill` | default · hover · focus-visible · pressed | hover fills `{colors.black-elevated}`. |
+| `icon-button-circular` | default · hover · focus-visible · pressed · disabled · selected | selected used for the map-layer toggles only. |
+| `link-blue` · `link-on-dark` · `link-mute` · `link-mute-soft` | default · hover · focus-visible | hover underlines; no colour change — the brand has no hover-link tone. |
+| `footer` · `hero-band-light` · `hero-band-dark` | default | one state only: page furniture. |
+| `ex-*` (illustrative) | default · hover · focus-visible · pressed · disabled · loading · selected · error | the demonstration surfaces inherit the ladder of the brand primitive each one mirrors; `ex-app-shell-row` and `ex-product-selector` carry selected, `ex-auth-form-card` carries error and loading. |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity; it was not measured from the live site.** No duration, easing curve or delay was extracted from Uber's web surface, so every value below comes from the **Playful** profile in `theme-audit/SPEC.md` section 5, used verbatim. The two things motion here *can* lean on are extracted: `{colors.black-elevated}` is the real hover fill of the hero tab pill, and `{colors.surface-pressed}` is the real pressed fill of a white pill. Where a state is a colour change, that colour is a fact and the timing is not.
+
+Why Playful on a monochrome brand: the identity is illustration-led and consumer-facing (editorial riders / drivers / city objects are the only decorative system), and the pill is on every interactive element — so presses get a small scale pop and reveals a light overshoot. The brand's restraint is honoured by keeping travel short (8–12 px) and scale small (0.98–1.02), never by slowing the curve.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (pill, link, card) | `{motion.duration-fast}` 130ms | `{motion.ease-standard}` | `background-color` / `border-color` / `box-shadow` — paint only, no transform; this near-monochrome brand's hover *is* the fill change | Fill change kept, timed at `{motion.duration-reduced}`; no shadow lift |
+| Press | `{motion.duration-instant}` 70ms | `{motion.ease-standard}` | `transform: scale(0.98)` + `background-color` → `{colors.surface-pressed}` | Scale removed; fill change only |
+| Focus (focus-visible) | `{motion.duration-instant}` 70ms | `{motion.ease-standard}` | `opacity` on the 2 px ring | Ring appears with no fade — instant, never suppressed |
+| Page / route transition | enter `{motion.duration-base}` 200ms · exit `{motion.duration-fast}` 130ms | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: translateY(8px)` | Travel removed; cross-fade at `{motion.duration-reduced}` |
+| Modal / drawer | enter `{motion.duration-base}` 200ms · exit `{motion.duration-fast}` 130ms | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: scale(0.98) → 1` (drawer: `translateY(16px)`) | Opacity only at `{motion.duration-reduced}`; backdrop fade kept |
+| Dropdown / menu | enter `{motion.duration-fast}` 130ms · exit `{motion.duration-instant}` 70ms | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: scale(0.98)`, origin at the trigger edge | Opacity only at `{motion.duration-reduced}` |
+| Toast | enter `{motion.duration-base}` 200ms · exit `{motion.duration-fast}` 130ms | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` + `transform: translateY(12px)` | Travel removed; fade at `{motion.duration-reduced}` |
+| List enter (category chips, FAQ rows, promo cards) | `{motion.duration-base}` 200ms per item, `{motion.stagger-step}` 60ms apart, capped at 6 items | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px)` | Stagger and travel removed; all items fade together at `{motion.duration-reduced}` |
+| List exit | `{motion.duration-fast}` 130ms, no stagger | `{motion.ease-exit}` | `opacity` + `transform: scale(0.98)` | Scale removed; fade at `{motion.duration-reduced}` |
+| Loading | indeterminate spinner: 900ms per revolution, infinite · skeleton shimmer: `{motion.duration-emphasis}` 450ms per pass, infinite | `linear` (spinner) · `{motion.ease-standard}` (shimmer) | `transform: rotate()` · `transform: translateX()` on a masked gradient | Both loops frozen; replaced by a static indicator whose label fades in at `{motion.duration-reduced}` |
+
+**Rules this file holds to**
+- `transform` and `opacity` are the only animated geometry. Never `width`, `height`, `top`, `left` or `margin` — the ride-request card and the chip row must not reflow while they move. Paint-only changes (`background-color`, `border-color`, `box-shadow`) are state changes, not travel, and use the same tokens.
+- Every exit is shorter than its matching entrance.
+- Nothing animates on first paint in a way that delays content: the hero headline and the ride-request card render at rest. Only content entering after an interaction animates.
+- The spinner and the skeleton shimmer are the only infinite animations. The brand runs no ambient motion.
+- The 900ms spinner revolution is the one value outside the profile scale, and deliberately so: a loader cycle is a rhythm, not a state change, and the profile's longest token (450ms) spins too fast to read.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translate), all scale, the stagger on list enter,
+     the shadow lift on hover, the spinner rotation and the skeleton shimmer
+     (both are frozen to a static indicator). */
+  *, *::before, *::after {
+    animation-duration: 130ms !important;   /* {motion.duration-reduced} */
+    animation-iteration-count: 1 !important;
+    transition-duration: 130ms !important;  /* {motion.duration-reduced} */
+    transition-property: opacity, background-color, border-color, color !important;
+    transform: none !important;
+  }
+  /* Kept: opacity fades at {motion.duration-reduced} (130ms, never above
+     150ms), every paint-only state change, and the focus ring, which appears
+     instantly and is never suppressed. */
+}
+```
+
+## Accessibility
+
+### Measured contrast
+
+WCAG 2.1 relative luminance, computed from this file's own hexes.
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` `#000000` on `{colors.canvas}` `#ffffff` | 21.0:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.canvas-soft}` `#efefef` | 18.26:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.canvas-softer}` `#f3f3f3` | 18.93:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` `#ffffff` on `{colors.primary}` `#000000` | 21.0:1 | 4.5:1 | Pass |
+| `{colors.on-dark}` on `{colors.ink}` | 21.0:1 | 4.5:1 | Pass |
+| `{colors.body}` `#5e5e5e` on `{colors.canvas}` | 6.48:1 | 4.5:1 | Pass |
+| `{colors.body}` on `{colors.canvas-soft}` | 5.64:1 | 4.5:1 | Pass |
+| `{colors.hairline-mid}` `#4b4b4b` on `{colors.canvas}` | 8.72:1 | 3.0:1 | Pass (boundary) |
+| `{colors.hairline-mid}` on `{colors.canvas-soft}` | 7.59:1 | 3.0:1 | Pass (boundary) |
+| `{colors.link}` `#0000ee` on `{colors.canvas}` | 9.4:1 | 4.5:1 | Pass |
+| `{colors.on-dark}` on `{colors.black-elevated}` `#282828` | 14.74:1 | 4.5:1 | Pass |
+
+### Where the real brand fails AA
+
+These are extracted values, kept as they are. The brand genuinely fails here, and that is the useful fact for anyone building on this document.
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `mute` `#afafaf` on `canvas` `#ffffff` | 2.19:1 | 4.5:1 | **Fail** — placeholder and fine-print grey. Also fails the 3:1 large-text allowance, so no type size defends it. |
+| `mute` `#afafaf` on `canvas-soft` `#efefef` | 1.91:1 | 4.5:1 | **Fail** — the same grey inside a form-input row, which is where it is most often read. |
+| `mute` `#afafaf` on `canvas-softer` `#f3f3f3` | 1.98:1 | 4.5:1 | **Fail** — nested input fill. |
+| `surface-pressed` `#e2e2e2` on `canvas-soft` `#efefef` | 1.13:1 | 3.0:1 | **Fail as a boundary** — it is a pressed *fill*, and legitimate as one; nothing in this file now binds it as a border. Boundaries use `{colors.hairline-mid}`. |
+| `surface-pressed` `#e2e2e2` on `canvas` `#ffffff` | 1.30:1 | 3.0:1 | **Fail as a boundary**, same reason. |
+
+`mute` passes only on ink: 9.57:1 on `{colors.ink}`, which is the single place `link-mute-soft` is drawn. Nearest passing replacements, if a brand owner ever approves one: `#767676` (4.54:1 on canvas), `#6d6d6d` (4.50:1 on canvas-soft), or `#949494` (3.03:1 on canvas) for 24 px+ / 18.66 px-bold labels only.
+
+### Focus ring visibility, surface by surface
+
+The ring is drawn **outside** the control with a 2 px offset, so it is judged against the surface behind the control, not against the control's own fill — which matters here, because a black CTA pill and a white canvas cannot both be cleared by one ring colour.
+
+| Surface | Ring | Ratio | Required |
+|---|---|---|---|
+| `{colors.canvas}` `#ffffff` | `{colors.focus}` `#000000` | 21.0:1 | 3.0:1 |
+| `{colors.canvas-soft}` `#efefef` | `{colors.focus}` | 18.26:1 | 3.0:1 |
+| `{colors.canvas-softer}` `#f3f3f3` | `{colors.focus}` | 18.93:1 | 3.0:1 |
+| `{colors.surface-pressed}` `#e2e2e2` | `{colors.focus}` | 16.21:1 | 3.0:1 |
+| `{colors.ink}` / `{colors.primary}` `#000000` (footer, dark bands, dark promo cards) | `{colors.focus-on-dark}` `#ffffff` | 21.0:1 | 3.0:1 |
+| `{colors.black-elevated}` `#282828` (hover state of the dark tab pill) | `{colors.focus-on-dark}` | 14.74:1 | 3.0:1 |
+| Full-bleed hero photography (no measurable colour) | two-tone: `{colors.focus-on-dark}` 2 px with a 1 px `{colors.focus}` outer edge | not measurable | — |
+
+Neither ring is a new brand colour: `{colors.focus}` is the brand's ink and `{colors.focus-on-dark}` is its paper. A monochrome system whose first rule is "no third colour" gets a monochrome ring with a mandatory opposite-polarity offset, not an invented blue.
+
+### Tap targets
+
+`button-primary` computes to ~44 px tall and `button-large-rounded` to ~56 px from the padding and line-height tokens in this file; category chips reach ≥ 44 px on touch viewports through extra vertical padding. These are **arithmetic from tokens, not browser measurements** — nothing in this audit renders a page, so treat them as the intended minimum (44 × 44 px) rather than a verified one.
+
+### Reduced motion
+
+Every animation in `## Motion & Animation` has a reduced-motion counterpart, and the `@media (prefers-reduced-motion: reduce)` block there is normative: all travel, all scale, the list stagger, the shadow lift, the spinner rotation and the skeleton shimmer are removed; opacity fades and paint-only state changes remain at `{motion.duration-reduced}` 130ms. The focus ring is never suppressed.
+
+### Other accessibility notes
+
+- The brand carries **no error / success / warning palette** (stated in Colors → Semantic). Error states therefore signal with a 2 px `{colors.ink}` boundary plus a `{typography.caption}` message, which is shape and text rather than colour — it satisfies 1.4.1 by not relying on colour, but it gives a screen-reader-free user no colour cue at all. Recorded in Known Gaps.
+- `{colors.link}` `#0000ee` is the browser default blue, used only in legal / footer fine print. It passes 4.5:1 on canvas but sits at 2.23:1 on `{colors.ink}`, so it must never appear inside a dark band; dark bands use `link-on-dark`.
+- Hover states that are pure fill changes (`{colors.black-elevated}`, `{colors.surface-pressed}`) are paired with an underline on links, so hover is never colour-only.
+
 ## Do's and Don'ts
 
 ### Do
@@ -634,3 +777,43 @@ The pill `button-primary` renders at ~44 px tall (10 px vertical padding + 24 px
 - Don't reduce the brand to its illustration system alone. The pill geometry + black/white duet carries the brand even without illustrations.
 - Don't tighten or loosen letter-spacing on the display face. The brand never letter-spaces; default tracking is part of the voice.
 - Don't use `{rounded.full}` 9999 px for square cards — the pill 999 px and full 9999 px effects are identical for interactive elements, but cards stay at `{rounded.xl}` 16 px.
+
+## Responsive Behavior
+
+### Breakpoints
+
+| Name | Width | Key Changes |
+|---|---|---|
+| Mobile | < 600px | Nav collapses to hamburger; promo cards stack; ride-request form becomes full-width. |
+| Mobile-Large | 600–767px | Same as Mobile; chip rows enable horizontal scroll. |
+| Tablet | 768–1119px | 2-up promo grid at upper widths; nav stays horizontal until ≥ 1120 px. |
+| Desktop | 1120–1135px | Full nav row visible; promo cards 2-up. |
+| Desktop-Large | ≥ 1136px | Container caps at ~1200 px; bands stay edge-to-edge while content centres. |
+
+### Touch Targets
+The pill `button-primary` renders at ~44 px tall (10 px vertical padding + 24 px label line-height); the larger `button-large-rounded` at ~56 px. Both meet WCAG AAA at all breakpoints. Category chips inflate to ≥ 44 px tall through extra padding on touch viewports.
+
+### Collapsing Strategy
+- **Nav**: full link row + Help / Log in / Sign up pills at desktop. Collapses to logo + hamburger at mobile; menu overlays full-screen with the same link list stacked.
+- **Ride-request form card**: at desktop, the form sits inside a max-490-px `{rounded.xl}` card with shadow. At mobile, full-width with edge-to-edge.
+- **Promo cards**: at desktop, image-left + content-right (or alternating). At mobile, image always above content.
+- **Annual showcase card**: scales from a 2:3 desktop frame to a 4:3 mobile frame; date text resizes proportionally.
+
+### Image Behavior
+- **Editorial illustrations**: 4:3 or 16:9 hard-edge rectangles; never cropped to a circle, never tilted. Aspect preserved.
+- **Photography**: same — square or landscape; framed inside `{rounded.xl}` card chrome.
+- **Maps in ride-request flow**: full-bleed inside a card; rounded corners follow the parent card.
+- **Logo bar**: SVG vector, monochrome, consistent height.
+
+## Known Gaps
+
+- **No motion value is extracted.** Every duration, easing curve and stagger in `## Motion & Animation` comes from the Playful profile in `theme-audit/SPEC.md`, not from Uber's live site. The 900ms spinner revolution is a stated deviation from that profile.
+- **No disabled tone exists in the palette.** Disabled states are specified as 38% opacity on the live fill and label, because inventing a grey hex would falsify a monochrome brand that documents none. A brand owner should confirm or replace that with a real token.
+- **No semantic palette.** The brand publishes no error / success / warning / info colour, so error states carry shape and text only. Nothing in this file should be read as the brand's validation colour.
+- **`{colors.mute}` fails AA everywhere it is used on a light surface** (2.19:1 / 1.91:1 / 1.98:1). The hex is extracted and unchanged; see Accessibility for nearest passing values, which need brand-owner approval.
+- **Boundary re-scoping in the illustrative block.** `ex-pricing-tier` (borderColor), `ex-cart-drawer` (item-divider) and `ex-data-table-cell` (rowBorder) previously pointed at `{colors.surface-pressed}`, invisible at 1.13:1 on their own ground. They now point at `{colors.hairline-mid}`. Those three bindings are auto-derived demonstration surfaces, not extracted facts about the site; no extracted binding was re-pointed. Whether the real site draws a visible divider in those places is unverified.
+- **Tap-target sizes are computed, not rendered.** The ~44 px and ~56 px figures in `## Responsive Behavior` and Accessibility are arithmetic from padding and line-height tokens. The claim that they "meet WCAG AAA at all breakpoints" is moved here as unverified: no page was rendered in this audit.
+- **Shadow tokens are extracted values given names.** The three `rgba(...)` elevations were already written in the prose; `{shadow.level-1}` … `{shadow.level-3}` only make them referenceable. No new shadow was invented, and the brand's default remains Level 0 flat.
+- **`{colors.black-elevated}` is documented as a hover fill for one control** (the hero tab pill). This file now applies it to the hover state of other ink pills, which is prescribed consistency, not an extracted fact.
+- **Focus rings are prescribed.** No focus treatment was extracted from the site. The hexes are the brand's own ink and paper, and the 2 px ring / 2 px offset geometry is this document's prescription.
+- **The `ex-*` block still carries its auto-derivation note** and generic descriptions ("re-purposed for SaaS / B2B"). It reads as borrowed from the shared example kit rather than from Uber. Left verbatim: rewriting it is outside this file's extracted content.

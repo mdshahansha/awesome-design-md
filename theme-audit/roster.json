@@ -1,0 +1,674 @@
+[
+  {
+    "agent": "A01",
+    "site": "1win",
+    "intent": "An analysis of 1win's design language \u2014 a near-black",
+    "owned": "design-md/1win/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A02",
+    "site": "airbnb",
+    "intent": "A warm, generous consumer marketplace anchored on a clean",
+    "owned": "design-md/airbnb/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A03",
+    "site": "airtable",
+    "intent": "A sober, editorial workflow-software interface anchored on white canvas",
+    "owned": "design-md/airtable/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A04",
+    "site": "aljazeera",
+    "intent": "An analysis of Al Jazeera's design language \u2014 a",
+    "owned": "design-md/aljazeera/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A05",
+    "site": "apple",
+    "intent": "A photography-first interface that turns marketing into a museum",
+    "owned": "design-md/apple/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A06",
+    "site": "binance",
+    "intent": "A confident financial-platform interface anchored on a deep near-black",
+    "owned": "design-md/binance/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A07",
+    "site": "bmw-m",
+    "intent": "A motorsport-engineering interface anchored on a near-black canvas with",
+    "owned": "design-md/bmw-m/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A08",
+    "site": "bmw",
+    "intent": "BMW's corporate site \u2014 distinct from BMW M's motorsport-bombastic",
+    "owned": "design-md/bmw/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A09",
+    "site": "bugatti",
+    "intent": "An austere luxury-automotive interface that uses near-pure black canvas",
+    "owned": "design-md/bugatti/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A10",
+    "site": "cal",
+    "intent": "A clean, calendar-software-first interface anchored on white canvas with",
+    "owned": "design-md/cal/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A11",
+    "site": "claude",
+    "intent": "A warm-canvas editorial interface for Anthropic's Claude product. The",
+    "owned": "design-md/claude/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A12",
+    "site": "clay",
+    "intent": "A vibrant claymation-meets-data interface for Clay.com (GTM data-orchestration platform)",
+    "owned": "design-md/clay/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A13",
+    "site": "clickhouse",
+    "intent": "A high-performance database interface anchored on near-pure black canvas",
+    "owned": "design-md/clickhouse/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A14",
+    "site": "cohere",
+    "intent": "Cohere's 2026 web system is a controlled enterprise AI",
+    "owned": "design-md/cohere/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A15",
+    "site": "coinbase",
+    "intent": "An institutional-grade crypto exchange whose marketing surfaces read like",
+    "owned": "design-md/coinbase/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A16",
+    "site": "composio",
+    "intent": "A developer-tools brand for AI-agent tool integration whose marketing",
+    "owned": "design-md/composio/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A17",
+    "site": "cursor",
+    "intent": "An AI-first code editor whose marketing site reads like",
+    "owned": "design-md/cursor/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A18",
+    "site": "dell-1996",
+    "intent": "An inspired interpretation of Dell.com's 1996 design language ",
+    "owned": "design-md/dell-1996/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A19",
+    "site": "dji",
+    "intent": "An analysis of DJI's design language \u2014 a product-photography",
+    "owned": "design-md/dji/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A20",
+    "site": "elevenlabs",
+    "intent": "A voice-AI brand whose marketing surfaces read like a",
+    "owned": "design-md/elevenlabs/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A21",
+    "site": "expo",
+    "intent": "A React Native developer-platform whose marketing site reads like",
+    "owned": "design-md/expo/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A22",
+    "site": "ferrari",
+    "intent": "A luxury-automotive brand whose marketing surfaces read as cinematic",
+    "owned": "design-md/ferrari/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A23",
+    "site": "figma",
+    "intent": "\"A confident black-and-white editorial frame interrupted by oversized, hand-cut",
+    "owned": "design-md/figma/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A24",
+    "site": "framer",
+    "intent": "\"A confident dark-canvas builder marketing site that treats the",
+    "owned": "design-md/framer/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A25",
+    "site": "hashicorp",
+    "intent": "\"An enterprise-infrastructure marketing canvas built around a near-black ground",
+    "owned": "design-md/hashicorp/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A26",
+    "site": "hp",
+    "intent": "An inspired interpretation of HP's design language \u2014 a",
+    "owned": "design-md/hp/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A27",
+    "site": "ibm",
+    "intent": "\"An enterprise-marketing canvas faithful to Carbon Design System: white",
+    "owned": "design-md/ibm/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A28",
+    "site": "intercom",
+    "intent": "\"An editorial customer-service marketing canvas built around a soft",
+    "owned": "design-md/intercom/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A29",
+    "site": "jobright",
+    "intent": "An analysis of Jobright's design language \u2014 an AI",
+    "owned": "design-md/jobright/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A30",
+    "site": "kraken",
+    "intent": "A clean, trustworthy crypto-exchange interface on a white canvas",
+    "owned": "design-md/kraken/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A31",
+    "site": "lamborghini",
+    "intent": "A cathedral of darkness \u2014 true black (#000000) surfaces",
+    "owned": "design-md/lamborghini/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A32",
+    "site": "linear.app",
+    "intent": "\"A near-black product-focused marketing canvas built around #010102 (the",
+    "owned": "design-md/linear.app/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A33",
+    "site": "lovable",
+    "intent": "Warmth through restraint. A parchment-cream canvas (#f7f4ed) replaces the",
+    "owned": "design-md/lovable/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A34",
+    "site": "mastercard",
+    "intent": "A warm editorial-magazine payments identity built on putty-cream paper",
+    "owned": "design-md/mastercard/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A35",
+    "site": "mercury",
+    "intent": "An analysis of Mercury's design language \u2014 a fintech",
+    "owned": "design-md/mercury/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A36",
+    "site": "meta",
+    "intent": "Meta's design system spans hardware commerce (Quest VR, Ray-Ban",
+    "owned": "design-md/meta/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A37",
+    "site": "minimax",
+    "intent": "MiniMax presents itself as a premium AI infrastructure brand",
+    "owned": "design-md/minimax/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A38",
+    "site": "mintlify",
+    "intent": "Mintlify presents documentation infrastructure with a dual-mode aesthetic ",
+    "owned": "design-md/mintlify/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A39",
+    "site": "miro",
+    "intent": "Miro presents itself as the AI-powered visual workspace through",
+    "owned": "design-md/miro/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A40",
+    "site": "mistral.ai",
+    "intent": "Mistral AI brands itself with a singular signature ",
+    "owned": "design-md/mistral.ai/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A41",
+    "site": "mongodb",
+    "intent": "MongoDB carries a strong dual-mode visual identity \u2014 dark",
+    "owned": "design-md/mongodb/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A42",
+    "site": "mydealz",
+    "intent": "An analysis of mydealz's design language \u2014 a high-density",
+    "owned": "design-md/mydealz/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A43",
+    "site": "nerdwallet",
+    "intent": "An analysis of NerdWallet's design language \u2014 a personal-finance",
+    "owned": "design-md/nerdwallet/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A44",
+    "site": "nike",
+    "intent": "|",
+    "owned": "design-md/nike/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A45",
+    "site": "nintendo-2001",
+    "intent": "An analysis of Nintendo.com's 2001 design language \u2014 a",
+    "owned": "design-md/nintendo-2001/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A46",
+    "site": "notion",
+    "intent": "Notion presents itself as the all-in-one workspace through a",
+    "owned": "design-md/notion/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A47",
+    "site": "nvidia",
+    "intent": "|",
+    "owned": "design-md/nvidia/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A48",
+    "site": "ollama",
+    "intent": "|",
+    "owned": "design-md/ollama/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A49",
+    "site": "opencode.ai",
+    "intent": "|",
+    "owned": "design-md/opencode.ai/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A50",
+    "site": "oracle",
+    "intent": "An analysis of Oracle's design language \u2014 an enterprise",
+    "owned": "design-md/oracle/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A51",
+    "site": "oura",
+    "intent": "An analysis of Oura's design language \u2014 a warm-paper",
+    "owned": "design-md/oura/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A52",
+    "site": "pinterest",
+    "intent": "|",
+    "owned": "design-md/pinterest/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A53",
+    "site": "playstation",
+    "intent": "|",
+    "owned": "design-md/playstation/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A54",
+    "site": "posthog",
+    "intent": "|",
+    "owned": "design-md/posthog/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A55",
+    "site": "raycast",
+    "intent": "|",
+    "owned": "design-md/raycast/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A56",
+    "site": "renault",
+    "intent": "|",
+    "owned": "design-md/renault/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A57",
+    "site": "replicate",
+    "intent": "|",
+    "owned": "design-md/replicate/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A58",
+    "site": "resend",
+    "intent": "|",
+    "owned": "design-md/resend/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A59",
+    "site": "revolut",
+    "intent": "|",
+    "owned": "design-md/revolut/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A60",
+    "site": "runwayml",
+    "intent": "A cinematic reel rendered as a website. The canvas",
+    "owned": "design-md/runwayml/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A61",
+    "site": "sanity",
+    "intent": "\"A developer-content platform rendered as a nocturnal command center",
+    "owned": "design-md/sanity/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A62",
+    "site": "sap",
+    "intent": "An analysis of SAP's design language \u2014 an enterprise",
+    "owned": "design-md/sap/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A63",
+    "site": "sentry",
+    "intent": "An inspired interpretation of Sentri's design language \u2014 a",
+    "owned": "design-md/sentry/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A64",
+    "site": "shopify",
+    "intent": "An inspired interpretation of Shopifi's design language \u2014 a",
+    "owned": "design-md/shopify/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A65",
+    "site": "slack",
+    "intent": "An inspired interpretation of Slack's design language \u2014 a",
+    "owned": "design-md/slack/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A66",
+    "site": "spacex",
+    "intent": "An inspired interpretation of Spasex's design language \u2014 a",
+    "owned": "design-md/spacex/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A67",
+    "site": "spotify",
+    "intent": "Content-first darkness \u2014 a near-black charcoal ladder (#121212 to",
+    "owned": "design-md/spotify/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A68",
+    "site": "starbucks",
+    "intent": "A warm, confident retail flagship. The canvas is a",
+    "owned": "design-md/starbucks/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A69",
+    "site": "stripe",
+    "intent": "An inspired interpretation of Stripi's design language \u2014 a",
+    "owned": "design-md/stripe/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A70",
+    "site": "supabase",
+    "intent": "An inspired interpretation of Supabaze's design language \u2014 an",
+    "owned": "design-md/supabase/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A71",
+    "site": "superhuman",
+    "intent": "An inspired interpretation of Superhumon's design language \u2014 a",
+    "owned": "design-md/superhuman/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A72",
+    "site": "tesla",
+    "intent": "Radical subtraction \u2014 a white canvas (#FFFFFF) carrying full-viewport",
+    "owned": "design-md/tesla/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A73",
+    "site": "theverge",
+    "intent": "The Verge's 2024 redesign \u2014 an almost-black #131313 editorial",
+    "owned": "design-md/theverge/DESIGN.md",
+    "profile": "Cinematic",
+    "legacy": false
+  },
+  {
+    "agent": "A74",
+    "site": "together.ai",
+    "intent": "An inspired interpretation of Together AI's design language ",
+    "owned": "design-md/together.ai/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A75",
+    "site": "uber",
+    "intent": "An inspired interpretation of Uber's design language \u2014 a",
+    "owned": "design-md/uber/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  },
+  {
+    "agent": "A76",
+    "site": "vercel",
+    "intent": "An inspired interpretation of Vercel's design language \u2014 a",
+    "owned": "design-md/vercel/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A77",
+    "site": "vodafone",
+    "intent": "An inspired interpretation of Vodafone's design language \u2014 a",
+    "owned": "design-md/vodafone/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A78",
+    "site": "voltagent",
+    "intent": "An inspired interpretation of Voltagent's design language \u2014 a",
+    "owned": "design-md/voltagent/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A79",
+    "site": "warp",
+    "intent": "An inspired interpretation of Warp's design language \u2014 an",
+    "owned": "design-md/warp/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A80",
+    "site": "webflow",
+    "intent": "An inspired interpretation of Webflow's design language \u2014 a",
+    "owned": "design-md/webflow/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A81",
+    "site": "wired",
+    "intent": "An inspired interpretation of Wired's design language \u2014 a",
+    "owned": "design-md/wired/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A82",
+    "site": "wise",
+    "intent": "An inspired interpretation of Wise's design language \u2014 a",
+    "owned": "design-md/wise/DESIGN.md",
+    "profile": "Calm",
+    "legacy": false
+  },
+  {
+    "agent": "A83",
+    "site": "x.ai",
+    "intent": "An inspired interpretation of xAI's design language \u2014 Elon",
+    "owned": "design-md/x.ai/DESIGN.md",
+    "profile": "Crisp",
+    "legacy": false
+  },
+  {
+    "agent": "A84",
+    "site": "zapier",
+    "intent": "An inspired interpretation of Zapier's design language \u2014 a",
+    "owned": "design-md/zapier/DESIGN.md",
+    "profile": "Playful",
+    "legacy": false
+  }
+]

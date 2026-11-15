@@ -1,0 +1,203 @@
+{
+  "site": "supabase",
+  "has_frontmatter": true,
+  "color_count": 27,
+  "composited_tokens": [],
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility",
+    "Known Gaps"
+  ],
+  "optional_sections_missing": [],
+  "roles_from_bindings": [
+    "surface=canvas-night"
+  ],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "canvas-night",
+    "text": "ink",
+    "text-dim": "ink-secondary",
+    "border": "hairline-strong",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus"
+  ],
+  "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#171717",
+      "bg": "#1c1c1c",
+      "ratio": 1.05,
+      "required": 4.5,
+      "role": "body text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "ink-secondary on canvas-night",
+      "fg": "#212121",
+      "bg": "#1c1c1c",
+      "ratio": 1.06,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-cool-2 on canvas",
+      "fg": "#efefef",
+      "bg": "#ffffff",
+      "ratio": 1.15,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-cool on canvas",
+      "fg": "#ededed",
+      "bg": "#ffffff",
+      "ratio": 1.17,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#dfdfdf",
+      "bg": "#ffffff",
+      "ratio": 1.33,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-cool-3 on canvas",
+      "fg": "#d4d4d4",
+      "bg": "#ffffff",
+      "ratio": 1.48,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#c7c7c7",
+      "bg": "#ffffff",
+      "ratio": 1.69,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "ink on canvas-night",
+      "fg": "#171717",
+      "bg": "#1c1c1c",
+      "ratio": 1.05,
+      "required": 4.5,
+      "role": "body text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "ink-secondary on canvas-night",
+      "fg": "#212121",
+      "bg": "#1c1c1c",
+      "ratio": 1.06,
+      "required": 4.5,
+      "role": "secondary text on surface",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-cool-2 on canvas",
+      "fg": "#efefef",
+      "bg": "#ffffff",
+      "ratio": 1.15,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-cool on canvas",
+      "fg": "#ededed",
+      "bg": "#ffffff",
+      "ratio": 1.17,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#dfdfdf",
+      "bg": "#ffffff",
+      "ratio": 1.33,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-cool-3 on canvas",
+      "fg": "#d4d4d4",
+      "bg": "#ffffff",
+      "ratio": 1.48,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline-strong on canvas",
+      "fg": "#c7c7c7",
+      "bg": "#ffffff",
+      "ratio": 1.69,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_documented": [
+    "hover",
+    "pressed"
+  ],
+  "states_missing": [
+    "focus-visible",
+    "active",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 4,
+    "refs": 5,
+    "contrast": 1,
+    "sections": 2,
+    "motion": 1,
+    "states": 1
+  }
+}

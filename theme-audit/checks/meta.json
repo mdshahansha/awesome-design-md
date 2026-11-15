@@ -1,0 +1,161 @@
+{
+  "site": "meta",
+  "has_frontmatter": true,
+  "color_count": 27,
+  "sections_present": [
+    "Colors",
+    "Components",
+    "Do's and Don'ts",
+    "Elevation & Depth",
+    "Iteration Guide",
+    "Known Gaps",
+    "Layout",
+    "Overview",
+    "Responsive Behavior",
+    "Shapes",
+    "Typography"
+  ],
+  "sections_missing": [
+    "Motion & Animation",
+    "Accessibility"
+  ],
+  "optional_sections_missing": [],
+  "roles_resolved": {
+    "canvas": "canvas",
+    "surface": "surface-soft",
+    "text": "ink",
+    "border": "hairline",
+    "accent": "primary",
+    "on-accent": "on-primary"
+  },
+  "roles_missing": [
+    "focus",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "component_contrast_failures": [
+    {
+      "component": "badge-attention",
+      "fg": "#ffffff",
+      "bg": "#f2a918",
+      "ratio": 2.01,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-success",
+      "fg": "#ffffff",
+      "bg": "#31a24c",
+      "ratio": 3.28,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "hero-band-marketing",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1.0,
+      "required": 3.0,
+      "disclosed": false
+    }
+  ],
+  "contrast_unresolved": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#dee3e9",
+      "bg": "#ffffff",
+      "ratio": 1.29,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#ced0d4",
+      "bg": "#ffffff",
+      "ratio": 1.54,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "component": "badge-attention",
+      "fg": "#ffffff",
+      "bg": "#f2a918",
+      "ratio": 2.01,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "badge-success",
+      "fg": "#ffffff",
+      "bg": "#31a24c",
+      "ratio": 3.28,
+      "required": 4.5,
+      "disclosed": false
+    },
+    {
+      "component": "hero-band-marketing",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1.0,
+      "required": 3.0,
+      "disclosed": false
+    }
+  ],
+  "contrast_disclosed": [],
+  "contrast_failures": [
+    {
+      "pair": "hairline-soft on canvas",
+      "fg": "#dee3e9",
+      "bg": "#ffffff",
+      "ratio": 1.29,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    },
+    {
+      "pair": "hairline on canvas",
+      "fg": "#ced0d4",
+      "bg": "#ffffff",
+      "ratio": 1.54,
+      "required": 3.0,
+      "role": "boundary, all tones",
+      "disclosed": false
+    }
+  ],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [
+    "250",
+    "300"
+  ],
+  "easings_found": 0,
+  "layout_animation_mentions": [],
+  "states_documented": [
+    "active",
+    "pressed",
+    "disabled",
+    "selected",
+    "error"
+  ],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "loading"
+  ],
+  "score": {
+    "tokens": 3,
+    "refs": 5,
+    "contrast": 1,
+    "sections": 3,
+    "motion": 3,
+    "states": 2
+  }
+}

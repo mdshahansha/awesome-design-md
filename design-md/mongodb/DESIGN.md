@@ -30,6 +30,7 @@ colors:
   hairline-soft: "#eceff1"
   hairline-strong: "#c1ccd6"
   hairline-dark: "#1c2d38"
+  hairline-control: "#6b7a88"
   ink: "#001e2b"
   charcoal: "#1c2d38"
   slate: "#3d4f5b"
@@ -38,6 +39,8 @@ colors:
   muted: "#a8b3bc"
   on-dark: "#ffffff"
   on-dark-muted: "#a8b3bc"
+  focus: "#00684a"
+  focus-on-dark: "#00ed64"
 
 typography:
   hero-display:
@@ -159,6 +162,18 @@ spacing:
   section-lg: 96px
   hero: 120px
 
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
+
 components:
   button-primary:
     backgroundColor: "{colors.brand-green}"
@@ -186,7 +201,7 @@ components:
     rounded: "{rounded.full}"
     padding: "10px 22px"
   button-secondary-on-dark:
-    backgroundColor: "transparent"
+    backgroundColor: "{colors.brand-teal-deep}"
     textColor: "{colors.on-dark}"
     typography: "{typography.button-md}"
     rounded: "{rounded.full}"
@@ -254,7 +269,7 @@ components:
   text-input-focused:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
-    border: "2px solid {colors.brand-green-dark}"
+    border: "2px solid {colors.focus}"
   search-pill:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.steel}"
@@ -395,8 +410,16 @@ components:
     textColor: "{colors.on-dark}"
     typography: "{typography.body-sm}"
     padding: "{spacing.section} {spacing.xxl}"
+  focus-ring:
+    border: "2px solid {colors.focus}"
+    outlineOffset: "2px"
+    rounded: "{rounded.full}"
+  focus-ring-on-dark:
+    border: "2px solid {colors.focus-on-dark}"
+    outlineOffset: "2px"
+    rounded: "{rounded.full}"
   footer-link:
-    backgroundColor: "transparent"
+    backgroundColor: "{colors.brand-teal-deep}"
     textColor: "{colors.on-dark-muted}"
     typography: "{typography.body-sm}"
     padding: "{spacing.xxs} 0"
@@ -445,6 +468,11 @@ The system uses Euclid Circular A as its display face. The face is contemporary 
 - **Hairline Soft** ({colors.hairline-soft}): Quieter dividers
 - **Hairline Strong** ({colors.hairline-strong}): Stronger 1px border for inputs
 - **Hairline Dark** ({colors.hairline-dark}): Border on dark surfaces
+- **Hairline Control** ({colors.hairline-control}) — **prescribed, not extracted**: accessible control boundary at 4.41:1 on {colors.canvas}. The three extracted hairlines are decorative-only tones (1.15:1 to 1.63:1) and none reaches the 3:1 a control boundary needs; use this token where the border is the only thing defining an interactive control.
+
+### Focus
+- **Focus** ({colors.focus}) — **prescribed, not extracted**: MongoDB's own dark green, the hue the file already uses for the focused input border and the active underline tab. 6.82:1 on {colors.canvas}, 6.56:1 on {colors.surface}, 6.31:1 on {colors.surface-feature}.
+- **Focus On Dark** ({colors.focus-on-dark}) — **prescribed, not extracted**: bright MongoDB green for rings on the deep-teal bands and code surfaces. 10.89:1 on {colors.brand-teal-deep}. The dual-mode identity needs both: the dark green sits at 2.52:1 on the teal band and cannot serve it.
 
 ### Text
 - **Ink** ({colors.ink}): Primary headlines and body text (deep navy-teal)
@@ -518,6 +546,10 @@ Marketing surfaces give content generous breathing room — `{spacing.hero}` (12
 | 3 (mockup) | `rgba(0, 30, 43, 0.12) 0px 12px 24px -4px` | Code mockup over hero |
 | 4 (modal) | `rgba(0, 30, 43, 0.16) 0px 16px 48px -8px` | Modals, dropdowns |
 
+Elevation is expressed one way per level and the two mechanisms do not mix: level 0 is a border with no shadow, levels 1–4 are shadow with no border.
+
+Layer separation is small by design: `{colors.canvas}` to `{colors.surface}` is 1.04:1, `{colors.surface}` to `{colors.surface-soft}` 1.04:1, `{colors.canvas}` to `{colors.surface-feature}` 1.08:1. The layers are not distinguishable by luminance alone — the hairline border and the padding step carry the separation, and the hairlines themselves sit below 3:1 (see Accessibility). On a dark hero band the separation is the polarity flip, which is unambiguous.
+
 ### Decorative Depth
 - Dark teal hero bands carry atmospheric gradient depth
 - Code mockup cards on hero use canvas-dark surface with terminal aesthetic
@@ -544,13 +576,40 @@ Marketing surfaces give content generous breathing room — `{spacing.hero}` (12
 
 ## Components
 
-> Per the no-hover policy, hover states are NOT documented. Default and pressed/active states only.
+> Hover *colour values* are not extracted — static captures cannot show them, and no hover hex below is claimed as observed. State *coverage* is documented: the matrix names every state each component supports, and states other than default and pressed/active are prescribed from the brand's own vocabulary (green pill deepens, ink underline, dark-green ring).
+
+### State Matrix
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | yes | opacity to 0.92 | `focus-ring` | `{colors.primary-pressed}` | `button-primary-disabled` | label swaps to spinner, width held | n/a | n/a |
+| `button-secondary` | yes | border to `{colors.hairline-control}` | `focus-ring` | border 2px `{colors.focus}` | 50% opacity | yes | n/a | n/a |
+| `button-on-dark` / `button-secondary-on-dark` | yes | opacity to 0.92 | `focus-ring-on-dark` | `{colors.primary-pressed}` | 50% opacity | yes | n/a | n/a |
+| `button-ghost` | yes | background `{colors.surface}` | `focus-ring` | background `{colors.surface-soft}` | 50% opacity | n/a | n/a | n/a |
+| `button-link` | yes | underline | `focus-ring` | `{colors.brand-green-dark}` | n/a | n/a | n/a | n/a |
+| `card-base` / `card-feature` / `service-tile` | yes | elevation 0 to 1 | `focus-ring` when the whole card is a link | n/a | n/a | skeleton block at `{colors.surface}` | n/a | n/a |
+| `card-course` / `card-cert` | yes | elevation 0 to 1 | `focus-ring` | n/a | n/a | skeleton block | n/a | n/a |
+| `pricing-card` / `pricing-card-featured` | yes | n/a | `focus-ring` on its CTA | n/a | n/a | n/a | featured tier = selected: `{colors.surface-feature}` + 2px `{colors.brand-green}` border | n/a |
+| `text-input` | yes | border to `{colors.hairline-control}` | `text-input-focused` (2px `{colors.focus}`) | n/a | background `{colors.surface}`, text `{colors.muted}` | n/a | n/a | 2px border `{colors.accent-orange}` + caption in `{colors.semantic-warning-text}` |
+| `search-pill` / `search-pill-large` | yes | border to `{colors.hairline-control}` | `text-input-focused` | n/a | n/a | inline spinner replaces the magnifier | n/a | no-results caption |
+| `pill-tab` | yes | border to `{colors.hairline-strong}` | `focus-ring` | `pill-tab-active` | 50% opacity | n/a | `pill-tab-active` (ink fill) | n/a |
+| `segmented-tab` | yes | text to `{colors.ink}` | `focus-ring` | `segmented-tab-active` | n/a | n/a | `segmented-tab-active` (2px green underline) | n/a |
+| `faq-accordion-item` | yes | text to `{colors.brand-green-dark}` | `focus-ring` on its summary row | n/a | n/a | n/a | expanded = selected | n/a |
+| `footer-link` / `logo-wall-item` | yes | underline / full opacity | `focus-ring-on-dark` | n/a | n/a | n/a | n/a | n/a |
+| `badge-green` / `badge-green-soft` / `badge-purple` / `badge-orange` / `badge-popular` | yes | n/a — static labels, two states only (present or absent) | n/a | n/a | n/a | n/a | n/a | n/a |
+| `promo-banner` / `hero-band-dark` / `hero-platform-card` / `cta-banner-dark` / `code-block` / `code-mockup-card` / `comparison-table` / `comparison-row` / `why-card` / `customer-testimonial-card` / `card-feature-dark` / `footer-region` | yes | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+
+The last two rows are genuinely single-state: they are layout and label surfaces with no interactive affordance of their own.
+
+**`focus-ring`** / **`focus-ring-on-dark`** — the focus indicator, prescribed.
+- Light surfaces: 2px `{colors.focus}` ring drawn *outside* the control with a 2px offset, so it is judged against the surface behind it and never against the control's own fill. Pill controls take `{rounded.full}`.
+- Dark bands and code surfaces: 2px `{colors.focus-on-dark}` at the same 2px offset.
 
 ### Buttons
 
 **`button-primary`** — Bright MongoDB green pill primary CTA, the dominant action.
 - Background `{colors.brand-green}`, text `{colors.on-primary}` (deep navy), typography `{typography.button-md}`, padding `10px 22px`, rounded `{rounded.full}`.
-- Pressed state `button-primary-pressed` deepens to `{colors.primary-pressed}`.
+- Pressed state `button-primary-pressed` deepens to `{colors.primary-pressed}`. Ink on that deepened green measures 3.93:1, below 4.5:1 — a real failure in the pressed state only, left as observed.
 - Disabled state `button-primary-disabled` uses `{colors.hairline}` background.
 
 **`button-secondary`** — Outlined pill for secondary actions.
@@ -560,7 +619,8 @@ Marketing surfaces give content generous breathing room — `{spacing.hero}` (12
 - Background `{colors.brand-green}`, text `{colors.on-primary}`, typography `{typography.button-md}`, padding `10px 22px`, rounded `{rounded.full}`.
 
 **`button-secondary-on-dark`** — Outlined pill on dark backgrounds.
-- Background transparent, text `{colors.on-dark}`, border `1px solid {colors.hairline-dark}`, typography `{typography.button-md}`, padding `10px 22px`, rounded `{rounded.full}`.
+- Fill is transparent; the declared ground is `{colors.brand-teal-deep}`, the hero band it is always drawn on. Text `{colors.on-dark}` (17.2:1 there), border `1px solid {colors.hairline-dark}`, typography `{typography.button-md}`, padding `10px 22px`, rounded `{rounded.full}`.
+- The border itself sits at 1.21:1 on the band — it reads as a tint, not a boundary; the white label carries the affordance.
 
 **`button-ghost`** — Quieter rectangular ghost button.
 - Background transparent, text `{colors.ink}`, typography `{typography.button-md}`, padding `8px 12px`, rounded `{rounded.md}`.
@@ -600,8 +660,10 @@ Marketing surfaces give content generous breathing room — `{spacing.hero}` (12
 **`text-input`** — Standard text field.
 - Background `{colors.canvas}`, text `{colors.ink}`, border `1px solid {colors.hairline-strong}`, rounded `{rounded.md}`, padding `{spacing.sm} {spacing.md}`, height 44px.
 
-**`text-input-focused`** — Activated state.
-- Border switches to `2px solid {colors.brand-green-dark}`.
+- The extracted boundary `{colors.hairline-strong}` measures 1.63:1 on `{colors.canvas}`, below the 3:1 a control boundary needs. The value is left as observed; for new work use `{colors.hairline-control}` (4.41:1) and keep the extracted hairlines for decorative dividers.
+
+**`text-input-focused`** — Focus-visible state.
+- Border switches to `2px solid {colors.focus}` (the same dark green the live site uses), plus the `focus-ring` offset ring.
 
 **`search-pill`** — Standard 44px search bar.
 - Background `{colors.surface}`, text `{colors.steel}`, typography `{typography.body-md}`, rounded `{rounded.md}`, height 44px, border `1px solid {colors.hairline-strong}`.
@@ -631,6 +693,7 @@ Marketing surfaces give content generous breathing room — `{spacing.hero}` (12
 
 **`badge-orange`** — Orange course category tag.
 - Background `{colors.accent-orange}`, text `{colors.on-dark}`, typography `{typography.caption-bold}`, rounded `{rounded.sm}`, padding `2px 8px`.
+- This pair is a real AA failure: white on `{colors.accent-orange}` measures 2.86:1 at 13px, against 4.5:1. Both values are extracted and left as observed. `{colors.on-primary}` ink on the same orange measures 6.03:1 and is the fix if the brand will take it.
 
 **`badge-popular`** — "Most Popular" tier indicator (dark teal pill with green text).
 - Background `{colors.brand-teal-deep}`, text `{colors.brand-green}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
@@ -696,7 +759,117 @@ Marketing surfaces give content generous breathing room — `{spacing.hero}` (12
 - Section headings in `{typography.body-sm-medium}` `{colors.on-dark}`.
 
 **`footer-link`** — Individual footer link.
-- Background transparent, text `{colors.on-dark-muted}`, typography `{typography.body-sm}`, padding `{spacing.xxs} 0`.
+- Fill is transparent; the declared ground is `{colors.brand-teal-deep}`, the footer region it lives in. Text `{colors.on-dark-muted}` (8.06:1 there), typography `{typography.body-sm}`, padding `{spacing.xxs} 0`.
+
+## Motion & Animation
+
+This motion system is **prescribed to match the brand's visual identity and was not measured from the live site** — no timing function or duration below is an extracted fact. MongoDB is a developer-tool identity (terminal-aesthetic code mockups, a database product, documentation surfaces), so it takes the **Crisp** profile: state change reads as instant, and there is no entrance choreography competing with a code snippet.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, card, link) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` | Colour/opacity change applies at `{motion.duration-reduced}`; no lift |
+| Press (pill button) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` | Instant colour change, no scale |
+| Focus ring appear | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` | Ring appears instantly, never animated away |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` | Opacity-only crossfade at `{motion.duration-reduced}` |
+| Modal / drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity`, `transform: translateY(8px) to 0` | Fade only at `{motion.duration-reduced}`, no travel |
+| Modal / drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity`, `transform` | Fade only at `{motion.duration-reduced}` |
+| Dropdown / nav menu | `{motion.duration-fast}` enter, `{motion.duration-instant}` exit | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY(4px) to 0` | Fade only at `{motion.duration-reduced}` |
+| Toast | `{motion.duration-base}` enter, `{motion.duration-fast}` exit | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY(8px) to 0` | Fade only at `{motion.duration-reduced}` |
+| List enter (course grid, pricing tiers) | `{motion.duration-base}`, `{motion.stagger-step}` per item | `{motion.ease-enter}` | `opacity`, `transform: translateY(6px) to 0` | All items fade together at `{motion.duration-reduced}`, stagger dropped |
+| List exit (filtered-out tiles) | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` | Immediate removal after a `{motion.duration-reduced}` fade |
+| Loading (spinner, skeleton) | 900ms linear loop | linear | `transform: rotate` / `opacity` | Loop frozen; a static indicator and its text label remain |
+
+**Rules this file follows**
+- Animate `transform` and `opacity` only. Never animate `width`, `height`, `top`, `left` or `margin` — a code mockup card reflowing is worse than no transition at all.
+- Every exit is shorter than its matching entrance.
+- Nothing animates on first paint in a way that delays content: the dark hero band and its code mockup render in place.
+- The only infinite animation is the loader. The hero band's atmospheric gradient is static; there is no brand ambience loop.
+- Press is an opacity deepen, not a scale pop — the pill is a brand signature and must not squash.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate and scale travel, the list stagger, the loader loop. */
+  /* Kept: opacity fades, capped at {motion.duration-reduced} (100ms);
+     focus rings, which appear instantly and are never suppressed. */
+}
+```
+
+## Accessibility
+
+Measured with WCAG 2.1 relative luminance from this file's own token values.
+
+### Key pairs — passing
+
+| Foreground / Background | Ratio | Required |
+|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 17.2:1 | 4.5:1 |
+| `{colors.ink}` on `{colors.surface}` | 16.56:1 | 4.5:1 |
+| `{colors.on-dark}` on `{colors.brand-teal-deep}` | 17.2:1 | 4.5:1 |
+| `{colors.on-dark-muted}` on `{colors.brand-teal-deep}` | 8.06:1 | 4.5:1 |
+| `{colors.on-primary}` on `{colors.brand-green}` | 10.89:1 | 4.5:1 |
+| `{colors.slate}` on `{colors.canvas}` | 8.51:1 | 4.5:1 |
+| `{colors.steel}` on `{colors.canvas}` | 5.41:1 | 4.5:1 |
+| `{colors.brand-green-dark}` on `{colors.canvas}` | 6.82:1 | 4.5:1 |
+| `{colors.semantic-warning-text}` on `{colors.semantic-warning-bg}` | 4.29:1 | 4.5:1 — marginal, see below |
+
+### Key pairs — measured failures, stated plainly
+
+These are extracted brand values. They are recorded, not corrected.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---|---|---|
+| `{colors.hairline-soft}` on `{colors.surface}` | 1.11:1 | 3.0:1 | FAIL — decorative divider only |
+| `{colors.hairline-soft}` on `{colors.canvas}` | 1.15:1 | 3.0:1 | FAIL — decorative divider only |
+| `{colors.hairline}` on `{colors.surface}` | 1.22:1 | 3.0:1 | FAIL — decorative divider only |
+| `{colors.hairline}` on `{colors.canvas}` | 1.27:1 | 3.0:1 | FAIL — card boundary is decorative; cards do not depend on it to be found |
+| `{colors.hairline-strong}` on `{colors.surface}` | 1.57:1 | 3.0:1 | FAIL |
+| `{colors.hairline-strong}` on `{colors.canvas}` | 1.63:1 | 3.0:1 | FAIL — and this one is the *only* boundary of `text-input`, so it is a real defect. Use `{colors.hairline-control}` (4.41:1) instead. |
+| `{colors.muted}` on `{colors.surface}` | 2.05:1 | 4.5:1 | FAIL — placeholder and disabled only; never body copy |
+| `{colors.muted}` on `{colors.canvas}` | 2.13:1 | 4.5:1 | FAIL — same scope. On the dark footer the same hex reaches 8.06:1 |
+| `{colors.stone}` on `{colors.canvas}` | 3.46:1 | 4.5:1 | FAIL below 18px; usable for 18px+ labels at the 3:1 threshold |
+| `button-primary-pressed` ink on `{colors.primary-pressed}` | 3.93:1 | 4.5:1 | FAIL — pressed state only, transient |
+| `badge-orange` white on `{colors.accent-orange}` | 2.86:1 | 4.5:1 | FAIL — the worst pair in the file; course category tags are not AA |
+
+`{colors.semantic-warning-bg}` is a fill, never an ink; it is never drawn as text on the canvas.
+
+### Focus ring visibility, per surface this file defines
+
+| Surface | Ring | Ratio | Required |
+|---|---|---|---|
+| `{colors.canvas}` | `{colors.focus}` | 6.82:1 | 3.0:1 |
+| `{colors.surface}` | `{colors.focus}` | 6.56:1 | 3.0:1 |
+| `{colors.surface-soft}` | `{colors.focus}` | 6.33:1 | 3.0:1 |
+| `{colors.surface-feature}` | `{colors.focus}` | 6.31:1 | 3.0:1 |
+| `{colors.brand-teal-deep}` / `{colors.canvas-dark}` | `{colors.focus-on-dark}` | 10.89:1 | 3.0:1 |
+| `{colors.brand-teal}` | `{colors.focus-on-dark}` | 7.47:1 | 3.0:1 |
+| `{colors.brand-teal-mid}` | `{colors.focus-on-dark}` | 4.32:1 | 3.0:1 |
+
+The ring is drawn outside its control with a **2px offset**, so each ratio above is measured against the surface behind the ring — not against the control fill it surrounds. That is what WCAG 2.2 Focus Appearance asks for, and it is why no single ring value has to clear 3:1 against the bright green pill as well as the white page.
+
+### Tap targets
+Documented heights: pill buttons 40–44px, form inputs 44px, large search 56px, pill tabs ~32px rising to 44px on mobile. The 32px desktop pill tab is below the 44px AA target; rendered size cannot be verified from this document, so the 44px floor is a requirement here, not a measurement.
+
+### Reduced motion
+`prefers-reduced-motion: reduce` removes all translate, scale and stagger, freezes the loader loop, and caps remaining opacity fades at `{motion.duration-reduced}` (100ms). Focus rings are never animated and never suppressed.
+
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-dark}` (`#1c2d38`) on `{colors.canvas-dark}` (`#001e2b`) | 1.21:1 | 3.0:1 | Fail — boundary, dark theme |
+| `{colors.semantic-warning-text}` (`#946f3f`) on `{colors.surface}` (`#f9fbfa`) | 4.39:1 | 4.5:1 | Fail — semantic tone as text |
 
 ## Do's and Don'ts
 
@@ -762,6 +935,8 @@ Marketing surfaces give content generous breathing room — `{spacing.hero}` (12
 ## Known Gaps
 
 - Specific dark-mode token values for canvas/surface beyond hero bands not surfaced
-- Animation/transition timings not extracted; recommend 150–200ms ease
+- Animation/transition timings not extracted. The Motion & Animation section is prescribed from the Crisp profile, not measured from the live site
+- Focus ring colour and offset are prescribed; MongoDB's real `:focus-visible` treatment was not captured
+- `{colors.hairline-control}` is prescribed, not observed — the real site's control borders fail 3:1
 - Form validation success state not explicitly captured
 - Course-tile category color mappings are observation-based

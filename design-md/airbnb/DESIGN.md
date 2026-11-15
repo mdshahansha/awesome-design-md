@@ -24,6 +24,8 @@ colors:
   surface-strong: "#f2f2f2"
   on-primary: "#ffffff"
   on-dark: "#ffffff"
+  focus: "#222222"
+  focus-inner: "#ffffff"
   legal-link: "#428bff"
   star-rating: "#222222"
   scrim: "#000000"
@@ -158,6 +160,17 @@ spacing:
   xl: 32px
   xxl: 48px
   section: 64px
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 120ms
+  duration-base: 200ms
+  duration-slow: 320ms
+  duration-emphasis: 480ms
+  ease-standard: cubic-bezier(0.2, 0, 0, 1)
+  ease-enter: cubic-bezier(0.17, 0.89, 0.32, 1.28)
+  ease-exit: cubic-bezier(0.3, 0, 1, 1)
+  stagger-step: 60ms
 
 components:
   button-primary:
@@ -376,8 +389,31 @@ The shape language is **soft**. Buttons are 8px radius (`{rounded.sm}`), propert
 - **Error Hover** (`{colors.primary-error-text-hover}` — #b32505): Darkens on link hover.
 - **Legal Link Blue** (`{colors.legal-link}` — #428bff): Inline links inside legal copy (Privacy, Terms). Only used inside the legal sub-band.
 
+### Focus
+- **Focus** (`{colors.focus}` — #222222): The focus ring tone. It is the same ink the system already uses for the focused `{component.text-input}` outline, which thickens to 2px ink on focus — so the ring is ink rather than a blue or Rausch glow, consistent with a palette that keeps Rausch for CTAs only. Measures **15.91:1** against `{colors.canvas}` (#ffffff) and **14.85:1** against `{colors.surface-soft}`, far above the 3:1 non-text minimum.
+- **Focus Inner** (`{colors.focus-inner}` — #ffffff): A 1px white inner ring drawn inside the ink ring, so the ring survives on ink-filled elements (`{component.date-picker-day-selected}`) and over photography in `{component.property-card}`. White against ink measures 15.91:1.
+
 ### Scrim
 - **Scrim** (`{colors.scrim}` — #000000 at 50% opacity): The global modal backdrop tone — date picker, login dialog, language picker. Stored as the base hex; opacity is applied at render time.
+
+### Measured contrast, including the failures
+Computed with WCAG 2.1 relative luminance from the hexes in this file:
+
+| Pair | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 15.91:1 | 4.5 | pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 14.85:1 | 4.5 | pass |
+| `{colors.body}` on `{colors.canvas}` | 10.53:1 | 4.5 | pass |
+| `{colors.muted}` on `{colors.canvas}` | 5.41:1 | 4.5 | pass |
+| `{colors.focus}` on `{colors.canvas}` | 15.91:1 | 3.0 | pass |
+| `{colors.on-primary}` on `{colors.primary}` | **3.52:1** | 4.5 | **fail** |
+| `{colors.hairline}` on `{colors.canvas}` | **1.36:1** | 3.0 | **fail** |
+
+Two real failures, stated plainly rather than patched:
+
+- **White on Rausch is 3.52:1.** Every primary CTA in the system (`{component.button-primary}`, `{component.button-pill-rausch}`, `{component.search-orb}`) is below the 4.5:1 body-text minimum. It clears 3:1, so it is defensible only for large text — 24px regular or 18.66px bold and above — and for the non-text icon in the search orb. `{component.button-primary}` labels are `{typography.button-md}` at 16px / 500, which is *not* large text, so that button fails AA as built. The nearest passing value is a token already in this palette: `{colors.primary-active}` (#e00b41) measures 4.89:1 with white. The hex is not changed here — #ff385c is Airbnb Rausch, and falsifying it would make the document wrong.
+- **Hairlines are invisible to a low-vision user.** `{colors.hairline}` (#dddddd) is 1.36:1 on white, `{colors.hairline-soft}` (#ebebeb) is 1.19:1, and even `{colors.border-strong}` (#c1c1c1) only reaches 1.80:1. No border token in this system meets the 3:1 non-text minimum; roughly #959595 would be needed. Airbnb's hairline language genuinely does not pass, and anything built on these tokens must not rely on a border alone to convey structure or state.
+- **Secondary reds and blues:** `{colors.primary-error-text}` (#c13515) passes at 5.54:1. `{colors.legal-link}` (#428bff) is 3.30:1 on white and fails for the 13–14px legal copy it is used on. `{colors.muted-soft}` (#929292) is 3.11:1 and is only used for disabled text, which WCAG exempts.
 
 ## Typography
 
@@ -435,7 +471,7 @@ If Airbnb Cereal VF and Circular are unavailable, **Inter** is the closest open-
 ### Whitespace Philosophy
 The system gives editorial bands 64px of vertical breathing room but compresses card grids — property and city-link cards sit just 16px apart. The contrast is intentional: the page reads as "open hero, dense marketplace below," reinforcing the marketplace nature without overwhelming the visitor at the fold.
 
-## Elevation
+## Elevation & Depth
 
 The system has essentially **one shadow tier** plus the flat baseline.
 
@@ -444,6 +480,30 @@ The system has essentially **one shadow tier** plus the flat baseline.
 - **Modal scrim:** `{colors.scrim}` rendered at 50% opacity — the global modal backdrop. Used on date pickers, login dialogs, language picker.
 
 There are no progressive elevation tiers — the system either has the one shadow or none. Depth comes from photography, the white-on-white surface separation, and rounded-corner clipping rather than from layered shadows.
+
+Because there is exactly one shadow definition, elevation is expressed one consistent way throughout: a surface either carries that triple-layer shadow or it is flat. Nothing in this file raises a surface by tinting it, by adding a second shadow, or by stacking z-layers with different shadow strengths. The three surfaces that carry it — `{component.search-bar-pill}` at rest, hovered `{component.property-card}`, and the dropdown / `{component.reservation-card}` group — are therefore all on the same visual plane.
+
+## Shapes
+
+### Radius Ladder
+| Token | Value | Used on |
+|---|---|---|
+| `{rounded.none}` | 0px | The body grid, `{component.product-tab-active}` and `{component.category-tab-active}` underline rules |
+| `{rounded.xs}` | 4px | Smallest chip and carousel-dot geometry |
+| `{rounded.sm}` | 8px | `{component.button-primary}`, `{component.button-secondary}`, `{component.text-input}` |
+| `{rounded.md}` | 14px | `{component.property-card}`, `{component.property-card-photo}`, `{component.experience-card}`, `{component.host-card}`, `{component.reservation-card}` |
+| `{rounded.lg}` | 20px | Larger panel corners |
+| `{rounded.xl}` | 32px | Category-strip corner treatment |
+| `{rounded.full}` | 9999px | `{component.search-bar-pill}`, `{component.search-orb}`, `{component.button-pill-rausch}`, `{component.icon-button-circle}`, `{component.icon-button-outline}`, `{component.guest-favorite-badge}`, `{component.new-tag}`, `{component.date-picker-day}` |
+
+The ladder steps 0 · 4 · 8 · 14 · 20 · 32 · full. It is not a doubling scale and not linear — 14px exists specifically because property-card photo clipping needed a value between 8 and 20, and no entry in this file sits outside the ladder.
+
+### Shape Rules
+- **Rounder as it gets more interactive.** Static plates are the least rounded; a tapped thing is a pill or a circle. The two most-tapped elements, `{component.search-bar-pill}` and `{component.search-orb}`, are the roundest objects on the page.
+- **Circles carry identity, not just affordance.** The Rausch orb, the wishlist heart, the icon buttons and the date-picker day cells are all full circles — the circle is a brand shape here, which is why `{rounded.full}` appears on nine component entries.
+- **One hard corner only.** The page grid and the 2px active-tab underline rule are the only square geometry; everything else is rounded, per the Overview.
+- **Clipping, not framing.** Photography is cut to `{rounded.md}` with no border and no inner shadow. The rounded corner is the frame.
+- **Stroke weights:** 1px for every hairline border, 2px for the ink underline on `{component.product-tab-active}` and for the focused `{component.text-input}` outline. There is no third stroke weight.
 
 ## Components
 
@@ -515,6 +575,162 @@ There are no progressive elevation tiers — the system either has the one shado
 
 **`legal-band`** — A bottom strip beneath the footer columns carrying the copyright line, language picker (globe icon + "English (US)" link), currency picker, and social icons (Facebook, X, Instagram). All text in muted `{colors.muted}` at `{typography.caption-sm}`.
 
+### States per Component
+
+Hover colour values are not documented (see Known Gaps); this table names which states each entry *has*, using the tokens already defined above. Every interactive entry takes the focus ring described under Colors → Focus.
+
+| Component | States |
+|---|---|
+| `{component.button-primary}` | default, hover (elevation only), focus-visible, pressed (`{component.button-primary-active}`), disabled (`{component.button-primary-disabled}`), loading (label swaps to an in-button spinner, width held) |
+| `{component.button-secondary}` | default, hover, focus-visible, pressed, disabled (outline drops to `{colors.border-strong}`) |
+| `{component.button-tertiary-text}` | default, hover (underline), focus-visible, pressed, disabled |
+| `{component.button-pill-rausch}` | default, hover, focus-visible, pressed |
+| `{component.search-orb}` | default, hover, focus-visible, pressed, loading (spinner replaces the glass icon while results resolve) |
+| `{component.search-bar-pill}` | default (collapsed), focus-visible, expanded/selected (one `{component.search-field-segment}` active), error (invalid date range, text in `{colors.primary-error-text}`) |
+| `{component.search-field-segment}` | default, hover, focus-visible, selected, error |
+| `{component.product-tab-active}` / `{component.product-tab-inactive}` | two states only: selected and unselected, plus focus-visible on the link |
+| `{component.category-tab-active}` | selected, unselected, hover, focus-visible |
+| `{component.property-card}` | default, hover (the signature elevation lift), focus-visible (ring on the whole card), pressed, selected (saved — heart fills Rausch), loading (skeleton plate at `{colors.surface-soft}`) |
+| `{component.property-card-photo}` | default, loading (skeleton), carousel-advancing |
+| `{component.experience-card}` | same set as `{component.property-card}` |
+| `{component.icon-button-circle}` (wishlist heart) | default, hover, focus-visible, pressed, selected (Rausch fill), loading (save in flight), disabled |
+| `{component.icon-button-outline}` | default, hover, focus-visible, pressed, disabled |
+| `{component.date-picker-day}` | default, hover, focus-visible, pressed, selected (`{component.date-picker-day-selected}`), in-range, disabled (unavailable night, `{colors.muted-soft}`) |
+| `{component.text-input}` | default, hover, focus-visible (2px `{colors.focus}` outline), filled, disabled (`{colors.surface-soft}` fill), error (`{colors.primary-error-text}` helper text) |
+| `{component.reservation-card}` | default, focus-visible within, loading (price recalculating), error (date conflict) |
+| `{component.host-card}` | default and focus-visible on its contained controls — the card itself is static |
+| `{component.reviews-card}` | default, loading (excerpt skeletons), expanded via the "Show more" tertiary link |
+| `{component.guest-favorite-badge}`, `{component.new-tag}`, `{component.rating-display-card}`, `{component.amenity-row}`, `{component.legal-band}` | single state — these are display-only and have no interaction |
+| `{component.footer-link}` | default, hover (underline), focus-visible, pressed |
+| `{component.top-nav}`, `{component.category-strip}`, `{component.footer-light}` | containers; states live on the controls inside them |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or curve below was extracted from Airbnb; they are derived from the **Playful** profile in `theme-audit/SPEC.md` §5, chosen because this is a saturated, illustration-led consumer identity (hand-drawn 32px product glyphs, a single hot Rausch accent, pill and circle geometry throughout). Treat every value as a recommendation for building in this style, not as documentation of Airbnb's real code.
+
+All values come from the `motion:` token block: `{motion.duration-instant}` 80ms · `{motion.duration-fast}` 120ms · `{motion.duration-base}` 200ms · `{motion.duration-slow}` 320ms · `{motion.duration-emphasis}` 480ms · `{motion.ease-standard}` · `{motion.ease-enter}` (overshoot, the Playful signature) · `{motion.ease-exit}` · `{motion.stagger-step}` 60ms.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Card hover (`{component.property-card}`) — the signature interaction | `{motion.duration-base}` | `{motion.ease-standard}` | `transform: scale(1.02)` plus the single shadow tier fading in via `opacity` on a pseudo-element | No scale. The shadow still fades in over `{motion.duration-fast}`, so hover remains perceivable |
+| Button / link hover | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` on the fill overlay | Unchanged — already opacity-only |
+| Press (`{component.button-primary}`, `{component.search-orb}`, wishlist heart) | `{motion.duration-instant}` down, `{motion.duration-fast}` release | `{motion.ease-enter}` on release for a small pop | `transform: scale(0.96)` down, overshoot to `scale(1.0)` on release; heart save pops to `scale(1.15)` then settles | No scale. The Rausch fill change is instant |
+| Focus | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` of the `{colors.focus}` ring; the ring's own geometry does not move | Ring appears with no transition |
+| Page / route transition | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` 0→1 with `transform: translateY(8px)` on the content block only; photography never shifts | Cross-fade at 120ms, no travel |
+| Modal / drawer (date picker, login) | `{motion.duration-slow}` enter, `{motion.duration-base}` exit | `{motion.ease-enter}` / `{motion.ease-exit}` | Scrim `opacity` 0→0.5; panel `transform: scale(0.96)→1` on desktop, `translateY(100%)→0` sheet on mobile | Scrim and panel fade only, 150ms, no scale and no slide |
+| Dropdown (account menu, language picker) | `{motion.duration-fast}` enter, `{motion.duration-instant}` exit | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity` plus `transform: scale(0.98)→1` from the trigger corner | Opacity only, 120ms |
+| Toast | `{motion.duration-base}` enter, `{motion.duration-fast}` exit | `{motion.ease-enter}` / `{motion.ease-exit}` | `transform: translateY(12px)→0` with `opacity` | Fade only, 150ms, and the auto-dismiss timer is extended |
+| List enter (search-results grid, category strip) | `{motion.duration-base}` per item, `{motion.stagger-step}` 60ms apart, capped at 8 items | `{motion.ease-enter}` | `opacity` 0→1 with `transform: translateY(12px)` | No stagger and no travel; the whole grid fades in once at 150ms |
+| List exit (filter change, removed wishlist item) | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` 1→0 with `transform: scale(0.98)`; remaining items reposition without a transition | Instant removal |
+| Loading | `{motion.duration-emphasis}` 480ms loop | `{motion.ease-standard}`, linear for the spinner | Skeleton plate `opacity` pulse 1→0.6 on `{colors.surface-soft}`; `{component.search-orb}` spinner rotates by `transform` | Skeleton pulse frozen at its mid value; spinner reduced to a static indicator with text status |
+
+### Motion Rules
+- Only `transform` and `opacity` are used as transition targets. Layout-triggering properties (`width`, `height`, `top`, `left`, `margin`) are never transitioned — a card lift is a `scale`, not a size change, and the mobile sheet is a `translateY`, not a height change.
+- Every exit is shorter than its matching entrance (modal 320→200ms, dropdown 120→80ms, toast 200→120ms, list 200→120ms).
+- Nothing runs on first paint. Photography and above-the-fold copy render immediately; the list-enter stagger applies only to grids fetched after the first paint, such as a filter or search result change.
+- The only looping motion is the loading state. There is no brand ambience loop in this system.
+- Overshoot is the Playful signature and is confined to press release, the wishlist-heart pop, and panel entrances. It is never applied to an exit, where it would read as indecision.
+
+### `@media (prefers-reduced-motion: reduce)`
+**Removed:** all `scale` (card hover lift, press pop, heart pop, modal and dropdown scale), all travel (`translateY` on page transitions, toasts, list enter, the mobile sheet), the `{motion.stagger-step}` sequencing, and the skeleton pulse loop.
+**Kept:** every `opacity` fade, clamped to 150ms or less; the focus ring, which appears with no transition; the Rausch fill and selected-state colour changes, which are instant; and a static loading indicator with a text status in place of the spinner. No state becomes unperceivable — anything that was communicated by movement is also communicated by the shadow tier, a colour change, or text.
+
+## Accessibility
+
+### Measured Contrast
+Full table under Colors → "Measured contrast, including the failures". The summary:
+
+| Pair | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas}` | 15.91:1 | 4.5 | pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 14.85:1 | 4.5 | pass |
+| `{colors.muted}` on `{colors.canvas}` | 5.41:1 | 4.5 | pass |
+| `{colors.muted}` on `{colors.surface-soft}` | 5.05:1 | 4.5 | pass |
+| `{colors.body}` on `{colors.canvas}` | 10.53:1 | 4.5 | pass |
+| `{colors.on-dark}` on `{colors.ink}` (selected day cell) | 15.91:1 | 4.5 | pass |
+| `{colors.focus}` on `{colors.canvas}` | 15.91:1 | 3.0 | pass |
+| `{colors.on-primary}` on `{colors.primary}` | 3.52:1 | 4.5 | **fail** |
+| `{colors.hairline}` on `{colors.canvas}` | 1.36:1 | 3.0 | **fail** |
+| `{colors.legal-link}` on `{colors.canvas}` | 3.30:1 | 4.5 | **fail** (13–14px legal copy) |
+| `{colors.ink}` on `{colors.primary-disabled}` | 11.66:1 | — | pass, if a disabled CTA is re-inked |
+
+Two of these are brand-level failures, not documentation errors: white on Rausch, and the hairline family. Neither hex is altered here. A disabled CTA (`{component.button-primary-disabled}`) is worse again — white on #ffd1da measures **1.37:1** — which is why disabled label text should be `{colors.ink}` (11.66:1) rather than `{colors.on-primary}`, and why disabled state must never be conveyed by colour alone.
+
+### Focus Ring Visibility
+`{colors.focus}` (#222222), 2px, offset 2px, with a 1px `{colors.focus-inner}` inner ring. On every surface this file defines:
+
+| Surface | Ring contrast | Note |
+|---|---|---|
+| `{colors.canvas}` #ffffff | 15.91:1 | pass |
+| `{colors.surface-soft}` #f7f7f7 | 14.85:1 | pass |
+| `{colors.surface-strong}` #f2f2f2 | 14.21:1 | pass |
+| `{colors.primary}` #ff385c (CTA) | 4.52:1 | pass |
+| `{colors.ink}` fill (`{component.date-picker-day-selected}`) | 1.00:1 | ink-on-ink is invisible — the white inner ring carries it here, at 15.91:1 |
+| Over photography (`{component.property-card-photo}`) | not computable | a hex-to-hex ratio cannot be computed against an image; the white inner ring is what guarantees the ring stays visible on a light photo |
+
+The ring is drawn on `:focus-visible` only, so mouse users never see it. The existing 2px-ink input focus treatment described under `{component.text-input}` is the same ring, applied as a border rather than an outline.
+
+### Minimum Tap Target
+Per the Touch Targets list under Responsive Behavior: `{component.button-primary}`, `{component.button-secondary}` and `{component.search-orb}` are 48×48px; `{component.date-picker-day}` is 40×40px; `{component.icon-button-circle}` (the wishlist heart) is 32×32px, which is below the 44×44px AA target-size guidance and is the smallest interactive element in the system. The documented 12px padding around it is a spacing claim, not a measured hit area — whether the real hit target reaches 44px cannot be verified from this document. No tap-target size here is measured from a rendered page.
+
+### Reduced Motion
+See Motion & Animation → `@media (prefers-reduced-motion: reduce)`. All travel, scale and stagger are removed; opacity fades stay at 150ms or less; the loading pulse freezes. Because the motion system is prescribed rather than extracted, this is the recommended behaviour for a build in this style, not a record of Airbnb's own.
+
+### Known Accessibility Limits of This Audit
+Keyboard order, screen-reader labelling, visible overflow, the real hit areas and the behaviour of the image carousel cannot be evaluated from a document. They are untested here.
+
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-soft}` (`#ebebeb`) on `{colors.surface-soft}` (`#f7f7f7`) | 1.11:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline-soft}` (`#ebebeb`) on `{colors.canvas}` (`#ffffff`) | 1.19:1 | 3.0:1 | Fail — boundary, all tones |
+| `{colors.hairline}` (`#dddddd`) on `{colors.surface-soft}` (`#f7f7f7`) | 1.27:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.border-strong}` (`#c1c1c1`) on `{colors.surface-soft}` (`#f7f7f7`) | 1.68:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.border-strong}` (`#c1c1c1`) on `{colors.canvas}` (`#ffffff`) | 1.80:1 | 3.0:1 | Fail — boundary, all tones |
+| `{colors.muted-soft}` (`#929292`) on `{colors.surface-soft}` (`#f7f7f7`) | 2.90:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+| `{colors.legal-link}` (`#428bff`) on `{colors.surface-soft}` (`#f7f7f7`) | 3.08:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.muted-soft}` (`#929292`) on `{colors.canvas}` (`#ffffff`) | 3.11:1 | 4.5:1 | Fail — secondary text, all tones |
+| `components.button-primary` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#ff385c`) | 3.52:1 | 4.5:1 | Fail — both tones are bound in this file |
+| `components.button-pill-rausch` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#ff385c`) | 3.52:1 | 4.5:1 | Fail — both tones are bound in this file |
+| `components.search-orb` — its own `textColor` (`#ffffff`) on its own `backgroundColor` (`#ff385c`) | 3.52:1 | 4.5:1 | Fail — both tones are bound in this file |
+
+## Do's and Don'ts
+
+### Do
+- **Do keep Rausch scarce.** One or two `{colors.primary}` moments per page — the CTA and the search orb. The system reads as 90% white and ink; that ratio is the brand.
+- **Do set Rausch CTA labels large or re-colour them.** White on #ff385c is 3.52:1, which only clears 3:1 for large text. If the label must stay 16px (`{typography.button-md}`), use `{colors.primary-active}` (#e00b41, 4.89:1) as the fill.
+- **Do let photography carry hierarchy.** Display type stays at 22–28px in weight 500–700 because the image does the work. Raising headline weight to fix a weak page is the wrong lever.
+- **Do round every interactive element.** `{rounded.sm}` for buttons and inputs, `{rounded.md}` for cards and photos, `{rounded.full}` for anything tapped or circular.
+- **Do pair every hairline with something else.** No border token reaches 3:1 on white, so structure must also come from spacing, a `{colors.surface-soft}` fill, or the single shadow tier.
+- **Do keep the one shadow tier.** Hovered cards, the search bar and the dropdown group share it; that is the system's only elevation.
+- **Do use `{colors.ink}` for the focus ring,** with the `{colors.focus-inner}` white inner ring, so focus survives on ink fills and over photos.
+- **Do hold the stagger cap.** List enter staggers at `{motion.stagger-step}` across at most 8 items; beyond that the grid fades in as a block.
+
+### Don't
+- **Don't introduce a second accent.** `{colors.luxe}` and `{colors.plus}` are sub-brand only, and `{colors.legal-link}` belongs to the legal band. A new brand colour breaks the single-voltage rule.
+- **Don't darken Rausch to pass contrast and still call it Rausch.** #ff385c is the brand hex; change the type size or use the documented `{colors.primary-active}` instead, and say which you did.
+- **Don't add elevation tiers.** A second or third shadow turns a photography-led page into a card-stack UI.
+- **Don't use a yellow or gold star.** `{colors.star-rating}` is ink (#222222) by deliberate choice.
+- **Don't carry white text on `{colors.primary-disabled}`.** It measures 1.37:1. Use ink, plus a non-colour disabled cue.
+- **Don't ship a hard corner.** Only the body grid and the 2px active-tab underline are square.
+- **Don't invent a dark mode.** This file documents no dark canvas; the public web has none.
+- **Don't transition layout properties.** A card lift is `transform: scale`, not a size change; the mobile sheet is `translateY`, not a height change.
+- **Don't put overshoot on an exit.** `{motion.ease-enter}` is for entrances and press release only.
+- **Don't let motion delay the fold.** Nothing animates on first paint; the stagger belongs to content fetched afterwards.
+
 ## Responsive Behavior
 
 | Name | Width | Key Changes |
@@ -535,6 +751,19 @@ There are no progressive elevation tiers — the system either has the one shado
 - Search bar's 3 segments collapse into a single-tap entry that opens a full-screen search overlay on mobile.
 - Property and city-link grids drop column counts cleanly at each breakpoint — never reflow rows; always reduce columns.
 - Reservation card on listing detail switches from sticky right-rail to a sticky bottom bar on mobile, carrying just the "Reserve" CTA + nightly price summary.
+
+## Iteration Guide
+
+Order to work in when building on this file:
+
+1. **Start from white and ink.** `{colors.canvas}` and `{colors.ink}` carry the page; place content and spacing before any colour decision.
+2. **Spend Rausch once.** Pick the single primary action per view and give it `{colors.primary}`. If a second Rausch element appears, one of them is not primary.
+3. **Set the radius from the ladder, not by eye.** `{rounded.sm}` controls, `{rounded.md}` cards and photos, `{rounded.full}` anything tapped or circular.
+4. **Keep display type modest.** `{typography.display-xl}` tops out at 28px. If the page feels weak, the image is wrong, not the type.
+5. **Pick the shadow or go flat.** One tier, no in-between.
+6. **Add the focus ring before the hover state.** `{colors.focus}` plus `{colors.focus-inner}`; hover is decoration, focus is access.
+7. **Apply motion last,** from the `motion:` tokens, and keep the card-hover scale small — `{motion.duration-base}` at `scale(1.02)`. Re-read the reduced-motion rule before shipping.
+8. **Re-measure the pairs you changed.** Any new fill needs its own contrast number recorded, not estimated.
 
 ## Known Gaps
 

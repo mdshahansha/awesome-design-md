@@ -1,0 +1,70 @@
+{
+  "site": "tesla",
+  "has_frontmatter": false,
+  "color_count": 0,
+  "composited_tokens": [],
+  "sections_present": [
+    "Iteration Guide"
+  ],
+  "sections_missing": [
+    "Overview",
+    "Colors",
+    "Typography",
+    "Layout",
+    "Elevation & Depth",
+    "Shapes",
+    "Components",
+    "Motion & Animation",
+    "Accessibility",
+    "Do's and Don'ts",
+    "Responsive Behavior",
+    "Known Gaps"
+  ],
+  "optional_sections_missing": [],
+  "roles_resolved": {},
+  "roles_missing": [
+    "accent",
+    "border",
+    "canvas",
+    "focus",
+    "on-accent",
+    "surface",
+    "text",
+    "text-dim"
+  ],
+  "dangling_refs": [],
+  "component_contrast_failures": [],
+  "contrast_unresolved": [],
+  "contrast_disclosed": [],
+  "contrast_failures": [],
+  "motion_group": [],
+  "motion_keys_missing": [
+    "duration-base",
+    "duration-fast",
+    "ease-standard"
+  ],
+  "has_motion_section": false,
+  "has_reduced_motion": false,
+  "durations_found": [],
+  "easings_found": 1,
+  "layout_animation_mentions": [],
+  "states_documented": [],
+  "states_missing": [
+    "hover",
+    "focus-visible",
+    "active",
+    "pressed",
+    "disabled",
+    "loading",
+    "selected",
+    "error"
+  ],
+  "score": {
+    "tokens": 1,
+    "refs": 1,
+    "contrast": 1,
+    "sections": 1,
+    "motion": 1,
+    "states": 1
+  }
+}

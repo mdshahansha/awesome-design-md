@@ -14,6 +14,9 @@ colors:
   muted-soft: "#9a9a9a"
   hairline: "#e6e6e6"
   hairline-strong: "#cccccc"
+  hairline-control: "#8a8a8a"
+  focus: "#0a1929"
+  focus-on-dark: "#ffffff"
   canvas: "#ffffff"
   surface-soft: "#f7f7f7"
   surface-card: "#fafafa"
@@ -119,6 +122,17 @@ rounded:
   lg: 12px
   pill: 9999px
   full: 9999px
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 200ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-enter: cubic-bezier(0.05, 0.7, 0.1, 1)
+  ease-exit: cubic-bezier(0.3, 0, 1, 1)
+  stagger-step: 80ms
 
 spacing:
   xxs: 4px
@@ -303,8 +317,13 @@ The configuration and reservation flows add a dealer-side inventory UI on top of
 - **Surface Dark Elevated** (`{colors.surface-dark-elevated}` — #262e38): One step lighter, used for nested cards on top of the dark hero.
 
 ### Hairlines
-- **Hairline** (`{colors.hairline}` — #e6e6e6): The 1px divider — input outline, configurator card outline, table separator.
-- **Hairline Strong** (`{colors.hairline-strong}` — #cccccc): A more visible 1px outline — disabled secondary buttons, emphasized table border.
+- **Hairline** (`{colors.hairline}` — #e6e6e6): The 1px divider — table separator, configurator card outline. **Decoration only.** At 1.25:1 on `{colors.canvas}` it is not a perceivable boundary; never let it be the sole outline of an interactive control.
+- **Hairline Strong** (`{colors.hairline-strong}` — #cccccc): The extracted "more visible" 1px outline — secondary buttons, emphasized table border. Measures **1.61:1 on `{colors.canvas}`**, below the 3:1 WCAG 1.4.11 non-text-contrast threshold. **The real BMW corporate site fails AA on control boundaries at this point.** The value is left unchanged because it is an extracted fact.
+- **Hairline Control** (`{colors.hairline-control}` — #8a8a8a): **Prescribed, not extracted.** A parallel accessible boundary at **3.45:1 on `{colors.canvas}`**, for any border that is the only boundary of an interactive control — `{component.text-input}`, `{component.button-secondary}`, `{component.filter-chip}`. Use `{colors.hairline-strong}` where the border is decorative and a label or fill already carries the affordance. It holds at 3.22:1 on `{colors.surface-soft}` and 3.31:1 on `{colors.surface-card}`, but drops to **2.90:1 on `{colors.surface-strong}`** — do not place a bordered control on the #ebebeb divider band.
+
+### Focus
+- **Focus** (`{colors.focus}` — #0a1929): **Prescribed, not extracted** — no file in this repo documented a focus ring. A 2px deep-navy ring drawn from the `{colors.surface-dark}` family, offset 2px from the control so its backdrop is always the light surface beneath, never the control fill. Measures **17.74:1 on `{colors.canvas}`**, 16.56:1 on `{colors.surface-soft}`, 14.88:1 on `{colors.surface-strong}`, and 3.40:1 directly over `{colors.primary}`. A blue ring was rejected: `{colors.primary-active}` on `{colors.primary}` measures 1.38:1, so BMW blue cannot ring its own button.
+- **Focus On Dark** (`{colors.focus-on-dark}` — #ffffff): **Prescribed.** The ring on dark bands, where `{colors.focus}` collapses to 1.09:1. Measures 16.24:1 on `{colors.surface-dark}` and 13.72:1 on `{colors.surface-dark-elevated}`.
 
 ### Text
 - **Ink** (`{colors.ink}` — #262626): All display and primary text. Not pure black — soft against photography.
@@ -317,9 +336,10 @@ The configuration and reservation flows add a dealer-side inventory UI on top of
 - **On Dark Soft** (`{colors.on-dark-soft}` — #bbbbbb): A slightly muted white for secondary text on dark bands.
 
 ### Semantic
-- **Success** (`{colors.success}` — #22c55e): Confirmation messages and "available" indicators.
-- **Warning** (`{colors.warning}` — #f59e0b): Warning callouts.
-- **Error** (`{colors.error}` — #dc2626): Validation errors.
+- **Success** (`{colors.success}` — #22c55e): Confirmation messages and "available" indicators. **2.28:1 on `{colors.canvas}` — fails AA as text.** Fill, icon and bar role only; the message text beside it must be `{colors.body}`.
+- **Warning** (`{colors.warning}` — #f59e0b): Warning callouts. **2.15:1 on `{colors.canvas}` — fails AA as text.** Same restriction as success.
+- **Error** (`{colors.error}` — #dc2626): Validation errors. 4.83:1 on `{colors.canvas}` — passes AA for body text. Note it drops to 4.51:1 on `{colors.surface-soft}`, barely at threshold.
+- **Muted Soft** (`{colors.muted-soft}` — #9a9a9a) measures **2.81:1 on `{colors.canvas}` and fails AA at any size.** It is extracted and unchanged; see Accessibility.
 
 ## Typography
 
@@ -425,7 +445,7 @@ The radius hierarchy is binary: **rectangular for everything, circular only for 
 
 **`button-primary`** — The signature primary CTA. Background `{colors.primary}` (BMW Blue #1c69d4), text `{colors.on-primary}`, type `{typography.button}` (BMW Type Next Latin 14px / 700 / 0.5px tracking), padding 14px × 32px, height 48px, rounded `{rounded.none}` (0px — rectangular). Press state: `button-primary-active` shifts to `{colors.primary-active}`.
 
-**`button-secondary`** — A white button with a hairline outline. Background `{colors.canvas}`, text `{colors.ink}`, 1px `{colors.hairline-strong}` border, same padding + height + radius.
+**`button-secondary`** — A white button with a hairline outline. Background `{colors.canvas}`, text `{colors.ink}`, same padding + height + radius. The extracted border is 1px `{colors.hairline-strong}` (1.61:1 — fails WCAG 1.4.11); use 1px `{colors.hairline-control}` (3.45:1) where the outline is the only thing making the button a button.
 
 **`button-secondary-on-dark`** — Used over a dark hero band. Background transparent, text `{colors.on-dark}`, 1px `{colors.on-dark}` border, same rectangular shape.
 
@@ -451,13 +471,13 @@ The radius hierarchy is binary: **rectangular for everything, circular only for 
 
 **`inventory-card`** — One card per vehicle on the dealer inventory page. Background `{colors.canvas}`, padding `{spacing.md}` (16px), rounded `{rounded.none}`. Vehicle photo on top, model + variant name + price + "View" link below.
 
-**`filter-chip`** + **`filter-chip-active`** — Inventory filter chips (model, year, price range). Inactive: background `{colors.canvas}`, 1px `{colors.hairline-strong}` border, text `{colors.ink}`, type `{typography.caption}`. Active: background `{colors.ink}`, text `{colors.on-dark}`. Padding 8px × 14px, radius `{rounded.none}`.
+**`filter-chip`** + **`filter-chip-active`** — Inventory filter chips (model, year, price range). Inactive: background `{colors.canvas}`, 1px border — `{colors.hairline-strong}` as extracted, `{colors.hairline-control}` where the chip's outline is its only boundary — text `{colors.ink}`, type `{typography.caption}`. Active: background `{colors.ink}`, text `{colors.on-dark}`. Padding 8px × 14px, radius `{rounded.none}`.
 
 **`configurator-option-tile`** + **`configurator-option-tile-selected`** — Configurator selection cell (color, wheels, upholstery). Inactive: background `{colors.canvas}`, 1px hairline. Selected: 2px `{colors.primary}` border. Padding 16px × 24px, radius `{rounded.none}`.
 
 ### Inputs & Forms
 
-**`text-input`** — Standard text input. Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body-md}`, rounded `{rounded.none}` (0px), padding 14px × 16px, height 48px, 1px hairline border. On focus, the border thickens to ink.
+**`text-input`** — Standard text input. Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body-md}`, rounded `{rounded.none}` (0px), padding 14px × 16px, height 48px, 1px border. The extracted border is `{colors.hairline}` (1.25:1), which is not a perceivable boundary for the only outline of a form field; use 1px `{colors.hairline-control}` (3.45:1) instead. On focus the border thickens to ink and a 2px `{colors.focus}` ring sits 2px outside it.
 
 **`cookie-consent-card`** — Cookie banner. Background `{colors.canvas}`, 1px hairline, padding `{spacing.lg}` (24px), `{typography.body-sm}` (14px / 300 — Light even in legal copy).
 
@@ -475,6 +495,153 @@ The radius hierarchy is binary: **rectangular for everything, circular only for 
 
 **`footer`** — The closing soft-grey footer. Background `{colors.surface-soft}` (#f7f7f7 — not pure white — soft grey), text `{colors.body}`. A 4-column link list: Models / Services / Dealers / About. Vertical padding 64px. Below, a copyright line in `{typography.body-sm}` with `{colors.muted}`.
 
+### Component States
+
+Default, active/pressed, selected and disabled are extracted from the live site (they exist as separate `components:` entries or as documented border/fill shifts). **Hover, focus-visible, loading and error are prescribed** — the corporate site was captured statically and these were never observed; see Known Gaps.
+
+| Component | States |
+|---|---|
+| `top-nav` | default · hover (link ink darkens to `{colors.body-strong}`) · focus-visible (2px `{colors.focus}` ring) · active/pressed · selected (current section, 2px ink underline). No disabled, loading or error state. |
+| `button-primary` | default · hover (fill holds `{colors.primary}`, 4% ink overlay) · focus-visible (2px `{colors.focus}` ring, 2px offset on `{colors.canvas}`) · pressed → `button-primary-active` `{colors.primary-active}` · disabled → `button-primary-disabled` `{colors.primary-disabled}` with `{colors.muted}` label · loading (label swaps to a 1.2s indeterminate bar, button width frozen). No error state. |
+| `button-secondary` | default · hover (border to `{colors.ink}`) · focus-visible (2px `{colors.focus}` ring) · pressed (fill `{colors.surface-strong}`) · disabled (border `{colors.hairline-strong}`, label `{colors.muted-soft}`) · loading. No error state. |
+| `button-secondary-on-dark` | default · hover (border to `{colors.on-dark}` at full opacity) · focus-visible (2px `{colors.focus-on-dark}` ring) · pressed · disabled (`{colors.on-dark-soft}` border and label). No loading or error state. |
+| `button-text-link` / `text-link` | default · hover (underline appears) · focus-visible (2px `{colors.focus}` ring around the text box) · active/pressed. Three states plus focus; no disabled, loading, selected or error state. |
+| `model-card` / `feature-photo-card` / `inventory-card` | default · hover (photo scales 1.03, `{component.button-text-link}` underline appears) · focus-visible (ring on the whole card, the card being one link target) · active/pressed · loading (skeleton plate on `{colors.surface-card}`). No disabled, selected or error state. |
+| `filter-chip` | default · hover (border `{colors.ink}`) · focus-visible · active/pressed · selected → `filter-chip-active` (`{colors.ink}` fill) · disabled (no inventory matches: label `{colors.muted-soft}`, border `{colors.hairline-strong}`) · loading (chip count placeholder). No error state. |
+| `configurator-option-tile` | default · hover (border `{colors.ink}`) · focus-visible · active/pressed · selected → `configurator-option-tile-selected` (2px `{colors.primary}` border) · disabled (option not available on trim) · loading (render swap in progress). No error state. |
+| `text-input` | default · hover (border `{colors.ink}`) · focus-visible (border ink + 2px `{colors.focus}` ring) · active/pressed · disabled (`{colors.surface-soft}` fill, `{colors.muted-soft}` text) · error (1px `{colors.error}` border plus a `{typography.body-sm}` message in `{colors.body}` — never colour-only) · loading (async validation spinner in the trailing slot). No selected state. |
+| `category-tab` | default · hover (label to `{colors.ink}`) · focus-visible · active/pressed · selected → `category-tab-active` (ink label + 2px ink underline) · disabled. No loading or error state. |
+| `cookie-consent-card` | A static container: default only, plus focus-visible on its own buttons. No hover, pressed, disabled, loading, selected or error state of its own. |
+| `hero-band-dark` / `hero-photo-band` / `cta-band-photo` / `footer` / `spec-cell` / `m-stripe-divider` / `model-card-photo` | Static, non-interactive: **default only.** States belong to the controls nested inside them. |
+
+## Motion & Animation
+
+**This motion system is prescribed to match BMW's visual identity and was not measured from the live site.** No timing function, duration or easing curve below was extracted; nothing here should be cited as an observed BMW value. The profile assigned is **Cinematic** — slow, deliberate, premium — which fits an automotive flagship whose page rhythm is built on full-bleed vehicle photography and dark hero bands, even though BMW's own canvas is light rather than dark.
+
+The Cinematic reading of BMW corporate is deliberately the *restrained* one, matching the file's "measured and settled" corporate voice rather than BMW M's motorsport cut: travel distances stay short (16–24px), scale changes stay under 1.04, and the premium feel comes from the long decelerate of `{motion.ease-standard}` rather than from large movement.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, chip, tab, link) | `{motion.duration-fast}` 200ms | `{motion.ease-standard}` | `opacity`, `transform` (no travel; overlay opacity only) | Colour/border change applies instantly; no transition |
+| Hover (card photo) | `{motion.duration-base}` 400ms | `{motion.ease-standard}` | `transform: scale(1 → 1.03)` | Scale removed entirely; photo stays at 1.0 |
+| Press | `{motion.duration-instant}` 120ms | `{motion.ease-exit}` | `opacity` (fill shift to `{colors.primary-active}`), `transform: scale(0.99)` | Scale removed; fill shift instant |
+| Focus (ring appear) | `{motion.duration-instant}` 120ms | `{motion.ease-enter}` | `opacity` on the `{colors.focus}` ring | Ring appears instantly at full opacity — never suppressed |
+| Page / route transition | `{motion.duration-slow}` 600ms in, `{motion.duration-base}` 400ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` 0→1, `transform: translateY(24px → 0)` on the content column | Travel removed; cross-fade only, capped at 150ms |
+| Modal / drawer (mobile nav sheet) | `{motion.duration-base}` 400ms in, `{motion.duration-fast}` 200ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `transform: translateX(100% → 0)`, scrim `opacity` | Slide removed; scrim and panel fade at 150ms |
+| Dropdown (language picker, nav mega-menu) | `{motion.duration-fast}` 200ms in, `{motion.duration-instant}` 120ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`, `transform: translateY(-8px → 0)` | Travel removed; 120ms opacity fade |
+| Toast (configurator confirmation) | `{motion.duration-base}` 400ms in, `{motion.duration-fast}` 200ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`, `transform: translateY(16px → 0)` | Travel removed; 150ms fade, hold time unchanged |
+| List enter (model-card grid, inventory results) | `{motion.duration-slow}` 600ms per item, `{motion.stagger-step}` 80ms apart | `{motion.ease-enter}` | `opacity`, `transform: translateY(24px → 0)` | Stagger and travel removed; the whole grid fades in once at 150ms |
+| List exit (filtered-out inventory cards) | `{motion.duration-base}` 400ms, no stagger | `{motion.ease-exit}` | `opacity` 1→0, `transform: scale(0.98)` | Scale removed; 150ms fade |
+| Loading (indeterminate bar, configurator render swap) | 1200ms loop | `{motion.ease-standard}` | `transform: translateX` on a 2px `{colors.primary}` bar | Loop frozen; a static `{colors.primary}` bar plus the text "Loading" remains |
+| Emphasis — hero vehicle settle on first paint | `{motion.duration-emphasis}` 900ms | `{motion.ease-standard}` | `transform: scale(1.04 → 1)` on the hero photograph, `opacity` on the headline arriving one `{motion.stagger-step}` later | Removed entirely; hero renders at its final position |
+
+### Rules
+
+- Never animate `width`, `height`, `top`, `left` or `margin`: `transform` and `opacity` only. The 0px-radius rectangles in this system have no shape transitions to make.
+- Every exit is shorter than its matching entrance (600/400 page, 400/200 drawer and toast, 200/120 dropdown).
+- Nothing animates on first paint in a way that delays content: the hero emphasis runs on an already-painted photograph, and type is readable before it settles.
+- The only infinite animation is the loading bar. There is **no brand ambience loop** — BMW corporate's depth comes from photography and colour-block contrast, not from motion.
+- The M tricolor stripe never animates. It is a static 4px rule in every state and breakpoint.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate and scale — hero settle, card photo scale,
+     page-transition travel, drawer slide, dropdown and toast travel,
+     list-enter stagger, press scale. */
+  /* Removed: the list-enter stagger ({motion.stagger-step}) in full;
+     grids appear as one. */
+  /* Frozen: the loading bar loop — a static bar plus a text label remains. */
+  /* Kept: opacity fades, clamped to 150ms or less. */
+  /* Kept at full strength: the {colors.focus} and {colors.focus-on-dark}
+     focus rings, which appear instantly and are never animated away. */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    transition-property: opacity, color, background-color, border-color !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+## Accessibility
+
+Every ratio below was computed from this file's own hexes with the WCAG 2.1 relative-luminance formula. Claims that need a rendered page — overlap, clipping, real tap-target size, frame rate — are not made here.
+
+### Measured contrast
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` #262626 / `{colors.canvas}` #ffffff | 15.13:1 | 4.5 | Pass |
+| `{colors.ink}` / `{colors.surface-soft}` #f7f7f7 | 14.13:1 | 4.5 | Pass |
+| `{colors.ink}` / `{colors.surface-card}` #fafafa | 14.50:1 | 4.5 | Pass |
+| `{colors.body}` #3c3c3c / `{colors.canvas}` | 11.03:1 | 4.5 | Pass |
+| `{colors.muted}` #6b6b6b / `{colors.canvas}` | 5.33:1 | 4.5 | Pass |
+| `{colors.muted}` / `{colors.surface-soft}` | 4.97:1 | 4.5 | Pass — the footer's own pairing |
+| `{colors.muted-soft}` #9a9a9a / `{colors.canvas}` | 2.81:1 | 4.5 | **Fail** |
+| `{colors.on-primary}` #ffffff / `{colors.primary}` #1c69d4 | 5.22:1 | 4.5 | Pass |
+| `{colors.on-primary}` / `{colors.primary-active}` #0653b6 | 7.19:1 | 4.5 | Pass |
+| `{colors.on-dark}` #ffffff / `{colors.surface-dark}` #1a2129 | 16.24:1 | 4.5 | Pass |
+| `{colors.on-dark-soft}` #bbbbbb / `{colors.surface-dark}` | 8.46:1 | 4.5 | Pass |
+| `{colors.on-dark-soft}` / `{colors.surface-dark-elevated}` #262e38 | 7.15:1 | 4.5 | Pass |
+| `{colors.hairline}` #e6e6e6 / `{colors.canvas}` | 1.25:1 | 3.0 | **Fail** — scoped to decoration |
+| `{colors.hairline-strong}` #cccccc / `{colors.canvas}` | 1.61:1 | 3.0 | **Fail** — extracted, left unchanged |
+| `{colors.hairline-control}` #8a8a8a / `{colors.canvas}` | 3.45:1 | 3.0 | Pass — prescribed replacement |
+| `{colors.focus}` #0a1929 / `{colors.canvas}` | 17.74:1 | 3.0 | Pass |
+| `{colors.focus}` / `{colors.primary}` | 3.40:1 | 3.0 | Pass |
+| `{colors.focus-on-dark}` #ffffff / `{colors.surface-dark}` | 16.24:1 | 3.0 | Pass |
+| `{colors.m-blue-light}` #0066b1 / `{colors.canvas}` | 5.94:1 | 4.5 | Pass |
+| `{colors.m-red}` #e22718 / `{colors.canvas}` | 4.63:1 | 4.5 | Pass |
+| `{colors.error}` #dc2626 / `{colors.canvas}` | 4.83:1 | 4.5 | Pass |
+| `{colors.success}` #22c55e / `{colors.canvas}` | 2.28:1 | 4.5 | **Fail** — non-text use only |
+| `{colors.warning}` #f59e0b / `{colors.canvas}` | 2.15:1 | 4.5 | **Fail** — non-text use only |
+
+**Real failures, stated plainly.** BMW corporate's extracted hairlines (#e6e6e6 at 1.25:1, #cccccc at 1.61:1) do not meet WCAG 1.4.11 for a component boundary, so the real site's secondary buttons, filter chips and text inputs have no perceivable outline. `{colors.muted-soft}` (#9a9a9a, 2.81:1) fails AA for text at every size, including the fine-print legal copy it is used for; the nearest passing value on `{colors.canvas}` is #767676 (4.54:1), and #949494 (3.03:1) is the floor for 18px+ or 14px-bold text under the AA large-text rule. `{colors.success}` and `{colors.warning}` fail as text and are usable only as fills, icons and bars with a `{colors.body}` label beside them. None of these hexes has been altered; they are extracted facts about the brand.
+
+### Focus ring visibility, surface by surface
+
+| Surface | Ring token | Ratio |
+|---|---|---|
+| `{colors.canvas}` #ffffff | `{colors.focus}` | 17.74:1 |
+| `{colors.surface-soft}` #f7f7f7 | `{colors.focus}` | 16.56:1 |
+| `{colors.surface-card}` #fafafa | `{colors.focus}` | 16.99:1 |
+| `{colors.surface-strong}` #ebebeb | `{colors.focus}` | 14.88:1 |
+| `{colors.primary}` #1c69d4 (ring crossing a blue fill) | `{colors.focus}` | 3.40:1 |
+| `{colors.surface-dark}` #1a2129 | `{colors.focus-on-dark}` | 16.24:1 |
+| `{colors.surface-dark-elevated}` #262e38 | `{colors.focus-on-dark}` | 13.72:1 |
+
+The ring is drawn 2px **outside** the control so its backdrop is the surface, not the fill: `{colors.focus}` over `{colors.primary-active}` would be only 2.47:1, which is why the offset is part of the token's definition rather than a suggestion. On any dark band — `{component.hero-band-dark}`, `{component.cta-band-photo}` — switch to `{colors.focus-on-dark}`; `{colors.focus}` collapses to 1.09:1 there.
+
+### Other
+
+- **Minimum tap target:** the system's documented control heights are 48px (`{component.button-primary}`, `{component.button-secondary}`, `{component.text-input}`), clearing the 44 × 44px target. `{component.filter-chip}` at 8px vertical padding on 12px `{typography.caption}` computes to roughly 33px tall, **below 44px** — it needs 14px vertical padding or an expanded hit area. Actual rendered size is not verifiable from this document.
+- **Colour is never the only signal:** `{component.text-input}` error state pairs the `{colors.error}` border with a text message; `{component.filter-chip-active}` and `{component.category-tab-active}` pair their fill or label change with a shape change (fill inversion, 2px underline).
+- **Reduced motion:** honoured in full — see the `@media (prefers-reduced-motion: reduce)` block above. Travel and scale are removed, opacity fades clamp to 150ms, the loading loop freezes, and focus rings are untouched.
+- **Type size floor:** `{typography.caption}` at 12px and `{typography.body-sm}` at 14px/300 are the smallest roles. A 300 weight at 14px on `{colors.muted-soft}` is the worst legibility case in the system and should not be used for anything a user must read.
+
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline-strong}` (`#cccccc`) on `{colors.surface-card}` (`#fafafa`) | 1.54:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.warning}` (`#f59e0b`) on `{colors.surface-card}` (`#fafafa`) | 2.06:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.success}` (`#22c55e`) on `{colors.surface-card}` (`#fafafa`) | 2.18:1 | 4.5:1 | Fail — semantic tone as text |
+| `{colors.muted-soft}` (`#9a9a9a`) on `{colors.surface-card}` (`#fafafa`) | 2.70:1 | 4.5:1 | Fail — secondary text on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do
@@ -485,6 +652,8 @@ The radius hierarchy is binary: **rectangular for everything, circular only for 
 - Place the model card photo on `{colors.surface-card}` with the title beneath — the standard BMW corporate pattern.
 - Hold section rhythm at `{spacing.section}` (80px) — tighter than BMW M's 96px.
 - Reserve the M tricolor stripe for M-model contexts and motorsport dividers.
+- Draw focus with `{colors.focus}` on light surfaces and `{colors.focus-on-dark}` on hero bands, always 2px outside the control.
+- Keep motion slow and short: `{motion.duration-base}` with `{motion.ease-standard}`, under 24px of travel. Premium reads as deliberate, not as large.
 
 ### Don't
 - Don't add a brand color other than blue — BMW Blue is the only primary action color.
@@ -495,6 +664,8 @@ The radius hierarchy is binary: **rectangular for everything, circular only for 
 - Don't repeat the same surface mode across two consecutive bands — light → dark hero → light → light feature → dark CTA → light footer rotation is required.
 - Don't use the M tricolor stripe as a CTA fill — divider/accent role only.
 - Don't mix languages in a single page — UI language must stay consistent.
+- Don't let `{colors.hairline}` or `{colors.hairline-strong}` be the only boundary of an interactive control — use `{colors.hairline-control}`.
+- Don't suppress the focus ring under `prefers-reduced-motion`, and don't animate `width`, `height`, `top`, `left` or `margin` anywhere in this system.
 
 ## Responsive Behavior
 
@@ -530,15 +701,17 @@ The radius hierarchy is binary: **rectangular for everything, circular only for 
 2. New components default to `{rounded.none}` (0px). Use `{rounded.full}` only for circular icon buttons.
 3. Variants (`-active`, `-disabled`, `-selected`) live as separate entries inside the `components:` block.
 4. `{token.refs}` everywhere — never inline hex.
-5. Hover state is never documented. Only Default and Active/Pressed states.
+5. Only Default, Active/Pressed, Selected and Disabled were extracted. Hover, focus-visible, loading and error are prescribed in the Component States table — treat them as the system's intent, not as observed BMW behaviour.
 6. Display headlines stay BMW Type Next Latin 700; body stays Light 300; the trio is fixed.
 7. Keep UI strings in a single language — match the locale of the page.
 
 ## Known Gaps
 
 - BMW Type Next Latin is licensed to BMW and not published as a public web font; Inter at weights 700/300 is documented as the substitute.
-- Animation and transition timings (configurator color swap, model card hover-reveal) are out of scope here.
-- Form validation states beyond `{component.text-input}` focus were not extracted — error/success states would need a dedicated form page.
+- Animation and transition timings (configurator colour swap, model card hover-reveal) were never measured from the live site. The Motion & Animation section is a **prescribed Cinematic profile**, not an extracted one.
+- Form validation states beyond `{component.text-input}` focus were not extracted — the error and loading states in the Component States table are prescribed and would need a dedicated form page to confirm.
+- `{colors.focus}`, `{colors.focus-on-dark}` and `{colors.hairline-control}` are prescribed tokens. No focus ring was observed on the captured pages, and no accessible control boundary exists in the extracted palette.
+- Tap-target size, overlap and clipping cannot be verified from a static document. The `{component.filter-chip}` height is a computed estimate from its padding and type size, not a measurement.
 - The dealer inventory sub-domain shares typography and color with the main corporate site; only UI density rises (filters, tables, prices).
 - A cookie consent overlay can occlude part of the hero — the lead hero band content may not be fully captured.
 - The M tricolor stripe appears infrequently on this corporate site; full motorsport context lives on the BMW M site.

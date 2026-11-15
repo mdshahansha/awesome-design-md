@@ -34,6 +34,8 @@ colors:
   surface-dark-card: "#181818"
   hairline-light: "#f3f3f3"
   hairline-dark: "rgba(229,229,229,0.2)"
+  focus: "#0070d1"
+  focus-on-dark: "#ffffff"
   on-dark: "#ffffff"
   on-dark-mute: "#cccccc"
   warning: "#c81b3a"
@@ -144,6 +146,18 @@ spacing:
   xl: 32px
   xxl: 48px
   section: 96px
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.22, 1, 0.36, 1)
+  ease-enter: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-exit: cubic-bezier(0.5, 0, 0.75, 0)
+  stagger-step: 80ms
+  duration-reduced: 150ms
 
 components:
   button-primary:
@@ -350,8 +364,15 @@ The typography is the system's most distinctive choice. PlayStation SST renders 
 - **Soft Surface** (`{colors.surface-soft}` — `#f3f3f3`): hairline-soft band fill on light pages, divider rule on light surfaces.
 - **Surface Card** (`{colors.surface-card}` — `#f5f7fa`): cool-blue-tinted product card and tier-card background on light canvas.
 - **Surface Filter** (`{colors.surface-filter}` — `rgba(245,247,250,0.3)`): translucent fill for filter-pill default state on light canvas.
-- **Hairline Light** (`{colors.hairline-light}` — `#f3f3f3`): 1px divider rule on light pages.
-- **Hairline Dark** (`{colors.hairline-dark}` — `rgba(229,229,229,0.2)`): translucent 1px divider on dark canvas.
+- **Hairline Light** (`{colors.hairline-light}` — `#f3f3f3`): 1px divider rule on light pages. **Decorative only.** It measures 1.11:1 on `{colors.canvas-light}` and 1.00:1 on `{colors.surface-soft}` — it is the extracted brand value and is kept as-is, but it must never be the only boundary of an interactive control. Use `{colors.mute-light}` for those (see below).
+- **Hairline Dark** (`{colors.hairline-dark}` — `rgba(229,229,229,0.2)`): translucent 1px divider on dark canvas. Composites to `#2e2e2e` over `{colors.canvas-dark}` at 1.55:1 — decorative only, same restriction as the light hairline.
+- **Control boundary** — **prescribed, not extracted.** Where a boundary carries meaning rather than decoration (`{component.text-input}`, `{component.button-secondary-light}`), draw it in `{colors.mute-light}` (`#6b6b6b`), which measures 5.33:1 on `{colors.canvas-light}`, 4.80:1 on `{colors.surface-soft}` and 4.97:1 on `{colors.surface-card}`. The palette already owned a tone that clears 3:1, so no new boundary token was added. The 1px `{colors.ash-light}` border the live inputs actually use measures 1.61:1 and fails WCAG 1.4.11.
+
+### Focus
+Both tokens below are **prescribed, not extracted** — the captured pages expose no focus-ring value, and `{component.text-input-focused}` signals focus with a 2px border-weight change only, which is not a focus indicator for any other control.
+
+- **Focus** (`{colors.focus}` — `#0070d1`, PlayStation Blue): the default ring, drawn as a 2px solid ring with a 2px offset **outside** the control, so it is measured against the surface behind it. 4.95:1 on `{colors.canvas-light}`, 4.47:1 on `{colors.surface-soft}`, 4.62:1 on `{colors.surface-card}`, 3.58:1 on `{colors.surface-dark-card}`.
+- **Focus on Dark** (`{colors.focus-on-dark}` — `#ffffff`): the counterpart ring for the two surfaces the blue ring cannot clear — the PlayStation Blue band itself (`{colors.primary}`, where blue-on-blue is 1.00:1) and any control whose own fill is blue or commerce orange. 21.00:1 on `{colors.canvas-dark}` and 4.95:1 on `{colors.primary}`.
 
 ### Text
 - **Ink** (`{colors.ink}` — `#000000`): primary text on `{colors.canvas-light}`. Headlines, button text, support body.
@@ -468,7 +489,30 @@ The radius vocabulary works on a 4 / 8 / pill rhythm for chrome with structural 
 
 ## Components
 
-> **No hover states documented** per system policy. Each spec covers Default and Active/Pressed only.
+> **Extracted states:** default and active/pressed (plus disabled for buttons). The live pages document no hover state, per system policy. The state matrix below fills the remaining states as **prescribed** values consistent with the system's own vocabulary — they were not observed on the captured pages.
+
+### State matrix
+
+Legend: ✓ extracted from the captured pages · ◻ prescribed · — genuinely not applicable.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | ✓ | ◻ opacity 0.88, no travel | ◻ 2px `{colors.focus}` ring, 2px offset | ✓ `{colors.primary-pressed}`, then `{colors.primary-active}` | ✓ `{component.button-disabled}` | ◻ label swaps for a spinner, pill width frozen | — | — |
+| `button-commerce` | ✓ | ◻ opacity 0.88 | ◻ 2px `{colors.focus-on-dark}` ring (the orange fill defeats the blue ring) | ✓ `{colors.commerce-pressed}` | ◻ `{component.button-disabled}` | ◻ spinner in place of the label | — | — |
+| `button-secondary-light` | ✓ | ◻ border steps to `{colors.mute-light}` | ◻ 2px `{colors.focus}` ring | ✓ border steps to `{colors.ink}` | ◻ `{colors.ash-light}` text and border | — | — | — |
+| `button-secondary-dark` | ✓ | ◻ border steps to `{colors.on-dark-mute}` | ◻ 2px `{colors.focus-on-dark}` ring | ✓ border steps to `{colors.on-dark}` | ◻ `{colors.mute-dark}` text and border | — | — | — |
+| `text-input` | ✓ | ◻ border steps to `{colors.mute-light}` | ✓ 2px `{colors.primary}` border, plus a prescribed 2px `{colors.focus}` ring at 2px offset | — | ◻ `{colors.surface-soft}` fill, `{colors.ash-light}` text | — | — | ◻ 2px `{colors.warning}` border with a `{typography.caption-md}` message in `{colors.warning}` |
+| `filter-pill` | ✓ | ◻ fill lifts toward `{colors.canvas-light}` | ◻ 2px `{colors.focus}` ring | ◻ fill at `{colors.surface-soft}` | — | — | ✓ `{component.filter-pill-active}` — opaque `{colors.canvas-light}` fill | — |
+| `game-tile` | ✓ | ◻ scale 1.02 on the art only, copy static | ◻ 2px `{colors.focus-on-dark}` ring, 2px offset | ◻ scale 0.99 | — | ◻ `{colors.surface-dark-elevated}` placeholder block, no shimmer | ◻ 2px `{colors.focus-on-dark}` inner border | — |
+| `product-card` / `product-card-dark` / `feature-card` | ✓ | ◻ no visual change; the card is not interactive unless it wraps a link | ◻ ring on the wrapped link, not the card | ✓ level-2 soft shadow (`0 4px 12px rgba(0,0,0,0.16)`) | — | ◻ skeleton block at `{colors.surface-soft}` / `{colors.surface-dark-card}` | — | — |
+| `carousel-paddle` | ✓ | ◻ scrim rises to `rgba(255,255,255,0.28)` | ◻ 2px `{colors.focus-on-dark}` ring | ◻ scale 0.96 | ◻ opacity 0.4 at the end of the rail | — | — | — |
+| `pagination-dot` | ✓ | ◻ fill lifts to `{colors.on-dark-mute}` | ◻ 2px `{colors.focus-on-dark}` ring | — | — | — | ✓ `{component.pagination-dot-active}` | — |
+| `support-row` | ✓ | ◻ chevron travels 4px right, row ink unchanged | ◻ 2px `{colors.focus}` ring inset to the row box | ◻ ink drops to `{colors.body-light}` | — | — | — | — |
+| `link-inline` | ✓ | ◻ underline appears, colour held | ◻ 2px `{colors.focus}` ring (light canvas) / `{colors.focus-on-dark}` (dark canvas) | ◻ colour drops to `{colors.primary-active}` | — | — | — | — |
+| `badge-info` | ✓ | — | — | — | — | — | — | — |
+| `primary-nav` / `sub-nav` | ✓ | ◻ item ink lifts to `{colors.on-dark}` from `{colors.body-dark}` | ◻ 2px `{colors.focus-on-dark}` ring | ◻ ink held, no travel | — | — | ◻ 2px `{colors.on-dark}` underline on the current section | — |
+
+`badge-info` is genuinely a two-state element: it is a static label overlaid on a tile and has only default and the absent/present distinction. `hero-band-*` and `footer-section` are surfaces, not controls, and carry no states at all.
 
 ### Buttons
 
@@ -588,6 +632,111 @@ The radius vocabulary works on a 4 / 8 / pill rhythm for chrome with structural 
 - Background `{colors.canvas-light}`, text `{colors.ink}` in `{typography.body-md}`, padding `16px 0`, with a 1px `{colors.hairline-light}` bottom rule.
 - Used for FAQ / category-listing rows on the support page with a small chevron-right icon at the right edge.
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or easing curve below was extracted from PlayStation's pages; the values are the shared **Cinematic** profile, assigned because this is a gaming-console identity whose pages are built from full-bleed console photography and key art with sparse weight-300 type — the slow-reveal signature the profile describes. Every value resolves to a `{motion.*}` token so that files sharing the profile stay comparable.
+
+Only `transform` and `opacity` are animated. Never `width`, `height`, `top`, `left` or `margin` — band chapters are full-bleed, so a layout-triggering transition would reflow the whole page.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (pill, tile, paddle) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`; `transform: scale()` on `{component.game-tile}` art only | Opacity only at `{motion.duration-reduced}`; scale removed |
+| Press / active | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.98)`, `opacity` | Scale removed; opacity at `{motion.duration-reduced}` |
+| Focus ring appear | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the 2px `{colors.focus}` / `{colors.focus-on-dark}` ring | Ring appears instantly, no fade — focus must never be delayed |
+| Page / route transition (band chapter) | `{motion.duration-emphasis}` in, `{motion.duration-slow}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`; `transform: translateY(16px)` on the copy slot, `transform: scale(1.04 → 1)` on the hero image | Opacity cross-fade only at `{motion.duration-reduced}`; no travel, no scale |
+| Modal / drawer (mobile nav drawer) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `transform: translateX(-100% → 0)`, scrim `opacity` | Drawer and scrim fade at `{motion.duration-reduced}`; no slide |
+| Dropdown (locale picker, mobile sub-nav select) | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`, `transform: translateY(-4px → 0)` | Opacity only at `{motion.duration-reduced}` |
+| Toast / "Action Required" banner | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity`, `transform: translateY(8px → 0)` | Opacity only at `{motion.duration-reduced}` |
+| List enter (game-tile rail, news strip) | `{motion.duration-slow}` per item, `{motion.stagger-step}` between items | `{motion.ease-enter}` | `opacity`, `transform: translateY(24px → 0)` | All stagger and travel removed; the full set fades in once at `{motion.duration-reduced}` |
+| List exit (filter change on the PS5 games grid) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity`, `transform: scale(0.98)` | Opacity only at `{motion.duration-reduced}` |
+| Loading (tile skeleton, search spinner) | `{motion.duration-emphasis}` loop | `{motion.ease-standard}` | `opacity` pulse 0.4 → 1 on the skeleton block; `transform: rotate()` on the spinner | Loop frozen; skeleton holds a static `{colors.surface-soft}` / `{colors.surface-dark-card}` fill and the spinner is replaced by static text |
+
+Exit is shorter than its matching entrance in every row. Nothing animates on first paint in a way that delays content: the hero band's copy and image are painted, then settle; the reveal never gates the text. The only looping animation in the system is the loader. The one piece of deliberate brand ambience — the slow `transform: scale(1.04 → 1)` settle on a full-bleed hero image as its chapter enters the viewport — is stated as ambience here and is frozen under reduced motion.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translate), all scale, the hero-image settle,
+     every stagger, and the loader loop (which freezes on a static fill). */
+  /* Kept: opacity fades only, clamped to {motion.duration-reduced} = 150ms,
+     whatever the Cinematic profile's own durations say. The focus ring
+     still appears instantly. */
+  *, *::before, *::after {
+    transition-duration: 150ms !important;   /* {motion.duration-reduced} */
+    transition-property: opacity !important;
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+```
+
+## Accessibility
+
+All ratios below are computed with WCAG 2.1 relative luminance from this file's own token values. Translucent tokens are composited over the surface they are drawn on, and that ground is named.
+
+### Measured contrast — key pairs
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` on `{colors.canvas-light}` | 21.00:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 18.93:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.surface-card}` | 19.57:1 | 4.5:1 | pass |
+| `{colors.body-light}` (composited `#666666` on white) on `{colors.canvas-light}` | 5.74:1 | 4.5:1 | pass |
+| `{colors.mute-light}` on `{colors.canvas-light}` | 5.33:1 | 4.5:1 | pass |
+| `{colors.mute-light}` on `{colors.surface-soft}` | 4.80:1 | 4.5:1 | pass |
+| `{colors.on-dark}` on `{colors.canvas-dark}` | 21.00:1 | 4.5:1 | pass |
+| `{colors.on-dark-mute}` on `{colors.canvas-dark}` | 13.08:1 | 4.5:1 | pass |
+| `{colors.mute-dark}` (composited `#7e7e7e` on black) on `{colors.canvas-dark}` | 5.17:1 | 4.5:1 | pass |
+| `{colors.on-primary}` on `{colors.primary}` | 4.95:1 | 4.5:1 | pass |
+| `{colors.on-commerce}` on `{colors.commerce}` | 4.71:1 | 4.5:1 | pass |
+| `{colors.link-light}` on `{colors.canvas-light}` | 5.99:1 | 4.5:1 | pass |
+| `{colors.link-dark}` on `{colors.canvas-dark}` | 9.10:1 | 4.5:1 | pass |
+| `{colors.warning}` on `{colors.canvas-light}` | 5.72:1 | 4.5:1 | pass |
+| `{colors.focus}` on `{colors.canvas-light}` | 4.95:1 | 3.0:1 | pass |
+| `{colors.focus-on-dark}` on `{colors.canvas-dark}` | 21.00:1 | 3.0:1 | pass |
+
+### Real failures, stated plainly
+
+PlayStation's extracted utility greys do not meet WCAG. These are the brand's real values and are not altered here:
+
+- **`{colors.hairline-light}` (`#f3f3f3`) on `{colors.canvas-light}` measures 1.11:1**, against the 3.0:1 that WCAG 1.4.11 asks of a meaningful boundary. The real brand fails here. It is scoped to decorative dividers in the Colors section, and `{colors.mute-light}` (5.33:1) is prescribed for any boundary that carries meaning.
+- **`{colors.hairline-light}` on `{colors.surface-soft}` measures 1.00:1** — the two tokens are the same hex, so a card at `{colors.surface-soft}` with a hairline border has no visible edge at all. Same scoping applies.
+- **`{colors.hairline-dark}` composites to `#2e2e2e` over `{colors.canvas-dark}` and measures 1.55:1.** Decorative only, same restriction.
+- **`{colors.ash-light}` (`#cccccc`) on `{colors.canvas-light}` measures 1.61:1.** The live `{component.text-input}` and `{component.button-secondary-light}` use this as their 1px border, so the real input boundary fails 1.4.11. Prescribed replacement: `{colors.mute-light}`.
+- **`{component.carousel-paddle}` is reported at 1.0:1.** That number measures the white icon against `{colors.canvas-light}`, which is not where the paddle is drawn: its `rgba(255,255,255,0.16)` scrim sits over dark key art, compositing to `#292929` over `{colors.canvas-dark}`, where the `{colors.on-dark}` icon measures **14.55:1**. Over `{colors.surface-dark-card}` the scrim composites to `#3d3d3d` and the icon measures 10.86:1. The paddle passes in situ; the 1.0:1 figure is an artefact of compositing a translucent fill against the default canvas.
+- **`{colors.ash-dark}` composites to `#2e2e2e` over `{colors.canvas-dark}` and measures 1.55:1.** It is the default `{component.pagination-dot}` fill — a non-text indicator whose active counterpart is `{colors.on-dark}` at 21.00:1, so position is still conveyed, but the inactive dots are below 3:1.
+
+### Focus ring visibility, per surface
+
+The ring is 2px solid with a 2px offset **outside** the control, so it is measured against the surface behind the control rather than the control's own fill.
+
+| Surface | Ring | Ratio |
+|---|---|---|
+| `{colors.canvas-light}` | `{colors.focus}` | 4.95:1 |
+| `{colors.surface-soft}` | `{colors.focus}` | 4.47:1 |
+| `{colors.surface-card}` | `{colors.focus}` | 4.62:1 |
+| `{colors.surface-filter}` (composited `#fbfcfd`) | `{colors.focus}` | 4.82:1 |
+| `{colors.canvas-dark}` | `{colors.focus-on-dark}` | 21.00:1 |
+| `{colors.surface-dark-elevated}` | `{colors.focus-on-dark}` | 18.60:1 |
+| `{colors.surface-dark-card}` | `{colors.focus-on-dark}` | 17.76:1 |
+| `{colors.primary}` band (footer, Marathon CTA strip) | `{colors.focus-on-dark}` | 4.95:1 |
+| `{colors.commerce}` fill | `{colors.focus-on-dark}` | 4.71:1 |
+
+Blue-on-blue is 1.00:1, which is why the blue band and any blue or orange fill take `{colors.focus-on-dark}` instead. Over full-bleed key art, which has no measurable colour, draw `{colors.focus-on-dark}` with a 1px `{colors.ink}` outer edge so the ring survives a light frame.
+
+### Tap targets
+
+Stated from the heights this file documents, not from a rendered page: `{component.button-primary}` and `{component.button-commerce}` at 48px, `{component.text-input}` at 48px, `{component.support-search-bar}` at 56px, `{component.carousel-paddle}` at 48×48. `{component.filter-pill}` is the one at risk — its `8px 16px` padding on `{typography.button-md}` (14px) yields roughly 36px, below the 44px minimum, and it needs added inline padding to reach it. `{component.pagination-dot}` is an 8px dot and needs a 44px transparent hit area. Neither can be confirmed without a rendered page.
+
+### Reduced motion
+
+Every motion value in this file is prescribed, and under `@media (prefers-reduced-motion: reduce)` all travel, scale, stagger and the hero-image settle are removed; opacity fades remain, clamped to `{motion.duration-reduced}` (150ms); the loader loop freezes to a static fill. The focus ring is exempt from any fade and appears instantly.
+
+### Known accessibility gaps
+
+- No `aria` or keyboard-order evidence was captured; nothing here claims a tested keyboard path.
+- `{component.text-input-focused}` signals focus with border weight alone on the live site. A weight change is not a 3:1 indicator on its own, which is why the prescribed ring is added alongside it.
+- Overlap, clipping, reflow and real tap-target size need a rendered page and are not measured anywhere in this document.
+
 ## Do's and Don'ts
 
 ### Do
@@ -654,7 +803,10 @@ All interactive elements meet WCAG AAA (≥ 44×44px). `{component.button-primar
 ## Known Gaps
 
 - **Mobile screenshots not captured** — responsive behavior synthesizes PlayStation's known mobile pattern (hamburger drawer, single-column band reflow, hero downscale) from desktop evidence and the breakpoint stack.
-- **Hover states not documented** by system policy.
+- **Hover states not documented** by system policy. The State matrix in Components marks every hover cell as prescribed (◻), not extracted.
+- **Motion is prescribed, not measured.** No duration, easing curve or stagger in this file came from PlayStation's pages; the `{motion.duration-base}` ladder is the shared Cinematic profile.
+- **Focus ring is prescribed.** `{colors.focus}` and `{colors.focus-on-dark}` are not extracted values — the captured pages expose only a 2px border-weight change on `{component.text-input-focused}`.
+- **Control-boundary colour is prescribed.** The live inputs use `{colors.ash-light}` at 1.61:1; `{colors.mute-light}` is this document's prescribed replacement, not an observed value.
 - **Sign-in / authentication chrome** (login modal, account dashboard, profile pages) not in the captured pages.
 - **PlayStation Store** in-store browsing surfaces (PDP / cart / checkout) are not in the captured set — those use a more dense data-table layout that this document does not describe.
 - **Game-page-specific theming** — the `/marathon/` page uses `{colors.marathon-yellow}` as a chapter accent. Other game pages may pull in their own per-title brand colors that vary outside the documented system.

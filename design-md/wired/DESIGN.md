@@ -13,6 +13,7 @@ colors:
   canvas: "#ffffff"
   canvas-soft: "#f5f5f5"
   link: "#057dbc"
+  focus: "#057dbc"
 
 typography:
   display-hero:
@@ -111,6 +112,18 @@ spacing:
   2xl: 24px
   3xl: 32px
   4xl: 48px
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 500ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
+  duration-reduced: 150ms
 
 components:
   nav-bar:
@@ -275,7 +288,7 @@ Buttons are square. The brand uses `{rounded.none}` 0 px corners across the enti
 ### Surface
 - **Canvas** (`{colors.canvas}` — `#ffffff`): The default page background.
 - **Canvas Soft** (`{colors.canvas-soft}` — `#f5f5f5`): Rare tint used for the comment-section background and search-result row hover states (not in the main page rhythm).
-- **Hairline** (`{colors.hairline}` — `#e0e0e0`): 1 px dividers between story rows. The brand's only "line."
+- **Hairline** (`{colors.hairline}` — `#e0e0e0`): 1 px dividers between story rows. The brand's only "line." **Decorative only** — at 1.32:1 on `{colors.canvas}` and 1.21:1 on `{colors.canvas-soft}` it is below the 3:1 a boundary needs, so where a rule is the only boundary of a control or a card use `{colors.ink}` or `{colors.body}` instead. See Accessibility.
 
 ### Text
 - **Ink** (`{colors.ink}` — `#000000`): Every headline, every body paragraph in BreveText.
@@ -286,6 +299,7 @@ Buttons are square. The brand uses `{rounded.none}` 0 px corners across the enti
 The brand operates with one inline link colour and no separate error / success / warning palette in its marketing surface. Validation cues on form pages use the ink black + body grey hierarchy.
 
 - **Link** (`{colors.link}` — `#057dbc`): The inline body-link blue. Used only inside long-form article body copy, never on UI buttons or navigation.
+- **Focus** (`{colors.focus}` — `#057dbc`): The focus ring. Not a new brand colour — it reuses the link blue, the one chromatic tone the brand owns, and is the only palette value that clears 3:1 on white, on `{colors.canvas-soft}` and on the black footer band. Prescribed, not extracted; see Accessibility.
 
 ## Typography
 
@@ -340,28 +354,8 @@ The three proprietary faces have no exact substitutes. Best open-source approxim
 - Cover-story grid: 1 large hero + 2-up secondary stories + vertical stack.
 - Story-row stack: full-width single column with hairline dividers.
 
-### Responsive Strategy
-
-#### Breakpoints
-
-| Name | Width | Key Changes |
-|---|---|---|
-| Mobile | < 768px | Cover hero 64→40 px; all grids 1-up; hamburger nav. |
-| Tablet | 768–1023px | 2-up secondary story grid. |
-| Desktop | ≥ 1024px | Full magazine grid. |
-
-#### Touch Targets
-Button-primary renders ~44 px tall (12 vertical padding + 20 line). WCAG AAA at all widths.
-
-#### Collapsing Strategy
-- Nav: full link row + Subscribe CTA at desktop. Hamburger at mobile.
-- Magazine grid: hero stays full-width; 2-up secondary drops to 1-up at mobile.
-- Story rows: stay single-column at all viewports.
-
-#### Image Behavior
-- Cover images: full-bleed 16:9 hero / 4:3 secondary.
-- Article body images: full-width inside the article column.
-- Author avatars: small inline circular crops next to bylines.
+Responsive rules moved verbatim to the top-level `## Responsive Behavior`
+section, per the section contract.
 
 ## Elevation & Depth
 
@@ -479,6 +473,145 @@ The brand uses no drop-shadows. Surface contrast and hairline borders carry all 
 **`ex-toast`** — Toast notification surface — feature-card shape + medium shadow.
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
+### Component States
+
+State changes on this brand are paint-only — ink, rule and underline swap, nothing
+travels and nothing scales. That is the editorial identity, not an omission: a
+square black CTA that pops on press would read as a SaaS button. Every row below
+uses `{motion.duration-fast}` with `{motion.ease-standard}` unless the Motion &
+Animation table says otherwise. The focus ring is `{colors.focus}` in every row
+that lists focus-visible: a 2 px ring with a 2 px offset, drawn outside the control.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | `{colors.primary}` fill, `{colors.on-primary}` label | fill lifts to `{colors.ink-soft}` | 2 px `{colors.focus}` ring, 2 px offset | label drops to 70% opacity | 40% opacity, no pointer | label replaced by a 3-dot ink pulse, width held | — (not a toggle) | — (form-level, see `text-input`) |
+| `button-outline` | 1 px `{colors.ink}` border on `{colors.canvas}` | border thickens to 2 px `{colors.ink}` (Level 2 elevation) | 2 px `{colors.focus}` ring, 2 px offset | fill inverts to `{colors.ink}`, label `{colors.on-primary}` | border and label at 40% opacity | 3-dot ink pulse in place of the label | — (not a toggle) | — |
+| `button-icon-circular` | ink glyph on `{colors.canvas}` | glyph to `{colors.ink}`, 1 px `{colors.body}` ring appears | 2 px `{colors.focus}` ring, 2 px offset | glyph at 70% opacity | 40% opacity | glyph swaps to the ink pulse | pressed share state holds the inverted fill | — |
+| `text-input` | 1 px `{colors.ink}` border, `{colors.ink}` value | border holds; placeholder to `{colors.ink-soft}` | 2 px `{colors.focus}` ring, 2 px offset, border unchanged | caret only | border and label to `{colors.body}`, surface `{colors.canvas-soft}` | submit button carries the loading state, the field does not | — | 2 px `{colors.ink}` border plus an `{typography.body-sm-strong}` message below; the brand has no error red, so weight and rule carry the signal |
+| `nav-link` | `{colors.ink}`, no rule | 1 px `{colors.ink}` underline appears | 2 px `{colors.focus}` ring, 2 px offset | underline holds, label at 70% opacity | 40% opacity | — | current section keeps a persistent 1 px `{colors.ink}` underline | — |
+| `story-card-large`, `story-card` | headline `{colors.ink}`, photo at rest | headline gains a 1 px `{colors.ink}` underline; photo opacity to 0.92 | 2 px `{colors.focus}` ring around the whole card, 2 px offset | headline at 70% opacity | — (a card is never disabled) | skeleton: `{colors.canvas-soft}` blocks at the photo and headline boxes, opacity pulse only | — | — |
+| `story-row` | `{colors.ink}` title above a `{colors.hairline}` rule | title underlines; row surface to `{colors.canvas-soft}` | 2 px `{colors.focus}` ring, 2 px offset | title at 70% opacity | — | skeleton bars as above | — | — |
+| `hairline-divider`, `masthead-band`, `hero-band`, `byline-row`, `category-eyebrow`, `footer` | as specified above | — | — | — | — | — | — | — |
+| `ex-app-shell-row` | `{colors.canvas}`, ink label | surface to `{colors.canvas-soft}` | 2 px `{colors.focus}` ring, 2 px offset | label at 70% opacity | 40% opacity | — | 2 px `{colors.primary}` left `activeIndicator`, label `{typography.body-md-strong}` | — |
+| `ex-pricing-tier`, `ex-auth-form-card`, `ex-modal-card`, `ex-empty-state-card` | as specified above | — | focus is carried by the controls inside, not the card | — | — | card body swaps to skeleton blocks | `ex-pricing-tier-featured` is the selected variant: `{colors.ink}` fill, `{colors.on-primary}` text | inline message in `{typography.body-sm-strong}` above the submit control |
+| `ex-toast` | `{colors.canvas}` surface, 1 px `{colors.ink}` rule | — (non-interactive except its dismiss control) | dismiss control takes the `{colors.focus}` ring | — | — | — | — | the error toast carries a 2 px `{colors.ink}` left rule, not a red fill |
+
+The five band / divider components in the ninth row are presentational: they have
+one state each and genuinely no interactive states at all.
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was
+not measured from the live site.** No duration, easing curve or stagger below was
+extracted from Wired; the file records none. The values are the SPEC **Calm**
+profile verbatim, which suits a composed editorial surface: short opacity-led
+fades, almost no travel, no overshoot. Every value is referenced as a
+`{motion.*}` token so the numbers live in one place.
+
+Animate `transform` and `opacity` only; never `width`, `height`, `top`, `left`
+or `margin`. On a brand with no shadow, no radius and no chromatic accent, most
+state changes are paint-only — `color`, `border-color`, `background-color` —
+which is permitted and needs no substitute travel. Exit durations are shorter
+than their matching entrances.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (link, nav-link, story headline, card) | `{motion.duration-fast}` | `{motion.ease-standard}` | `color`, `border-color`, `opacity` (photo to 0.92) | Unchanged — paint-only, no travel to remove |
+| Press (button-primary, button-outline, icon button) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` to 0.7, `background-color` on the outline invert | Unchanged at `{motion.duration-reduced}` |
+| Focus (ring appear) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` of the `{colors.focus}` ring | Ring appears instantly, no fade |
+| Page / route transition | `{motion.duration-base}` | `{motion.ease-standard}` | `opacity` 0 → 1 on the article column; no slide | Cross-fade at `{motion.duration-reduced}` |
+| Modal or drawer enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` 0 → 1, `transform: translateY(8px)` → 0 | `opacity` only at `{motion.duration-reduced}`, translate removed |
+| Modal or drawer exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` 1 → 0, no travel | `opacity` only at `{motion.duration-reduced}` |
+| Dropdown / section menu | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | `{motion.ease-enter}` / `{motion.ease-exit}` | `opacity`, `transform: translateY(4px)` → 0 | `opacity` only at `{motion.duration-reduced}` |
+| Toast enter | `{motion.duration-base}` | `{motion.ease-enter}` | `opacity` 0 → 1, `transform: translateY(8px)` → 0 | `opacity` only at `{motion.duration-reduced}`, translate removed |
+| Toast exit | `{motion.duration-fast}` | `{motion.ease-exit}` | `opacity` 1 → 0 | `opacity` only at `{motion.duration-reduced}` |
+| List enter (story grid, story rows) | `{motion.duration-base}` per item, `{motion.stagger-step}` between items | `{motion.ease-enter}` | `opacity` 0 → 1 only — the magazine grid fades in place, it does not fly in | Stagger dropped, single `opacity` fade at `{motion.duration-reduced}` |
+| List exit (filter / search re-query) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` 1 → 0 | `opacity` only at `{motion.duration-reduced}` |
+| Loading (skeleton, button pulse) | `{motion.duration-emphasis}` per cycle, infinite | `{motion.ease-standard}` | `opacity` 1 → 0.5 → 1 on `{colors.canvas-soft}` blocks | Animation frozen; a static `{colors.canvas-soft}` block is shown instead |
+| Hero / cover image on first paint | none | none | none — the cover renders at rest | Unchanged |
+
+Nothing animates on first paint in a way that delays content: the hero band and
+its headline render at rest, and the list-enter fade applies only to grids
+fetched after the first paint. The skeleton pulse is the one infinite animation
+in the system; there is no brand ambience.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate and scale — modal, drawer, dropdown and toast
+     entrances become pure cross-fades; list stagger is dropped so a grid
+     appears in one step. The loader's infinite pulse is frozen to a static
+     canvas-soft block. */
+  /* Kept: opacity fades and every paint-only change (color, border-color,
+     background-color), capped at {motion.duration-reduced} 150ms. The focus
+     ring appears with no transition at all. */
+}
+```
+
+## Accessibility
+
+### Measured contrast
+
+WCAG 2.1 relative luminance, computed from this file's own hexes. Three pairs
+fail, and all three are extracted brand facts kept as-is.
+
+| Foreground / Background | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` `#000000` on `{colors.canvas}` `#ffffff` | 21.00:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.canvas-soft}` `#f5f5f5` | 19.26:1 | 4.5:1 | Pass |
+| `{colors.ink-soft}` `#1a1a1a` on `{colors.canvas}` | 17.40:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` `#ffffff` on `{colors.primary}` `#000000` | 21.00:1 | 4.5:1 | Pass |
+| `{colors.body}` `#757575` on `{colors.canvas}` | 4.61:1 | 4.5:1 | Pass |
+| `{colors.body}` `#757575` on `{colors.canvas-soft}` `#f5f5f5` | 4.23:1 | 4.5:1 | **Fail — the real brand fails AA here.** Grey metadata set on the tinted surface is below AA for normal text. Use `{colors.body}` on `{colors.canvas-soft}` only at 18.66 px/700 or 24 px+, where 3:1 applies; below that size put metadata on `{colors.canvas}`, where it passes. |
+| `{colors.hairline}` `#e0e0e0` on `{colors.canvas}` | 1.32:1 | 3.0:1 | **Fail — extracted and frozen.** Decorative rule only. |
+| `{colors.hairline}` `#e0e0e0` on `{colors.canvas-soft}` `#f5f5f5` | 1.21:1 | 3.0:1 | **Fail — extracted and frozen.** Decorative rule only. |
+| `{colors.link}` `#057dbc` on `{colors.canvas}` | 4.50:1 | 4.5:1 | Pass, by 0.0006 — treat as the floor and never darken the canvas behind an inline link. |
+| `{colors.link}` `#057dbc` on `{colors.canvas-soft}` `#f5f5f5` | 4.13:1 | 4.5:1 | **Fail.** Inline links are specified for article body on `{colors.canvas}` only; do not carry them onto the tinted comment surface at body size. |
+
+The `{colors.hairline}` failures are the honest shape of this brand: the 1 px
+rule between story rows is a typographic device, not a boundary a reader has to
+find. Where a hairline is the *only* boundary of a control or a card —
+`text-input`, and the `ex-*` card surfaces — the palette already owns a passing
+tone and no new token is needed: `{colors.ink}` (21:1, already bound on
+`text-input`) or `{colors.body}` (4.61:1 on `{colors.canvas}`, 4.23:1 on
+`{colors.canvas-soft}`, both clearing 3:1). The existing `{colors.hairline}`
+bindings on `story-row`, `hairline-divider` and the `ex-*` cards are left exactly
+as extracted; re-pointing the `ex-*` card borders to `{colors.body}` is a brand
+decision and sits in the audit report under Needs approval.
+
+### Focus ring
+
+`{colors.focus}` is **not a new brand colour**: it reuses `{colors.link}`
+`#057dbc`, the one chromatic tone the brand already owns, and it is the only
+palette value that clears 3:1 on every surface this file defines. Drawn as a
+2 px ring at a 2 px offset *outside* the control, so it is judged against the
+surface behind the control rather than the control's own fill — which matters
+here, because the brand's primary CTA fill is pure black.
+
+| Ring on surface | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.focus}` on `{colors.canvas}` `#ffffff` | 4.50:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.canvas-soft}` `#f5f5f5` | 4.13:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.primary}` `#000000` (footer band) | 4.67:1 | 3.0:1 | Pass |
+| `{colors.focus}` on `{colors.hairline}` `#e0e0e0` | 3.41:1 | 3.0:1 | Pass |
+
+One ring serves both polarities, so this file needs no `focus-on-dark`
+counterpart.
+
+### Minimum tap target
+
+`button-primary` and `button-outline` compute to 44 px tall from this file's own
+tokens: `{spacing.md}` 12 px top + 12 px bottom + `{typography.button-md}`
+20 px line-height. `button-icon-circular` computes to 36 px from `{spacing.sm}`
+8 px + 8 px + a 20 px glyph box, which is **below the 44 px target** — it needs
+`{spacing.md}` padding, or a 44 px hit area extended past the visible circle.
+These are arithmetic from the token values, not measurements of a rendered page;
+nothing here was rendered.
+
+### Reduced motion
+
+Every entrance loses its travel and becomes an opacity fade capped at
+`{motion.duration-reduced}` 150 ms, list stagger is dropped, and the skeleton
+pulse freezes. See the `@media (prefers-reduced-motion: reduce)` rule above.
 
 ## Do's and Don'ts
 
@@ -495,3 +628,61 @@ The brand uses no drop-shadows. Surface contrast and hairline borders carry all 
 - Don't drop a soft drop-shadow on cards. Surface contrast and hairlines carry elevation.
 - Don't substitute the proprietary serif faces with a generic sans for display. The serif voice is the brand.
 - Don't promote display weight beyond 400. The brand's elegance is in the typeface design, not bold weight.
+- Don't add a scale pop or a slide to a state change. Hover, press and selection are paint-only on this brand; travel belongs to modals, dropdowns and toasts, and nowhere else.
+
+## Responsive Behavior
+
+### Breakpoints
+
+| Name | Width | Key Changes |
+|---|---|---|
+| Mobile | < 768px | Cover hero 64→40 px; all grids 1-up; hamburger nav. |
+| Tablet | 768–1023px | 2-up secondary story grid. |
+| Desktop | ≥ 1024px | Full magazine grid. |
+
+### Touch Targets
+Button-primary renders ~44 px tall (12 vertical padding + 20 line). WCAG AAA at all widths.
+
+### Collapsing Strategy
+- Nav: full link row + Subscribe CTA at desktop. Hamburger at mobile.
+- Magazine grid: hero stays full-width; 2-up secondary drops to 1-up at mobile.
+- Story rows: stay single-column at all viewports.
+
+### Image Behavior
+- Cover images: full-bleed 16:9 hero / 4:3 secondary.
+- Article body images: full-width inside the article column.
+- Author avatars: small inline circular crops next to bylines.
+
+## Known Gaps
+
+- **All motion is prescribed, none extracted.** No duration, easing curve,
+  stagger or reduced-motion rule in this file was measured from the live site;
+  the source records none. The values are the SPEC Calm profile verbatim.
+  Anything in Motion & Animation is a proposal, not a brand fact.
+- **The component state matrix is prescribed.** Only one state was documented
+  in the source material — the `ex-app-shell-row` active indicator. Every other
+  cell in the Component States table is inferred from the brand's own rules
+  (paint-only change, square geometry, no shadow, no chromatic accent) and
+  needs confirmation against the live site.
+- **`{colors.focus}` is prescribed.** No focus ring was extracted. The token
+  reuses the existing `{colors.link}` `#057dbc` rather than introducing a
+  colour, and the 2 px width and 2 px offset are proposals.
+- **No error, success or warning tone exists in the palette.** This is a real
+  absence, not a naming miss: the brand carries one ink per polarity plus a
+  single inline link blue, and validation on the live forms is carried by
+  weight and rule rather than colour. No semantic tone has been invented to
+  fill the column.
+- **No `shadow:` group.** Correct for this brand — Elevation & Depth documents
+  no shadow value at all, only flat, hairline and 2 px ink border. The two
+  `ex-*` descriptions that mention an "elevated shadow" and a "medium shadow"
+  are auto-derived boilerplate from the example generator and contradict the
+  brand's own Don't; they describe no value in this file and reference no token.
+- **Nothing in this document was rendered.** Tap-target sizes, including the
+  44 px figure under Touch Targets and the 36 px figure for
+  `button-icon-circular`, are arithmetic from the token values. Overlap,
+  overflow, clipping, frame rate and layout shift were not and cannot be
+  checked from a document.
+- **Line-height 2.2 on `{typography.byline}`** is stated in the Typography
+  principles as an editorial signature; the token itself records 12.73 px /
+  28 px, which is 2.2. Consistent, but the 12.73 px size is an odd extracted
+  value and may be a computed rather than an authored one.

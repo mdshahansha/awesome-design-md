@@ -15,13 +15,19 @@ colors:
   on-ink: "#ffffff"
   canvas: "#ffffff"
   paper: "#ffffff"
+  surface: "#ffffff"
   cloud: "#f7f7f7"
   fog: "#e8e8e8"
   steel: "#c2c2c2"
   graphite: "#636363"
   charcoal: "#3d3d3d"
+  text-dim: "#3d3d3d"
   hairline: "#e8e8e8"
   hairline-strong: "#c2c2c2"
+  hairline-control: "#767676"
+  focus: "#0e3191"
+  focus-inset: "#ffffff"
+  focus-on-dark: "#c9e0fc"
   link: "#024ad8"
   link-pressed: "#0e3191"
   bloom-coral: "#ff5050"
@@ -141,6 +147,22 @@ rounded:
   xl: 16px
   pill: 9999px
   full: 9999px
+
+shadow:
+  soft-lift: "0 2px 8px rgba(26, 26, 26, 0.08)"
+  floating: "0 8px 24px rgba(26, 26, 26, 0.12)"
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 500ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
+  duration-reduced: 150ms
 
 spacing:
   xxs: 4px
@@ -349,13 +371,18 @@ The system breaks into three voice modes: a **white commercial body** for produc
 - **Bright Blue** (`{colors.primary-bright}` — `#296ef9`): a slightly lighter variant used inside dark slabs (testimonial-card buttons, dark-band CTA links) where the deeper blue would muddy.
 - **Deep Navy** (`{colors.primary-deep}` — `#0e3191`): pressed state for the primary CTA and the visited-link color.
 - **Soft Blue** (`{colors.primary-soft}` — `#c9e0fc`): pale-blue surface used inside customer-story cards and selection chips.
+- **Focus Ring** (`{colors.focus}` — `#0e3191`, prescribed — no ring was extracted from the live site): a 2px ring drawn on every focusable element on a light surface. It reuses the deep navy of the pressed CTA rather than Electric Blue so the ring never disappears into a blue CTA fill. Measures 11.25:1 on `{colors.canvas}`.
+- **Focus Inset** (`{colors.focus-inset}` — `#ffffff`, prescribed): the mandatory 2px white offset drawn *between* the element and `{colors.focus}`. It is what makes the ring legible on a `{colors.primary}` fill, where the ring alone sits at 1.59:1. Band-to-band separation is 11.25:1.
+- **Focus on Dark** (`{colors.focus-on-dark}` — `#c9e0fc`, prescribed): the ring used inside the `{colors.ink}` slabs — testimonial bands, the "How can we help?" prelude, the footer. Measures 12.89:1 on `{colors.ink}`.
 
 ### Surface
 - **Canvas** (`{colors.canvas}` — `#ffffff`): the universal page background. White, full opacity.
 - **Paper** (`{colors.paper}` — `#ffffff`): card surfaces — same white as canvas, with hairline borders or shadows providing the lift.
+- **Surface** (`{colors.surface}` — `#ffffff`): the role alias for `{colors.paper}`, named so the card/panel surface is addressable by role. It is deliberately the same hex as `{colors.canvas}`: a white card on a white page measures 1.00:1, so the separation is carried entirely by `{shadow.soft-lift}` and the hairline, never by tone.
 - **Cloud** (`{colors.cloud}` — `#f7f7f7`): the lightest gray section band, used for alternating-row backgrounds and product-feature card groups.
 - **Fog** (`{colors.fog}` — `#e8e8e8`): a slightly darker gray surface band, used for FAQ outer panels and the "Trending laptops" header strip.
-- **Steel** (`{colors.steel}` — `#c2c2c2`): hairline border used on outlined elements with stronger emphasis (focus states, active filter).
+- **Steel** (`{colors.steel}` — `#c2c2c2`): hairline border used on outlined elements with stronger emphasis (active filter, input default border). Same value as `{colors.hairline-strong}`.
+- **Control Boundary** (`{colors.hairline-control}` — `#767676`, prescribed — not extracted): the boundary tone for anything a user types into or operates, where the frozen `{colors.hairline}` (1.23:1) and `{colors.hairline-strong}` (1.78:1) are both below the 3:1 non-text minimum. Measures 4.54:1 on `{colors.canvas}`, 4.24:1 on `{colors.cloud}`, 3.71:1 on `{colors.fog}`. `{colors.hairline}` and `{colors.hairline-strong}` stay scoped to decoration — table rules, section dividers, card edges — where no boundary carries meaning.
 - **Bloom Coral / Bloom Rose** (`{colors.bloom-coral}` / `{colors.bloom-rose}` — `#ff5050`, `#f9d4d2`): the "Get 25% off" sale-tag chip + soft pink lifestyle accent on the sale hero.
 - **Storm Mist / Sea / Deep** (`{colors.storm-mist}`, `{colors.storm-sea}`, `{colors.storm-deep}` — `#8ebdce`, `#7fadbe`, `#356373`): the teal-storm tones reserved for the printer-plan illustration backdrop and supporting infographic accents.
 
@@ -365,6 +392,7 @@ The system breaks into three voice modes: a **white commercial body** for produc
 - **Ink Soft** (`{colors.ink-soft}` — `#292929`): an alternate near-black used inside dark-navy slabs as a subtle textural shift.
 - **On Ink** (`{colors.on-ink}` — `#ffffff`): pure white used for headline and body text on every dark-navy slab.
 - **Charcoal** (`{colors.charcoal}` — `#3d3d3d`): muted body color on white surfaces — secondary descriptions, fine-print disclaimers.
+- **Text Dim** (`{colors.text-dim}` — `#3d3d3d`): the role alias for `{colors.charcoal}`, so secondary ink is addressable by role. 10.86:1 on `{colors.canvas}`.
 - **Graphite** (`{colors.graphite}` — `#636363`): smaller-print color, used for legal lines and timestamp metadata.
 
 ### Semantic
@@ -444,11 +472,13 @@ Whitespace is **commercial-clean** — generous around hero photography, tight a
 | Level | Treatment | Use |
 |---|---|---|
 | 0 — Flat | No border, no shadow. | Section bands (white, cloud, fog), full-bleed photo heroes |
-| 1 — Hairline | 1px solid `{colors.hairline}` (`#e8e8e8`) border, no shadow. | Outlined buttons, comparison-table cells, FAQ accordion outers |
-| 2 — Soft Lift | `0 2px 8px rgba(26, 26, 26, 0.08)`. | Product cards, pricing-tier columns, customer-story tiles |
-| 3 — Floating Modal | `0 8px 24px rgba(26, 26, 26, 0.12)`. | Add-to-cart drawer, mobile-nav sheet, image zoom modal |
+| 1 — Hairline | 1px solid `{colors.hairline}` (`#e8e8e8`) border, no shadow. Controls use `{colors.hairline-control}` instead. | Outlined buttons, comparison-table cells, FAQ accordion outers |
+| 2 — Soft Lift | `{shadow.soft-lift}` — `0 2px 8px rgba(26, 26, 26, 0.08)`. | Product cards, pricing-tier columns, customer-story tiles |
+| 3 — Floating Modal | `{shadow.floating}` — `0 8px 24px rgba(26, 26, 26, 0.12)`. | Add-to-cart drawer, mobile-nav sheet, image zoom modal |
 
-The system is mostly flat — depth is communicated by **color contrast** (cloud-band vs. white card on the same band) rather than shadow elevation. The Soft Lift level is the workhorse for the catalog — every product tile and pricing column gets it; nothing else does. Modal-floating is rare and reserved for transient overlays.
+Elevation is expressed one way only: **shadow for lift, hairline for enclosure, never both on the same element.** A card that carries `{shadow.soft-lift}` carries no border; a comparison-table cell carries a hairline and no shadow.
+
+The system is mostly flat — depth is communicated by **color contrast** (cloud-band vs. white card on the same band) rather than shadow elevation. The honest measurement: `{colors.canvas}` to `{colors.surface}` is 1.00:1, canvas to `{colors.cloud}` is 1.07:1, canvas to `{colors.fog}` is 1.23:1, cloud to fog is 1.14:1. None of those layer separations is visible as tone alone, so `{shadow.soft-lift}` is load-bearing rather than ornamental, and a build that drops the shadow loses the card entirely. The Soft Lift level is the workhorse for the catalog — every product tile and pricing column gets it; nothing else does. Modal-floating is rare and reserved for transient overlays.
 
 ### Decorative Depth
 
@@ -478,7 +508,7 @@ Hero photography sits in `{rounded.xl}` (16px) frames with no border. Product fa
 
 ## Components
 
-> **No hover states documented.** Every component spec below documents only Default and Active/Pressed states. Variants live as separate front-matter entries.
+> **Extracted versus prescribed.** The per-component specs below are extracted: default and active/pressed only, the two states the live pages expose as static CSS. The `### Interaction States` table at the end of this section is **prescribed** — no hover, focus, loading, selected or error state was measured from the live site. Variants live as separate front-matter entries.
 
 ### Buttons
 
@@ -548,7 +578,8 @@ Hero photography sits in `{rounded.xl}` (16px) frames with no border. Product fa
 
 **`text-input`** + **`text-input-focused`**
 - Background `{colors.canvas}`, text `{colors.ink}`, rounded `{rounded.md}`, padding `{spacing.sm} {spacing.md}`, height 44px
-- 1px `{colors.steel}` border in default; gains 1px `{colors.ink}` border on focus (no halo)
+- Extracted: 1px `{colors.steel}` border in default; gains 1px `{colors.ink}` border on focus (no halo)
+- Prescribed correction: the default border moves to 1px `{colors.hairline-control}` (4.54:1), because `{colors.steel}` at 1.78:1 is the input's only boundary and fails the 3:1 non-text minimum. Focus adds the 2px `{colors.focus}` ring plus the `{colors.focus-inset}` offset, keeping the extracted ink border underneath
 
 **`text-input-search`** — pill search in the top nav
 - Background `{colors.canvas}`, rounded `{rounded.md}`, padding `{spacing.sm} {spacing.md}`, height 40px, 1px `{colors.steel}` border, magnifying-glass icon at right
@@ -609,6 +640,148 @@ Hero photography sits in `{rounded.xl}` (16px) frames with no border. Product fa
 - 5-column link grid (Company / Shop / Support / Resources / Connect) with `{typography.body-emphasis}` headers and `{typography.caption-md}` link rows
 - Bottom strip carries social icons, language picker, and legal lines in `{typography.caption-sm}` muted to `{colors.steel}`
 
+### Interaction States
+
+**Prescribed, not extracted.** Only default and active/pressed were readable from the live pages; everything else below is specified to match HP's one-accent, flat, hairline-led system. Hover never introduces a new hue — it shifts to `{colors.primary-deep}`, drops to `{colors.cloud}`, or thickens the existing boundary.
+
+| Component | Default | Hover | Focus-visible | Active / pressed | Disabled | Loading | Selected | Error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | `{colors.primary}` fill | fill → `{colors.primary-deep}` | 2px `{colors.focus}` ring + `{colors.focus-inset}` offset | `button-primary-pressed` fill, 0.98 scale | `button-primary-disabled` (`{colors.steel}` fill) | label swaps for a 16px spinner, width frozen | n/a — not a toggle | n/a — form-level |
+| `button-ink` | `{colors.ink}` fill | fill → `{colors.ink-soft}` | 2px `{colors.focus}` ring + offset; `{colors.focus-on-dark}` when over a dark slab | 0.98 scale, no colour change | `{colors.steel}` fill, `{colors.canvas}` label | spinner as above | n/a | n/a |
+| `button-outline` / `button-outline-ink` | 1px border, `{colors.canvas}` fill | fill → `{colors.cloud}`, border unchanged | 2px `{colors.focus}` ring + offset | fill → `{colors.fog}` | border and label → `{colors.steel}` | spinner replaces label | n/a | n/a |
+| `button-text-link` | `{colors.primary}`, underline | `{colors.primary-deep}`, underline thickens to 2px | 2px `{colors.focus}` ring, 2px offset | `{colors.link-pressed}` | `{colors.steel}`, no underline | n/a | n/a | n/a |
+| `text-input` / `text-input-search` | 1px `{colors.hairline-control}` | border → `{colors.ink}` | `text-input-focused` + 2px `{colors.focus}` ring | n/a — not pressable | `{colors.cloud}` fill, `{colors.steel}` border and text | trailing 16px spinner inside the field | n/a | 1px `{colors.error}` border + `{typography.caption-md}` message in `{colors.error}` below |
+| `category-tab` | `{colors.canvas}` pill, `{colors.ink}` label | fill → `{colors.cloud}` | 2px `{colors.focus}` ring, 2px offset outside the pill | 0.98 scale | label → `{colors.steel}`, no fill | n/a | `category-tab-active` — `{colors.ink}` fill, `{colors.on-primary}` label | n/a |
+| `faq-row` | collapsed, `{colors.hairline}` divider | row fill → `{colors.cloud}` | 2px `{colors.focus}` ring on the whole row | chevron rotates 180° | n/a | n/a | expanded row keeps `{colors.cloud}` fill while open | n/a |
+| `card-product` / `card-article-tile` / `card-customer-story` | `{shadow.soft-lift}` | shadow → `{shadow.floating}`, title → `{colors.primary}`, no card travel | 2px `{colors.focus}` ring on the card bounds | 0.99 scale | whole card at 0.4 opacity, pointer-events off | skeleton blocks in `{colors.fog}`, no shimmer travel | `{colors.primary}` 2px top border, as on `card-pricing-tier-featured` | out-of-stock line in `{colors.error}`, `{typography.caption-md}` |
+| `nav-link` | `{colors.ink}` | 2px `{colors.primary}` underline fades in | 2px `{colors.focus}` ring | underline at full opacity | `{colors.steel}` | n/a | active page keeps the 2px `{colors.primary}` underline | n/a |
+| `badge-pill-ink` / `badge-pill-outline` / `badge-sale-coral` | static | none — **genuinely two-state** (present / absent); badges are not interactive | none | none | none | none | none | none |
+| `chevron-decoration` | static | none — **genuinely one state**; decoration only, never focusable | none | none | none | none | none | none |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or transition was extracted from HP's pages; every value below is the shared **Calm** profile applied to HP's own surfaces. Calm is the right fit: one chromatic accent, display weight 500 at every size, a flat shadow ladder, no gradients and an explicit rule against opacity tricks — a composed, editorial catalog rather than a springy consumer toy or a cinematic hardware reveal.
+
+Durations and easings are referenced as tokens: `{motion.duration-instant}` 80ms, `{motion.duration-fast}` 150ms, `{motion.duration-base}` 250ms, `{motion.duration-slow}` 400ms, `{motion.duration-emphasis}` 500ms, `{motion.stagger-step}` 40ms, `{motion.duration-reduced}` 150ms.
+
+Only `transform` and `opacity` are animated — never `width`, `height`, `top`, `left` or `margin`. The chevron decorations do not move; they are architecture, not animation.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (button, nav-link, card) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity`, `box-shadow`; underline reveals via `transform: scaleX()` from the left | colour and shadow swap instantly, no scaleX travel |
+| Press (button, tab, card) | `{motion.duration-instant}` | `{motion.ease-standard}` | `transform: scale(0.98)` | scale removed entirely; fill change only |
+| Focus ring appear | `{motion.duration-instant}` | `{motion.ease-enter}` | `opacity` on the `{colors.focus}` ring | ring appears at full opacity with no transition |
+| Page / route transition | `{motion.duration-base}` out, `{motion.duration-fast}` in | `{motion.ease-standard}` | `opacity` only; no slide, no band travel | cross-fade at `{motion.duration-reduced}` |
+| Modal / add-to-cart drawer | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(8px)` for the modal; `translateX(100%)` for the right-side drawer | opacity fade at `{motion.duration-reduced}`, no translate; scrim fades only |
+| Dropdown (locale picker, nav mega-menu) | enter `{motion.duration-fast}`, exit `{motion.duration-instant}` | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(-4px)` | opacity only at `{motion.duration-reduced}` |
+| Toast / cart confirmation | enter `{motion.duration-base}`, exit `{motion.duration-fast}` | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(8px)` | opacity only at `{motion.duration-reduced}`; auto-dismiss timer unchanged |
+| List enter (product grid, article tiles) | `{motion.duration-base}` per item, `{motion.stagger-step}` apart, capped at 8 items | `{motion.ease-enter}` | `opacity` + `transform: translateY(8px)` | all items fade together at `{motion.duration-reduced}`, no stagger, no travel |
+| List exit (filter change, remove from cart) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` + `transform: scale(0.98)` | opacity only at `{motion.duration-reduced}` |
+| Loading (spinner, skeleton) | 900ms linear loop (spinner); skeletons cross-fade at `{motion.duration-slow}` | linear / `{motion.ease-standard}` | `transform: rotate()` on the spinner; `opacity` on skeleton blocks | spinner becomes a static 25%-arc glyph with a text label; skeletons hold at one opacity |
+| Hero / band entrance on first paint | none | — | — | none — nothing animates on first paint; content is never delayed by a reveal |
+
+Exit is always shorter than its matching entrance. The spinner is the only infinite animation in the system; there is no brand ambience loop.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all translate, all scale, the list stagger, the spinner's
+     rotation loop, and the nav underline's scaleX reveal.
+     Kept: opacity cross-fades, capped at {motion.duration-reduced} (150ms).
+     Frozen: skeleton blocks hold a single opacity; the spinner renders as a
+     static arc with a visible "Loading…" label. */
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    transition-property: opacity, color, background-color, border-color, box-shadow !important;
+  }
+}
+```
+
+## Accessibility
+
+### Measured contrast
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's own hexes.
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` `#1a1a1a` on `{colors.canvas}` `#ffffff` | 17.4:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.surface}` `#ffffff` | 17.4:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.cloud}` `#f7f7f7` | 16.25:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.fog}` `#e8e8e8` | 14.2:1 | 4.5:1 | pass |
+| `{colors.text-dim}` / `{colors.charcoal}` `#3d3d3d` on `{colors.canvas}` | 10.86:1 | 4.5:1 | pass |
+| `{colors.graphite}` `#636363` on `{colors.canvas}` | 6.01:1 | 4.5:1 | pass |
+| `{colors.graphite}` on `{colors.cloud}` | 5.61:1 | 4.5:1 | pass |
+| `{colors.on-primary}` `#ffffff` on `{colors.primary}` `#024ad8` | 7.06:1 | 4.5:1 | pass |
+| `{colors.primary}` as link text on `{colors.canvas}` | 7.06:1 | 4.5:1 | pass |
+| `{colors.on-ink}` `#ffffff` on `{colors.ink}` | 17.4:1 | 4.5:1 | pass |
+| `{colors.primary-bright}` `#296ef9` on `{colors.ink}` | 3.89:1 | 4.5:1 | **fail** — see below |
+| `{colors.error}` / `{colors.bloom-deep}` `#b3262b` on `{colors.canvas}` | 6.5:1 | 4.5:1 | pass |
+| `{colors.storm-deep}` `#356373` on `{colors.canvas}` | 6.6:1 | 4.5:1 | pass |
+| `{colors.hairline-control}` `#767676` on `{colors.canvas}` | 4.54:1 | 3.0:1 | pass |
+| `{colors.hairline-control}` on `{colors.fog}` | 3.71:1 | 3.0:1 | pass |
+| `{colors.hairline}` `#e8e8e8` on `{colors.canvas}` | 1.23:1 | 3.0:1 | **fail — disclosed** |
+| `{colors.hairline}` on `{colors.surface}` `#ffffff` | 1.23:1 | 3.0:1 | **fail — disclosed** |
+| `{colors.hairline-strong}` / `{colors.steel}` `#c2c2c2` on `{colors.canvas}` | 1.78:1 | 3.0:1 | **fail — disclosed** |
+| `{colors.hairline-strong}` on `{colors.surface}` | 1.78:1 | 3.0:1 | **fail — disclosed** |
+| `badge-sale-coral`: `#ffffff` on `{colors.bloom-coral}` `#ff5050` | 3.22:1 | 4.5:1 | **fail — disclosed** |
+| `{colors.focus}` `#0e3191` on `{colors.canvas}` | 11.25:1 | 3.0:1 | pass |
+| `{colors.focus}` on `{colors.primary}` `#024ad8` | 1.59:1 | 3.0:1 | **fail — disclosed**, mitigated by `{colors.focus-inset}` |
+
+### Where the real brand fails AA, plainly
+
+- **Both extracted hairlines fail the 3:1 non-text minimum.** `{colors.hairline}` at 1.23:1 and `{colors.hairline-strong}` at 1.78:1 are frozen extracted facts, not mistakes to patch. HP's real site draws input and comparison-table boundaries with tones a low-vision user cannot see against white. The parallel prescribed token `{colors.hairline-control}` (4.54:1) exists for every boundary that carries meaning; the originals are scoped to decoration.
+- **`{colors.steel}` as disabled-button fill carries white text at 1.78:1.** WCAG sets no contrast requirement on disabled controls, so this is not a violation, but a disabled HP CTA is genuinely hard to read.
+- **The coral sale chip fails.** White `{typography.caption-bold}` on `{colors.bloom-coral}` measures 3.22:1 against a 4.5:1 requirement. The hex is a real brand value and is not changed here. `{colors.ink}` on the same coral would measure 5.4:1.
+- **`{colors.primary-bright}` on the dark slabs fails at body size.** 3.89:1 clears 3:1 for large text (24px+, or 18.66px+ at weight 700) but not 4.5:1 for body copy. Inside an `{colors.ink}` slab, use it for `{typography.display-sm}` and up, or `{colors.on-ink}` for body links.
+- **No layer separation is tonal.** `{colors.canvas}` to `{colors.surface}` is 1.00:1 and canvas to `{colors.cloud}` is 1.07:1; a build that drops `{shadow.soft-lift}` leaves cards invisible.
+
+### Focus ring visibility, surface by surface
+
+| Surface | Ring | Measured |
+|---|---|---|
+| `{colors.canvas}` / `{colors.surface}` / `{colors.paper}` `#ffffff` | `{colors.focus}` | 11.25:1 |
+| `{colors.cloud}` `#f7f7f7` | `{colors.focus}` | 10.5:1 |
+| `{colors.fog}` `#e8e8e8` | `{colors.focus}` | 9.18:1 |
+| `{colors.primary}` `#024ad8` CTA fill | `{colors.focus}` alone is 1.59:1 — **never used alone here.** The mandatory 2px `{colors.focus-inset}` `#ffffff` offset sits between fill and ring; band-to-band separation is 11.25:1, which is what WCAG 2.2 Focus Appearance measures | 11.25:1 band-to-band |
+| `{colors.ink}` `#1a1a1a` slabs (testimonial, help band, footer) | `{colors.focus-on-dark}` `#c9e0fc` | 12.89:1 |
+| Full-bleed hero photography | two-tone: 2px `{colors.focus}` with a 1px `{colors.focus-inset}` outer edge, so one band always separates from the image | not measurable — photography has no fixed colour |
+
+The ring is 2px with a 2px offset, drawn on `:focus-visible` only, and is never removed without a replacement. `{rounded.pill}` elements get a pill-shaped ring; everything else inherits the element's own radius.
+
+### Tap targets
+
+Every interactive element is specified at 44×44px minimum: `button-primary`, `button-ink`, `button-outline` and `text-input` are 44px tall by token; `text-input-search` at 40px is the one exception and gains a 44px invisible hit box. `category-tab` pads to 12px 24px on touch. **Not verified here:** these are document values. Rendered tap-target size needs a real page, so no claim in this file is a measurement of the live site.
+
+### Reduced motion
+
+`@media (prefers-reduced-motion: reduce)` is honoured system-wide, as specified in `## Motion & Animation`: all translate and scale removed, the list stagger removed, the spinner's rotation loop frozen to a static arc with a text label, and opacity fades capped at `{motion.duration-reduced}` (150ms).
+
+### Other
+
+- Colour is never the only signal: the active `category-tab` inverts its fill *and* its label, the error state adds a `{typography.caption-md}` message beside the `{colors.error}` border, and links keep an underline.
+- The file's own rule against dropping ink opacity for hierarchy is an accessibility win — hierarchy comes from `{colors.text-dim}` and `{colors.graphite}`, both of which pass AA.
+
+### Remaining measured failures
+
+Every ratio below is computed with WCAG 2.1 relative luminance from this file's
+own frontmatter hexes. These pairs were measured but not stated elsewhere in this
+section. No colour and no `components:` binding was changed to produce them: the
+values are extracted and frozen, so stating the number is the whole of the remedy
+available without a brand-owner decision. Where a fix would mean altering a brand
+tone or re-pointing a binding, that decision is listed in the audit's Needs
+approval set, not taken here. Where a row says the ground was substituted, the
+component states no `backgroundColor` of its own, so the page floor was measured
+in its place; if the real ground is imagery, a gradient or an overlay, this file
+does not record it, and the ratio describes the substitution rather than the
+rendered result.
+
+| Foreground / Background | Ratio | Required | Status |
+|---|---:|---:|---|
+| `{colors.hairline}` (`#e8e8e8`) on `{colors.cloud}` (`#f7f7f7`) | 1.14:1 | 3.0:1 | Fail — boundary on surface, all tones |
+| `{colors.hairline-strong}` (`#c2c2c2`) on `{colors.cloud}` (`#f7f7f7`) | 1.66:1 | 3.0:1 | Fail — boundary on surface, all tones |
+
 ## Do's and Don'ts
 
 ### Do
@@ -668,3 +841,22 @@ Hero photography uses `{rounded.xl}` containers at every breakpoint. The chevron
 5. Default body to `{typography.body-md}`; reach for `{typography.body-emphasis}` for run-in bolds; keep display sizes for true heading roles
 6. Keep `{colors.primary}` scarce — at most two flame elements per viewport (one CTA + one chevron decoration). Three flame items in one viewport is over-saturation
 7. When introducing a new section band, choose from `{colors.canvas}` / `{colors.cloud}` / `{colors.fog}` / `{colors.ink}` — six pre-defined surface modes is the entire surface vocabulary
+
+## Known Gaps
+
+**Prescribed, not extracted.** These parts of the document are specified rather than measured, and a build should treat them as a reasonable default, not as HP's own decision:
+
+- **The whole motion system.** No duration, easing, stagger or transition was taken from HP's live pages. `## Motion & Animation` applies the shared Calm profile.
+- **Every state except default and active/pressed.** Hover, focus-visible, disabled on non-button components, loading, selected and error are prescribed in `### Interaction States`. The extracted front matter only ever carried `-pressed`, `-disabled` and `-focused` variants.
+- **The focus ring.** `{colors.focus}`, `{colors.focus-inset}` and `{colors.focus-on-dark}` are all prescribed. HP's real ring was not captured; these are chosen from the brand's own blues and measured against this file's surfaces.
+- **`{colors.hairline-control}`** `#767676` is prescribed, not an HP value. It exists because both extracted hairlines fail 3:1.
+- **Role aliases.** `{colors.surface}` and `{colors.text-dim}` duplicate `{colors.paper}` and `{colors.charcoal}` so the required roles resolve. They add no new hex.
+
+**Genuinely unknown:**
+
+- The exact chevron geometry. The Overview calls the cut 45°, `chevron-decoration` says ~60°; neither was measured, and the two statements are left as they were found rather than silently reconciled.
+- Whether `{colors.ink-soft}` `#292929` and `{colors.ink-deep}` `#000000` are distinct roles or extraction noise. At 1.20:1 and 1.21:1 against `{colors.ink}` neither reads as a tonal shift.
+- `{rounded.xs}` 2px and `{rounded.sm}` 3px sit one unit apart in a ladder that otherwise doubles (4 → 8 → 16). Both appear in the Shapes table with distinct uses; the 3px step is likely a legacy value, but nothing in the file proves it.
+- No dark theme. The `{colors.ink}` slabs are bands inside a light page, not a theme; there is no dark-mode canvas, and `{colors.focus-on-dark}` serves the slabs only.
+- `{typography.button-sm}` at 12.6px with 0.126px tracking is an extracted computed value, not a designed one.
+- **Not computable from a document:** overlap, horizontal overflow, clipping, rendered tap-target size, frame rate and layout shift. Nothing in this file is a claim about any of them.
