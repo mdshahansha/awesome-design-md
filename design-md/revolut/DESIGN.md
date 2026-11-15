@@ -48,6 +48,8 @@ colors:
   accent-deep-red: "#8b0000"
   accent-brown: "#936d62"
   link: "#376cd5"
+  focus: "#494fdf"
+  focus-on-dark: "#ffffff"
 
 typography:
   display-xxl:
@@ -163,6 +165,18 @@ spacing:
   block: 80px
   section: 88px
   band: 120px
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.22, 1, 0.36, 1)
+  ease-enter: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-exit: cubic-bezier(0.5, 0, 0.75, 0)
+  stagger-step: 80ms
+  duration-reduced: 150ms
 
 components:
   button-primary:
@@ -362,6 +376,20 @@ inside product mockups and feature illustrations — never as button surfaces.
 - **On-Dark** (`{colors.on-dark}` — `#ffffff`): primary text on `{colors.canvas-dark}`.
 - **On-Dark Mute** (`{colors.on-dark-mute}` — `rgba(255,255,255,0.72)`): secondary text in dark regions.
 
+### Focus
+
+The two-mode canvas needs two rings; one value cannot clear 3:1 on both white
+and true black. Both reuse tones the palette already owns — neither is a new
+brand colour.
+
+- **Focus Ring** (`{colors.focus}` — `#494fdf`): the ring for light-canvas surfaces. The same hex as `{colors.primary}`, so focus reads as the brand stamp. Measures 6.06:1 on `{colors.canvas-light}` and 5.51:1 on `{colors.surface-soft}`.
+- **Focus Ring On Dark** (`{colors.focus-on-dark}` — `#ffffff`): the ring for dark-canvas surfaces and for the cobalt featured card. The same hex as `{colors.on-dark}`. Measures 21.00:1 on `{colors.canvas-dark}`, 19.80:1 on `{colors.surface-deep}`, 17.80:1 on `{colors.surface-elevated}` and 6.06:1 on `{colors.primary}`.
+
+Both rings are drawn **outside** the control: 2px ring, 2px offset, so the ring
+is judged against the surface behind the control rather than the control fill.
+That is what keeps a ring legible around the white `{component.button-primary}`
+pill sitting on black.
+
 ### Semantic
 - **Accent Teal** (`{colors.accent-teal}` — `#00a87e`): used in product mockup illustrations.
 - **Accent Light Blue** (`{colors.accent-light-blue}` — `#007bc2`): inline link colour in dark photo headers.
@@ -475,98 +503,276 @@ The system has **no traditional drop-shadow language**. Surfaces register depth 
 
 ## Components
 
+Only `default` and `pressed` were extracted from the live marketing pages. The
+other states below are **prescribed** for implementers and are labelled as such
+in each entry; they are not observed facts about the real site.
+
 ### Buttons
 
 **`button-primary`** — white CTA on dark
 - Background `{colors.canvas-light}`, label `{colors.canvas-dark}`, type `{typography.button-md}`, padding `14px 28px`, `rounded: {rounded.full}`, height 48px.
 - The brand's primary CTA, used on every dark hero band ("Choose your subscription", "Get started").
 - Pressed state lives in `button-primary-pressed` (background `{colors.faint}`).
+- States: `default` (extracted), `active/pressed` (extracted — `{component.button-primary-pressed}`); prescribed: `hover` (opacity 0.88 on the white fill), `focus-visible` (2px `{colors.focus-on-dark}` ring, 2px offset — the pill sits on dark canvas), `disabled` (fill `{colors.faint}`, label `{colors.stone}`), `loading` (label swapped for an indeterminate indicator, control width held).
 
 **`button-dark`** — dark CTA on light
 - Background `{colors.canvas-dark}`, label `{colors.on-dark}`, type `{typography.button-md}`, `rounded: {rounded.full}`.
 - The reverse-canvas equivalent of `{component.button-primary}` — used inside white catalogue bands.
+- States: `default` (extracted); prescribed: `hover` (opacity 0.88), `focus-visible` (2px `{colors.focus}` ring, 2px offset — the control sits on `{colors.canvas-light}`), `active/pressed` (fill `{colors.body}`), `disabled` (fill `{colors.faint}`, label `{colors.stone}`), `loading` (indeterminate indicator in `{colors.on-dark}`).
 
 **`button-soft`** — soft surface CTA
 - Background `{colors.surface-soft}`, label `{colors.ink}`, type `{typography.button-md}`, `rounded: {rounded.full}`.
 - Tertiary action in white-canvas regions ("Learn more", "View FAQs").
+- States: `default` (extracted); prescribed: `hover` (fill steps to `{colors.faint}`), `focus-visible` (2px `{colors.focus}` ring, 2px offset), `active/pressed` (fill `{colors.faint}`, label `{colors.body}`), `disabled` (label `{colors.stone}`). No `loading` — tertiary actions are navigational.
 
 **`button-outline-light`** — outlined CTA on light
 - Background `{colors.canvas-light}`, label `{colors.ink}`, 1px solid `{colors.hairline-strong}`, type `{typography.button-md}`, `rounded: {rounded.full}`.
 - Secondary action when paired with `{component.button-dark}`.
+- States: `default` (extracted); prescribed: `hover` (border steps to `{colors.ink}`, fill `{colors.surface-soft}`), `focus-visible` (2px `{colors.focus}` ring, 2px offset), `active/pressed` (fill `{colors.surface-soft}`), `disabled` (border and label `{colors.faint}`).
 
 **`button-outline-dark`** — outlined CTA on dark
 - Background `{colors.canvas-dark}`, label `{colors.on-dark}`, 1px solid `{colors.on-dark}`, type `{typography.button-md}`, `rounded: {rounded.full}`, padding `13px 27px`, height 48px.
 - Dark-canvas counterpart of `{component.button-outline-light}`; used inside dark hero bands as a tertiary action when paired with `{component.button-primary}`.
+- States: `default` (extracted); prescribed: `hover` (border opacity to 100%, fill `{colors.surface-elevated}`), `focus-visible` (2px `{colors.focus-on-dark}` ring, 2px offset), `active/pressed` (fill `{colors.surface-deep}`), `disabled` (border and label at `{colors.on-dark-mute}`).
 
 **`button-pill-sm`** — small pill chip
 - Background `{colors.surface-soft}`, label `{colors.ink}`, type `{typography.button-sm}`, `rounded: {rounded.full}`, padding `8px 16px`, height 36px.
 - Sub-nav chips, filter pills.
+- States: `default` (extracted); prescribed: `hover` (fill `{colors.faint}`), `focus-visible` (2px `{colors.focus}` ring, 2px offset), `active/pressed` (fill `{colors.faint}`), `selected` (fill `{colors.canvas-dark}`, label `{colors.on-dark}` — the filter pill is the one chip with a selected state), `disabled` (label `{colors.stone}`).
 
 ### Cards & Containers
 
 **`hero-band-dark`** — full-bleed dark hero
 - Background `{colors.canvas-dark}`, text `{colors.on-dark}`, type `{typography.display-xxl}` for the title, padding `{spacing.section}` (88px) vertical, `rounded: {rounded.none}`.
 - Used only on the home page hero band.
+- States: `default` only. A full-bleed band is not an interactive control, so it has no hover, focus, pressed, disabled, loading, selected or error state.
 
 **`hero-band-photo`** — photo-led hero
 - Background `{colors.canvas-dark}` with full-bleed product photography, text `{colors.on-dark}`, type `{typography.display-xl}`, `rounded: {rounded.none}`.
 - Used on product pages — phone or card mockup as the full-band canvas.
+- States: `default` only, as for `{component.hero-band-dark}`. Any interactivity belongs to the buttons inside the band, not the band.
 
 **`feature-card-light`** — feature card on white
 - Background `{colors.surface-card}`, text `{colors.ink}`, 1px solid `{colors.hairline-light}`, type `{typography.body-md}`, `rounded: {rounded.lg}`, padding `{spacing.xxl}` (32px).
 - Used in white catalogue bands for feature comparisons.
+- States: `default` (extracted); prescribed, where the card is a link: `hover` (border steps from `{colors.hairline-light}` to `{colors.hairline-strong}`; no shadow, no lift), `focus-visible` (2px `{colors.focus}` ring, 2px offset), `active/pressed` (fill `{colors.surface-soft}`). A non-linked card is `default` only.
 
 **`feature-card-dark`** — feature card on dark
 - Background `{colors.surface-elevated}`, text `{colors.on-dark}`, type `{typography.body-md}`, `rounded: {rounded.lg}`, padding `{spacing.xxl}`.
 - Used inside dark storytelling sections.
+- States: `default` (extracted); prescribed, where the card is a link: `hover` (fill steps `{colors.surface-elevated}` → `{colors.surface-deep}` inverted, i.e. one luminance step up), `focus-visible` (2px `{colors.focus-on-dark}` ring, 2px offset). A non-linked card is `default` only.
 
 **`plan-card`** — subscription plan card
 - Background `{colors.surface-elevated}`, text `{colors.on-dark}`, type `{typography.body-md}`, `rounded: {rounded.lg}`, padding `{spacing.xxl}` (32px).
 - Plan name in `{typography.heading-lg}` ("Standard", "Plus", "Premium", "Metal", "Ultra").
+- States: `default` (extracted); prescribed: `hover` (one luminance step up on the surface), `focus-visible` (2px `{colors.focus-on-dark}` ring, 2px offset), `selected` (the chosen tier; rendered as `{component.plan-card-featured}`), `loading` (price row replaced by a placeholder block while tier pricing resolves per market).
 
 **`plan-card-featured`** — featured plan card
 - Background `{colors.primary}`, text `{colors.on-primary}`, type `{typography.body-md}`, `rounded: {rounded.lg}`, padding `{spacing.xxl}`.
 - Cobalt-violet inversion of `{component.plan-card}` — used on the recommended tier.
+- States: `default` (extracted) and `selected` — this card *is* the selected/recommended presentation of `{component.plan-card}`. Prescribed: `focus-visible` (2px `{colors.focus-on-dark}` ring, 2px offset — `{colors.focus}` would vanish at 1.00:1 on the cobalt fill).
 
 **`product-mockup`** — full-bleed product asset
 - Background `{colors.canvas-dark}`, the asset itself fills the band, `rounded: {rounded.xl}` on the device chrome.
 - Phone, card, and terminal mockups — no caption overlay, no surrounding chrome.
+- States: `default` only. It is a photographic asset, not a control.
 
 **`download-tile`** — app store download tile
 - Background `{colors.surface-soft}`, text `{colors.ink}`, type `{typography.body-sm}`, `rounded: {rounded.md}`, padding `12px 20px`, height 56px.
 - App Store + Google Play download buttons, side-by-side.
+- States: `default` (extracted); prescribed: `hover` (fill `{colors.faint}`), `focus-visible` (2px `{colors.focus}` ring, 2px offset), `active/pressed` (fill `{colors.faint}`, label `{colors.body}`).
 
 ### Inputs & Forms
 
 **`text-input`** — default input
 - Background `{colors.canvas-light}`, text `{colors.ink}`, type `{typography.body-md}`, 1px solid `{colors.hairline-light}`, `rounded: {rounded.md}`, padding `14px 16px`, height 56px.
-- Generous height for fintech accessibility — comfortably exceeds WCAG AAA touch target.
+- Generous height for fintech accessibility — the documented height comfortably exceeds the 44px WCAG 2.5.5 target. Not verified on a rendered page; see Known Gaps.
+- The extracted 1px `{colors.hairline-light}` boundary measures 1.29:1 on `{colors.canvas-light}` — below the 3:1 that a control boundary needs. It is kept as extracted because it is a fact about the real site; `{colors.hairline-strong}` (17.11:1) is the accessible boundary an implementer should draw instead. Re-pointing the extracted binding is a brand-owner decision.
+- States: `default` (extracted); prescribed: `hover` (boundary steps to `{colors.hairline-strong}`), `focus-visible` (2px `{colors.focus}` ring, 2px offset, boundary `{colors.hairline-strong}`), `disabled` (fill `{colors.surface-soft}`, text `{colors.stone}`), `error` (boundary and message text `{colors.accent-deep-red}` — `10.01:1` on `{colors.canvas-light}`, not `{colors.accent-danger}` at `4.24:1`). No `loading`, no `selected`.
 
 ### Navigation
 
 **`nav-bar`** — top nav (desktop)
 - Background `{colors.canvas-dark}`, text `{colors.on-dark}`, type `{typography.button-md}`, height 64px.
 - Left: wordmark logo. Centre: top-level nav ("Personal", "Business", "Company"). Right: language switcher + "Log in" + `{component.button-primary}`.
+- States, per nav item: `default` (extracted); prescribed: `hover` (label to `{colors.on-dark}` at full opacity from `{colors.on-dark-mute}`), `focus-visible` (2px `{colors.focus-on-dark}` ring, 2px offset), `active/pressed` (label `{colors.on-dark-mute}`), `selected` (current section — label `{colors.on-dark}` with a 2px underline in `{colors.on-dark}`). The bar itself has one state.
 
 **`nav-bar`** (mobile)
 - Same height 64px, collapses centre nav into a hamburger icon. Logo stays left, sign-in CTA stays right.
+- States: the hamburger carries `default`, `hover`, `focus-visible` (2px `{colors.focus-on-dark}` ring), `active/pressed` and `selected` (menu open). Prescribed except `default`.
 
 **`sub-nav-pill`** — sub-nav chip
 - Pill chips set in a horizontal row inside dark sections (e.g. "Personal", "Business", "Premium"), `{component.sub-nav-pill}` styling.
+- States: `default` (extracted); prescribed: `hover` (fill one luminance step up), `focus-visible` (2px `{colors.focus-on-dark}` ring, 2px offset), `active/pressed` (fill `{colors.surface-deep}`), `selected` (fill `{colors.canvas-light}`, label `{colors.canvas-dark}` — the active section chip).
 
 ### Signature Components
 
 **`badge-tag`** — neutral tag
 - Background `{colors.surface-soft}`, text `{colors.ink}`, type `{typography.caption}`, `rounded: {rounded.full}`, padding `4px 12px`.
 - Inline tags inside feature cards.
+- States: `default` only — a tag is a label, not a control.
 
 **`badge-feature`** — feature highlight badge
 - Background `{colors.primary}`, text `{colors.on-primary}`, type `{typography.caption}`, `rounded: {rounded.full}`, padding `4px 12px`.
 - "New", "Most popular" badges anchored on plan cards.
+- States: `default` only — a badge is a label, not a control.
 
 **`footer`** — global footer
 - Background `{colors.canvas-dark}`, text `{colors.on-dark-mute}`, type `{typography.body-sm}`, `rounded: {rounded.none}`, padding `80px 24px`.
 - Multi-column quick-links grid above a copyright + regulatory disclosure block separated by `{colors.divider-soft}`.
+- States, per footer link: `default` (extracted); prescribed: `hover` (label `{colors.on-dark-mute}` → `{colors.on-dark}`), `focus-visible` (2px `{colors.focus-on-dark}` ring, 2px offset), `active/pressed` (label `{colors.on-dark-mute}`). The footer container has one state.
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was
+not measured from the live site.** No timing function, duration or easing curve
+below was extracted from Revolut's pages; they follow the audit's **Cinematic**
+profile, chosen because the brand's surfaces are photography-led full-bleed
+bands with 80–136px display type and sparse content — type that should arrive
+late and settle, not snap.
+
+Every value references a `{motion.*}` token. Only `transform` and `opacity`
+animate; `width`, `height`, `top`, `left` and `margin` never do.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, pills, cards) | `{motion.duration-fast}` (240ms) | `{motion.ease-standard}` | `opacity` on the fill; `transform: none` | Same opacity change at `{motion.duration-reduced}` (150ms). No change otherwise. |
+| Press / active | `{motion.duration-instant}` (120ms) | `{motion.ease-standard}` | `transform: scale(0.98)` | Scale removed entirely; the extracted `{component.button-primary-pressed}` colour change is the only feedback. |
+| Focus (`focus-visible` ring) | `{motion.duration-instant}` (120ms) | `{motion.ease-standard}` | `opacity` on the 2px ring | Ring appears instantly at full opacity. Never suppressed. |
+| Page / route transition | `{motion.duration-slow}` (600ms) enter, `{motion.duration-fast}` (240ms) exit | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` 0→1 with `transform: translateY(16px)` → `none` | Travel removed; opacity cross-fade at `{motion.duration-reduced}`. |
+| Hero band reveal (display type settling) | `{motion.duration-emphasis}` (900ms), lines staggered by `{motion.stagger-step}` (80ms) | `{motion.ease-enter}` | `opacity` with `transform: translateY(24px)` → `none` | Travel and stagger removed; a single opacity fade at `{motion.duration-reduced}`. Content is never withheld — the band paints at final layout and the fade runs over it. |
+| Modal / drawer | `{motion.duration-base}` (400ms) enter, `{motion.duration-fast}` (240ms) exit | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` on the scrim; `transform: translateY(100%)` → `none` on a drawer, `scale(0.98)` → `1` on a modal | Travel and scale removed; scrim and panel fade at `{motion.duration-reduced}`. |
+| Dropdown (language switcher, nav menu) | `{motion.duration-fast}` (240ms) enter, `{motion.duration-instant}` (120ms) exit | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` with `transform: translateY(-8px)` → `none` | Travel removed; opacity only at `{motion.duration-reduced}`. |
+| Toast | `{motion.duration-base}` (400ms) enter, `{motion.duration-fast}` (240ms) exit | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` with `transform: translateY(16px)` → `none` | Travel removed; opacity only at `{motion.duration-reduced}`. Dismiss timing is unchanged. |
+| List enter (plan grid, feature grid) | `{motion.duration-slow}` (600ms) per item, staggered by `{motion.stagger-step}` (80ms) | `{motion.ease-enter}` | `opacity` with `transform: translateY(20px)` → `none` | Travel and stagger removed; all items fade together at `{motion.duration-reduced}`. |
+| List exit (filtered-out items) | `{motion.duration-fast}` (240ms), no stagger | `{motion.ease-exit}` | `opacity` 1→0 with `transform: scale(0.98)` | Scale removed; opacity only at `{motion.duration-reduced}`. |
+| Loading (indeterminate) | `{motion.duration-emphasis}` (900ms) per cycle, infinite | linear for rotation, `{motion.ease-standard}` for a pulse | `transform: rotate()` on a spinner, or `opacity` on a placeholder block | Rotation frozen; an `opacity` pulse at `{motion.duration-reduced}` or a static indicator with a text label. |
+
+Exit is always shorter than its matching entrance. Nothing in the list above
+delays first paint: entrance animations run over content that is already laid
+out at its final position.
+
+### Brand ambience
+
+The one continuous motion the brand would support is the slow scale of a
+full-bleed product mockup inside a dark band — a `transform: scale(1 → 1.04)`
+over `{motion.duration-emphasis}` on scroll, tied to scroll position rather
+than looping. **This is deliberate brand ambience and is stated as such.** It
+is the only place scale is allowed above 1.0, and it is frozen entirely under
+reduced motion.
+
+### Reduced motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (translate), all scale, all stagger, and the
+     full-bleed mockup ambience, which freezes at scale(1). */
+  /* Kept: opacity fades only, clamped to {motion.duration-reduced} (150ms),
+     and the focus ring, which always appears instantly at full opacity. */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 150ms !important;   /* {motion.duration-reduced} */
+    animation-duration: 150ms !important;    /* {motion.duration-reduced} */
+    transition-property: opacity !important;
+    animation-iteration-count: 1 !important;
+    transform: none !important;
+  }
+}
+```
+
+`{motion.duration-reduced}` is 150ms, below this profile's own
+`{motion.duration-fast}` of 240ms — the reduced ceiling is 150ms whatever the
+profile.
+
+## Accessibility
+
+Every ratio below was computed with WCAG 2.1 relative luminance from the hexes
+in this file's own frontmatter. Composited tokens (`{colors.on-dark-mute}`,
+`{colors.hairline-dark}`, `{colors.divider-soft}`) carry alpha and are not
+measurable on their own; their effective values depend on the band behind them.
+
+### Measured contrast — passing
+
+| Pair | Ratio | Required |
+|---|---|---|
+| `{colors.ink}` on `{colors.canvas-light}` | 17.11:1 | 4.5:1 |
+| `{colors.ink}` on `{colors.surface-soft}` | 15.56:1 | 4.5:1 |
+| `{colors.body}` on `{colors.canvas-light}` | 15.97:1 | 4.5:1 |
+| `{colors.mute}` on `{colors.canvas-light}` | 7.04:1 | 4.5:1 |
+| `{colors.ash}` on `{colors.canvas-light}` | 6.51:1 | 4.5:1 |
+| `{colors.on-dark}` on `{colors.canvas-dark}` | 21.00:1 | 4.5:1 |
+| `{colors.on-dark}` on `{colors.surface-elevated}` | 17.80:1 | 4.5:1 |
+| `{colors.on-primary}` on `{colors.primary}` | 6.06:1 | 4.5:1 |
+| `{colors.hairline-strong}` on `{colors.canvas-light}` | 17.11:1 | 3.0:1 |
+| `{colors.focus}` on `{colors.canvas-light}` | 6.06:1 | 3.0:1 |
+| `{colors.focus-on-dark}` on `{colors.canvas-dark}` | 21.00:1 | 3.0:1 |
+
+### Measured contrast — real failures, stated plainly
+
+These are extracted brand values. They are **not** adjusted here; a falsified
+hex would make this document describe a product that does not exist.
+
+| Pair | Ratio | Required | Note |
+|---|---|---|---|
+| `{colors.hairline-light}` on `{colors.canvas-light}` | 1.29:1 | 3.0:1 | The real divider inside white bands, and the real 1px boundary of `{component.text-input}` and `{component.feature-card-light}`. **The brand fails WCAG 2.1 non-text contrast here.** `{colors.hairline-strong}` (17.11:1) already exists in the palette and is the boundary to draw where a boundary carries meaning; `{colors.hairline-light}` is defensible only as decoration between rows that are already separated by whitespace. |
+| `{colors.hairline-light}` on `{colors.surface-soft}` | 1.17:1 | 3.0:1 | Same divider on the off-white band. Same conclusion, slightly worse. |
+| `{colors.stone}` on `{colors.canvas-light}` | 3.00:1 | 4.5:1 | Metadata and subtle captions. Fails AA for body text; defensible only at 18.66px+ regular or 14px+ bold, where 3:1 applies. |
+| `{colors.accent-teal}` on `{colors.canvas-light}` | 3.04:1 | 4.5:1 | Illustration fill only, per Do's and Don'ts. Fails as text on white; clears the 3:1 graphical threshold. |
+| `{colors.accent-yellow}` on `{colors.canvas-light}` | 3.07:1 | 4.5:1 | Caution fill inside product mockups. Fails as text on white; clears 3:1 graphical. |
+| `{colors.accent-warning}` on `{colors.canvas-light}` | 2.78:1 | 4.5:1 | Full-saturation orange. Fails **both** the 4.5:1 text threshold and the 3:1 graphical threshold on white. Use it on `{colors.canvas-dark}` (7.55:1) or pair it with `{colors.ink}` type. |
+| `{colors.accent-danger}` on `{colors.canvas-light}` | 4.24:1 | 4.5:1 | Narrowly fails for error text on white. `{colors.accent-deep-red}` (10.01:1) is the inline-error ink and is what `{component.text-input}` error state uses. |
+| `{colors.link}` / `{colors.accent-blue-link}` on `{colors.canvas-dark}` | 4.27:1 | 4.5:1 | Passes on white (4.92:1), fails on the black storytelling canvas. The file's own answer is `{colors.accent-light-blue}` (4.61:1 on black) plus `{typography.link-emph}` at weight 700. |
+| `{colors.primary}` on `{colors.canvas-dark}` | 3.47:1 | 4.5:1 | Cobalt violet as *text* on black fails AA. It passes as a surface — `{component.plan-card-featured}` is a cobalt fill carrying white type at 6.06:1 — which is how the brand actually uses it. Never set cobalt type on black. |
+| `{colors.faint}` on `{colors.canvas-light}` | 1.65:1 | — | Documented as disabled foreground. WCAG sets no contrast requirement on disabled controls, so this is recorded rather than failed. |
+
+### Surface separation
+
+The elevation ladder carries almost no luminance difference:
+`{colors.canvas-light}` to `{colors.surface-soft}` is 1.10:1,
+`{colors.canvas-dark}` to `{colors.surface-elevated}` is 1.18:1, and
+`{colors.canvas-dark}` to `{colors.surface-deep}` is 1.06:1. These steps are
+atmosphere, not boundaries. Where a card edge has to be perceivable — a
+selectable plan, a form container — the boundary must come from
+`{colors.hairline-strong}` on light or a `{colors.on-dark}` hairline on dark,
+not from the surface step alone.
+
+### Focus ring visibility, per surface
+
+The ring is 2px with a 2px offset, drawn outside the control, so it is measured
+against the surface behind the control.
+
+| Surface | Ring | Ratio |
+|---|---|---|
+| `{colors.canvas-light}` | `{colors.focus}` | 6.06:1 |
+| `{colors.surface-soft}` / `{colors.surface-card}` | `{colors.focus}` | 5.51:1 / 6.06:1 |
+| `{colors.canvas-dark}` | `{colors.focus-on-dark}` | 21.00:1 |
+| `{colors.surface-deep}` | `{colors.focus-on-dark}` | 19.80:1 |
+| `{colors.surface-elevated}` | `{colors.focus-on-dark}` | 17.80:1 |
+| `{colors.primary}` (featured plan card) | `{colors.focus-on-dark}` | 6.06:1 |
+| Full-bleed product photography | `{colors.focus-on-dark}` with a 1px `{colors.canvas-dark}` outer edge | Not measurable — photography has no single colour, so the ring is two-tone by rule. |
+
+`{colors.focus}` reuses the existing `{colors.primary}` hex and
+`{colors.focus-on-dark}` reuses the existing `{colors.on-dark}` hex. Neither is
+a new brand colour. A single ring cannot serve both polarities: `{colors.focus}`
+measures 1.00:1 on `{colors.primary}` and 3.47:1 on `{colors.canvas-dark}`,
+which is why the dark counterpart exists.
+
+### Tap targets
+
+From the heights documented in this file, not from a rendered page: every
+button ships at 48px, `{component.text-input}` at 56px, `{component.nav-bar}`
+at 64px. These clear the 44px of WCAG 2.5.5 AAA.
+`{component.button-pill-sm}` and `{component.badge-tag}` are documented at 36px
+and at `4px 12px` padding respectively — the pill is noted as padded to 44px on
+mobile; the badge is a label, not a target. Rendered target size cannot be
+verified from a document, so this is a reading of the documented values only.
+
+### Reduced motion
+
+Honoured as set out in Motion & Animation: all travel, scale, stagger and brand
+ambience are removed, opacity fades are clamped to `{motion.duration-reduced}`
+(150ms), and the focus ring is never suppressed.
 
 ## Do's and Don'ts
 
@@ -630,7 +836,11 @@ The system has **no traditional drop-shadow language**. Surfaces register depth 
 
 ## Known Gaps
 
-- Pressed/active visual states are documented for `button-primary-pressed` only; other components rely on focus-ring (browser default) for interactive feedback.
+- Pressed/active visual states are documented for `button-primary-pressed` only. Every other state named in Components is **prescribed**, not extracted: the live pages were not instrumented for hover, focus-visible, disabled, loading, selected or error, and nothing here should be read as an observed fact about the real site.
+- The whole Motion & Animation section is prescribed, including the Cinematic durations and easings and the scroll-tied mockup ambience. Revolut's real timing functions were never measured.
+- `{colors.focus}` and `{colors.focus-on-dark}` are prescribed role bindings onto hexes the palette already owns (`{colors.primary}` and `{colors.on-dark}`). Revolut's real focus treatment was not extracted; the brand may well use something else.
+- The extracted `{colors.hairline-light}` is bound to `{component.text-input}` and `{component.feature-card-light}` in the prose at 1.29:1. Those bindings are left exactly as extracted. Whether to re-point them to `{colors.hairline-strong}` is a brand-owner decision and is not taken here.
+- Tap-target and overflow behaviour cannot be verified from a document; the Accessibility section reads documented heights only, with no rendered page behind it.
 - Logged-in app surfaces (transactions, transfers, account settings) are out of scope — only the public marketing canvas is documented.
 - The wide accent palette (`{colors.accent-teal}` through `{colors.accent-brown}`) is captured from the extracted token set, but exact usage inside product illustrations varies per market and product line; document per-illustration rather than as system buttons.
 - Mobile-app screenshot art direction (phone bezels, status bars) is product-photography territory and not standardised as design tokens.
