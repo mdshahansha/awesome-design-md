@@ -16,6 +16,15 @@ no screenshot. So:
   only where the Components section documents it in a table row or list item,
   not anywhere the word appears in the file; and `Iteration Guide` is optional,
   so its absence costs nothing.
+- **Known limitation, measured not guessed:** about 40 reported pairs sit at or
+  near 1.0:1 because an ink and a ground of the same polarity were paired —
+  usually a hairline whose tone equals a surface, which is a real failure, but
+  sometimes a dark ink against a dark band in a light-canvas file, which is an
+  artefact. Luminance alone cannot separate the two: a light-track ink is itself
+  dark, so the arithmetic is identical in both cases. Only the file's own
+  bindings settle it, which is why this spec asks you to declare the ink/ground
+  pairs the prose asserts. Where a reported pair cannot render, disclose it as
+  manufactured and say why — several agents did exactly that.
 - **Not computable here:** overlap, horizontal overflow, clipping, tap-target
   size, frame rate, layout shift. Those need a rendered page. Any claim about
   them in a report is invalid.
