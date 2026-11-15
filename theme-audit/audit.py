@@ -67,6 +67,18 @@ def contrast(a, b):
     return (hi + 0.05) / (lo + 0.05)
 
 
+def composite(rgba, ground_hex):
+    """Flatten (r, g, b, a) over a ground, so a translucent tone is measured
+    against the surface it is actually drawn on rather than the canvas."""
+    r_, g_, b_, a = rgba
+    gh = ground_hex.lstrip("#")
+    gh = "".join(c * 2 for c in gh) if len(gh) == 3 else gh[:6]
+    gr, gg, gb = (int(gh[i:i + 2], 16) for i in (0, 2, 4))
+    return "#%02x%02x%02x" % (round(r_ * a + gr * (1 - a)),
+                              round(g_ * a + gg * (1 - a)),
+                              round(b_ * a + gb * (1 - a)))
+
+
 def parse_frontmatter(text):
     """Return {group: {key: raw_value}} for the top two indent levels."""
     if not text.startswith("---\n"):
@@ -163,6 +175,7 @@ def audit(path):
         return "#ffffff"
 
     composited = []
+    rgba_sources = {}
     base = _canvas_hex()
     bh = base.lstrip("#")
     bh = "".join(c * 2 for c in bh) if len(bh) == 3 else bh[:6]
@@ -186,10 +199,8 @@ def audit(path):
                     gh = "".join(c * 2 for c in gh) if len(gh) == 3 else gh[:6]
                     gr, gg, gb = (int(gh[i:i + 2], 16) for i in (0, 2, 4))
                     break
-        colors[k] = "#%02x%02x%02x" % (
-            round(r_ * a + gr * (1 - a)),
-            round(g_ * a + gg * (1 - a)),
-            round(b_ * a + gb * (1 - a)))
+        colors[k] = composite((r_, g_, b_, a), "#%02x%02x%02x" % (gr, gg, gb))
+        rgba_sources[k] = (r_, g_, b_, a)
         composited.append(k)
     r = {"site": site, "has_frontmatter": bool(groups), "color_count": len(colors),
          "composited_tokens": composited}
@@ -300,12 +311,19 @@ def audit(path):
         """
         return (theme_of(fg_key) or "default") == (theme_of(bg_key) or "default")
 
+    def effective(fg_key, bg_hex):
+        """The rendered colour of fg_key when drawn on bg_hex."""
+        if fg_key in rgba_sources:
+            return composite(rgba_sources[fg_key], bg_hex)
+        return colors[fg_key]
+
     def check(fg_role, bg_role, minimum, label):
         fg, bg = roles.get(fg_role), roles.get(bg_role)
         if not fg or not bg or not same_theme(fg, bg):
             return
-        ratio = round(contrast(colors[fg], colors[bg]), 2)
-        rec = {"pair": f"{fg} on {bg}", "fg": colors[fg], "bg": colors[bg],
+        fg_hex = effective(fg, colors[bg])
+        ratio = round(contrast(fg_hex, colors[bg]), 2)
+        rec = {"pair": f"{fg} on {bg}", "fg": fg_hex, "bg": colors[bg],
                "ratio": ratio, "required": minimum, "role": label}
         if ratio < minimum:
             fails.append(rec)
@@ -320,9 +338,10 @@ def audit(path):
                     continue
                 if not same_theme(key, bg):
                     continue
-                ratio = round(contrast(colors[key], colors[bg]), 2)
+                fg_hex = effective(key, colors[bg])
+                ratio = round(contrast(fg_hex, colors[bg]), 2)
                 if ratio < minimum:
-                    fails.append({"pair": f"{key} on {bg}", "fg": colors[key],
+                    fails.append({"pair": f"{key} on {bg}", "fg": fg_hex,
                                   "bg": colors[bg], "ratio": ratio,
                                   "required": minimum, "role": label})
 
@@ -542,7 +561,7 @@ def audit(path):
             if not ((fg_name and fg_name in line) or target in line):
                 continue
             for stated in re.findall(r"(\d+(?:\.\d+)?)\s*:\s*1", line):
-                if abs(float(stated) - f["ratio"]) <= 0.06:
+                if round(abs(float(stated) - f["ratio"]), 2) <= 0.06:
                     return True
         return False
 
