@@ -17,10 +17,12 @@ colors:
   surface-card: "#ffffff"
   hairline: "#e5e5e5"
   hairline-strong: "#d4d4d4"
+  hairline-control: "#8f8f8f"
   on-dark: "#ffffff"
   on-dark-mute: "rgba(255,255,255,0.7)"
   surface-dark: "#171717"
   focus-ring: "rgba(59,130,246,0.5)"
+  focus-ring-strong: "#3b82f6"
   link: "#000000"
   link-mute: "#737373"
   terminal-red: "#ff5f56"
@@ -123,6 +125,18 @@ spacing:
   xl: 24px
   xxl: 32px
   section: 88px
+
+motion:
+  duration-instant: 60ms
+  duration-fast: 100ms
+  duration-base: 150ms
+  duration-slow: 220ms
+  duration-emphasis: 300ms
+  ease-standard: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 20ms
+  duration-reduced: 100ms
 
 components:
   button-primary:
@@ -276,6 +290,7 @@ Typography pairs SF Pro Rounded (display headings, weight 500–600) with the op
 - **Surface Dark** (`{colors.surface-dark}` — `#171717`): the dark "Max" pricing card and dark CTA strips. The single inverted surface in the system.
 - **Hairline** (`{colors.hairline}` — `#e5e5e5`): 1px card border, divider line above footer, divider between FAQ rows.
 - **Hairline Strong** (`{colors.hairline-strong}` — `#d4d4d4`): rare slightly stronger divider where extra separation is needed (e.g., between unrelated FAQ groups).
+- **Hairline Control** (`{colors.hairline-control}` — `#8f8f8f`): **prescribed, not extracted.** Both extracted hairlines are decorative-weight only — `{colors.hairline}` measures 1.26:1 and `{colors.hairline-strong}` 1.48:1 against `{colors.canvas}`, far below the 3:1 a non-text boundary needs. Where a hairline is the *only* thing defining a control — the `{component.text-input}` edge, the `{component.button-secondary}` outline, the `{component.search-pill}` rim once it leaves its soft fill — use this tone instead: 3.23:1 on `{colors.canvas}` and 3.10:1 on `{colors.surface-soft}`. The extracted hairlines stay as documented for card edges, FAQ dividers and the footer rule, where the boundary is decoration rather than the affordance. See `## Accessibility`.
 
 ### Text
 - **Ink** (`{colors.ink}` — `#000000`): all headlines, primary nav links, button text on light surfaces, prices on pricing cards.
@@ -295,7 +310,8 @@ The system has effectively no error/success/warning palette in its public market
 These appear only inside `{component.terminal-card}` and have no other use.
 
 ### Focus
-- **Focus Ring** (`{colors.focus-ring}` — `rgba(59,130,246,0.5)`): translucent blue browser-default focus ring around interactive elements. The only blue in the system.
+- **Focus Ring** (`{colors.focus-ring}` — `rgba(59,130,246,0.5)`): the extracted value — the translucent blue browser-default ring the live site leaves in place around interactive elements. The only blue in the system. At 50% alpha it composites to `#9dc0fa` over `{colors.canvas}`, which measures 1.85:1 — it is not a usable focus indicator anywhere on this brand's light surfaces.
+- **Focus Ring Strong** (`{colors.focus-ring-strong}` — `#3b82f6`): **prescribed, not extracted.** The same blue with the alpha removed, which is the whole fix: the hue was never the problem, the transparency was. One ring serves the entire system because this file has three surface polarities (paper-white, `#fafafa` soft fill, and the inverted `{colors.surface-dark}` / `{colors.ink-deep}` grounds), and a mid-luminance blue clears 3:1 against all of them — 3.68:1 on `{colors.canvas}`, 3.52:1 on `{colors.surface-soft}`, 4.87:1 on `{colors.surface-dark}`, 5.41:1 on `{colors.ink-deep}`. No light/dark pair is needed. Drawn as a 2px ring **outside** the control with a 2px offset in the underlying surface colour, so it is judged against the surface behind it (WCAG 2.2 Focus Appearance) rather than against the black pill it surrounds — a ring required to clear both `{colors.canvas}` and a pure-black `{colors.primary}` fill has no solution. On the one dark surface, the same ring is drawn with a `{colors.surface-dark}` offset.
 
 ## Typography
 
@@ -385,7 +401,24 @@ There is no photography. The only image-like elements are:
 
 ## Components
 
-> **No hover states documented** per system policy. Each spec covers Default and Active/Pressed only.
+> **Extraction note.** The captured surfaces yielded Default, Active/Pressed and Disabled only; hover was never documented, by system policy. The state matrix below fills the rest in as **prescribed** behaviour — derived from this file's own tokens, not measured from the live site — and says plainly where a state genuinely does not exist on this brand.
+
+### State matrix
+
+Extracted states are marked (E); prescribed states are marked (P); `n/a` means the component genuinely has no such state on these surfaces.
+
+| Component | default | hover | focus-visible | active/pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `button-primary` | (E) `{colors.primary}` fill | (P) fill to `{colors.ink-deep}`, no travel | (P) 2px `{colors.focus-ring-strong}` ring, 2px `{colors.canvas}` offset | (E) `{component.button-primary-active}` | (E) `{component.button-disabled}` | (P) label swaps to a spinner, pill width held | n/a — not a toggle | n/a — no validation on this surface |
+| `button-secondary` | (E) `{colors.canvas}` fill, 1px `{colors.hairline-control}` | (P) border to `{colors.ink}` | (P) same ring as `button-primary` | (P) fill to `{colors.surface-soft}` | (E) `{component.button-disabled}` | (P) spinner in place of label | n/a | n/a |
+| `button-pill-on-dark` | (E) `{colors.canvas}` pill on `{colors.surface-dark}` | (P) fill to `{colors.surface-soft}` | (P) ring with a `{colors.surface-dark}` offset | (P) fill to `{colors.hairline}` | (P) `{colors.hairline-strong}` fill, `{colors.charcoal}` label | (P) spinner in place of label | n/a | n/a |
+| `search-pill` | (E) `{colors.surface-soft}` fill | (P) fill to `{colors.canvas}` + 1px `{colors.hairline-control}` | (E→P) `{component.search-pill-focused}` plus `{colors.focus-ring-strong}` ring | n/a — a field, not a button | (P) `{colors.surface-soft}` fill, `{colors.mute}` placeholder | (P) results row shows a `{colors.mute}` skeleton; the pill itself does not animate | (P) a chosen model chip carries `{colors.ink}` text on `{colors.surface-soft}` | n/a — search cannot fail validation |
+| `text-input` | (E) `{colors.canvas}`, 1px `{colors.hairline}` (decorative weight — use `{colors.hairline-control}`) | (P) border to `{colors.hairline-strong}` | (E→P) `{component.text-input-focused}`: 1px `{colors.ink}` border + `{colors.focus-ring-strong}` ring | n/a — a field, not a button | (P) `{colors.surface-soft}` fill, `{colors.mute}` text | (P) submit control carries the spinner, never the field | n/a | **undocumented** — the captured pages have no validation state at all; see `## Known Gaps` |
+| `install-snippet` | (E) `{colors.surface-soft}` pill | (P) copy icon moves from `{colors.mute}` to `{colors.ink}` | (P) ring on the copy control only | (P) copy icon at `{colors.charcoal}` | n/a | (P) copy icon swaps to a `✓` at `{colors.ink}` for `{motion.duration-slow}`, opacity only | n/a | n/a |
+| `faq-row` | (E) always expanded | n/a | (P) ring on the inline link only | n/a | n/a | n/a | n/a | n/a — this component genuinely has one state; it never collapses |
+| `link-inline` / `link-mute` | (E) underlined | (P) underline thickens, colour held | (P) ring around the text box, 2px offset | (P) `{colors.charcoal}` | n/a | n/a | n/a | n/a |
+| `primary-nav` | (E) `{colors.canvas}` bar | (P) link to `{colors.body}` | (P) ring per link | (P) link to `{colors.ink}` | n/a | n/a | (P) current-page link at `{typography.body-sm-strong}` `{colors.ink}` | n/a |
+| `terminal-card` / `pricing-card` / `cta-strip-dark` | (E) static | n/a — not interactive | n/a | n/a | n/a | n/a | n/a | n/a — these three are presentational surfaces with a single state |
 
 ### Buttons
 
@@ -395,7 +428,7 @@ There is no photography. The only image-like elements are:
 - Pressed state lives in `button-primary-active` — background drops to `{colors.ink-deep}`.
 
 **`button-secondary`** — outline alternative on light canvas
-- Background `{colors.canvas}`, text `{colors.ink}`, 1px solid `{colors.hairline-strong}`, type `{typography.button-md}`, padding `8px 20px`, height `36px`, rounded `{rounded.full}`.
+- Background `{colors.canvas}`, text `{colors.ink}`, 1px solid `{colors.hairline-strong}` as extracted (1.48:1 — substitute `{colors.hairline-control}`, since this outline is the whole button), type `{typography.button-md}`, padding `8px 20px`, height `36px`, rounded `{rounded.full}`.
 - Used as a secondary affordance — e.g., the "Sign in" pill in the top nav when paired with the black "Download" pill, "See more apps →" arrow link in compact form.
 
 **`button-pill-on-dark`** — white pill on dark surface
@@ -409,11 +442,11 @@ There is no photography. The only image-like elements are:
 
 **`search-pill`** + **`search-pill-focused`**
 - Default: background `{colors.surface-soft}`, text `{colors.ink}`, type `{typography.body-sm}`, padding `8px 16px`, height `36px`, rounded `{rounded.full}`. Anchored in the center of the primary nav with a small magnifier icon prefix and "Search models" placeholder.
-- Focused: background flips to `{colors.canvas}` and the browser-default `{colors.focus-ring}` translucent blue ring appears.
+- Focused: background flips to `{colors.canvas}` and the browser-default `{colors.focus-ring}` translucent blue ring appears. That extracted ring measures 1.85:1 over the canvas; draw `{colors.focus-ring-strong}` at 2px with a 2px offset instead.
 
 **`text-input`** + **`text-input-focused`**
-- Default: background `{colors.canvas}`, 1px solid `{colors.hairline}`, type `{typography.body-md}`, padding `8px 16px`, height `40px`, rounded `{rounded.full}`.
-- Focused: 1px ink border + browser-default focus ring.
+- Default: background `{colors.canvas}`, 1px solid `{colors.hairline}` as extracted — but this hairline is the field's only boundary, so substitute `{colors.hairline-control}` where the input must be findable; type `{typography.body-md}`, padding `8px 16px`, height `40px`, rounded `{rounded.full}`.
+- Focused: 1px ink border + browser-default focus ring; prescribe `{colors.focus-ring-strong}` at 2px/2px offset in its place.
 
 **`install-snippet`** — the signature install pill
 - Background `{colors.surface-soft}`, text `{colors.ink}` rendered in `{typography.code-md}`, padding `12px 20px`, height `48px`, rounded `{rounded.full}`.
@@ -474,6 +507,116 @@ There is no photography. The only image-like elements are:
 - Background `{colors.canvas}`, 1px top border `{colors.hairline}`, padding `32px 24px`, type `{typography.caption-sm}` `{colors.body}`.
 - Single horizontal row of small links: "Download · Blog · Docs · GitHub · Discord · X · Contact · Privacy · Terms" + a "© 2026 Ollama" copyright at the right edge. Wraps to two rows on narrow screens.
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or transition was extracted from ollama.com; every value below comes from the **Crisp** profile in `theme-audit/SPEC.md`, chosen because this is a developer-tool identity whose whole voice is a terminal and a README. Nothing here should be read as an observed fact about the site.
+
+Crisp fits Ollama for reasons the file itself already states: the page is a documentation surface with no hero choreography, no gradients and no photography, and its signature element is a `curl` command. A state change should read as instant, the way a key press in a terminal does. Durations sit at `{motion.duration-base}` (150ms) and below for everything a person touches, and no entrance is choreographed.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (pill, nav link, copy icon) | `{motion.duration-fast}` | `{motion.ease-standard}` | `opacity` only; colour tokens swap discretely, and no geometry is animated | Unchanged — the fade is already at or under `{motion.duration-reduced}` |
+| Press (`{component.button-primary}` → `{component.button-primary-active}`) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity`; the fill step to `{colors.ink-deep}` is discrete. No scale — pills do not squash in this system | Discrete fill step only, no fade |
+| Focus (`{colors.focus-ring-strong}` ring appears) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` on the ring | Ring appears with no transition — a focus indicator never waits |
+| Page / route transition (`/` ↔ `/pricing`) | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` on the content column; no slide, no travel | Opacity only at `{motion.duration-reduced}` |
+| Modal / drawer (mobile nav drawer) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `transform: translateX()` plus `opacity` on the scrim | Travel removed; scrim and panel fade at `{motion.duration-reduced}` |
+| Dropdown (search results, account menu) | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` plus `transform: translateY(-2px → 0)` — 2px, which is `{spacing.xxs}`, not a reveal | Travel removed; opacity only at `{motion.duration-reduced}` |
+| Toast ("Copied", "Download started") | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` plus `transform: translateY(4px → 0)` | Travel removed; opacity only at `{motion.duration-reduced}` |
+| List enter (pricing cards, FAQ rows, search results) | `{motion.duration-fast}` per item, `{motion.stagger-step}` (20ms) between items | `{motion.ease-enter}` | `opacity`; stagger caps at 5 items so a FAQ wall never crawls in | Stagger and travel removed; the list renders at full opacity immediately |
+| List exit | `{motion.duration-instant}` | `{motion.ease-exit}` | `opacity`, no stagger | Items are removed with no transition |
+| Loading (copy-confirm, submit spinner, search skeleton) | Spinner: 800ms linear loop. Confirm tick: `{motion.duration-slow}` | `{motion.ease-standard}` for the tick; linear for the spinner | `transform: rotate()` on the spinner, `opacity` on the tick and on the `{colors.mute}` skeleton | Spinner is replaced by a static `{typography.body-sm}` "Loading…" label in `{colors.body}`; no rotation, no pulse |
+
+### Rules
+
+- Only `transform` and `opacity` are animated. Never `width`, `height`, `top`, `left` or `margin` — the install-snippet pill reflows its `curl` text at narrow widths and must not animate that reflow.
+- Every exit is shorter than its matching entrance (drawer 150 → 100ms, dropdown 100 → 60ms, toast 150 → 100ms).
+- Nothing animates on first paint. The hero headline, the install snippet and the llama render immediately; this is a documentation page and the content is the product.
+- The only infinite animation in the system is the loading spinner. There is no brand ambience — this system has no gradients to drift and no imagery to pan, and adding any would contradict `## Do's and Don'ts`.
+- Durations deviate from the Crisp block nowhere. The one bare value is the 800ms spinner loop, which is a loop period rather than a transition duration and so has no token in the profile.
+
+### `@media (prefers-reduced-motion: reduce)`
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel and all scale. The drawer, dropdown and toast
+     arrive in place; no translate, no rotate except where noted below. */
+  /* Kept: opacity fades, capped at {motion.duration-reduced} (100ms). */
+  /* Removed: the {motion.stagger-step} list cascade — lists render at once. */
+  /* Replaced: the loading spinner's rotate() becomes a static text label. */
+  /* Unchanged: the {colors.focus-ring-strong} focus ring, which is a
+     visibility affordance and is never suppressed. */
+}
+```
+
+What remains under reduce: opacity fades at `{motion.duration-reduced}` (100ms), discrete colour steps, and the focus ring. What is removed: every `translate`, the dropdown's 2px lift, the toast's 4px rise, the drawer's slide, the list stagger, and the spinner's rotation.
+
+## Accessibility
+
+Every ratio below was computed with WCAG 2.1 relative luminance from the hexes in this file's own frontmatter. `{colors.focus-ring}` and `{colors.on-dark-mute}` are alpha values, so each is composited over the ground it is actually drawn on before measuring.
+
+### Measured contrast — key pairs
+
+| Pair | Ratio | Required | Verdict |
+|---|---|---|---|
+| `{colors.ink}` `#000000` on `{colors.canvas}` | 21.0:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface-soft}` | 20.12:1 | 4.5:1 | Pass |
+| `{colors.charcoal}` `#525252` on `{colors.canvas}` | 7.81:1 | 4.5:1 | Pass |
+| `{colors.body}` `#737373` on `{colors.canvas}` | 4.74:1 | 4.5:1 | Pass |
+| `{colors.body}` on `{colors.surface-soft}` | 4.54:1 | 4.5:1 | Pass — by 0.04, so `{colors.surface-soft}` is the darkest ground this ink may sit on |
+| `{colors.mute}` `#a3a3a3` on `{colors.canvas}` | 2.52:1 | 4.5:1 | **Fail — real brand failure, see below** |
+| `{colors.on-primary}` on `{colors.primary}` | 21.0:1 | 4.5:1 | Pass |
+| `{colors.on-dark}` on `{colors.surface-dark}` | 17.93:1 | 4.5:1 | Pass |
+| `{colors.on-dark-mute}` (composites to `#b3b3b3`) on `{colors.surface-dark}` | 8.55:1 | 4.5:1 | Pass |
+| `{colors.hairline}` `#e5e5e5` on `{colors.canvas}` | 1.26:1 | 3.0:1 | **Fail — extracted and frozen** |
+| `{colors.hairline}` on `{colors.surface-soft}` | 1.21:1 | 3.0:1 | **Fail — extracted and frozen** |
+| `{colors.hairline-strong}` `#d4d4d4` on `{colors.canvas}` | 1.48:1 | 3.0:1 | **Fail — extracted and frozen** |
+| `{colors.hairline-strong}` on `{colors.surface-soft}` | 1.42:1 | 3.0:1 | **Fail — extracted and frozen** |
+| `{colors.hairline-control}` `#8f8f8f` on `{colors.canvas}` | 3.23:1 | 3.0:1 | Pass — prescribed |
+| `{colors.hairline-control}` on `{colors.surface-soft}` | 3.10:1 | 3.0:1 | Pass — prescribed |
+
+### Where the real brand fails AA
+
+Three extracted tones do not meet their threshold, and none of them has been altered here:
+
+- **Both hairlines fail the 3:1 non-text threshold by a wide margin** — `{colors.hairline}` at 1.26:1 and `{colors.hairline-strong}` at 1.48:1 on `{colors.canvas}`, 1.21:1 and 1.42:1 on `{colors.surface-soft}`. On a card edge or an FAQ divider that is defensible: the boundary is decoration and the content inside it is what carries meaning. It is **not** defensible on `{component.text-input}`, `{component.button-secondary}` or a focused `{component.search-pill}`, where the hairline is the only thing that says a control is there. Prescribed `{colors.hairline-control}` (3.23:1) exists for exactly those cases; the extracted tones keep their decorative job.
+- **`{colors.mute}` `#a3a3a3` fails body-text contrast at 2.52:1 on `{colors.canvas}`.** The file documents it for caption text, terminal comments and lowest-emphasis utility text. At 2.52:1 it does not reach 4.5:1 at any size, and it does not reach the 3:1 large-text allowance either, so there is no size at which it is compliant as text. Use `{colors.body}` (4.74:1) for any caption a reader must actually read, and keep `{colors.mute}` for the simulated comment lines inside `{component.terminal-card}`, which are decorative screenshot content rather than page copy.
+- **The extracted focus ring is not a focus indicator.** `{colors.focus-ring}` at 50% alpha composites to `#9dc0fa` over `{colors.canvas}` and measures 1.85:1, and 1.77:1 over `{colors.surface-soft}`. Over `{colors.surface-dark}` the same alpha composites to `#294c86` at 2.11:1, so it fails on the dark card too. Leaving the browser default in place is the most common accessibility defect on a site this minimal, and it is a genuine failure of the live design.
+
+### Focus ring visibility, per surface this file defines
+
+`{colors.focus-ring-strong}` `#3b82f6` is prescribed, drawn at 2px with a 2px offset in the underlying surface colour, so what it is measured against is the surface behind the control rather than the control's own fill.
+
+| Surface the ring is drawn on | Ratio against `{colors.focus-ring-strong}` | Verdict |
+|---|---|---|
+| `{colors.canvas}` `#ffffff` | 3.68:1 | Pass |
+| `{colors.surface-card}` `#ffffff` | 3.68:1 | Pass |
+| `{colors.surface-soft}` `#fafafa` | 3.52:1 | Pass |
+| `{colors.surface-dark}` `#171717` | 4.87:1 | Pass |
+| `{colors.ink-deep}` `#090909` | 5.41:1 | Pass |
+
+One ring covers all five because this file has three surface polarities rather than a clean light/dark pair, and a mid-luminance blue clears 3:1 against every one of them. A `focus-on-dark` counterpart would be redundant here and is deliberately not defined.
+
+The ring is never drawn *on* `{colors.primary}`: a pure-black pill and a paper-white canvas cannot both be cleared by one ring value, which is why the 2px offset is mandatory rather than stylistic. Inside `{component.pricing-card-dark}`, the offset is `{colors.surface-dark}`.
+
+### Tap targets
+
+Not measurable from a document — these are the **documented** heights, not rendered measurements, and nothing here has been verified on a running page:
+
+- `{component.button-primary}`, `{component.button-secondary}`, `{component.search-pill}`: 36px documented height. Meets WCAG 2.2 AA 2.5.8 (24×24 CSS px). Falls short of AAA 2.5.5 (44×44) on the vertical axis — horizontal padding does not fix a height.
+- `{component.text-input}`: 40px documented height. Same verdict.
+- `{component.install-snippet}`: 48px documented height, and its copy icon is the only control inside it; the icon's own hit area is not documented anywhere in the captured surfaces.
+- Footer links at `{typography.caption-sm}` (12px) with ~8px vertical padding give a documented row of roughly 32px. That clears 24×24 but is the tightest target in the system.
+
+### Reduced motion
+
+See `## Motion & Animation`. Under `prefers-reduced-motion: reduce`, all travel, scale and rotation are removed, opacity fades are capped at `{motion.duration-reduced}` (100ms), the list stagger is dropped, the loading spinner becomes a static text label, and the focus ring is never suppressed. This system has no brand ambience to freeze.
+
+### Other notes
+
+- Colour is never the sole carrier of meaning: the system has no success/warning/error palette at all, and the three `{colors.terminal-red}` / `{colors.terminal-yellow}` / `{colors.terminal-green}` dots are a macOS window-chrome likeness inside a screenshot, not status indicators.
+- `{component.button-disabled}` pairs `{colors.mute}` on `{colors.surface-soft}` at 2.42:1. WCAG sets no contrast requirement on disabled controls, so this is recorded rather than flagged.
+- Keyboard order, screen-reader labelling, heading structure and `alt` text for the llama mascot are not documented in the captured surfaces. See `## Known Gaps`.
+
 ## Do's and Don'ts
 
 ### Do
@@ -484,6 +627,9 @@ There is no photography. The only image-like elements are:
 - Reserve `{component.pricing-card-dark}` (the inverted dark surface) for exactly one "look here" moment per page — never use it twice.
 - Render install commands and CLI examples inside `{component.install-snippet}` or `{component.terminal-card}` with `{typography.code-md}` / `{typography.code-sm}`. Code is a first-class component.
 - Keep the llama mascot the only illustration in the system. It is the brand.
+- Keep motion at `{motion.duration-base}` (150ms) or under for anything a person touches, and animate `transform` and `opacity` only. A state change here should read as instant, like a terminal.
+- Draw `{colors.focus-ring-strong}` at 2px with a 2px offset for every keyboard focus state, on light and dark surfaces alike.
+- Use `{colors.hairline-control}` wherever a 1px rule is the *only* boundary of a control. Keep `{colors.hairline}` for card edges and dividers.
 
 ### Don't
 - Don't introduce gradients, drop shadows, or atmospheric backgrounds. The canvas is pure `{colors.canvas}`.
@@ -492,6 +638,9 @@ There is no photography. The only image-like elements are:
 - Don't lift cards with shadows. Use a 1px `{colors.hairline}` border or invert to `{colors.surface-dark}` — those are the only two card treatments.
 - Don't replace `ui-sans-serif` with a branded display body face. The system relies on `system-ui` rendering to feel native.
 - Don't fill long-form pages with marketing chrome. FAQ answers stay in `{colors.body}` body-md prose with no decorative containers.
+- Don't choreograph entrances. No reveal on scroll, no staggered hero, and never animate `width`, `height`, `top`, `left` or `margin` — the install-snippet pill reflows at narrow widths and that reflow must not be animated.
+- Don't ship the browser-default `{colors.focus-ring}` as the real focus indicator. At 1.85:1 over the canvas it is not visible enough to be one.
+- Don't set body copy in `{colors.mute}`. At 2.52:1 it fails at every text size; use `{colors.body}`.
 
 ## Responsive Behavior
 
@@ -506,7 +655,7 @@ There is no photography. The only image-like elements are:
 | mobile | 640px | Hero headline drops from `{typography.display-xl}` (36px) to ~28px; install-snippet wraps; section padding tightens |
 
 ### Touch Targets
-All interactive elements meet WCAG AA at the 36–40px height range. `{component.button-primary}` and `{component.button-secondary}` sit at 36px height with 20px horizontal padding, giving an effective tappable area of ~36×80px which exceeds the 44×44px AAA threshold via the inline padding. `{component.text-input}` sits at 40px. `{component.search-pill}` sits at 36px height with 16px padding. Footer links use `{typography.caption-sm}` (12px) but receive ~12px line-height + ~8px vertical padding for a tappable row of ~32–36px.
+All interactive elements sit in the 36–40px documented height range, which clears WCAG 2.2 AA 2.5.8 (24×24 CSS px) but **not** AAA 2.5.5 (44×44) — horizontal padding widens a target, it does not raise its height, and the earlier claim that it did was wrong. `{component.button-primary}` and `{component.button-secondary}` sit at 36px height with 20px horizontal padding, giving a documented area of roughly 36×80px. `{component.text-input}` sits at 40px. `{component.search-pill}` sits at 36px height with 16px padding. Footer links use `{typography.caption-sm}` (12px) but receive ~12px line-height + ~8px vertical padding for a tappable row of ~32–36px.
 
 ### Collapsing Strategy
 - **Primary nav:** desktop horizontal → tablet-narrow hamburger drawer at 768px. The black "Download" CTA stays visible at all widths; it never collapses into the menu.
@@ -533,7 +682,11 @@ The only image asset is the llama mascot (raster PNG at multiple resolutions: 16
 ## Known Gaps
 
 - **Mobile screenshots not captured** — responsive behavior synthesizes Ollama's known mobile pattern (hamburger drawer, 1-up pricing stack, install-snippet wrap) from desktop evidence and the extracted breakpoint stack.
-- **Hover states not documented** by system policy.
+- **Hover states not documented** by system policy. The `### State matrix` entries marked (P) are prescribed from this file's own tokens, not extracted; hover, loading and selected behaviour has never been observed on the live site.
+- **All motion is prescribed.** No duration, easing or transition was extracted from ollama.com. The `## Motion & Animation` section applies the Crisp profile wholesale and says so in its first line.
+- **`{colors.hairline-control}` and `{colors.focus-ring-strong}` are prescribed tokens**, added to carry jobs the extracted palette cannot do at 3:1. They are not Ollama values. `{colors.focus-ring-strong}` is the extracted ring's own blue with the alpha removed; `{colors.hairline-control}` is a neutral grey between `{colors.mute}` and `{colors.body}` and has no counterpart on the live site.
+- **Validation and error states are entirely absent** from the captured surfaces — no form errors, no destructive confirmations, no banners. The state matrix records this as undocumented rather than inventing one.
+- **Keyboard order, ARIA labelling, heading structure and mascot `alt` text** were not captured and are not described here.
 - **Form field styling** beyond search and install-snippet is not present in the captured surfaces — there is no visible long-form form on the home or pricing pages.
 - **Authenticated chrome** (account dropdown, billing settings, model dashboard) not in the captured pages.
 - **Models / Docs pages** not in the captured set — those surfaces likely add a sidebar and a docs typography tier that this document does not describe.
