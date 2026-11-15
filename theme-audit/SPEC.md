@@ -32,7 +32,11 @@ required only where the file documents real shadow values in its prose — sever
 reference once pointed at nothing.
 
 Required colour roles. A role is satisfied by any key matching its pattern, so
-`surface-cream` satisfies `surface`:
+`surface-cream`, `surface-1` and `layer-01` all satisfy `surface`. **Never add
+an alias token purely to satisfy a pattern** — if a role looks unsatisfied but
+the palette plainly contains it under another name, that is a harness bug to
+report under Shared issues, not a token to invent. Brand documents should not
+carry tokens that exist only to please a regex:
 
 | Role | Purpose |
 |---|---|
@@ -130,7 +134,7 @@ useful information for anyone building on it.
 | **Motion & Animation** | yes — new, missing from all 84 |
 | **Accessibility** | yes — new, missing from all 84 |
 | Do's and Don'ts | yes |
-| Responsive Behavior | yes — as a top-level `##`; where a file already carries it as a Layout subsection, **move** it verbatim, never duplicate it |
+| Responsive Behavior | yes — as a top-level `##`; where a file already carries it as a Layout subsection, **move** it verbatim, never duplicate it, promoting its child headings one level so the section reads at the same depth as its peers |
 | Iteration Guide | optional |
 | Known Gaps | yes |
 
@@ -251,6 +255,13 @@ Assignment rule, applied in order:
    400, and which forbids gradients is **Calm** no matter how many hexes it
    defines.
 4. Everything else → **Calm**
+
+Rules 1-3 are conjunctions, so a file can fail all three and still sit between
+two profiles. Rule 4 is the terminal answer, not a default of last resort: when
+nothing above fires, the file is **Calm**, and a file already rostered as
+something else stays there unless an agent argues the switch from evidence in
+the file. Do not leave a borderline case undecided, and do not switch silently
+— cross-file comparability depends on the roster matching what the files do.
 
 ## 6. Motion rules (every profile)
 
