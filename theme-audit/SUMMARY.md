@@ -144,17 +144,22 @@ Eleven scores on tokens and states are short because the brand genuinely lacks w
 
 ## Needs approval
 
-**508 items across all 84 reports.** Every one is a decision for a brand owner, not a defect to fix: in each case the reviewer left the extracted value alone and recorded the measured ratio. No brand hex was altered anywhere in this audit, and no extracted `components:` binding was re-pointed.
+**509 items across all 84 reports**, grouped by the decision each one asks for in `theme-audit/APPROVALS.md`. In every case the reviewer left the extracted value alone and recorded the measured ratio: no brand hex was altered anywhere in this audit, and no extracted `components:` binding was re-pointed.
 
-| Category | Reports raising it |
-|---|---|
-| Boundary and hairline tones | 80 |
-| CTA and label contrast | 80 |
-| Focus rings | 76 |
-| Prescribed values entering an extracted document | 70 |
-| Secondary and muted text | 59 |
-| Semantic tones | 45 |
-| Tap targets | 20 |
+The full count overstates the backlog. **197 of the items ask for nothing** — frozen tones recorded for completeness, now disclosed in their files with the measured ratio. **106** are sign-offs on a value the audit prescribed because the brand documents none. That leaves **206 live decisions.**
+
+| Decision | Items | Files |
+|---|---:|---:|
+| Tap target under the 44px minimum | 14 | 14 |
+| Motion profile assignment | 4 | 4 |
+| Source contradicts itself | 8 | 8 |
+| Token name, alias or duplicate hex | 18 | 16 |
+| Re-point an extracted binding | 53 | 37 |
+| No semantic palette for a state | 6 | 5 |
+| Prescribed value or system awaiting sign-off | 106 | 66 |
+| Change an extracted hex to reach the threshold | 78 | 36 |
+| Frozen tone disclosed, no change sought | 197 | 68 |
+| Unclassified — read the item | 25 | 19 |
 
 The recurring shape is a frozen tone doing a job that needs contrast — most often a hairline at 1.1–1.9:1 serving as a text input's only boundary, which is a WCAG 1.4.11 failure with no size exemption. The second is a white label on a brand colour: binance's Buy/Sell at 2.13:1, clay's signature pink at 3.14:1, sanity's coral CTA at 3.10:1, cursor's orange at 3.52:1.
 

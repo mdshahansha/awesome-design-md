@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Generate theme-audit/SUMMARY.md from the baseline, the current harness run
 and the 84 agent reports. Everything numeric here is computed, not recalled."""
-import json, os, re, subprocess, collections
+import json, os, re, subprocess, collections, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "theme-audit"))   # -I drops the script dir
 KS = ("tokens", "refs", "contrast", "sections", "motion", "states")
 LABEL = {"tokens": "tok", "refs": "ref", "contrast": "con",
          "sections": "sec", "motion": "mot", "states": "sta"}
@@ -26,28 +27,11 @@ n = len(now)
 mean = lambda src, k: sum(src[x["site"]]["score"][k] if src is base
                           else x["score"][k] for x in now) / n
 
-# Needs-approval items, counted from the reports themselves.
-approval, cats = {}, collections.Counter()
-CATEGORIES = (
-    ("Boundary and hairline tones", r"hairline|boundary|border"),
-    ("CTA and label contrast", r"white on|on-primary|label|cta|button"),
-    ("Focus rings", r"focus|ring"),
-    ("Prescribed values entering an extracted document", r"prescrib|invented|motion system"),
-    ("Secondary and muted text", r"muted|mute|secondary text|caption|placeholder"),
-    ("Semantic tones", r"success|warning|error|danger|semantic"),
-    ("Tap targets", r"44|tap target|hit area"),
-)
-for fn in sorted(os.listdir(os.path.join(ROOT, "theme-audit/reports"))):
-    txt = open(os.path.join(ROOT, "theme-audit/reports", fn)).read()
-    m = re.search(r"#+ *Needs approval(.*?)(?=\n#+ |\Z)", txt, re.S | re.I)
-    if not m:
-        approval[fn] = 0
-        continue
-    body = m.group(1)
-    approval[fn] = len(re.findall(r"^\s*(?:\d+\.|[-*])\s+\S", body, re.M))
-    for name, pat in CATEGORIES:
-        if re.search(pat, body.lower()):
-            cats[name] += 1
+# Needs-approval items. Shared extractor, so this file and APPROVALS.md cannot
+# disagree about the count or the grouping.
+import approvals                                            # noqa: E402
+appr = approvals.items()
+appr_by = collections.Counter(i["bucket"] for i in appr)
 
 out = []
 w = out.append
@@ -145,16 +129,29 @@ for x in sorted(now, key=lambda r: r["site"]):
 w("")
 
 w("## Needs approval\n")
-w(f"**{sum(approval.values())} items across all 84 reports.** Every one is a "
-  "decision for a brand owner, not a defect to fix: in each case the reviewer "
-  "left the extracted value alone and recorded the measured ratio. No brand "
-  "hex was altered anywhere in this audit, and no extracted `components:` "
-  "binding was re-pointed.\n")
-w("| Category | Reports raising it |")
-w("|---|---|")
-for name, _ in CATEGORIES:
-    if cats[name]:
-        w(f"| {name} | {cats[name]} |")
+RECORD = "Frozen tone disclosed, no change sought"
+SIGNOFF = "Prescribed value or system awaiting sign-off"
+n_live = len(appr) - appr_by[RECORD] - appr_by[SIGNOFF]
+w(f"**{len(appr)} items across all 84 reports**, grouped by the decision each "
+  "one asks for in `theme-audit/APPROVALS.md`. In every case the reviewer left "
+  "the extracted value alone and recorded the measured ratio: no brand hex was "
+  "altered anywhere in this audit, and no extracted `components:` binding was "
+  "re-pointed.\n")
+w(f"The full count overstates the backlog. **{appr_by[RECORD]} of the items ask "
+  "for nothing** — frozen tones recorded for completeness, now disclosed in "
+  f"their files with the measured ratio. **{appr_by[SIGNOFF]}** are sign-offs "
+  "on a value the audit prescribed because the brand documents none. That "
+  f"leaves **{n_live} live decisions.**\n")
+w("| Decision | Items | Files |")
+w("|---|---:|---:|")
+for name, _ in approvals.RULES:
+    g = [i for i in appr if i["bucket"] == name]
+    if g:
+        w(f"| {name} | {len(g)} | {len({i['site'] for i in g})} |")
+unc = [i for i in appr if i["bucket"].startswith("Unclassified")]
+if unc:
+    w(f"| Unclassified — read the item | {len(unc)} | "
+      f"{len({i['site'] for i in unc})} |")
 w("")
 w("The recurring shape is a frozen tone doing a job that needs contrast — "
   "most often a hairline at 1.1–1.9:1 serving as a text input's only "
