@@ -16,6 +16,8 @@ colors:
   stone: "#9e9ea0"
   hairline: "#cacacb"
   hairline-soft: "#e5e5e5"
+  focus: "#111111"
+  focus-on-dark: "#ffffff"
   sale: "#d30005"
   sale-deep: "#780700"
   success: "#007d48"
@@ -127,6 +129,18 @@ spacing:
   xl: 24px
   xxl: 30px
   section: 48px
+
+motion:
+  duration-instant: 120ms
+  duration-fast: 240ms
+  duration-base: 400ms
+  duration-slow: 600ms
+  duration-emphasis: 900ms
+  ease-standard: cubic-bezier(0.22, 1, 0.36, 1)
+  ease-enter: cubic-bezier(0.16, 1, 0.3, 1)
+  ease-exit: cubic-bezier(0.5, 0, 0.75, 0)
+  stagger-step: 80ms
+  duration-reduced: 150ms
 
 components:
   button-primary:
@@ -285,8 +299,15 @@ Across `/men`, the trail-running listing, the Zegama PDP, `/membership`, and Jor
 
 ### Surface
 - **Soft Cloud** (`{colors.soft-cloud}` — `#f5f5f5`): The most-used non-white surface in the entire system. Product card image backgrounds, search pill, secondary CTA, utility bar, sport-category swatch tiles. It is the "color" of every product photograph's stage.
-- **Hairline** (`{colors.hairline}` — `#cacacb`): 1px dividers between filter rows, footer columns, and PDP disclosure rows.
-- **Hairline Soft** (`{colors.hairline-soft}` — `#e5e5e5`): Inset 1px shadow under sticky bars and tab strips, the only "shadow" the system uses.
+- **Hairline** (`{colors.hairline}` — `#cacacb`): **Decorative dividers only** — 1px rules between filter rows, footer columns, and PDP disclosure rows, where the row label carries the meaning and the rule is an optical separator. At 1.64:1 on `{colors.canvas}` it is below the 3:1 WCAG 1.4.11 floor, so it must never be the only boundary of an interactive control. Extracted and frozen.
+- **Hairline Soft** (`{colors.hairline-soft}` — `#e5e5e5`): **Decorative only** — inset 1px shadow under sticky bars and tab strips, the only "shadow" the system uses. 1.26:1 on `{colors.canvas}`; same restriction as above.
+- **Control boundary** — where a 1px edge *is* the control (filter chip, promo badge, resting search pill, swatch ring on a white colorway), draw it in `{colors.mute}` (`#707072`), which the palette already owns: 4.94:1 on `{colors.canvas}` and 4.53:1 on `{colors.soft-cloud}`. No new boundary token is introduced; Nike's own neutral ladder already contains a tone that clears the threshold.
+
+### Focus
+Nike has no accent colour — black is its only "colour" — so the focus ring is drawn in the brand's own ink or its own paper, never in an invented hue, with a mandatory 2px offset in the opposite polarity so the ring never touches the control it surrounds.
+- **Focus** (`{colors.focus}` — `#111111`, the same value as `{colors.ink}`): the default ring, drawn on `{colors.canvas}` (18.88:1) and `{colors.soft-cloud}` (17.32:1). 2px ring, 2px offset gap in `{colors.canvas}`. This is the generalisation of the extracted `search-pill-focused` treatment (2px ink border plus soft-cloud halo) to every control in the system; the ring token itself is **prescribed**.
+- **Focus on Dark** (`{colors.focus-on-dark}` — `#ffffff`): the counterpart ring for the system's dark grounds — `{component.campaign-tile}` and `{component.member-benefit-card}`, both filled `{colors.ink}` — where the ink ring measures 1:1 and is invisible. 18.88:1 on `{colors.ink}`; 2px ring with a 2px offset gap in `{colors.ink}`. **Prescribed.**
+- Over full-bleed photography, which has no measurable colour, the ring is two-tone: 2px `{colors.focus-on-dark}` with a 1px outer edge in `{colors.focus}`.
 
 ### Text
 - **Ink** (`{colors.ink}` — `#111111`): Primary text on light surfaces — headlines, product names, prices, nav.
@@ -401,7 +422,7 @@ Depth in Nike's system comes entirely from photography, not from CSS effects:
 
 ## Components
 
-> **No hover states documented** per system policy. Each spec covers Default and Active/Pressed only; variants live as separate `components:` entries in the front matter.
+> **Extracted versus prescribed states.** Only Default, Active/Pressed, Selected and the search pill's Focused treatment were captured from the live pages; Nike's CSS carries `--pds-color-element-hover` and `--pds-color-text-hover` but their values were not captured. Hover, focus-visible, disabled, loading and error below are therefore **prescribed** from the system's own vocabulary (ink/soft-cloud inversion, pill geometry, the focus ring defined in Colors) and are marked as such in the state table. Variants that were extracted live as separate `components:` entries in the front matter.
 
 ### Buttons
 
@@ -423,7 +444,7 @@ Depth in Nike's system comes entirely from photography, not from CSS effects:
 - Used for back-arrow, carousel paddle (left/right), wishlist heart, share, and "Hide Filters" toggle.
 
 **`filter-chip`** + **`filter-chip-active`**
-- Default: background `{colors.canvas}`, text `{colors.ink}`, 1px hairline `{colors.hairline}`, type `{typography.button-md}`, rounded `{rounded.lg}`, padding `8px 16px`.
+- Default: background `{colors.canvas}`, text `{colors.ink}`, 1px control boundary `{colors.mute}` (4.94:1 — the chip's edge is its only affordance, so it cannot use the decorative `{colors.hairline}` at 1.64:1), type `{typography.button-md}`, rounded `{rounded.lg}`, padding `8px 16px`.
 - Active: background `{colors.ink}`, text `{colors.on-primary}` — the chip flips fully inverted when selected. No middle state.
 
 ### Inputs & Forms
@@ -455,11 +476,11 @@ Depth in Nike's system comes entirely from photography, not from CSS effects:
 
 **`swatch-dot`** + **`swatch-dot-active`**
 - 12px circle, rounded `{rounded.full}`, no border in default state. Renders the colorway options on every product card and PDP color picker.
-- Default: filled with the colorway's actual product color (extracted at runtime from the product image), 1px subtle outer ring in `{colors.hairline}` for white/light colorways so they remain visible on `{colors.canvas}`.
+- Default: filled with the colorway's actual product color (extracted at runtime from the product image), 1px outer ring in `{colors.mute}` for white/light colorways so they remain visible on `{colors.canvas}` — the extracted ring was `{colors.hairline}` at 1.64:1, which disappears against the page on exactly the colorways that need it.
 - Active: identical fill with a 2px `{colors.ink}` outer ring and 2px white interior gap, creating Nike's signature concentric-ring "selected" state. No size change between default and active.
 
 **`badge-promo`**
-- Background `{colors.canvas}` with 1px hairline `{colors.hairline}`, text `{colors.ink}`, type `{typography.caption-sm}`, rounded `{rounded.lg}`, padding `4px 12px`.
+- Background `{colors.canvas}` with a 1px boundary in `{colors.mute}`, text `{colors.ink}`, type `{typography.caption-sm}`, rounded `{rounded.lg}`, padding `4px 12px`. The badge sits on top of product photography, so its edge is load-bearing and the decorative `{colors.hairline}` cannot carry it.
 - Sits on top of product imagery (top-left of card) with copy like "Just In", "Coming Soon", "Recycled Materials", "Member Exclusive".
 
 **`badge-sale-text`**
@@ -504,6 +525,125 @@ Depth in Nike's system comes entirely from photography, not from CSS effects:
 - Background `{colors.canvas}` with a single 1px `{colors.hairline}` top divider.
 - Four columns: Resources / Help / Company / Promotions & Discounts, each with column header `{typography.body-strong}` `{colors.ink}` and link list `{typography.caption-md}` `{colors.mute}`.
 - Below the columns: a horizontal rule, then a fine-print row with `{typography.utility-xs}` `{colors.mute}` (copyright, locale switcher, terms, privacy, supply-chain act).
+
+### Component States
+
+Extracted states are marked **(E)**; everything else is **prescribed** from the system's own ink/soft-cloud vocabulary and the focus ring defined under Colors. Travel and timing for each transition come from Motion & Animation below.
+
+| Component | States | Treatment |
+|---|---|---|
+| `button-primary` | default **(E)**, hover, focus-visible, active/pressed **(E)**, disabled, loading | hover: fill holds `{colors.ink}`, label opacity to 0.85; focus-visible: 2px `{colors.focus}` ring, 2px offset; active/pressed: `{component.button-primary-active}` — `scale` collapse with `opacity: 0.5`; disabled: fill `{colors.hairline}`, label `{colors.mute}` (exempt from contrast minimums); loading: label swaps for a 3-dot `{colors.on-primary}` pulse, pill width held so the row does not reflow |
+| `button-secondary` | default **(E)**, hover, focus-visible, active/pressed, disabled | hover: `{colors.soft-cloud}` to `{colors.hairline-soft}`; focus-visible: `{colors.focus}` ring; pressed: same scale collapse; disabled: label `{colors.stone}` |
+| `button-outline-on-image` | default **(E)**, hover, focus-visible, active/pressed | drawn over photography, so focus-visible uses the two-tone ring (`{colors.focus-on-dark}` with a 1px `{colors.focus}` outer edge) |
+| `button-icon-circular` | default **(E)**, hover, focus-visible, active/pressed, disabled | hover: `{colors.soft-cloud}` fill appears under a transparent variant; focus-visible: `{colors.focus}` ring at 2px offset outside the 40px circle |
+| `search-pill` / `search-pill-focused` | default **(E)**, hover, focus-visible **(E)**, loading, error | focus-visible is the extracted treatment — `{colors.canvas}` fill, 2px `{colors.ink}` border, 12px `{colors.soft-cloud}` halo; loading: inline 3-dot pulse right of the caret; error ("no results for…"): 2px `{colors.sale}` border with the message in `{colors.sale}` below the pill |
+| `filter-chip` / `filter-chip-active` | default **(E)**, hover, focus-visible, selected **(E)** | selected is the full ink inversion; there is no intermediate state. No disabled variant — an unavailable facet is removed from the rail, not greyed |
+| `swatch-dot` / `swatch-dot-active` | default **(E)**, hover, focus-visible, selected **(E)**, disabled | selected: 2px `{colors.ink}` concentric ring; disabled (sold-out colorway): 45° strike in `{colors.mute}` across the dot |
+| `product-card` | default **(E)**, hover, focus-visible, loading | hover: image scales inside its own frame, metadata unchanged; focus-visible: `{colors.focus}` ring around the whole card; loading: `{colors.soft-cloud}` skeleton block at the image ratio with an opacity pulse |
+| `badge-promo`, `badge-sale-text` | default only **(E)** | genuinely single-state — both are non-interactive labels, so they carry no hover, focus-visible, pressed, disabled or error variant |
+| `campaign-tile`, `member-benefit-card` | default **(E)**, hover, focus-visible | hover: the full-bleed image scales slowly behind a fixed headline; focus-visible: `{colors.focus-on-dark}` ring inset from the tile edge |
+| `pdp-disclosure-row`, `faq-row` | default **(E)**, hover, focus-visible, selected/expanded **(E)** | hover: label to `{colors.charcoal}`; expanded: chevron rotates 180°, body reveals |
+| `primary-nav` link | default **(E)**, hover, focus-visible, selected **(E)** | selected is the extracted 2px `{colors.ink}` bottom underline; hover draws the same underline at `{colors.hairline}` weight |
+| `utility-bar` link, `footer` link | default **(E)**, hover, focus-visible | hover: underline appears, colour `{colors.mute}` to `{colors.ink}` |
+| `filter-sidebar` | default **(E)**, loading, error | loading: group headers hold, facet rows become `{colors.soft-cloud}` skeleton bars; error (facet fetch failed): inline `{colors.sale}` retry line |
+
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** No timing function, duration or choreography below was extracted from Nike's running pages; the only motion fact in the captured evidence is the pressed-state collapse recorded in `{component.button-primary-active}`. Everything else is the **Cinematic** profile from the audit spec, chosen because this file's own devices are cinematic ones: full-bleed editorial photography carrying every hero and category tile, a single 96px uppercase display tier burned into that photography, and a chrome deliberately stripped of decoration so the imagery is the only thing that moves.
+
+The profile is applied with one deliberate split, which the brand's own "athletic, kinetic, absolute" voice demands: **retail chrome runs at `{motion.duration-instant}` and `{motion.duration-fast}`, editorial surfaces run at `{motion.duration-base}` through `{motion.duration-emphasis}`.** A 400ms hover on a filter chip would make a dense PLP feel broken; a 150ms hero reveal would throw away the only slow gesture the brand has. Both ends come from the same Cinematic token block, so this file stays comparable with its siblings.
+
+Only `transform` and `opacity` are animated anywhere in the system. Never `width`, `height`, `top`, `left` or `margin` — the 8px grid and the 1:1 product ratio must not be reflowed by a transition.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover — chrome (pill CTA, chip, nav link, footer link) | `{motion.duration-instant}` | `{motion.ease-standard}` | `opacity` | retained at `{motion.duration-reduced}`; no travel to remove |
+| Hover — editorial (campaign tile, member-benefit card, product-card image) | `{motion.duration-slow}` | `{motion.ease-standard}` | `transform: scale(1.03)` inside the card frame | scale removed entirely; card is static |
+| Press / active (pill CTA, icon circle, swatch dot) | `{motion.duration-instant}` | `{motion.ease-exit}` | `transform: scale()` + `opacity` (the extracted collapse) | scale removed; `opacity` step only, `{motion.duration-reduced}` |
+| Focus ring appear | `{motion.duration-instant}` | `{motion.ease-enter}` | `opacity` | retained unchanged — the ring must never be slower than the keypress that summoned it |
+| Page / route transition (PLP → PDP, `/men` → category) | `{motion.duration-base}` out, `{motion.duration-slow}` in | `{motion.ease-exit}` out, `{motion.ease-enter}` in | `opacity` + `transform: translateY(16px)` on the content block | translate removed; cross-fade at `{motion.duration-reduced}` |
+| Modal / drawer (mobile nav drawer, off-canvas filter drawer, bag overlay) | `{motion.duration-base}` in, `{motion.duration-fast}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `transform: translateX(-100%)` → `0` + scrim `opacity` | slide removed; scrim and panel fade at `{motion.duration-reduced}` |
+| Dropdown ("Sort By", geo-selector, size picker) | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: scaleY()` from the anchored edge | scale removed; `opacity` only at `{motion.duration-reduced}` |
+| Toast ("Added to Bag", "Saved to Favourites") | `{motion.duration-fast}` in, `{motion.duration-instant}` out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(8px)` | translate removed; fade at `{motion.duration-reduced}`; dwell time unchanged |
+| List enter (PLP grid rows, sport rail, swatch row) | `{motion.duration-base}` per item, `{motion.stagger-step}` between items | `{motion.ease-enter}` | `opacity` + `transform: translateY(12px)` | stagger and translate removed; the whole row fades in once at `{motion.duration-reduced}` |
+| List exit (facet applied, grid re-query) | `{motion.duration-fast}`, no stagger | `{motion.ease-exit}` | `opacity` | retained at `{motion.duration-reduced}` |
+| Loading (skeleton pulse, 3-dot button loader) | 1200ms loop | `{motion.ease-standard}` | `opacity` 1 → 0.4 → 1 | frozen at a static 0.7 `opacity`; the only looping animation in the system and the only one permitted to loop |
+| Campaign hero reveal (first editorial block in view) | `{motion.duration-emphasis}` image, `{motion.duration-slow}` headline at `{motion.stagger-step}` × 2 delay | `{motion.ease-enter}` | image `transform: scale(1.04)` → `1`, headline `opacity` + `transform: translateY(24px)` | all travel and scale removed; image and headline fade together at `{motion.duration-reduced}` |
+
+Exit is shorter than its matching entrance in every row above. Nothing in the table animates on first paint in a way that delays content: the campaign hero reveal is triggered on intersection, and the headline is painted and readable before its transform resolves. The skeleton pulse and the button loader are the only infinite animations; the system has no brand ambience loop.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: every transform — the hero and product-image scale, the drawer
+     slide, the page-transition and toast and list-enter translate, the dropdown
+     scaleY, the press collapse. Stagger is removed with them: lists appear as
+     one block, not in sequence. */
+  /* Retained: opacity fades only, capped at {motion.duration-reduced} (150ms),
+     which is shorter than this profile's own duration-fast of 240ms. The focus
+     ring, the toast dwell time and every state colour change are unaffected. */
+  /* Frozen: the skeleton and button-loader pulse hold at a static 0.7 opacity
+     rather than looping. */
+}
+```
+
+## Accessibility
+
+Everything below is computed from this file's own token values with WCAG 2.1 relative luminance. Nothing here was measured from a rendered page: there is no screenshot, no DOM and no browser in this audit, so overlap, clipping, actual tap-target size and focus-order are out of scope and are listed in Known Gaps.
+
+### Measured contrast — key pairs
+
+| Foreground / Background | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` `#111111` on `{colors.canvas}` `#ffffff` | 18.88:1 | 4.5:1 | pass |
+| `{colors.ink}` on `{colors.soft-cloud}` `#f5f5f5` | 17.32:1 | 4.5:1 | pass |
+| `{colors.on-primary}` `#ffffff` on `{colors.ink}` | 18.88:1 | 4.5:1 | pass |
+| `{colors.charcoal}` `#39393b` on `{colors.canvas}` | 11.52:1 | 4.5:1 | pass |
+| `{colors.ash}` `#4b4b4d` on `{colors.canvas}` | 8.70:1 | 4.5:1 | pass |
+| `{colors.mute}` `#707072` on `{colors.canvas}` | 4.94:1 | 4.5:1 | pass |
+| `{colors.mute}` on `{colors.soft-cloud}` | 4.53:1 | 4.5:1 | pass — with 0.03 of margin, so neither tone may drift further |
+| `{colors.sale}` `#d30005` on `{colors.canvas}` | 5.57:1 | 4.5:1 | pass |
+| `{colors.success}` `#007d48` on `{colors.canvas}` | 5.21:1 | 4.5:1 | pass |
+| `{colors.info}` `#1151ff` on `{colors.canvas}` | 5.76:1 | 4.5:1 | pass |
+| `{colors.focus}` `#111111` on `{colors.canvas}` | 18.88:1 | 3.0:1 | pass |
+| `{colors.focus}` on `{colors.soft-cloud}` | 17.32:1 | 3.0:1 | pass |
+| `{colors.focus-on-dark}` `#ffffff` on `{colors.ink}` | 18.88:1 | 3.0:1 | pass |
+
+### Declared failures — the real brand does not pass here
+
+These are extracted, frozen values. They are not corrected in place, because changing them would make this document a false record of Nike's chrome.
+
+- **`{colors.hairline}` `#cacacb` on `{colors.canvas}` measures 1.64:1**, against the 3:1 that WCAG 1.4.11 requires of a meaningful boundary. Nike's extracted divider genuinely fails. It is now scoped to decorative row rules, where the row label carries the meaning; every control whose edge is its only affordance uses `{colors.mute}` at 4.94:1 instead.
+- **`{colors.hairline-soft}` `#e5e5e5` on `{colors.canvas}` measures 1.26:1.** Same verdict, same scoping: this is the inset bottom-line under sticky bars, which is a visual seam and never an interactive boundary.
+- **`{colors.success-bright}` `#1eaa52` measures 3.03:1 on `{colors.canvas}`**, below the 4.5:1 required of text. The palette documents it as inverse success for dark surfaces, where it measures 6.23:1 on `{colors.ink}` and passes; drawn as text on the white canvas it fails and must not be used there.
+- **`{colors.stone}` `#9e9ea0` measures 2.67:1 on `{colors.canvas}`.** The Colors section describes it as both inverse secondary text on dark surfaces — 7.06:1 on `{colors.ink}`, which passes — and "lowest-emphasis utility text", which on the white canvas fails 4.5:1 and fails even the 3:1 large-text allowance. Use `{colors.mute}` for low-emphasis text on light grounds.
+- **`{colors.accent-pink}` `#ed1aa0` measures 4.00:1 on `{colors.canvas}`.** The file already forbids the category accents as text, which is the correct restriction; recorded here so the number is on the page.
+
+### Focus ring visibility, per surface this file defines
+
+| Surface | Ring | Ratio | Offset |
+|---|---|---|---|
+| `{colors.canvas}` `#ffffff` | `{colors.focus}` | 18.88:1 | 2px gap in `{colors.canvas}` |
+| `{colors.soft-cloud}` `#f5f5f5` | `{colors.focus}` | 17.32:1 | 2px gap in `{colors.canvas}` |
+| `{colors.ink}` `#111111` — campaign tile, member-benefit card | `{colors.focus-on-dark}` | 18.88:1 | 2px gap in `{colors.ink}` |
+| Full-bleed photography — no measurable colour | two-tone: `{colors.focus-on-dark}` with 1px `{colors.focus}` outer edge | not computable | 2px gap, polarity follows the inner band |
+
+Neither ring introduces a new brand colour: `{colors.focus}` reuses the exact value of `{colors.ink}` (`#111111`) and `{colors.focus-on-dark}` reuses `{colors.on-primary}` (`#ffffff`). They exist as named roles because a ring has to be addressable to be specified and measured, and because the two carry distinct jobs on distinct surfaces — not because Nike gained a colour.
+
+The ring is drawn **outside** its control with a stated 2px offset, so it is judged against the surface behind it rather than against the control fill it surrounds — which is what WCAG 2.2 Focus Appearance asks for, and the only way a system whose primary CTA is solid `#111111` can have a visible ring at all. The extracted `search-pill-focused` treatment (2px `{colors.ink}` border plus a 12px `{colors.soft-cloud}` halo) is the one place the system puts the indicator on the control itself; it is kept verbatim because it is extracted, and the halo gives it the required separation from `{colors.canvas}`.
+
+### Tap targets
+
+Documented heights only — nothing here was measured from a rendered page, so these are the token values the file asserts, not observed hit areas. `{component.button-primary}` and `{component.button-secondary}` are 48px high, clearing the 44px WCAG 2.5.5 AAA target. `{component.search-pill}` and the filter chips are 40px, which clears the 24px of WCAG 2.5.8 AA but not 44px; the Responsive Behavior section claims padded hit areas extend them past 48px, which this audit cannot verify. `{component.button-icon-circular}` is 40px and `{component.swatch-dot}` is a 12px visual dot — the swatch is the system's smallest control by a wide margin and its real hit area is unverified.
+
+### Reduced motion
+
+Every transform, scale and stagger in the Motion & Animation table is removed under `@media (prefers-reduced-motion: reduce)`; opacity fades remain, capped at `{motion.duration-reduced}` (150ms), which is deliberately shorter than this file's own `{motion.duration-fast}` (240ms). The skeleton and loader pulses freeze at a static opacity. The focus ring is never slowed and never suppressed.
+
+### Other
+
+Colour is never the sole carrier of meaning in the extracted chrome with one exception worth naming: the sale price row distinguishes itself by `{colors.sale}` plus a strike-through on the original price plus explicit "% off" copy, so the discount survives without colour. The active filter chip inverts fill *and* text, and the selected swatch adds a concentric ring, so both read without hue. The primary-nav active indicator is a 2px underline, also not colour-dependent.
+
+One type size is a legibility problem independent of contrast: `{typography.utility-xs}` is 9px, bound to the footer fine-print row in `{colors.mute}`. The pair passes contrast at 4.94:1, but 9px is below any reasonable floor for sustained reading. It is an extracted value and is kept; it should not be reused for anything the reader is expected to act on.
 
 ## Do's and Don'ts
 
@@ -569,7 +709,11 @@ All interactive elements meet WCAG AAA (44×44px minimum). Pills (`{component.bu
 ## Known Gaps
 
 - **Mobile screenshots not captured** — responsive behavior described above synthesizes Nike's known mobile pattern (hamburger drawer, 1-up grid, headline downscale) from desktop evidence and the breakpoint list extracted from tokens.
-- **Hover states not documented** by system policy — Nike's CSS uses `--pds-color-element-hover` and `--pds-color-text-hover` tokens but these are not included here.
+- **Hover states not documented** by system policy — Nike's CSS uses `--pds-color-element-hover` and `--pds-color-text-hover` tokens but these are not included here. The hover, focus-visible, disabled, loading and error entries in the Component States table are therefore prescribed, not extracted.
+- **Motion is prescribed, not extracted** — no timing function or duration in Motion & Animation was measured from Nike's live pages. The only extracted motion fact is the pressed-state collapse in `{component.button-primary-active}`, and even there the recorded `scale(0.5)` looks more like a captured mid-transition frame than a resting value; it is kept verbatim because it is what was extracted.
+- **Focus ring is prescribed** — `{colors.focus}` and `{colors.focus-on-dark}` generalise the one extracted focus treatment (`search-pill-focused`) to the rest of the system. No ring was captured on any other control.
+- **Tap targets and layout are unverified** — there is no rendered page in this audit, so real hit-area size, overlap, clipping, horizontal overflow and focus order could not be checked. The heights quoted in Accessibility are token values the file asserts.
+- **No dark theme is defined** — `{colors.success-bright}` and `{colors.stone}` are described as inverse tones for dark surfaces, but the file declares no dark canvas or dark surface token for them to sit on; their only measurable dark ground is `{colors.ink}`.
 - **Dialog / modal styling** beyond the geo-selector and the country-confirmation pill pair could not be confirmed from the captured surfaces; bag, wishlist, and login overlays are not documented.
 - **Form field styling** for checkout, sign-up, and address forms is not present in the captured surfaces — only the search pill is documented.
 - **Bag and wishlist** icon-state variants (filled count badges) not visible in the captured pages.

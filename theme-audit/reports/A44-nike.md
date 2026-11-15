@@ -5,14 +5,23 @@ Scores before -> after (1-5), from the harness: tokens · refs · contrast · se
 | | tokens | refs | contrast | sections | motion | states |
 |---|---|---|---|---|---|---|
 | before | 2 | 5 | 2 | 3 | 1 | 1 |
-| after | 3 | 5 | 5 | 5 | 5 | 5 |
+| after | 4 | 5 | 5 | 5 | 5 | 5 |
 
-`tokens` stops at 3 on purpose. Of the three roles the harness reported missing, only
-`focus` was genuinely absent from the palette. `surface` and `text-dim` are both present
-under brand names the role patterns do not match — `soft-cloud` and `mute` — so per SPEC
-section 1 they are reported below as a harness bug and **no alias token was added**. The
-`focus` pair I did add is not an alias: it has a real job, it is drawn where contrast is
-needed, and it is measured.
+`tokens` stops at 4 on purpose. Of the three roles the harness reported missing, only
+`focus` was genuinely absent from the palette. `surface` and `text-dim` were both already
+present under brand names the role patterns did not match — `soft-cloud` and `mute` — so per
+SPEC section 1 I reported them as a harness bug and **added no alias token for either**.
+`text-dim` has since started resolving to `mute` on its own: audit.py commit `d9df67e`
+("accept mute-\* dim tones") landed mid-review and added `^mute$` to the pattern list, which
+is the fix this report proposes below. `surface` is still unresolved, still for the same
+reason, and still without an invented token — see Shared issues.
+
+The `focus` pair I did add is not an alias. It is a real role binding under the exception
+SPEC commit `baf1859` added to section 1: the two rings reuse hexes the palette already
+owns (`{colors.ink}` and `{colors.on-primary}`) but carry distinct jobs on distinct
+surfaces, and a ring must be addressable as `focus*` to be specified or measured at all.
+The Accessibility section states which existing tone each one reuses, so neither reads as a
+new brand colour.
 
 ### Findings
 
@@ -25,7 +34,7 @@ needed, and it is measured.
 | P1 | B Colour | `{colors.hairline-soft}` `#e5e5e5` on `{colors.canvas}` | 1.26:1, undisclosed. Genuinely decorative (inset seam under sticky bars), so the value stands; now declared with its ratio. |
 | P1 | B Colour | `{colors.success-bright}` `#1eaa52` on `{colors.canvas}` | 3.03:1 as text, below 4.5:1. The palette documents it as inverse success for dark surfaces, where it is 6.23:1 on `{colors.ink}` and passes — but the file declares no dark surface token, so the only ground the harness can measure it against is the white canvas. Disclosed with both numbers. |
 | P1 | H States | every component | hover, focus-visible, disabled, loading and error named nowhere in the file; the Components preamble declared hover out of scope "per system policy". Fixed with a Component States table that marks extracted states **(E)** and the rest prescribed. `badge-promo` and `badge-sale-text` are stated as genuinely single-state. |
-| P1 | A Token contract | `surface`, `text-dim` roles | Unresolved by the harness although the palette plainly contains both. See Shared issues — reported, not papered over. |
+| P1 | A Token contract | `surface`, `text-dim` roles | Unresolved by the harness although the palette plainly contains both (`soft-cloud`, `mute`). Reported as a harness bug, not papered over. `text-dim` was fixed upstream mid-review by audit.py `d9df67e`; `surface` still stands. See Shared issues. |
 | P1 | B/G Colour | no dark theme | The file names two inverse-on-dark tones (`stone`, `success-bright`) but declares no dark canvas or dark surface token for them to sit on. Their only measurable dark ground is `{colors.ink}` via component bindings. Added to Known Gaps. |
 | P2 | E Shapes | `{rounded.full}` vs `{rounded.lg}` | Frontmatter binds `{rounded.full}` (9999px) on every pill component; the prose says those same pills are `{rounded.lg}` (30px), and Key Characteristics mislabels `{rounded.full}` as "30px". **Not fixed** — I cannot tell from the file which value was extracted, and for a 48px-high pill both render identically, so a guess would just move the error. Needs the capture to resolve. |
 | P2 | F Motion | `button-primary-active` | The extracted pressed state records `scale(0.5)` with `opacity: 0.5`. A 50% collapse reads far more like a captured mid-transition frame than a resting pressed value. Kept verbatim because it is the file's one extracted motion fact; flagged here and in Known Gaps. |
@@ -122,7 +131,7 @@ says the token exists for. Harness confirms `layout_animation_mentions: []`.
 | File | Issue | Proposed fix |
 |---|---|---|
 | `theme-audit/audit.py:22` | The `surface` role patterns match only literal naming (`surface*`, `card*`, `panel*`, `tile*`, `elevated`). Nike's panel surface is `soft-cloud` `#f5f5f5` — bound as `backgroundColor` on `product-card-image`, `utility-bar`, `search-pill`, `button-secondary` and `button-icon-circular`, and called "a single soft surface gray" in the file's own description. **The palette genuinely has a card/panel surface; it is the naming that defeats the pattern.** Decisive evidence that this is a bug and not a gap: the same script, at line 362, *already* treats `soft-cloud` as a surface — its focus-coverage check appends any token a component declares as `backgroundColor`, so audit.py holds two different notions of "surface" and the role check uses the weaker one. | Apply to the `surface` role the component-binding fallback that already exists for `border` at lines 208–213: if no pattern matches, take a non-accentish `backgroundColor` that is bound by a component and is not the canvas. That resolves `surface=soft-cloud` here with better evidence than any regex, and would then also exercise the four `check_all(..., "surface", ...)` calls that are currently skipped on this file. |
-| `theme-audit/audit.py:28` | The `text-dim` role patterns include `^muted$` but not `^mute$`. Nike's secondary ink is `mute` `#707072` — documented as "product category subtitles, footer link text, secondary metadata" and bound as `footer.textColor`. Again present, just named one letter short of the pattern. | Add `r"^mute$", r"^mute[-_]"` to the `text-dim` pattern list. On this file that resolves `text-dim=mute` at 4.94:1, which passes, so it fixes a false negative without manufacturing a failure. |
+| `theme-audit/audit.py:28` | **Fixed upstream during this review — recorded for the record.** The `text-dim` patterns included `^muted$` but not `^mute$`, so Nike's secondary ink `mute` `#707072` (documented as "product category subtitles, footer link text, secondary metadata", bound as `footer.textColor`) left the role unresolved. Commit `d9df67e` added `^mute$` and `^mute-`; `text-dim` now resolves to `mute` at 4.94:1 and the role is satisfied with no token added to this file. | Done. No further action. |
 | `theme-audit/audit.py:28` | Related false negative in the other direction: `stone` `#9e9ea0` is a real low-emphasis text tone at 2.67:1 on the canvas and matches no `text` or `text-dim` pattern, so the harness never measures it. I found it by hand and disclosed it. | Same binding-based fallback would help, but the general fix is to measure every colour the prose or a component binds as an ink, not only pattern-matched ones. Out of scope for a pattern tweak; recorded so it is not lost. |
 | `theme-audit/audit.py:~245` (`theme_of`) | `dual_theme` requires a colour key containing both a surface word and `light`/`dark`. Nike documents inverse-on-dark tones (`stone`, `success-bright`) but names no dark surface token, so `dual_theme` is false and both are measured against the white canvas — a ground the file says they are never drawn on. The resulting `success-bright` failure is real-as-measured but misattributed. | Treat a token the prose or a component binds onto a dark `backgroundColor` as theme-scoped, or let a file declare its inverse ground explicitly. I disclosed the pair with both ratios rather than wait for this. |
 
