@@ -328,7 +328,8 @@ def audit(path):
                 r"^semantic-", r"^positive", r"^negative")
     canvas_key = roles.get("canvas")
     if canvas_key:
-        FILL_MARKER = re.compile(r"(subtle|soft|bg|background|fill|tint|wash|surface|band)")
+        FILL_MARKER = re.compile(r"(subtle|soft|pale|faint|bg|background|fill|tint|"
+                                 r"wash|surface|band|chip|badge|pill)")
         for pat in SEMANTIC:
             for key in colors:
                 if not re.match(pat, key) or "disabled" in key:
@@ -530,9 +531,15 @@ def audit(path):
     m = re.search(r"^## Components\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
     if m:
         comp = m.group(1)
+    NOT_DOCUMENTED = re.compile(
+        r"not (captured|documented|extracted|observed|specified|stated|available)"
+        r"|undocumented|unknown|n/?a\b", re.I)
     structured = "\n".join(line for line in comp.split("\n")
-                           if line.lstrip().startswith(("|", "-", "*"))
-                           or re.search(r"\*\*[^*]+\*\*\s*[:—-]", line))
+                           if (line.lstrip().startswith(("|", "-", "*"))
+                               or re.search(r"\*\*[^*]+\*\*\s*[:—-]", line))
+                           # A row that says the state was not captured is not
+                           # documentation of that state.
+                           and not NOT_DOCUMENTED.search(line))
     hay = structured.lower()
     r["states_documented"] = [w for w in STATE_WORDS if w in hay]
     r["states_missing"] = [w for w in STATE_WORDS if w not in hay]
