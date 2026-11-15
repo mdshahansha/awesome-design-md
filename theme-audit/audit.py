@@ -477,6 +477,18 @@ def audit(path):
             return None
         return marker
 
+    def polarity_clash(fg_key, bg_key):
+        """A light-track ink on a dark ground, or the reverse, by measurement.
+
+        Catches grounds whose names carry no light/dark marker at all —
+        webflow's `primary` is #080808, a dark band in a light-canvas file.
+        """
+        if not canvas_polarity or bg_key not in colors or fg_key not in colors:
+            return False
+        bg_pol = "dark" if luminance(colors[bg_key]) < 0.2 else "light"
+        fg_pol = "dark" if luminance(colors[fg_key]) < 0.2 else "light"
+        return bg_pol != canvas_polarity and fg_pol == canvas_polarity
+
     def same_theme(fg_key, bg_key):
         """A light-mode ink is never drawn on a dark-mode surface.
 
@@ -494,7 +506,7 @@ def audit(path):
 
     def check(fg_role, bg_role, minimum, label):
         fg, bg = roles.get(fg_role), roles.get(bg_role)
-        if not fg or not bg or not same_theme(fg, bg):
+        if not fg or not bg or not same_theme(fg, bg) or polarity_clash(fg, bg):
             return
         fg_hex = effective(fg, colors[bg])
         ratio = round(contrast(fg_hex, colors[bg]), 2)
@@ -511,7 +523,7 @@ def audit(path):
             for key in colors:
                 if not re.match(pat, key) or "disabled" in key:
                     continue
-                if not same_theme(key, bg):
+                if not same_theme(key, bg) or polarity_clash(key, bg):
                     continue
                 named = re.match(r"^on-([a-z]+)", key)
                 if named and named.group(1) not in ("primary", "accent", "brand"):
