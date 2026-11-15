@@ -556,6 +556,8 @@ The grey ladder is an extracted fact and is **not** altered here. It fails:
 - `{colors.hairline-cool}` `#ededed` on `{colors.canvas}` measures **1.17:1**.
 - `{colors.hairline-cool-2}` `#efefef` on `{colors.canvas}` measures **1.15:1**.
 
+The same five tones are measured again on the `{colors.canvas-soft}` `#fafafa` band, which is the file's nearest thing to a raised surface, and every one is slightly worse than on white: `{colors.hairline-strong}` **1.62:1**, `{colors.hairline-cool-3}` **1.42:1**, `{colors.hairline}` **1.28:1**, `{colors.hairline-cool}` **1.12:1**, `{colors.hairline-cool-2}` **1.10:1**. The two muted inks fall with them: `{colors.ink-mute-2}` **2.70:1** and `{colors.ink-faint}` **2.03:1** on `{colors.canvas-soft}`. A 1.04:1 band does not help a boundary — layering here rests on the tone's own edge, not on the surface under it.
+
 So **no hairline tone in this brand reaches 3:1 on white.** For pure separation — table rules, card edges, section dividers — that is acceptable under WCAG, which sets no contrast floor on decoration. It is **not** acceptable where the hairline is a control's only boundary. The one such case in this file is `text-input`: its boundary is prescribed as 1px `{colors.ink-mute}` at **4.95:1**, a tone the palette already owns, while `{colors.hairline}` keeps its extracted role on card and table chrome. Re-binding the other hairline usages is a brand-owner decision and is listed under Needs approval in the audit report, not decided here.
 
 `{colors.ink-mute-2}` `#9a9a9a` at **2.81:1** on white is below AA for body copy. It is defensible only as 18px+ / 14px-bold large text, where 3:1 applies — and it does not reach even that on white. Use `{colors.ink-mute}` (4.95:1) for any tertiary text that must be read on the light track; reserve `{colors.ink-mute-2}` for the dark track, where it measures 6.06:1 on `{colors.canvas-night}`.
@@ -564,8 +566,8 @@ So **no hairline tone in this brand reaches 3:1 on white.** For pure separation 
 
 Two further pairs measure badly but describe a composition the brand never draws, and are recorded here so they are not mistaken for real defects:
 
-- `{colors.ink}` `#171717` on `{colors.canvas-night}` `#1c1c1c` — **1.05:1**. Manufactured. Every component this file binds to `{colors.canvas-night}` (`card-pricing-featured`, `card-feature-dark`, `code-block`, `button-on-dark`) sets its text to `{colors.on-dark}` at 17.04:1. The light-track ink is never placed on the dark track.
-- `{colors.ink-secondary}` `#212121` on `{colors.canvas-night}` — **1.06:1**. Manufactured for the same reason; secondary emphasis on the dark track is `{colors.ink-mute-2}` at 6.06:1.
+- `{colors.ink}` `#171717` on `{colors.canvas-night}` `#1c1c1c` — **1.05:1**. Every component this file binds to `{colors.canvas-night}` (`card-pricing-featured`, `card-feature-dark`, `code-block`, `button-on-dark`) sets its text to `{colors.on-dark}` at 17.04:1. The light-track ink is never placed on the dark track.
+- `{colors.ink-secondary}` `#212121` on `{colors.canvas-night}` — **1.06:1**. The same reason; secondary emphasis on the dark track is `{colors.ink-mute-2}` at 6.06:1.
 
 ### Focus ring visibility, surface by surface
 

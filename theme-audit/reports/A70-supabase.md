@@ -25,7 +25,8 @@ Motion profile: **Crisp**, as rostered. Confirmed, not switched — see Identity
 | P2 | E Focus ring | `## Shapes` | No focus-ring geometry in the radius/stroke ladder; added with an explicit 2px offset so the ring is judged against the surface behind the control. |
 | P2 | C Elevation | `canvas-night` / `canvas-night-soft` | The two dark tones separate by 1.05:1, so nested dark chrome is invisible without a border. Extracted; recorded, not changed. |
 | P2 | I Identity | `## Components` | Several entries ended at a background and a radius, with no interaction surface described at all. |
-| — | Harness | `audit.py` `surface` inference | `surface` resolves to `canvas-night`, manufacturing two failures the brand never draws. Reported under Shared issues, not fixed. |
+| P1 | B Colour | `colors.hairline-strong`, `ink-mute-2`, `ink-faint` on `canvas-soft` | Three further failures on the `#fafafa` band (1.62:1, 2.70:1, 2.03:1), invisible until the harness's surface inference was corrected mid-review. |
+| — | Harness | `audit.py` `surface` inference | `surface` resolved to `canvas-night`, manufacturing two failures the brand never draws. Fixed upstream during this review; see Shared issues. |
 
 ### Changes made
 
@@ -44,6 +45,7 @@ Motion profile: **Crisp**, as rostered. Confirmed, not switched — see Identity
 | after Motion | — -> `## Accessibility` | 14 measured pairs, the five hairline failures stated plainly, the two manufactured pairs labelled as manufactured, per-surface ring ratios, tap targets flagged as unverifiable, reduced motion. |
 | `## Do's and Don'ts` | +2 Do, +4 Don't | Focus ring, elevation language, the layout-property prohibition, no mockup entrance choreography, and no light-track ink on the dark track. |
 | `## Iteration Guide` | +1 step | Take motion values from `{motion.*}` rather than typing durations. |
+| `## Accessibility` (second pass) | — -> the five hairlines, `ink-mute-2` and `ink-faint` re-measured on the `canvas-soft` band | The harness was fixed mid-review (see Shared issues) and `surface` began resolving to `canvas-soft`, surfacing 3 real failures that the earlier mis-resolution had hidden. All three are now disclosed with their measured ratios. |
 | end of file | — -> `## Known Gaps` | 9 entries: motion prescribed, ring prescribed, no semantic colour family, no `surface` token, hairlines below 3:1, thin dark-track separation, Circular proprietary, tap targets documented not measured, mockup pointer behaviour unobserved. |
 
 No hex was altered. No token was renamed. No extracted `components:` binding was re-pointed.
@@ -75,8 +77,15 @@ All computed with WCAG 2.1 relative luminance via a `python3` snippet, not estim
 | `hairline-cool-3` `#d4d4d4` on `canvas` | 1.48:1 | 3.0 | **Fail** — extracted, frozen, disclosed |
 | `hairline-cool` `#ededed` on `canvas` | 1.17:1 | 3.0 | **Fail** — extracted, frozen, disclosed |
 | `hairline-cool-2` `#efefef` on `canvas` | 1.15:1 | 3.0 | **Fail** — extracted, frozen, disclosed |
-| `ink` on `canvas-night` | 1.05:1 | 4.5 | **Fail, manufactured** — the file never draws this pair |
-| `ink-secondary` on `canvas-night` | 1.06:1 | 4.5 | **Fail, manufactured** — same |
+| `hairline-strong` on `canvas-soft` `#fafafa` | 1.62:1 | 3.0 | **Fail** — extracted, frozen, disclosed |
+| `hairline-cool-3` on `canvas-soft` | 1.42:1 | 3.0 | **Fail** — extracted, frozen, disclosed |
+| `hairline` on `canvas-soft` | 1.28:1 | 3.0 | **Fail** — extracted, frozen, disclosed |
+| `hairline-cool` on `canvas-soft` | 1.12:1 | 3.0 | **Fail** — extracted, frozen, disclosed |
+| `hairline-cool-2` on `canvas-soft` | 1.10:1 | 3.0 | **Fail** — extracted, frozen, disclosed |
+| `ink-mute-2` on `canvas-soft` | 2.70:1 | 4.5 | **Fail** — disclosed, withdrawn from light-track text |
+| `ink-faint` on `canvas-soft` | 2.03:1 | — | Exempt (placeholder / disabled); disclosed |
+| `ink` on `canvas-night` | 1.05:1 | 4.5 | **Fail, never rendered** — the file never draws this pair |
+| `ink-secondary` on `canvas-night` | 1.06:1 | 4.5 | **Fail, never rendered** — same |
 | `canvas` / `canvas-soft` (layer separation) | 1.04:1 | — | Layering rests on hairlines and `{shadow.*}`, not tone |
 | `canvas-night` / `canvas-night-soft` | 1.05:1 | — | Nested dark chrome needs a border; extracted |
 | `primary` `#3ecf8e` on `canvas` (why it is not the ring) | 2.00:1 | 3.0 | Fail — emerald rejected as focus colour |
@@ -107,11 +116,13 @@ Every exit is shorter than its entrance. The 800ms loader is the only infinite a
 
 ### Shared issues (not fixed)
 
-| File | Issue | Proposed fix |
+Nothing outstanding. All three harness issues this audit found were fixed upstream by other agents **while this review was in progress** — `audit.py` changed under me between my first and second harness runs (commits `dd934af`, `b805d65`). Recorded here because each was a live finding, each is the SPEC section 1 "satisfies a role wrongly" case, and the fixes changed this file's own measurements.
+
+| File | Issue | Status |
 |---|---|---|
-| `theme-audit/audit.py` lines 234–261 | `surface` role inference resolves to `canvas-night` for this file, then measures the light-track inks against it: `ink on canvas-night` 1.05:1 and `ink-secondary on canvas-night` 1.06:1. Both are manufactured. The light cards (`card-feature-light`, `card-pricing`) are skipped by the `colors[m.group(1)] == canvas_hex` guard on line 251 because this brand's cards are white on white, separated by a hairline; the only remaining container fill is the deliberately inverted dark tier, so the role lands on the opposite polarity. Every component bound to `canvas-night` sets `textColor: {colors.on-dark}` at 17.04:1, so the pair the harness measures cannot render. | Require the inferred surface to share the canvas polarity — reject a candidate whose luminance sits on the other side of the 0.2 threshold from the canvas. Then prefer `canvas-soft` `#fafafa`, the file's nearest raised neutral, or, where every container fill equals the canvas hex, fall back to the canvas itself and report `surface=canvas` so the contrast checks measure a pair the file actually draws. The present behaviour is the "satisfies a role wrongly" case SPEC section 1 names: it hides the real card ground and measures against one the site never renders. |
-| `theme-audit/audit.py` line 632 | `durations_found` picks up `001` from the `animation-duration: 0.001ms` in the reduced-motion block, which is a correct way to write that rule. Cosmetic — it only affects the reported list, not any score. | Match `\b(\d{2,4})ms\b` only where not preceded by `.`, or drop values below 10ms from the list. |
-| `theme-audit/audit.py` lines 29–33 | `text-dim` patterns match `^ink-(muted|...)` but not `ink-mute`, so this file's `ink-mute` `#707070` and `ink-mute-2` `#9a9a9a` are never measured as secondary text. `ink-mute-2` at 2.81:1 on white is a real AA failure the harness does not see; it is disclosed in the file regardless. | Add `mute` beside `muted` in the alternation: `^ink-(muted?|subtle|soft|…)`. |
+| `theme-audit/audit.py` surface inference (was lines 234–261) | `surface` resolved to `canvas-night`, then measured the light-track inks against it: `ink on canvas-night` 1.05:1, `ink-secondary on canvas-night` 1.06:1. Both pairs are manufactured — every component this file binds to `canvas-night` sets `textColor: {colors.on-dark}` at 17.04:1. The cause was the `colors[...] == canvas_hex` guard skipping the light cards, because this brand's cards are white on white separated by a hairline, leaving the deliberately inverted dark tier as the only container fill. My proposed fix was: require the inferred surface to share the canvas polarity, then prefer `canvas-soft` `#fafafa`. | **Fixed upstream** by `dd934af`, which added a canvas-prefixed raised-tone preference and now resolves `surface=canvas-soft` — the value I was going to argue for. This surfaced 3 new real failures on the `canvas-soft` band (`hairline-strong` 1.62:1, `ink-mute-2` 2.70:1, `ink-faint` 2.03:1), which I then disclosed; see Changes made. |
+| `theme-audit/audit.py` `durations_found` | Picked up `001` from `animation-duration: 0.001ms` in the reduced-motion block, which is a correct way to write that rule. Cosmetic — it never affected a score. | **Fixed upstream** by `b805d65`; `durations_found` is now clean for this file. |
+| `theme-audit/audit.py` `text-dim` patterns | `^ink-(muted\|...)` did not match `ink-mute`, so this file's `ink-mute` `#707070` and `ink-mute-2` `#9a9a9a` were never measured as secondary text, hiding a real AA failure (`ink-mute-2` at 2.81:1 on white). | **Fixed upstream** by `dd934af`, which added `mute` and `faint` to the alternation. Both tones are now measured and both are disclosed in the file. |
 
 ### Needs approval
 
