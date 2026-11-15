@@ -214,8 +214,8 @@ def audit(path):
     # --- required token roles -------------------------------------------
     roles = {role: find_role(colors, cands) for role, cands in REQUIRED_COLOR_ROLES.items()}
     if not roles.get("surface"):
-        CONTAINERISH = re.compile(r"(card|panel|band|tile|well|strip|rail|bar|"
-                                  r"pill|surface|sheet|modal|drawer)")
+        CONTAINERISH = re.compile(r"(card|panel|band|tile|well|surface|sheet|"
+                                  r"modal|drawer|section|container)")
         canvas_hex = colors.get(roles.get("canvas") or "", None)
         for cname, props in parse_components(text).items():
             if not CONTAINERISH.search(cname):
@@ -357,20 +357,27 @@ def audit(path):
 
     # Every token a component actually binds as a boundary, whatever its name
     # and whether or not a pattern already satisfied the role.
-    bound_borders = set()
+    bound_borders = {}
     for props in parse_components(text).values():
+        own_bg = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                              props.get("backgroundColor") or "")
+        ground = own_bg.group(1) if own_bg and own_bg.group(1) in colors else None
         for prop in ("borderColor", "border", "outlineColor"):
             m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get(prop) or "")
             if m and m.group(1) in colors:
-                bound_borders.add(m.group(1))
-    for key in bound_borders:
-        for bg_role in ("canvas", "surface"):
-            bg = roles.get(bg_role)
-            if not bg or not same_theme(key, bg):
+                bound_borders.setdefault(m.group(1), set()).add(ground)
+    for key, grounds in bound_borders.items():
+        # The component's own ground where it declares one; the page only for
+        # components that declare none.
+        targets = [g for g in grounds if g] or \
+                  [roles[rl] for rl in ("canvas", "surface") if roles.get(rl)]
+        for bg in dict.fromkeys(targets):
+            if not same_theme(key, bg):
                 continue
-            ratio = round(contrast(colors[key], colors[bg]), 2)
+            fg_hex = effective(key, colors[bg])
+            ratio = round(contrast(fg_hex, colors[bg]), 2)
             if ratio < 3.0:
-                fails.append({"pair": f"{key} on {bg}", "fg": colors[key],
+                fails.append({"pair": f"{key} on {bg}", "fg": fg_hex,
                               "bg": colors[bg], "ratio": ratio, "required": 3.0,
                               "role": "bound boundary"})
 
@@ -561,6 +568,8 @@ def audit(path):
             if not ((fg_name and fg_name in line) or target in line):
                 continue
             for stated in re.findall(r"(\d+(?:\.\d+)?)\s*:\s*1", line):
+                if abs(float(stated) - f["required"]) < 1e-9:
+                    continue        # the Required column, not a measurement
                 if round(abs(float(stated) - f["ratio"]), 2) <= 0.06:
                     return True
         return False

@@ -40,6 +40,12 @@ has no job but to match a regex. So where the file already owns a passing tone
 that does the boundary work, use it and add nothing; add a parallel token only
 when nothing in the palette can carry the job.
 
+Where a required role is genuinely **absent from the brand** rather than merely
+misnamed — a system with one ink per polarity and no muted tone at all — leave
+it unfilled, say so in Known Gaps with the evidence, and accept the lost point.
+Inventing a muted grey to fill a column would falsify the brand, which is worse
+than a 4.
+
 **The focus role is the one exception.** A ring has to be addressable as
 `focus*` for the file and the harness to speak about it at all, so defining
 `focus: <a hex the palette already owns>` is a real role binding and not an
@@ -65,7 +71,7 @@ carry tokens that exist only to please a regex:
 | `border` | hairline, divider, component boundary |
 | `accent` | the brand's signal colour |
 | `on-accent` | text or icon sitting on the accent |
-| `focus` | focus ring — **currently absent from all 84 files** |
+| `focus` | focus ring — absent from nearly every file at the start of this audit, but check: a few define one already (oracle's `#227e9e` is extracted and correct on light grounds), and a file that has one needs no second ring unless a second polarity demands it |
 
 Where a file documents both light and dark signature surfaces, one ring cannot
 serve both: a blue that passes on white can sit at 1.2:1 on a coral card. Such a
