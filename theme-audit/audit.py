@@ -419,14 +419,18 @@ def audit(path):
     ACCENTISH = re.compile(r"^(primary|accent|brand|cta|secondary|success|warning|"
                            r"error|danger|info|semantic|positive|negative|trading|"
                            r"badge|price|commerce|buy|sale)")
-    for props in parse_components(text).values():
+    CONTAINER = re.compile(r"(card|panel|band|hero|section|footer|header|modal|"
+                           r"drawer|sheet|nav|sidebar|surface|page|canvas|well|"
+                           r"tile|strip|rail|table|form)")
+    for name, props in parse_components(text).items():
         m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("backgroundColor") or "")
         if not m or m.group(1) not in colors or m.group(1) in surface_keys:
             continue
-        # A signal fill is not a ground a ring must clear: requiring both the
-        # page behind a control and the control's own fill is arithmetically
-        # impossible, which is why accent targets were dropped in 34a4499.
-        if ACCENTISH.match(m.group(1)):
+        # A ring must clear the grounds it is drawn ON, not the fills of the
+        # controls it surrounds — requiring both is arithmetically impossible
+        # (see 34a4499). Decided by what the COMPONENT is, since a signal fill
+        # can be named anything: amber, nav-gold, commerce.
+        if ACCENTISH.match(m.group(1)) or not CONTAINER.search(name):
             continue
         surface_keys.append(m.group(1))
     accent_key = roles.get("accent")
@@ -554,7 +558,10 @@ def audit(path):
     # motion rule violations: animating layout-triggering properties
     NEGATED = re.compile(r"\b(don't|do not|never|avoid|no|rather than|instead of|not)\b", re.I)
     bad = set()
-    for line in text.split("\n"):
+    # Join hard-wrapped prose so a prohibition split across two lines is still
+    # read as one clause.
+    unwrapped = re.sub(r"\n(?=[a-z`(])", " ", text)
+    for line in unwrapped.split("\n"):
         for m in re.finditer(r"animat\w*[^.\n]{0,60}?\b(width|height|top|left|margin)\b",
                              line, re.I):
             # Look at the clause leading up to the match; a prohibition is fine.
