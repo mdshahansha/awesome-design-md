@@ -261,27 +261,6 @@ def audit(path):
             roles["surface"] = candidates[0]
             r.setdefault("roles_from_bindings", []).append("surface=" + candidates[0])
 
-    if not roles.get("text-dim") and roles.get("canvas"):
-        # The most muted ink a component actually draws on the canvas: lowest
-        # contrast against it, while still being used as text.
-        cands = []
-        for props in parse_components(text).values():
-            fgm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get("textColor") or "")
-            if not fgm or fgm.group(1) not in colors:
-                continue
-            k = fgm.group(1)
-            if k == roles.get("text"):
-                continue
-            # Same polarity as the canvas, measured — same_theme is not yet in
-            # scope here, and a dark-track ink must not claim the light role.
-            if (luminance(colors[k]) < 0.2) == (luminance(colors[roles["canvas"]]) < 0.2):
-                continue
-            cands.append(k)
-        if cands:
-            pick = min(cands, key=lambda k: contrast(colors[k], colors[roles["canvas"]]))
-            roles["text-dim"] = pick
-            r.setdefault("roles_from_bindings", []).append("text-dim=" + pick)
-
     # A role no pattern can guess by name is still resolvable from what the
     # components bind. Mercury's boundaries are `fog` and `slate`; both are
     # declared as borderColor, which is better evidence than any regex.
@@ -318,11 +297,20 @@ def audit(path):
 
     if canvas_key:
         for role in ("border", "focus", "text-dim"):
-            if roles.get(role):
-                roles[role] = find_role_strongest(
-                    colors, REQUIRED_COLOR_ROLES[role], canvas_key)
-    r["roles_resolved"] = {k: v for k, v in roles.items() if v}
-    r["roles_missing"] = sorted(k for k, v in roles.items() if not v)
+            if not roles.get(role):
+                continue
+            # Never let the strongest-variant pick erase a role: a
+            # binding-derived token like `fog` matches no pattern, so this
+            # returned None and the role read as missing (agent A35, A51).
+            strongest = find_role_strongest(colors, REQUIRED_COLOR_ROLES[role],
+                                            canvas_key)
+            if strongest:
+                roles[role] = strongest
+    def _report_roles():
+        r["roles_resolved"] = {k: v for k, v in roles.items() if v}
+        r["roles_missing"] = sorted(k for k, v in roles.items() if not v)
+
+    _report_roles()
 
     # --- dangling {group.token} references ------------------------------
     dangling = set()
@@ -336,6 +324,7 @@ def audit(path):
     r["dangling_refs"] = sorted(dangling)
 
     # --- contrast -------------------------------------------------------
+    _report_roles()      # again, after every fallback has had its say
     fails = []
 
     # Only treat a light/dark marker as a THEME when the file actually has an
