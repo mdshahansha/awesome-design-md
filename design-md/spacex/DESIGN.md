@@ -418,6 +418,9 @@ Every ratio below is computed from this file's own frontmatter hexes with WCAG 2
 | `hairline-on-dark` `#3a3a3f` / `canvas-night` `#000000` | 1.86:1 | 3.0:1 | **Real, extracted failure**, and one the harness does not currently report (see Shared issues). Scoped to decoration; boundaries that must be seen on dark use `{colors.on-primary}` at 21:1, which is what the ghost CTA already does. |
 | `link-blue-fallback` `#0000ee` / `canvas-night` | 2.23:1 | 4.5:1 | The unstyled browser default, documented for completeness only. It must never render on the dark canvas; if a link ever falls back, the canvas falls back with it. |
 | `ink` `#000000` / `canvas-night` `#000000` | 1.0:1 | 4.5:1 | **A manufactured pair, not a defect.** `ink` is the shop site's light-surface ink; the marketing canvas never carries it. Dark-canvas body text is `{colors.on-primary}` at 21:1. The harness resolves the `text` role to `ink` and measures it on the black canvas; the pairing does not exist in the product. Disclosed here because the harness reports it. |
+| `ink` `#000000` / `canvas-night-soft` `#0a0a0a` | 1.06:1 | 4.5:1 | **Manufactured, same cause.** The light-surface ink on the dark raised surface. Body text there is `{colors.on-primary}` at 19.8:1. |
+| `ink-mute` `#5a5a5f` / `canvas-night` `#000000` | 3.06:1 | 4.5:1 | **Manufactured.** `ink-mute` is defined as secondary text *on light surfaces*; it is never drawn on the black canvas. Dark-canvas secondary text is `{colors.on-primary-mute}` at 18.55:1. |
+| `ink-mute` `#5a5a5f` / `canvas-night-soft` `#0a0a0a` | 2.89:1 | 4.5:1 | **Manufactured, same cause.** Dark-surface secondary text is `{colors.on-primary-mute}` at 17.49:1. Note that `ink-mute` *does* clear 3:1 on pure black (3.06:1) but not on `canvas-night-soft`, so it would be an unreliable dark hairline as well — see Needs approval in the audit report. |
 
 ### Focus ring visibility, surface by surface
 
