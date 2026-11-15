@@ -181,7 +181,7 @@ def audit(path):
     text = open(path).read()
     groups, body = parse_frontmatter(text)
     raw_colors = groups.get("colors", {})
-    colors = {k: v for k, v in raw_colors.items()
+    colors = {k: v.lower() for k, v in raw_colors.items()
               if re.fullmatch(r"#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}", v)}
 
     # Composite any rgba()/rgb() tokens over the canvas, so an opacity ladder is
@@ -535,15 +535,6 @@ def audit(path):
                                   "ratio": ratio, "required": 4.5,
                                   "role": "semantic tone as text"})
     check("border", "canvas", 3.0, "component boundary")
-    def achromatic(hexstr):
-        h = hexstr.lstrip("#")
-        h = "".join(c * 2 for c in h) if len(h) == 3 else h[:6]
-        rgb = [int(h[i:i + 2], 16) for i in (0, 2, 4)]
-        return max(rgb) - min(rgb) <= 8
-
-    # An inner or inset band of a composite ring is meant to match the surface
-    # it sits on — WCAG 2.2 Focus Appearance measures the two bands against
-    # each other, not against the background. Measured separately below.
     RINGISH = re.compile(r"(^|[-_])(focus|ring)($|[-_])")
     focus_tokens = [k for k in colors if RINGISH.search(k)
                     and not re.search(r"(inner|inset|halo)", k)]
@@ -642,10 +633,13 @@ def audit(path):
             continue
         bg, fg = deref(props.get("backgroundColor")), deref(props.get("textColor"))
         declared_bg = (props.get("backgroundColor") or "").strip().lower()
-        if declared_bg in ("transparent", "none", "inherit"):
-            continue                            # ground not stated; nothing to measure
+        if declared_bg and not bg:
+            # Stated but unresolvable — transparent, a gradient, a photograph.
+            # The ground is not a colour we can measure, so measure nothing
+            # rather than substituting the page and inventing a failure.
+            continue
         if fg and not bg and roles.get("canvas"):
-            bg = colors[roles["canvas"]]        # drawn on the page floor
+            bg = colors[roles["canvas"]]        # no ground stated: the page floor
         if not bg or not fg:
             continue
         need = threshold_for(props)

@@ -281,6 +281,13 @@ motion:
 Deviate from a value only with a reason stated in the file, and never to the
 point where two files sharing a profile stop feeling like siblings.
 
+**An extracted timing beats a prescribed one.** Where the source records a real
+duration or easing curve — tesla's 0.33s and its one cubic-bezier — keep it,
+label it extracted, and say in the file which profile value it displaces. The
+profile exists to fill a vacuum, not to overwrite a fact. Comparability is
+worth less than accuracy, and a file that mixes the two must say where the seam
+is.
+
 ## 5. Motion profiles
 
 Each site gets exactly one, assigned in `roster.md` from observable signals in
