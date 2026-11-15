@@ -380,6 +380,7 @@ def audit(path):
     check("text", "surface", 4.5, "body text on surface")
     check("text-dim", "canvas", 4.5, "secondary text")
     check("text-dim", "surface", 4.5, "secondary text on surface")
+    check("on-accent", "accent", 4.5, "text on the accent")
     check_all("text-dim", "canvas", 4.5, "secondary text, all tones")
     check_all("text", "canvas", 4.5, "body text, all tones")
     check_all("text", "surface", 4.5, "body text on surface, all tones")
@@ -666,12 +667,17 @@ def audit(path):
     NOT_DOCUMENTED = re.compile(
         r"not (captured|documented|extracted|observed|specified|stated|available)"
         r"|undocumented|unknown|n/?a\b", re.I)
-    structured = "\n".join(line for line in comp.split("\n")
-                           if (line.lstrip().startswith(("|", "-", "*"))
-                               or re.search(r"\*\*[^*]+\*\*\s*[:—-]", line))
-                           # A row that says the state was not captured is not
-                           # documentation of that state.
-                           and not NOT_DOCUMENTED.search(line))
+    def keep_cells(line):
+        """Drop only the cells that disclaim a state, not the whole row."""
+        if "|" in line:
+            cells = [c for c in line.split("|") if not NOT_DOCUMENTED.search(c)]
+            return "|".join(cells)
+        return "" if NOT_DOCUMENTED.search(line) else line
+
+    structured = "\n".join(
+        keep_cells(line) for line in comp.split("\n")
+        if (line.lstrip().startswith(("|", "-", "*"))
+            or re.search(r"\*\*[^*]+\*\*\s*[:—-]", line)))
     hay = structured.lower()
     def documents(word):
         return re.search(rf"(?<![a-z]){re.escape(word)}(?![a-z])", hay) is not None
