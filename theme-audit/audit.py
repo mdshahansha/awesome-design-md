@@ -247,6 +247,26 @@ def audit(path):
     check_all("text-dim", "canvas", 4.5, "secondary text, all tones")
     check_all("text-dim", "surface", 4.5, "secondary text on surface, all tones")
     check_all("border", "canvas", 3.0, "boundary, all tones")
+
+    # Semantic tones, measured as text on the canvas. Many are used as fills,
+    # where 1.4.3 does not apply, so a failure here is a prompt for a usage
+    # note rather than proof of a defect — but it must be visible either way.
+    SEMANTIC = (r"^success", r"^warning", r"^error", r"^danger", r"^info",
+                r"^semantic-", r"^positive", r"^negative")
+    canvas_key = roles.get("canvas")
+    if canvas_key:
+        for pat in SEMANTIC:
+            for key in colors:
+                if not re.match(pat, key) or "disabled" in key:
+                    continue
+                if not same_theme(key, canvas_key):
+                    continue
+                ratio = round(contrast(colors[key], colors[canvas_key]), 2)
+                if ratio < 4.5:
+                    fails.append({"pair": f"{key} on {canvas_key}",
+                                  "fg": colors[key], "bg": colors[canvas_key],
+                                  "ratio": ratio, "required": 4.5,
+                                  "role": "semantic tone as text"})
     check("border", "canvas", 3.0, "component boundary")
     def achromatic(hexstr):
         h = hexstr.lstrip("#")
@@ -306,13 +326,19 @@ def audit(path):
     acc_lines = [l for l in acc.split("\n") if re.search(r"\d+(\.\d+)?\s*:\s*1", l)]
 
     def disclosed(f):
-        """Named on a line that also states a measured ratio."""
+        """Named on a line that states this pair's own measured ratio."""
         if not acc_lines:
             return False
         fg_name = (f["pair"].split(" on ")[0] if "pair" in f
                    else f.get("component", "")).lower()
         target = f["fg"].lower()
-        return any((fg_name and fg_name in l) or target in l for l in acc_lines)
+        for line in acc_lines:
+            if not ((fg_name and fg_name in line) or target in line):
+                continue
+            for stated in re.findall(r"(\d+(?:\.\d+)?)\s*:\s*1", line):
+                if abs(float(stated) - f["ratio"]) <= 0.06:
+                    return True
+        return False
 
     seen, deduped = set(), []
     for f in fails:

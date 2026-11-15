@@ -29,7 +29,7 @@ C. Background and elevation: compute the ratios between canvas, surface and rais
 D. Typography: does every role have size, weight and line height? Is body text readable on this file's own surfaces?
 E. Borders, radius, focus ring: internally consistent ladders, with no value sitting outside its own scale.
 F. Motion and animation — the main gap, and the reason this audit exists. Add:
-   - a `motion:` group to the frontmatter carrying the **Cinematic** profile's values per SPEC section 5;
+   - a `motion:` group to the frontmatter carrying the **Cinematic** profile's literal token block from SPEC section 5 (the blocks are printed there under the profile table);
    - a `## Motion & Animation` section placed after `## Components`, whose FIRST line states that this motion system is prescribed to match the brand's visual identity and was not measured from the live site;
    - inside it, a table of interaction x duration x easing x property x reduced-motion behaviour covering hover, press, focus, page transition, modal or drawer, dropdown, toast, list enter, list exit and loading;
    - a `@media (prefers-reduced-motion: reduce)` rule stating what is removed and what remains.

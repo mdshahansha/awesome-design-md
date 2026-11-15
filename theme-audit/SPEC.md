@@ -145,7 +145,7 @@ motion:
   duration-reduced: 150ms
 ```
 
-Values are per profile. Use the profile's block verbatim, so the same
+Values are per profile. Use your profile's block from section 5 verbatim, so the same
 interaction is comparable across every file that shares a profile:
 
 **Crisp**
