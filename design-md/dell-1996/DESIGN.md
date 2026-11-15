@@ -13,6 +13,10 @@ colors:
   yellow-sticker: "#fcc20f"
   purple-stripe: "#6a26a4"
   link: "#0000ee"
+  hairline: "#000000"          # extracted: every 1px rule on the page is frame-ink black
+  text-muted: "#666666"        # PRESCRIBED, not extracted — see Accessibility
+  focus: "#000000"             # PRESCRIBED — 2px black ring for light surfaces
+  focus-on-dark: "#ffffff"     # PRESCRIBED — white ring on the black frame/banner/button-primary
 
   # Ribbon-card tint family (one per product line)
   tint-olive: "#8e8a25"
@@ -89,6 +93,30 @@ typography:
 rounded:
   none: 0px
   full: 9999px
+
+shadow:
+  none: none
+  bevel: "2px 2px 0 #000000"
+  bevel-inset: "inset 1px 1px 0 #ffffff, inset -1px -1px 0 #000000"
+
+motion:
+  duration-instant: 80ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-emphasis: 500ms
+  ease-standard: cubic-bezier(0.4, 0, 0.2, 1)
+  ease-enter: cubic-bezier(0.2, 0, 0.2, 1)
+  ease-exit: cubic-bezier(0.4, 0, 1, 1)
+  stagger-step: 40ms
+  duration-reduced: 150ms
+
+focus-ring:
+  width: 2px
+  style: solid
+  offset: 1px
+  color: "{colors.focus}"
+  color-on-dark: "{colors.focus-on-dark}"
 
 spacing:
   xxs: 2px
@@ -324,7 +352,7 @@ components:
     rounded: "{rounded.none}"
     padding: "{spacing.lg}"
   ex-modal-card:
-    description: "Modal dialog surface — same chrome as feature-card with elevated shadow."
+    description: "Modal dialog surface — same chrome as feature-card, elevated with a hard {shadow.bevel} offset, never a soft shadow."
     backgroundColor: "{colors.surface}"
     rounded: "{rounded.none}"
     padding: "{spacing.lg}"
@@ -335,7 +363,7 @@ components:
     padding: "{spacing.xl}"
     captionTypography: "{typography.body}"
   ex-toast:
-    description: "Toast notification surface — feature-card shape + medium shadow."
+    description: "Toast notification surface — feature-card shape + hard {shadow.bevel} offset."
     backgroundColor: "{colors.surface}"
     rounded: "{rounded.none}"
     padding: "{spacing.md} {spacing.lg}"
@@ -372,6 +400,11 @@ The brand voice carries through in two anchors: a vivid Dell-red CTA panel on th
 ### Text
 - **Ink** (`{colors.ink}` — #000000): Body text, headings, link copy before visit. Pure black; no warm-near-black softening in 1996.
 - **Link** (`{colors.link}` — #0000ee): Classic Mosaic / Netscape 3.x default link blue. Underlined inline anchors ("Copyright", "(Terms of Use)", inline "from Dell's award-winning service and support teams").
+
+### Boundary, Muted & Focus
+- **Hairline** (`{colors.hairline}` — #000000): Extracted. Every rule on the page — ribbon-card edge, table-cell divider, footer top border, input border — is the same pure black as the frame. There is no soft grey divider anywhere in the 1996 design, so `{colors.hairline}` and `{colors.frame-ink}` are the same value by design, not by omission. 21:1 on `{colors.canvas}`.
+- **Muted text** (`{colors.text-muted}` — #666666): **PRESCRIBED, not extracted.** The 1996 page has no secondary ink: body, caption and legal small print are all pure `{colors.ink}` black, and hierarchy is carried by size and family instead of by tone. #666666 is supplied for modern reproductions that need a muted caption tone; it is a web-safe 8-bit-palette value, so it is at least period-plausible. Use it only for `{typography.caption}` legal print; never for body copy. 5.74:1 on `{colors.canvas}`.
+- **Focus ring** (`{colors.focus}` — #000000 / `{colors.focus-on-dark}` — #ffffff): **PRESCRIBED, not extracted.** 1996 browsers drew their own dotted focus outline and the design never specified one. This brand has no chromatic UI accent to borrow — Dell red is reserved, the catalog tints are surfaces, and the link blue fails against both the red panel and the tints — so the ring follows the SPEC's monochrome rule: the brand's own ink, with a mandatory opposite-polarity ring on dark chrome. `{colors.focus}` measures 21:1 on `{colors.canvas}`, 4.67:1 on `{colors.primary}` and 5.81:1 on the lowest-contrast tint (`{colors.tint-olive}`). `{colors.focus-on-dark}` measures 21:1 on `{colors.frame-ink}`. Full table in Accessibility.
 
 ### Ribbon-Card Tint Family
 Eight catalog colors, one per product line — these are the page's chromatic personality:
@@ -436,7 +469,7 @@ All three families are operating-system defaults on every consumer OS shipped in
 ### Whitespace Philosophy
 Tight by modern standards. Catalog density wins over editorial breath — every pixel inside the black frame is doing work (illustration, color block, headline, body). The compensating decompression happens *inside* each ribbon card: white title bar + tinted body block + product photo notch creates internal breathing room without enlarging the overall page.
 
-### Responsive Strategy
+## Responsive Behavior
 
 #### Breakpoints
 | Name | Width | Key Changes |
@@ -462,10 +495,14 @@ Product photos are bitmap GIFs with hand-applied bevel shadows — they were aut
 
 | Level | Treatment | Use |
 |---|---|---|
-| 0 — Flush | No shadow, no border | Body text, copyright row, footer band background |
-| 1 — Hairline | `1px solid {colors.frame-ink}` | Ribbon-card outer edge, table-cell dividers |
+| 0 — Flush | `{shadow.none}` — no shadow, no border | Body text, copyright row, footer band background |
+| 1 — Hairline | `1px solid {colors.hairline}` | Ribbon-card outer edge, table-cell dividers |
 | 2 — Frame | `8px solid {colors.frame-ink}` | The page-frame border around the entire viewport |
-| 3 — Bevel | Hard-edge 1 px highlight + 1 px shadow on GIF stickers and product photos | "BUY a DELL" yellow sticker, NEW! bursts, award seals, product photographs |
+| 3 — Bevel | `{shadow.bevel-inset}` (hard 1 px highlight + 1 px shadow) plus `{shadow.bevel}` offset | "BUY a DELL" yellow sticker, NEW! bursts, award seals, product photographs |
+
+Elevation is expressed **one way only**: border weight. Levels 0–2 are a single ladder of black stroke widths (0 → 1 px → 8 px); level 3 is the same hard-edge idea baked into a GIF, offset by `{shadow.bevel}` (2 px, zero blur) rather than blurred. No level mixes a shadow with a border, and no level uses opacity.
+
+`{colors.canvas}` and `{colors.surface}` are both #ffffff — 1.0:1, deliberately indistinguishable. In this design a "card" is not a lighter plane floating above the page; it is the same white paper with a black rule drawn around it. Any reproduction that tints the surface to separate the layers has left the brand.
 
 There are **no soft shadows** in the 1996 design — every depth cue is either a hard 1 px border or a hand-painted bevel inside a GIF. Modern reproductions that need to feel period-accurate must resist the urge to add Material-style elevation or atmospheric drop shadows.
 
@@ -491,7 +528,49 @@ Product photos are rectangular GIFs with their own internal beveled "monitor" fr
 
 ## Components
 
-> **No hover states documented.** Per the global no-hover policy, every component below documents Default state only.
+> **State note.** The 1996 page had no interaction states to extract: HTML 3.2 offered `A:link / A:visited / A:active` and the browser's own button depress, nothing else. The matrix below is therefore **prescribed, not extracted** — it says which states each component needs in a modern reproduction, and which components genuinely have only one. Visuals stay inside the brand's vocabulary: black stroke weight, polarity flip, and the `{focus-ring.width}` `{colors.focus}` ring. No new hue is introduced for any state.
+
+### State Matrix
+
+Legend: ● supported · ○ not applicable · state visuals are listed under the table.
+
+| Component | default | hover | focus-visible | pressed | disabled | loading | selected | error |
+|---|---|---|---|---|---|---|---|---|
+| `page-frame` | ● | ○ | ○ | ○ | ○ | ○ | ○ | ○ |
+| `top-banner` | ● | ○ | ○ | ○ | ○ | ○ | ○ | ○ |
+| `section-eyebrow-olive` / `-salmon` | ● | ○ | ○ | ○ | ○ | ○ | ○ | ○ |
+| `ribbon-card-title` | ● | ● | ● | ● | ○ | ○ | ● | ○ |
+| `ribbon-card-body-<tint>` (all 7) | ● | ● | ● | ● | ○ | ○ | ● | ○ |
+| `cta-block-red` | ● | ● | ● | ● | ○ | ○ | ○ | ○ |
+| `phone-callout` | ● | ● | ● | ● | ○ | ○ | ○ | ○ |
+| `buy-a-dell-sticker` | ● | ● | ● | ● | ○ | ○ | ○ | ○ |
+| `new-burst-sticker` | ● | ○ | ○ | ○ | ○ | ○ | ○ | ○ |
+| `cert-seal` | ● | ○ | ○ | ○ | ○ | ○ | ○ | ○ |
+| `icon-label-nav` | ● | ● | ● | ● | ○ | ○ | ● | ○ |
+| `text-input` | ● | ● | ● | ○ | ● | ○ | ○ | ● |
+| `button-primary` | ● | ● | ● | ● | ● | ● | ○ | ○ |
+| `button-secondary` | ● | ● | ● | ● | ● | ● | ○ | ○ |
+| `button-text-link` | ● | ● | ● | ● | ● | ○ | ○ | ○ |
+| `footer-band` | ● | ○ | ○ | ○ | ○ | ○ | ○ | ○ |
+| `ex-pricing-tier` / `-featured` | ● | ● | ● | ● | ○ | ○ | ● | ○ |
+| `ex-product-selector` | ● | ● | ● | ● | ○ | ○ | ● | ○ |
+| `ex-cart-drawer` | ● | ○ | ● | ○ | ○ | ● | ○ | ● |
+| `ex-app-shell-row` | ● | ● | ● | ● | ● | ○ | ● | ○ |
+| `ex-data-table-cell` | ● | ● | ● | ○ | ○ | ● | ● | ● |
+| `ex-auth-form-card` | ● | ○ | ● | ○ | ○ | ● | ○ | ● |
+| `ex-modal-card` | ● | ○ | ● | ○ | ○ | ○ | ○ | ○ |
+| `ex-empty-state-card` | ● | ○ | ○ | ○ | ○ | ○ | ○ | ○ |
+| `ex-toast` | ● | ○ | ● | ○ | ○ | ○ | ○ | ● |
+
+State visuals, used identically everywhere:
+
+- **hover** — underline appears (anchors) or the 1 px `{colors.hairline}` border thickens to 2 px. No fill change, no lift, no hue.
+- **focus-visible** — `{focus-ring.width}` (2 px) solid `{colors.focus}` ring at `{focus-ring.offset}` 1 px outside the element; on `{colors.frame-ink}` chrome (`top-banner`, `button-primary`, `phone-callout`, `page-frame`) the ring switches to `{colors.focus-on-dark}`.
+- **pressed** — polarity flip: `button-primary` inverts to `{colors.canvas}` fill / `{colors.ink}` label; `button-secondary` inverts to black fill / white label. This is the era's own button-depress idiom, not a scale pop.
+- **disabled** — label and border drop to `{colors.text-muted}`, fill stays `{colors.canvas}`, cursor `not-allowed`. Exempt from the 4.5:1 threshold per WCAG.
+- **loading** — label replaced by a 3-glyph Times Roman ellipsis cycling at `{motion.duration-slow}`; the only moving thing on the page, and the nearest honest analogue to the era's animated-GIF "working" badge.
+- **selected** — the active product family's `ribbon-card-title` gains a 2 px `{colors.hairline}` left edge; `ex-app-shell-row` uses `{colors.primary}` as a 3 px left indicator. No fill tint, since the fill already encodes the product line.
+- **error** — 1 px border becomes 2 px `{colors.primary}`, with the message in `{typography.body-sm}` `{colors.primary}` beneath the field. Dell red is permitted here as a system signal; it does **not** count against the one-CTA-per-page rule.
 
 ### Frame & Banner
 
@@ -611,6 +690,119 @@ All seven share identical chrome: 1 px solid `{colors.frame-ink}` border, `{spac
 - Properties: `backgroundColor`, `rounded`, `padding`, `typography`
 
 
+## Motion & Animation
+
+**This motion system is prescribed to match the brand's visual identity and was not measured from the live site.** It cannot have been: the captured pages predate CSS transitions, `requestAnimationFrame` and every scripted easing curve on the modern web. In December 1996 the only moving pixels on Dell.com were animated GIFs and the browser's own repaint, and the only "transition" between two states was a full page load over a 28.8k modem. So nothing below is an extracted fact — it is an interpretation, written to the question *"if this catalog page had a motion vocabulary, what would be consistent with it?"* rather than *"what does a 2020s product do here?"*.
+
+Judged against the era's design language, that answer is: **almost nothing should move.** The page's whole argument is that it is a printed object — a bordered picture frame, flat 8-bit colour blocks, hand-cut paper stickers pinned on top. Print does not ease. So the assigned **Calm** profile is applied here as a *ceiling rather than a target*:
+
+- **Opacity only, wherever opacity will do.** Travel is capped at 2 px and scale is never used. Calm's "short opacity-led fades, little travel" is read literally: a card does not slide in, it simply becomes present.
+- **Interaction feedback runs at `{motion.duration-instant}` (80ms), not `{motion.duration-base}`.** A 1996 button state change was a discrete repaint with no interpolation; 80ms is the shortest token the profile owns and reads as instant while still being a transition.
+- **No entrance choreography on the ribbon-card stack beyond a single `{motion.stagger-step}` fade.** The catalog grid is meant to be read as one printed spread, not revealed row by row.
+- **Nothing eases on first paint.** The frame, banner and ribbon stack render at full opacity; a brochure does not fade up.
+
+Calm is also the right assignment under SPEC section 5's rules, and I kept it. Rule 1 does not apply — Dell in 1996 sold commodity beige boxes on price and a phone number, and the file contains no full-bleed photography, no sparse type and no slow reveal; a Cinematic reading would be a 2010s premium-hardware idea imposed on a catalog. Rule 2 does not apply: this is enterprise retail, not a developer tool — though it is the near miss, since Crisp's "state change reads as instant; no entrance choreography" describes 1996 exactly. That is why interaction feedback here sits at the profile's instant token: Calm's token block, read at its fastest end, lands on the same behaviour Crisp would have prescribed, while keeping this file comparable with every other Calm sibling. Rule 3 does not apply despite eight saturated tints, because the tints are static card fills behind product copy, never interactive elements, and the type voice (Arial Black / Times Roman) is anything but informal. So rule 4: **Calm**.
+
+| Interaction | Duration | Easing | Property | Reduced-motion behaviour |
+|---|---|---|---|---|
+| Hover (buttons, anchors, ribbon-card rows) | `{motion.duration-instant}` 80ms | `{motion.ease-standard}` | `opacity` on the underline/2 px border overlay | Unchanged — already 80ms, opacity only, no travel |
+| Press / active (`button-primary`, `button-secondary`) | `{motion.duration-instant}` 80ms | `{motion.ease-standard}` | `opacity` cross-fade of the polarity-flipped fill | Unchanged — polarity flip is not travel or scale |
+| Focus-visible ring | `{motion.duration-instant}` 80ms | `{motion.ease-enter}` | `opacity` of the 2 px `{colors.focus}` ring | Ring appears at full opacity with no transition; visibility is never animated away |
+| Page / route transition | `{motion.duration-fast}` 150ms in, `{motion.duration-instant}` 80ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` of the content area only — the `page-frame` and `top-banner` never move or fade | Cross-fade at `{motion.duration-reduced}` 150ms; no travel to remove |
+| Modal / drawer | `{motion.duration-base}` 250ms in, `{motion.duration-fast}` 150ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(2px → 0)`; scrim `opacity` 0 → 0.6 | Travel dropped; `opacity` fade only at `{motion.duration-reduced}` 150ms |
+| Dropdown / select menu | `{motion.duration-fast}` 150ms in, `{motion.duration-instant}` 80ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` only — the panel is a hard-bordered white rectangle that appears, as a 1996 menu did | Unchanged — already opacity only; fade clamped to `{motion.duration-reduced}` 150ms |
+| Toast (`ex-toast`) | `{motion.duration-base}` 250ms in, `{motion.duration-fast}` 150ms out | `{motion.ease-enter}` in, `{motion.ease-exit}` out | `opacity` + `transform: translateY(2px → 0)` | Travel dropped; `opacity` fade only at `{motion.duration-reduced}` 150ms |
+| List enter (ribbon-card stack, table rows) | `{motion.duration-base}` 250ms, `{motion.stagger-step}` 40ms per row, capped at 6 rows | `{motion.ease-enter}` | `opacity` only, no travel | Stagger removed; the whole list fades as one block at `{motion.duration-reduced}` 150ms |
+| List exit | `{motion.duration-fast}` 150ms, no stagger | `{motion.ease-exit}` | `opacity` only | Unchanged; clamped to `{motion.duration-reduced}` 150ms |
+| Loading (`button-primary`, `ex-cart-drawer`, `ex-data-table-cell`) | `{motion.duration-slow}` 400ms per step, infinite | `{motion.ease-standard}` | `opacity` of three Times Roman ellipsis glyphs in sequence | Loop frozen; a static "Working…" label in `{typography.body-sm}` replaces it |
+
+**Rules this file holds to.** Exit is always shorter than its matching entrance (250 → 150, 150 → 80). Never animate `width`, `height`, `top`, `left` or `margin`; `transform` and `opacity` only. Nothing animates on first paint in a way that delays content. The loading ellipsis is the only infinite loop, and it is a loader, not ambience — this brand has no ambient motion, and a reproduction that adds a drifting gradient or a looping sticker wiggle has invented something the era did not have. The `new-burst-sticker`'s ~15° rotation is a static transform, not an animation.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Removed: all travel (the 2px translateY on modal, drawer and toast),
+     all stagger (list enter collapses to one block), and the infinite
+     loading ellipsis loop, which freezes to a static "Working…" label. */
+  /* Kept: opacity fades, every one clamped to 150ms, and the focus ring,
+     which appears instantly and is never faded out. */
+  *, *::before, *::after {
+    transition-duration: 150ms !important;   /* {motion.duration-reduced} */
+    animation-duration: 150ms !important;    /* {motion.duration-reduced} */
+    animation-iteration-count: 1 !important;
+    transition-property: opacity !important;
+  }
+}
+```
+
+Nothing is lost at this setting: because the brand's motion vocabulary is opacity-led by construction, the reduced-motion rendering is the design, not a degraded fallback.
+
+## Accessibility
+
+### Measured contrast
+
+Computed with WCAG 2.1 relative luminance. Extracted brand values are frozen — where one fails, it is named here rather than corrected.
+
+| Pair | Ratio | Required | Result |
+|---|---|---|---|
+| `{colors.ink}` #000000 on `{colors.canvas}` #ffffff | 21.0:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.surface}` #ffffff | 21.0:1 | 4.5:1 | Pass |
+| `{colors.text-muted}` #666666 on `{colors.canvas}` | 5.74:1 | 4.5:1 | Pass |
+| `{colors.on-primary}` #ffffff on `{colors.primary}` #e91d2a | **4.49:1** | 4.5:1 | **Fail — see below** |
+| `{colors.hairline}` #000000 on `{colors.canvas}` | 21.0:1 | 3.0:1 | Pass |
+| `{colors.focus}` #000000 on `{colors.canvas}` | 21.0:1 | 3.0:1 | Pass |
+| `{colors.link}` #0000ee on `{colors.canvas}` | 9.4:1 | 4.5:1 | Pass |
+| `{colors.primary}` #e91d2a on `{colors.frame-ink}` #000000 (`phone-callout`) | 4.67:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.yellow-sticker}` #fcc20f | 12.86:1 | 4.5:1 | Pass |
+| `{colors.purple-stripe}` #6a26a4 on `{colors.yellow-sticker}` | 5.3:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.tint-olive}` #8e8a25 | 5.81:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.tint-salmon}` #d77a7a | 6.95:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.tint-periwinkle}` #8c9ae0 | 7.81:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.tint-peach}` #e6915d | 8.57:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.tint-sky}` #9ab6c8 | 9.9:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.tint-steel}` #a5b8c0 | 10.22:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.tint-sage}` #b3bd95 | 10.63:1 | 4.5:1 | Pass |
+| `{colors.ink}` on `{colors.tint-lime}` #c0d4a7 | 13.22:1 | 4.5:1 | Pass |
+
+### Disclosed failure: white on Dell red
+
+**`cta-block-red` — `{colors.on-primary}` #ffffff on `{colors.primary}` #e91d2a measures 4.49:1 against a 4.5:1 requirement, and fails.** The same pair fails on **`cert-seal`** at **4.49:1**. The real brand genuinely does not meet AA here, by one hundredth of a ratio point, and `{colors.primary}` is Dell's identity red — it is not changed in this document. Two defensible mitigations, neither of which touches the hex:
+
+1. Set the `cta-block-red` copy at 18.66px/700 or 24px+, where the WCAG large-text threshold of 3:1 applies and 4.49:1 passes comfortably. The panel is a single short sales paragraph, so promoting it from `{typography.body}` 14px to `{typography.heading-2}` 16px is **not** enough; `{typography.heading-1}` 24px/900 would clear it.
+2. Set the copy in `{colors.ink}` black on the red fill instead, which measures 4.67:1 and passes at any size — at the cost of the white-on-red look the 1996 panel actually had.
+
+Until one is chosen, this is a known, disclosed AA failure, not an oversight. `cert-seal` is decorative award imagery with its text duplicated in the adjacent body copy, so its 4.49:1 is the lower-risk of the two.
+
+### Focus ring visibility, per surface this file defines
+
+`{colors.focus}` #000000 at `{focus-ring.width}` 2px with `{focus-ring.offset}` 1px, except on black chrome where `{colors.focus-on-dark}` #ffffff is used instead.
+
+| Surface the ring is drawn over | Ring token | Ratio | Required | Result |
+|---|---|---|---|---|
+| `{colors.canvas}` / `{colors.surface}` #ffffff | `{colors.focus}` | 21.0:1 | 3.0:1 | Pass |
+| `{colors.primary}` #e91d2a (`cta-block-red`, `cert-seal`) | `{colors.focus}` | 4.67:1 | 3.0:1 | Pass |
+| `{colors.yellow-sticker}` #fcc20f (`buy-a-dell-sticker`) | `{colors.focus}` | 12.86:1 | 3.0:1 | Pass |
+| `{colors.tint-olive}` #8e8a25 — the worst case of the eight tints | `{colors.focus}` | 5.81:1 | 3.0:1 | Pass |
+| `{colors.tint-salmon}` #d77a7a | `{colors.focus}` | 6.95:1 | 3.0:1 | Pass |
+| All six remaining tints | `{colors.focus}` | 7.81–13.22:1 | 3.0:1 | Pass |
+| `{colors.frame-ink}` #000000 (`page-frame`, `top-banner`, `button-primary`, `phone-callout`) | `{colors.focus-on-dark}` | 21.0:1 | 3.0:1 | Pass |
+| Product-photo GIFs (no measurable fill) | `{colors.focus}` + 1px `{colors.focus-on-dark}` outer edge | n/a | 3.0:1 | Two-tone ring, per SPEC §1 |
+
+A single ring cannot serve this palette: `{colors.link}` #0000ee, the obvious brand-native choice, measures 9.4:1 on white but only **2.09:1 on `{colors.primary}`** and **2.60:1 on `{colors.tint-periwinkle}`**, so it is rejected. Black plus a white counterpart is both measurable and period-correct — 1996 browsers drew a black dotted outline, which is the ancestor of this ring.
+
+### Tap targets
+
+Not measurable from a document; this is a stated requirement, not an observation. 1996 assumed mouse-only input: the footer icon-label pairs sat at roughly 24 × 24px with an 8px label beneath, and `button-primary` at `{spacing.s}` 6px vertical padding on a `{typography.button}` 12px label computes to about 24px tall. Both are below the 44 × 44px minimum. Modern reproductions must pad `icon-label-nav` and every button to 44 × 44px minimum at all widths, without enlarging the glyph itself — the 24px icon stays 24px inside a 44px target, so the catalog density survives.
+
+### Reduced motion
+
+Honoured in full; see the `@media (prefers-reduced-motion: reduce)` block above. All travel and stagger are removed, every opacity fade is clamped to `{motion.duration-reduced}` 150ms, and the loading loop freezes to a static label. No information is conveyed by motion alone anywhere in this system.
+
+### Other standing issues
+
+- **Colour-only product coding.** The eight ribbon tints are the primary way product families are distinguished. Every card also carries its name in `{typography.heading-3}` in the title bar, so the coding is never colour-alone — keep that title bar in any reproduction that reorders or filters the cards.
+- **Serif body at 14px.** `{typography.body}` Times New Roman 14px/1.4 is period-correct and passes contrast at 21:1, but a 14px serif is the least legible combination in this file. Modern reproductions should allow user text scaling to 200% without a fixed-width table clipping it — the original 760px fixed table does not survive that, which is a real conflict between fidelity and WCAG 1.4.4.
+- **`{colors.text-muted}` is prescribed.** Using it for anything larger than `{typography.caption}` would introduce a tonal hierarchy the brand does not have.
+
 ## Do's and Don'ts
 
 ### Do
@@ -630,3 +822,32 @@ All seven share identical chrome: 1 px solid `{colors.frame-ink}` border, `{spac
 - Don't crop or "tuck" product photos with `border-radius` or `clip-path`. The notch into the ribbon-card right edge is the framing — the photo itself stays a hard rectangle.
 - Don't pair two `{components.cta-block-red}` panels on the same page. The red fill is meant to be the singular attention pole.
 - Don't strip the `{components.phone-callout}` from the top banner. In 1996 the website existed to drive phone-call orders; the phone number IS the navigation.
+- Don't add entrance choreography, parallax, scroll reveals or ambient loops. The only infinite animation permitted is the `{motion.duration-slow}` loading ellipsis.
+- Don't suppress the focus ring to protect the look. `{colors.focus}` / `{colors.focus-on-dark}` is prescribed, not extracted, but it is not optional.
+
+## Known Gaps
+
+Everything in this list is either unverifiable from the three captured pages or is an acknowledged interpretation. Nothing here should be read as an extracted fact.
+
+**Prescribed, not extracted — the whole of it:**
+- The entire `motion:` group, the `## Motion & Animation` table and the reduced-motion block. Dell.com in 1996 had no CSS transitions and no scripted easing; nobody measured a timing function on this site because there was none to measure. The Calm profile was assigned by SPEC §5 rule 4 and applied as a ceiling.
+- `{colors.focus}` / `{colors.focus-on-dark}` and the whole `focus-ring:` group. The 1996 design specified no focus indicator; the browser drew its own dotted outline.
+- `{colors.text-muted}` #666666. The real page has no secondary ink at all.
+- The `shadow:` group. `{shadow.bevel}` and `{shadow.bevel-inset}` are a modern CSS transcription of bevels that were hand-painted into GIF pixels; the originals have no numeric value to extract.
+- Every state in the State Matrix except default, and `button-text-link`'s underline. HTML 3.2 gave the page `A:link` / `A:visited` / `A:active` and the browser's native button depress; nothing else existed.
+
+**Not knowable from a document:**
+- Tap-target sizes, overlap, clipping, horizontal overflow, frame rate and layout shift all need a rendered page. The 24 × 24px icon figure and the ~24px button height in Accessibility are arithmetic from this file's own padding and type tokens, not measurements of a running UI.
+- Whether the 760px fixed table survives 200% text zoom. Almost certainly it does not, but that is a rendering claim.
+
+**Missing from the source captures:**
+- `A:visited` link colour. The era's default was #551a8b, but it is not observed on these pages, so no `link-visited` token is defined.
+- Form widget states beyond default. The Search and "Configure & Buy" forms are described in the prose but not visible in the three captures.
+- Any dark-mode or alternate-polarity theme. The 1996 design has exactly one polarity: black frame, white paper. `{colors.focus-on-dark}` serves the black chrome, not a dark theme.
+- "About Dell" staff photography, avatars and any page beyond the home page, the Dimension page and the OptiPlex page.
+- The exact tint-to-product mapping for `{colors.tint-olive}` as a *body* fill. It is observed only as an eyebrow block; its use as a ribbon body is inferred from the pattern of the other seven.
+
+**Unresolved by design:**
+- `{colors.canvas}` and `{colors.surface}` are the same #ffffff, so the two layers measure 1.0:1. This is accurate to the brand and is not a defect to fix, but any tool that expects a distinguishable raised surface will have nothing to work with here.
+- White on Dell red fails AA at 4.49:1. Disclosed in Accessibility, not corrected, and awaiting a decision between the two mitigations listed there.
+- The `ex-*` block is auto-derived and its descriptions still reference "feature-card chrome", a component this file does not define. The references are prose, not `{}` tokens, so nothing dangles — but the wording came from a generator, not from this brand.
