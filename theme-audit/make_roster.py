@@ -33,7 +33,7 @@ DEVTOOL = {"cursor", "expo", "raycast", "superhuman", "vercel", "warp", "ollama"
 # firing on colour count. See SPEC section 5.
 PLAYFUL = {"figma", "miro", "zapier", "lovable", "clay", "pinterest",
            "nintendo-2001", "starbucks", "slack", "intercom", "mydealz"}
-CINEMATIC = AUTOMOTIVE | {"apple", "spacex", "playstation", "nike", "spotify",
+CINEMATIC = AUTOMOTIVE | {"apple", "spacex", "playstation", "nike",
                           "shopify", "runwayml", "elevenlabs", "revolut",
                           "lamborghini", "dji", "oura", "meta", "nvidia"}
 

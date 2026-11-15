@@ -482,10 +482,10 @@
   {
     "agent": "A61",
     "site": "sanity",
-    "intent": "Sanity's website is a developer-content platform rendered as a",
+    "intent": "\"A developer-content platform rendered as a nocturnal command center",
     "owned": "design-md/sanity/DESIGN.md",
     "profile": "Crisp",
-    "legacy": true
+    "legacy": false
   },
   {
     "agent": "A62",
@@ -530,18 +530,18 @@
   {
     "agent": "A67",
     "site": "spotify",
-    "intent": "Spotify's web interface is a dark, immersive music player",
+    "intent": "Content-first darkness \u2014 a near-black charcoal ladder (#121212 to",
     "owned": "design-md/spotify/DESIGN.md",
-    "profile": "Cinematic",
-    "legacy": true
+    "profile": "Crisp",
+    "legacy": false
   },
   {
     "agent": "A68",
     "site": "starbucks",
-    "intent": "Starbucks' design system is a warm, confident retail flagship",
+    "intent": "A warm, confident retail flagship. The canvas is a",
     "owned": "design-md/starbucks/DESIGN.md",
     "profile": "Playful",
-    "legacy": true
+    "legacy": false
   },
   {
     "agent": "A69",
@@ -570,18 +570,18 @@
   {
     "agent": "A72",
     "site": "tesla",
-    "intent": "Tesla's website is an exercise in radical subtraction ",
+    "intent": "Radical subtraction \u2014 a white canvas (#FFFFFF) carrying full-viewport",
     "owned": "design-md/tesla/DESIGN.md",
     "profile": "Cinematic",
-    "legacy": true
+    "legacy": false
   },
   {
     "agent": "A73",
     "site": "theverge",
-    "intent": "The Verge's 2024 redesign feels like somebody wired a",
+    "intent": "The Verge's 2024 redesign \u2014 an almost-black #131313 editorial",
     "owned": "design-md/theverge/DESIGN.md",
-    "profile": "Crisp",
-    "legacy": true
+    "profile": "Cinematic",
+    "legacy": false
   },
   {
     "agent": "A74",

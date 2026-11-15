@@ -65,19 +65,19 @@
 | A58 | `resend` | | | `design-md/resend/DESIGN.md` | Crisp |  |
 | A59 | `revolut` | | | `design-md/revolut/DESIGN.md` | Cinematic |  |
 | A60 | `runwayml` | A cinematic reel rendered as a website. The canvas | `design-md/runwayml/DESIGN.md` | Cinematic |  |
-| A61 | `sanity` | Sanity's website is a developer-content platform rendered as a | `design-md/sanity/DESIGN.md` | Crisp | yes |
+| A61 | `sanity` | "A developer-content platform rendered as a nocturnal command center | `design-md/sanity/DESIGN.md` | Crisp |  |
 | A62 | `sap` | An analysis of SAP's design language — an enterprise | `design-md/sap/DESIGN.md` | Calm |  |
 | A63 | `sentry` | An inspired interpretation of Sentri's design language — a | `design-md/sentry/DESIGN.md` | Crisp |  |
 | A64 | `shopify` | An inspired interpretation of Shopifi's design language — a | `design-md/shopify/DESIGN.md` | Cinematic |  |
 | A65 | `slack` | An inspired interpretation of Slack's design language — a | `design-md/slack/DESIGN.md` | Playful |  |
 | A66 | `spacex` | An inspired interpretation of Spasex's design language — a | `design-md/spacex/DESIGN.md` | Cinematic |  |
-| A67 | `spotify` | Spotify's web interface is a dark, immersive music player | `design-md/spotify/DESIGN.md` | Cinematic | yes |
-| A68 | `starbucks` | Starbucks' design system is a warm, confident retail flagship | `design-md/starbucks/DESIGN.md` | Playful | yes |
+| A67 | `spotify` | Content-first darkness — a near-black charcoal ladder (#121212 to | `design-md/spotify/DESIGN.md` | Crisp |  |
+| A68 | `starbucks` | A warm, confident retail flagship. The canvas is a | `design-md/starbucks/DESIGN.md` | Playful |  |
 | A69 | `stripe` | An inspired interpretation of Stripi's design language — a | `design-md/stripe/DESIGN.md` | Crisp |  |
 | A70 | `supabase` | An inspired interpretation of Supabaze's design language — an | `design-md/supabase/DESIGN.md` | Crisp |  |
 | A71 | `superhuman` | An inspired interpretation of Superhumon's design language — a | `design-md/superhuman/DESIGN.md` | Crisp |  |
-| A72 | `tesla` | Tesla's website is an exercise in radical subtraction  | `design-md/tesla/DESIGN.md` | Cinematic | yes |
-| A73 | `theverge` | The Verge's 2024 redesign feels like somebody wired a | `design-md/theverge/DESIGN.md` | Crisp | yes |
+| A72 | `tesla` | Radical subtraction — a white canvas (#FFFFFF) carrying full-viewport | `design-md/tesla/DESIGN.md` | Cinematic |  |
+| A73 | `theverge` | The Verge's 2024 redesign — an almost-black #131313 editorial | `design-md/theverge/DESIGN.md` | Cinematic |  |
 | A74 | `together.ai` | An inspired interpretation of Together AI's design language  | `design-md/together.ai/DESIGN.md` | Crisp |  |
 | A75 | `uber` | An inspired interpretation of Uber's design language — a | `design-md/uber/DESIGN.md` | Playful |  |
 | A76 | `vercel` | An inspired interpretation of Vercel's design language — a | `design-md/vercel/DESIGN.md` | Crisp |  |

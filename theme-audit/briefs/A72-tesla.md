@@ -1,6 +1,6 @@
 You are Agent A72, the dedicated reviewer for the site file `tesla` in the repo at /Users/mohammadshahansha/Desktop/awesome-design-md.
 
-Theme intent: Tesla's website is an exercise in radical subtraction 
+Theme intent: Radical subtraction — a white canvas (#FFFFFF) carrying full-viewport
 Motion profile: Cinematic
 Files you may write: `design-md/tesla/DESIGN.md`, which you edit, and `theme-audit/reports/A72-tesla.md`, which you create. Nothing else: every other site's DESIGN.md, README.md, CONTRIBUTING.md and the rest of theme-audit/ (SPEC.md, audit.py, roster, briefs, other agents' reports) are read-only. Those two paths are yours and you are expected to write both.
 
@@ -37,7 +37,6 @@ F. Motion and animation — the main gap, and the reason this audit exists. Add:
 G. Accessibility: add a `## Accessibility` section covering measured contrast for the key pairs, focus ring visibility on each surface this file defines, minimum tap target, and reduced-motion. State real failures rather than hiding them.
 H. States: every component entry names its states, from default, hover, focus-visible, active/pressed, disabled, loading, selected, error. A component with genuinely two states says so.
 I. Identity: after your edits, does the file still read as this specific brand, or has it drifted toward a generic token dump? If the assigned Cinematic profile is wrong for this brand, argue for a different one in the report and use the one you conclude is right — do not switch silently.
-J. Format conversion: this file has no frontmatter token block and uses the numbered heading variant (`## 1. Visual Theme & Atmosphere` and so on). Convert it to the current format. Build `colors`, `typography`, `spacing`, `rounded` and `components` from the hex values, type values and component descriptions already written in its prose, and rename the headings to the unnumbered set in SPEC section 3. Do not invent a value that is not already stated somewhere in the file; anything genuinely absent goes in Known Gaps.
 
 RULES
 - One file only. If the root cause sits in README.md, CONTRIBUTING.md or the harness, do not edit it: list it under "Shared issues" with the file, the line and your proposed fix.

@@ -149,6 +149,21 @@ def find_role(colors, patterns):
     return None
 
 
+# Which components count as a ground for the surface role: a card or band is
+# one, a hero or masthead is a statement surface rather than the raised neutral.
+CONTAINERISH = re.compile(r"(card|panel|band|tile|well|surface|sheet|"
+                          r"modal|drawer|section|container|tier|block)")
+NOT_A_SURFACE = re.compile(r"(hero|masthead|display|title|banner|jumbo|"
+                           r"splash|cover)")
+
+
+def saturation(hexstr):
+    h = hexstr.lstrip("#")
+    h = "".join(c * 2 for c in h) if len(h) == 3 else h[:6]
+    rgb = [int(h[i:i + 2], 16) for i in (0, 2, 4)]
+    return (max(rgb) - min(rgb)) / 255
+
+
 def theme_hint(key):
     if re.search(r"(^|[-_])on-dark($|[-_])|dark($|[-_])|[-_]dark", key):
         return "dark"
@@ -234,12 +249,6 @@ def audit(path):
     # --- required token roles -------------------------------------------
     roles = {role: find_role(colors, cands) for role, cands in REQUIRED_COLOR_ROLES.items()}
     if not roles.get("surface"):
-        CONTAINERISH = re.compile(r"(card|panel|band|tile|well|surface|sheet|"
-                                  r"modal|drawer|section|container|tier|block)")
-        # A hero, masthead or display fill is a statement surface, not the
-        # raised neutral the role means.
-        NOT_A_SURFACE = re.compile(r"(hero|masthead|display|title|banner|jumbo|"
-                                   r"splash|cover)")
         canvas_hex = colors.get(roles.get("canvas") or "", None)
         candidates = []
         for cname, props in parse_components(text).items():
@@ -284,9 +293,41 @@ def audit(path):
                     or re.match(r"^(canvas|page|paper)[-_]", k))
                 and colors[k] != colors[canvas_key]
                 and not re.search(r"(hero|pill|badge|chip|masthead|banner)", k)]
-        if cand:
+        neutral_cand = [k for k in cand if saturation(colors[k]) <= 0.12]
+        if neutral_cand:
+            cand = neutral_cand
+        bound_surfaces = set()
+        for cname, props in parse_components(text).items():
+            if not CONTAINERISH.search(cname) or NOT_A_SURFACE.search(cname):
+                continue
+            bm = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}",
+                              props.get("backgroundColor") or "")
+            if bm and bm.group(1) in colors:
+                bound_surfaces.add(bm.group(1))
+        # What containers are actually painted with beats a wash nothing binds.
+        # Prefer a bound tone DISTINCT from the page; fall back to a bound tone
+        # equal to it only when the brand genuinely paints cards the page colour
+        # (slack, starbucks), which is still better than a tinted wash.
+        distinct_bound = [k for k in bound_surfaces
+                          if colors[k] != colors[canvas_key]]
+        # Neutrals only, where the file has any: a story tile or a gold wash is
+        # an accent ground, not the raised surface the role means.
+        neutral_bound = [k for k in distinct_bound if saturation(colors[k]) <= 0.12]
+        if neutral_bound:
+            distinct_bound = neutral_bound
+        elif distinct_bound and bound_surfaces - set(distinct_bound):
+            # Every distinct bound ground is saturated, but a container binds
+            # the page colour: this brand paints cards the same tone as the page
+            # (starbucks, agent A68). That beats electing a gold wash.
+            distinct_bound = []
+        if distinct_bound:
+            roles["surface"] = min(distinct_bound,
+                                   key=lambda k: contrast(colors[k], colors[canvas_key]))
+        elif cand:
             roles["surface"] = min(cand,
                                    key=lambda k: contrast(colors[k], colors[canvas_key]))
+        elif bound_surfaces:
+            roles["surface"] = sorted(bound_surfaces)[0]
         else:
             # No distinct raised tone: this brand's cards are the same colour as
             # its page, separated by a hairline. Keep the surface it names.
@@ -467,8 +508,11 @@ def audit(path):
         ground = own_bg.group(1) if own_bg and own_bg.group(1) in colors else None
         for prop in ("borderColor", "border", "outlineColor"):
             m = re.fullmatch(r"\{colors\.([A-Za-z0-9_.-]+)\}", props.get(prop) or "")
-            if m and m.group(1) in colors:
-                bound_borders.setdefault(m.group(1), set()).add(ground)
+            if not m or m.group(1) not in colors:
+                continue
+            if ground and colors[m.group(1)] == colors[ground]:
+                continue    # self-coloured edge: no boundary against its own fill
+            bound_borders.setdefault(m.group(1), set()).add(ground)
     for key, grounds in bound_borders.items():
         # The component's own ground where it declares one; the page only for
         # components that declare none.
@@ -743,10 +787,18 @@ def audit(path):
     structured = "\n".join(
         keep_cells(line) for line in comp.split("\n")
         if (line.lstrip().startswith(("|", "-", "*"))
-            or re.search(r"\*\*[^*]+\*\*\s*[:—-]", line)))
+            or re.match(r"\s*\*\*[^*]+\*\*\s*[:—-]", line)))
     hay = structured.lower()
     def documents(word):
-        return re.search(rf"(?<![a-z]){re.escape(word)}(?![a-z])", hay) is not None
+        for m in re.finditer(rf"(?<![a-z]){re.escape(word)}(?![a-z])", hay):
+            lead = hay[max(0, m.start() - 24):m.start()]
+            # `lazy loading` and `loading="lazy"` describe image fetching, not
+            # an interaction state (agent A73).
+            if word == "loading" and ("lazy" in lead or 'loading="' in
+                                      hay[m.start():m.start() + 12]):
+                continue
+            return True
+        return False
 
     r["states_documented"] = [w for w in STATE_WORDS if documents(w)]
     r["states_missing"] = [w for w in STATE_WORDS if not documents(w)]

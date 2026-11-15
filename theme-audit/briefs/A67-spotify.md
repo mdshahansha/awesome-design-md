@@ -1,7 +1,7 @@
 You are Agent A67, the dedicated reviewer for the site file `spotify` in the repo at /Users/mohammadshahansha/Desktop/awesome-design-md.
 
-Theme intent: Spotify's web interface is a dark, immersive music player
-Motion profile: Cinematic
+Theme intent: Content-first darkness — a near-black charcoal ladder (#121212 to
+Motion profile: Crisp
 Files you may write: `design-md/spotify/DESIGN.md`, which you edit, and `theme-audit/reports/A67-spotify.md`, which you create. Nothing else: every other site's DESIGN.md, README.md, CONTRIBUTING.md and the rest of theme-audit/ (SPEC.md, audit.py, roster, briefs, other agents' reports) are read-only. Those two paths are yours and you are expected to write both.
 
 Judge against `theme-audit/SPEC.md`. Read it first, in full. It defines the token contract, the contrast thresholds, the section contract, the motion token block, the four motion profiles and their values, the motion rules, and the honest limits of this audit. Follow it exactly.
@@ -29,15 +29,14 @@ C. Background and elevation: compute the ratios between canvas, surface and rais
 D. Typography: does every role have size, weight and line height? Is body text readable on this file's own surfaces?
 E. Borders, radius, focus ring: internally consistent ladders, with no value sitting outside its own scale.
 F. Motion and animation — the main gap, and the reason this audit exists. Add:
-   - a `motion:` group to the frontmatter carrying the **Cinematic** profile's literal token block from SPEC section 5 (the blocks are printed there under the profile table);
+   - a `motion:` group to the frontmatter carrying the **Crisp** profile's literal token block from SPEC section 5 (the blocks are printed there under the profile table);
    - a `## Motion & Animation` section placed after `## Components`, whose FIRST line states that this motion system is prescribed to match the brand's visual identity and was not measured from the live site;
    - inside it, a table of interaction x duration x easing x property x reduced-motion behaviour covering hover, press, focus, page transition, modal or drawer, dropdown, toast, list enter, list exit and loading;
    - a `@media (prefers-reduced-motion: reduce)` rule stating what is removed and what remains.
    Reference every value as {motion.duration-base} and so on. Animate transform and opacity only.
 G. Accessibility: add a `## Accessibility` section covering measured contrast for the key pairs, focus ring visibility on each surface this file defines, minimum tap target, and reduced-motion. State real failures rather than hiding them.
 H. States: every component entry names its states, from default, hover, focus-visible, active/pressed, disabled, loading, selected, error. A component with genuinely two states says so.
-I. Identity: after your edits, does the file still read as this specific brand, or has it drifted toward a generic token dump? If the assigned Cinematic profile is wrong for this brand, argue for a different one in the report and use the one you conclude is right — do not switch silently.
-J. Format conversion: this file has no frontmatter token block and uses the numbered heading variant (`## 1. Visual Theme & Atmosphere` and so on). Convert it to the current format. Build `colors`, `typography`, `spacing`, `rounded` and `components` from the hex values, type values and component descriptions already written in its prose, and rename the headings to the unnumbered set in SPEC section 3. Do not invent a value that is not already stated somewhere in the file; anything genuinely absent goes in Known Gaps.
+I. Identity: after your edits, does the file still read as this specific brand, or has it drifted toward a generic token dump? If the assigned Crisp profile is wrong for this brand, argue for a different one in the report and use the one you conclude is right — do not switch silently.
 
 RULES
 - One file only. If the root cause sits in README.md, CONTRIBUTING.md or the harness, do not edit it: list it under "Shared issues" with the file, the line and your proposed fix.
