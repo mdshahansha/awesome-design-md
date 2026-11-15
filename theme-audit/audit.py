@@ -177,9 +177,27 @@ def audit(path):
 
     # --- contrast -------------------------------------------------------
     fails = []
+
+    def theme_of(key):
+        """Which theme a token belongs to, by name. None means the default one."""
+        if re.search(r"(^|[-_])on-dark|dark([-_]|$)|[-_]dark", key):
+            return "dark"
+        if re.search(r"(^|[-_])on-light|light([-_]|$)|[-_]light", key):
+            return "light"
+        return None
+
+    def same_theme(fg_key, bg_key):
+        """A light-mode ink is never drawn on a dark-mode surface.
+
+        Without this, the harness manufactured failures that cannot render —
+        `ink on surface-card-dark` at 1.10:1, `on-dark-soft on canvas` at
+        1.92:1 — and agents then documented problems that do not exist.
+        """
+        return (theme_of(fg_key) or "default") == (theme_of(bg_key) or "default")
+
     def check(fg_role, bg_role, minimum, label):
         fg, bg = roles.get(fg_role), roles.get(bg_role)
-        if not fg or not bg:
+        if not fg or not bg or not same_theme(fg, bg):
             return
         ratio = round(contrast(colors[fg], colors[bg]), 2)
         rec = {"pair": f"{fg} on {bg}", "fg": colors[fg], "bg": colors[bg],
@@ -194,6 +212,8 @@ def audit(path):
         for pat in REQUIRED_COLOR_ROLES[role]:
             for key in colors:
                 if not re.match(pat, key) or "disabled" in key:
+                    continue
+                if not same_theme(key, bg):
                     continue
                 ratio = round(contrast(colors[key], colors[bg]), 2)
                 if ratio < minimum:
